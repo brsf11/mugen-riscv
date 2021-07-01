@@ -1,0 +1,30 @@
+{
+    "path": "$OET_PATH/testcases/testsuite",
+    "cases": [
+        {
+            "name": "oe_test_casename_01",
+            "machine": {
+                "type": "kvm",
+                "num": 1
+            },
+            "nic": {
+                "num": 1
+            },
+            "disk": {
+                "unit": "MiB",
+                "size": 51200,
+                "+size": [
+                    10240,
+                    512
+                ]
+            }
+        },
+        {
+            "name": "oe_test_casename_02",
+            "machine": {
+                "type": "physical",
+                "num": 1
+            }
+        }
+    ]
+}
