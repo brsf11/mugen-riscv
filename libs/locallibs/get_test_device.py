@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
-# This program is licensed under Mulan PSL v2.
-# You can use it according to the terms and conditions of the Mulan PSL v2.
-#          http://license.coscl.org.cn/MulanPSL2
-# THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-# EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-# MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more details.
-####################################
-# @Author  : lemon-higgins
-# @email   : lemon.higgins@aliyun.com
-# @Date    : 2021-04-22 10:52:19
-# @License : Mulan PSL v2
-# @Version : 1.0
-# @Desc    :
-#####################################
+"""
+ Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
+ This program is licensed under Mulan PSL v2.
+ You can use it according to the terms and conditions of the Mulan PSL v2.
+          http://license.coscl.org.cn/MulanPSL2
+ THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ See the Mulan PSL v2 for more details.
 
-import os, sys, subprocess, argparse
+ @Author  : lemon-higgins
+ @email   : lemon.higgins@aliyun.com
+ @Date    : 2021-04-22 10:52:19
+ @License : Mulan PSL v2
+ @Version : 1.0
+ @Desc    : 测试设备名获取
+"""
+
+import os
+import sys
+import subprocess
+import argparse
 
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(SCRIPT_PATH)
@@ -25,7 +29,15 @@ import mugen_log
 import rpm_manage
 
 
-def test_nic(node=1):
+def get_test_nic(node=1):
+    """获取可测试使用的网卡
+
+    Args:
+        node (int, optional): 节点号. Defaults to 1.
+
+    Returns:
+        [str]: 网卡名
+    """
     if os.environ.get("NODE" + str(node) + "_LOCALTION") == "local":
         tmpfile = rpm_manage.rpm_install(pkgs="lshw")[1]
 
@@ -62,7 +74,15 @@ def test_nic(node=1):
     return output
 
 
-def test_disk(node=1):
+def get_test_disk(node=1):
+    """获取可测试使用的网卡
+
+    Args:
+        node (int, optional): 节点号. Defaults to 1.
+
+    Returns:
+        [str]: 磁盘名称
+    """
     if os.environ.get("NODE" + str(node) + "LOCALTION") == "local":
         used_disk = subprocess.getoutput(
             "lsblk -l | grep -e '/.*\|\[.*\]' | awk '{print $1}' | tr -d '[0-9]' | uniq | sed -e ':a;N;$!ba;s/\\n/ /g'"
@@ -97,13 +117,13 @@ def test_disk(node=1):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="manual to this script")
     parser.add_argument("--node", type=int, default=1)
-    parser.add_argument("--drive", type=str, choices=["nic", "disk"], default="nic")
+    parser.add_argument("--device", type=str, choices=["nic", "disk"], default="nic")
     args = parser.parse_args()
 
     if args.drive == "nic":
-        print(test_nic(args.node))
+        print(get_test_nic(args.node))
     elif args.drive == "disk":
-        print(test_disk(args.node))
+        print(get_test_disk(args.node))
     else:
         mugen_log.logging(
             "warn",

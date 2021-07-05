@@ -56,14 +56,6 @@ function load_conf() {
 
 }
 
-function download_cases() {
-    local tmpdir
-    tmpdir=$(mktemp -d)
-    git clone "$REPOSITORY" "$tmpdir"
-    cp "$tmpdir"/* "$OET_PATH" -r
-    rm -rf "$tmpdir"
-}
-
 function exec_case() {
     local cmd=$1
     local log_path=$2
@@ -195,11 +187,7 @@ while getopts "c:af:r:dx" option; do
         deploy_conf ${*//-c/}
         ;;
     d)
-        echo "$@" | grep -q -e '^ *-d *$' || {
-            usage
-            exit 1
-        }
-        download_cases
+        echo -e "The test script download function has been discarded."
         ;;
     a)
         if echo "$@" | grep -q -e '-a *-x *$\|-x *-a *$\|-ax *$\|-xa *$'; then

@@ -1,22 +1,27 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
-# This program is licensed under Mulan PSL v2.
-# You can use it according to the terms and conditions of the Mulan PSL v2.
-#          http://license.coscl.org.cn/MulanPSL2
-# THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-# EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-# MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more details.
-####################################
-# @Author  : lemon-higgins
-# @email   : lemon.higgins@aliyun.com
-# @Date    : 2021-04-20 19:17:45
-# @License : Mulan PSL v2
-# @Version : 1.0
-# @Desc    :
-#####################################
+"""
+ Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
+ This program is licensed under Mulan PSL v2.
+ You can use it according to the terms and conditions of the Mulan PSL v2.
+          http://license.coscl.org.cn/MulanPSL2
+ THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ See the Mulan PSL v2 for more details.
 
-import sys, os, json, re, argparse
+ @Author  : lemon-higgins
+ @email   : lemon.higgins@aliyun.com
+ @Date    : 2021-04-20 19:17:45
+ @License : Mulan PSL v2
+ @Version : 1.0
+ @Desc    : 获取测试套信息
+"""
+
+import sys
+import os
+import json
+import re
+import argparse
 
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(SCRIPT_PATH)
@@ -24,6 +29,14 @@ import mugen_log
 
 
 def suite_path(suite):
+    """获取测试套路径
+
+    Args:
+        suite ([str]): 测试套名
+
+    Returns:
+        [str]: 测试套路径
+    """
     oet_path = os.environ.get("OET_PATH")
     if oet_path is None:
         mugen_log.logging("error", "环境变量：OET_PATH不存在，请检查mugen框架.")
@@ -57,6 +70,14 @@ def suite_path(suite):
 
 
 def suite_cases(suite):
+    """获取测试套中用例列表
+
+    Args:
+        suite ([str]): 测试套名
+
+    Returns:
+        [list]: 用例列表
+    """
     oet_path = os.environ.get("OET_PATH")
     if oet_path is None:
         mugen_log.logging("error", "环境变量：OET_PATH不存在，请检查mugen框架.")

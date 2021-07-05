@@ -1,22 +1,28 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
-# This program is licensed under Mulan PSL v2.
-# You can use it according to the terms and conditions of the Mulan PSL v2.
-#          http://license.coscl.org.cn/MulanPSL2
-# THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-# EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-# MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more details.
-####################################
-# @Author  : lemon-higgins
-# @email   : lemon.higgins@aliyun.com
-# @Date    : 2021-04-21 16:14:27
-# @License : Mulan PSL v2
-# @Version : 1.0
-# @Desc    :
-#####################################
+"""
+ Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
+ This program is licensed under Mulan PSL v2.
+ You can use it according to the terms and conditions of the Mulan PSL v2.
+          http://license.coscl.org.cn/MulanPSL2
+ THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ See the Mulan PSL v2 for more details.
 
-import os, sys, stat, re, paramiko, argparse
+ @Author  : lemon-higgins
+ @email   : lemon.higgins@aliyun.com
+ @Date    : 2021-04-21 16:14:27
+ @License : Mulan PSL v2
+ @Version : 1.0
+ @Desc    : 文件传输
+"""
+
+import os
+import sys
+import stat
+import re
+import paramiko
+import argparse
 
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(SCRIPT_PATH)
@@ -25,6 +31,16 @@ import ssh_cmd
 
 
 def get_remote_file(sftp, remote_dir, remote_file=None):
+    """获取对端文件
+
+    Args:
+        sftp (class): 和对端建立连接
+        remote_dir ([str]): 远端需要传输的文件所在的目录
+        remote_file ([str], optional): 远端需要传输的文件. Defaults to None.
+
+    Returns:
+        [list]: 文件列表
+    """
     all_file = list()
 
     remote_dir = remote_dir.rstrip("/")
@@ -44,8 +60,16 @@ def get_remote_file(sftp, remote_dir, remote_file=None):
 
 
 def psftp_get(conn, remote_dir, remote_file="", local_dir=os.getcwd()):
+    """获取远端文件
+
+    Args:
+        conn ([class]): 和远端建立连接
+        remote_dir ([str]): 远端需要传输的文件所在的目录
+        remote_file ([str], optional): 远端需要传输的文件. Defaults to None.
+        local_dir ([str], optional): 本地存放文件的目录. Defaults to os.getcwd().
+    """
     if conn == 519:
-        return 519, ""
+        sys.exit(519)
 
     sftp = paramiko.SFTPClient.from_transport(conn.get_transport())
 
@@ -82,6 +106,15 @@ def psftp_get(conn, remote_dir, remote_file="", local_dir=os.getcwd()):
 
 
 def get_local_file(local_dir, local_file=None):
+    """获取本地文件列表
+
+    Args:
+        local_dir ([str]): 本地文件所在的目录
+        local_file ([str], optional): 本地需要传输的文件. Defaults to None.
+
+    Returns:
+        [list]: 文件列表
+    """
     all_file = list()
 
     local_dir = local_dir.rstrip("/")
@@ -101,8 +134,16 @@ def get_local_file(local_dir, local_file=None):
 
 
 def psftp_put(conn, local_dir=os.getcwd(), local_file="", remote_dir=""):
+    """将本地文件传输到远端
+
+    Args:
+        conn ([class]): 和远端建立连接
+        local_dir ([str]): 本地文件所在的目录
+        local_file ([str], optional): 本地需要传输的文件. Defaults to None.
+        remote_dir (str, optional): 远端存放文件的目录. Defaults to 根目录.
+    """
     if conn == 519:
-        return 519, ""
+        sys.exit(519)
 
     sftp = paramiko.SFTPClient.from_transport(conn.get_transport())
 

@@ -1,23 +1,28 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
-# This program is licensed under Mulan PSL v2.
-# You can use it according to the terms and conditions of the Mulan PSL v2.
-#          http://license.coscl.org.cn/MulanPSL2
-# THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-# EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-# MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more details.
-####################################
-# @Author  : lemon-higgins
-# @email   : lemon.higgins@aliyun.com
-# @Date    : 2021-04-20 15:13:09
-# @License : Mulan PSL v2
-# @Version : 1.0
-# @Desc    :
-#####################################
+"""
+ Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
+ This program is licensed under Mulan PSL v2.
+ You can use it according to the terms and conditions of the Mulan PSL v2.
+          http://license.coscl.org.cn/MulanPSL2
+ THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ See the Mulan PSL v2 for more details.
 
-import sys, os, json, socket, subprocess, argparse
+ @Author  : lemon-higgins
+ @email   : lemon.higgins@aliyun.com
+ @Date    : 2021-04-20 15:13:09
+ @License : Mulan PSL v2
+ @Version : 1.0
+ @Desc    : 生成测试环境配置
+"""
 
+import sys
+import os
+import json
+import socket
+import subprocess
+import argparse
 import paramiko
 
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -28,6 +33,14 @@ NODE_DATA = {"ID": 1}
 
 
 def write_conf(ip, password, port=22, user="root"):
+    """写入测试环境的配置
+
+    Args:
+        ip ([str]): 测试环境地址
+        password ([str]): 测试环境的用户密码
+        port (int, optional): 测试环境ssh端口号. Defaults to 22.
+        user (str, optional): 测试环境用户名. Defaults to "root".
+    """
     if not os.path.exists("/etc/mugen"):
         OET_PATH = os.environ.get("OET_PATH")
         if OET_PATH is None:
@@ -127,4 +140,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     write_conf(args.ip, args.password, args.port, args.user)
-

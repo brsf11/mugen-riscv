@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
+"""
 # @Author : lemon-higgins
 # @Date   : 2021-07-01 02:09:51
 # @Email  : lemon.higgins@aliyun.com
 # @License: Mulan PSL v2
-# @Desc   :
+# @Desc   : 命令执行超时
+"""
 
-
-import subprocess, time, os, sys, argparse
+import subprocess
+import time
+import os
+import sys
+import argparse
 
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(SCRIPT_PATH)
@@ -14,6 +19,13 @@ import mugen_log
 
 
 def sleep_wait(wait_time, cmd=None, mode=1):
+    """等待命令执行时长
+
+    Args:
+        wait_time ([int]): 待定时间
+        cmd ([str], optional): 执行的命令. Defaults to None.
+        mode (int, optional): 命令执行等待模式. Defaults to 1.
+    """
     if not cmd:
         time.sleep(wait_time)
         sys.exit(0)

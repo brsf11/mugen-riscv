@@ -148,14 +148,14 @@ function SFTP() {
 
 function TEST_NIC() {
     id=${1-1}
-    python3 ${OET_PATH}/libs/locallibs/test_drive.py \
-        --drive nic --node "$id"
+    python3 ${OET_PATH}/libs/locallibs/get_test_device.py \
+        --device nic --node "$id"
 }
 
 function TEST_DISK() {
     id=${1-1}
-    python3 ${OET_PATH}/libs/locallibs/test_drive.py \
-        --drive disk --node "$id"
+    python3 ${OET_PATH}/libs/locallibs/get_test_device.py \
+        --device disk --node "$id"
 }
 
 function DNF_INSTALL() {
@@ -219,12 +219,14 @@ function IS_FREE_PORT() {
 
 function REMOTE_REBOOT() {
     node=${1-2}
-    python3 ${OET_PATH}/libs/locallibs/remote_reboot.py "reboot" --node $node
+    waittime=${2-None}
+    python3 ${OET_PATH}/libs/locallibs/remote_reboot.py "reboot" --node $node --waittime $waittime
 }
 
 function REMOTE_REBOOT_WAIT() {
     node=${1-2}
-    python3 ${OET_PATH}/libs/locallibs/remote_reboot.py "wait" --node $node
+    waittime=${2-None}
+    python3 ${OET_PATH}/libs/locallibs/remote_reboot.py "wait" --node $node --waittime $waittime
 }
 
 function SLEEP_WAIT() {

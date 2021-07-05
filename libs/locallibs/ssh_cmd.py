@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
-# This program is licensed under Mulan PSL v2.
-# You can use it according to the terms and conditions of the Mulan PSL v2.
-#          http://license.coscl.org.cn/MulanPSL2
-# THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-# EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-# MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more details.
-####################################
-# @Author  : lemon-higgins
-# @email   : lemon.higgins@aliyun.com
-# @Date    : 2021-04-21 11:54:57
-# @License : Mulan PSL v2
-# @Version : 1.0
-# @Desc    :
-#####################################
+"""
+ Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
+ This program is licensed under Mulan PSL v2.
+ You can use it according to the terms and conditions of the Mulan PSL v2.
+          http://license.coscl.org.cn/MulanPSL2
+ THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ See the Mulan PSL v2 for more details.
+ 
+ @Author  : lemon-higgins
+ @email   : lemon.higgins@aliyun.com
+ @Date    : 2021-04-21 11:54:57
+ @License : Mulan PSL v2
+ @Version : 1.0
+ @Desc    : 远端命令执行
+"""
 
-import os, sys, argparse, paramiko
+import os
+import sys
+import argparse
+import paramiko
 
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(SCRIPT_PATH)
@@ -24,6 +28,18 @@ import mugen_log
 
 
 def pssh_conn(ip, password, port=22, user="root", timeout=None):
+    """和远端建立连接
+
+    Args:
+        ip ([str]): 远端ip
+        password ([str]): 远端用户密码
+        port (int, optional): 远端ssh的端口号. Defaults to 22.
+        user (str, optional): 远端用户名. Defaults to "root".
+        timeout ([int], optional): ssh的超时时长. Defaults to None.
+
+    Returns:
+        [class]: 建立起来的连接
+    """
     conn = paramiko.SSHClient()
     conn.set_missing_host_key_policy(paramiko.AutoAddPolicy)
     try:
@@ -43,6 +59,15 @@ def pssh_conn(ip, password, port=22, user="root", timeout=None):
 
 
 def pssh_cmd(conn, cmd):
+    """远端命令执行
+
+    Args:
+        conn ([class]): 和远端建立连接
+        cmd ([str]): 需要执行的命令
+
+    Returns:
+        [list]: 错误码，命令执行结果
+    """
     if conn == 519:
         return 519, ""
     stdin, stdout, stderr = conn.exec_command(cmd, timeout=None)
@@ -99,4 +124,3 @@ if __name__ == "__main__":
     print(output)
 
     sys.exit(exitcode)
-

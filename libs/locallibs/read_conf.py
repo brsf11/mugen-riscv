@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
-# This program is licensed under Mulan PSL v2.
-# You can use it according to the terms and conditions of the Mulan PSL v2.
-#          http://license.coscl.org.cn/MulanPSL2
-# THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-# EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-# MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more details.
-####################################
-# @Author  : lemon-higgins
-# @email   : lemon.higgins@aliyun.com
-# @Date    : 2021-04-20 17:08:33
-# @License : Mulan PSL v2
-# @Version : 1.0
-# @Desc    :
-#####################################
+"""
+ Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
+ This program is licensed under Mulan PSL v2.
+ You can use it according to the terms and conditions of the Mulan PSL v2.
+          http://license.coscl.org.cn/MulanPSL2
+ THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ See the Mulan PSL v2 for more details.
 
-import sys, os, json, argparse
+ @Author  : lemon-higgins
+ @email   : lemon.higgins@aliyun.com
+ @Date    : 2021-04-20 17:08:33
+ @License : Mulan PSL v2
+ @Version : 1.0
+ @Desc    : 读取框架环境变量
+"""
+
+import sys
+import os
+import json
+import argparse
 
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(SCRIPT_PATH)
@@ -42,10 +46,15 @@ NODE_ITEM = [
 
 
 def parse_json():
+    """解析环境变量配置文件
+
+    Returns:
+        [dict]: 环境变量配置
+    """
     if not os.path.exists("/etc/mugen"):
         OET_PATH = os.environ.get("OET_PATH")
         if OET_PATH is None:
-            mugen_log.logging("error", "环境变量：OET_PATH不存在，请检查mugen框架.")
+            mugen_log.logging("error", "环境变量：OET_PATH不存在，请检查mugen框架是否正确安装.")
             return 1
 
         conf_path = OET_PATH.rstrip("/") + "/" + "conf/env.json"
@@ -65,6 +74,11 @@ def parse_json():
 
 
 def read_configure():
+    """读取配置文件内容
+
+    Returns:
+        [str]: 环境变量
+    """
     env_data = parse_json()
 
     env_var = ""
@@ -88,6 +102,11 @@ def read_configure():
 
 
 def node_num():
+    """获取环境节点数
+
+    Returns:
+        [int]: 节点数
+    """
     env_data = parse_json()
 
     node_list = list()

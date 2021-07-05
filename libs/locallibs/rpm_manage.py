@@ -1,22 +1,27 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
-# This program is licensed under Mulan PSL v2.
-# You can use it according to the terms and conditions of the Mulan PSL v2.
-#          http://license.coscl.org.cn/MulanPSL2
-# THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-# EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-# MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more details.
-####################################
-# @Author  : lemon-higgins
-# @email   : lemon.higgins@aliyun.com
-# @Date    : 2021-04-22 11:37:36
-# @License : Mulan PSL v2
-# @Version : 1.0
-# @Desc    :
-#####################################
+"""
+ Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
+ This program is licensed under Mulan PSL v2.
+ You can use it according to the terms and conditions of the Mulan PSL v2.
+          http://license.coscl.org.cn/MulanPSL2
+ THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ See the Mulan PSL v2 for more details.
 
-import os, sys, subprocess, tempfile, argparse
+ @Author  : lemon-higgins
+ @email   : lemon.higgins@aliyun.com
+ @Date    : 2021-04-22 11:37:36
+ @License : Mulan PSL v2
+ @Version : 1.0
+ @Desc    : 软件包的安装卸载
+"""
+
+import os
+import sys
+import subprocess
+import tempfile
+import argparse
 
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(SCRIPT_PATH)
@@ -25,11 +30,30 @@ import ssh_cmd
 
 
 def local_cmd(cmd, conn=None):
+    """本地命令执行
+
+    Args:
+        cmd ([str]): 需要执行的命令
+        conn ([class], optional): 建立和远端的连接. Defaults to None.
+
+    Returns:
+        [list]: 命令执行后的返回码，命令执行结果
+    """
     exitcode, output = subprocess.getstatusoutput(cmd)
     return exitcode, output
 
 
 def rpm_install(pkgs, node=1, tmpfile=""):
+    """安装软件包
+
+    Args:
+        pkgs ([str]): 软包包名，"bc" or "bc vim"
+        node (int, optional): 节点号. Defaults to 1.
+        tmpfile (str, optional): 软件包及其依赖包的缓存文件. Defaults to "".
+
+    Returns:
+        [list]: 错误码，安装的包的列表
+    """
     if pkgs is "":
         mugen_log.logging("error", "the following arguments are required:pkgs")
         sys.exit(1)
@@ -86,9 +110,19 @@ def rpm_install(pkgs, node=1, tmpfile=""):
 
 
 def rpm_remove(node=1, pkgs="", tmpfile=""):
+    """卸载软件包
+
+    Args:
+        node (int, optional): 节点号. Defaults to 1.
+        pkgs (str, optional): 需要卸载的软件包. Defaults to "".
+        tmpfile (str, optional): 安装时所有涉及的包. Defaults to "".
+
+    Returns:
+        list: 错误码，卸载列表或错误信息
+    """
     if pkgs is "" and tmpfile is "":
         mugen_log.logging(
-            "error", "Packages or package files that need to be removed must be added"
+            "error", "Packages or package files these need to be removed must be added"
         )
         sys.exit(1)
 
