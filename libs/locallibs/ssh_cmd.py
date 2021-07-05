@@ -83,6 +83,11 @@ def pssh_cmd(conn, cmd):
 
 
 def pssh_close(conn):
+    """关闭和远端的连接
+
+    Args:
+        conn ([class]): 和远端的连接
+    """
     if conn != 519:
         conn.close()
 
