@@ -45,7 +45,6 @@ def sleep_wait(wait_time, cmd=None, mode=1):
             print(cmd)
             output = subprocess.check_output(
                 "{}".format(cmd),
-                # stderr=subprocess.STDOUT,
                 timeout=wait_time,
                 shell=True,
             )
