@@ -74,7 +74,7 @@ def write_conf(ip, password, port=22, user="root"):
     else:
         ENV_DATA = {"NODE": []}
 
-    if ip in socket.gethostbyname_ex(socket.gethostname())[-1]:
+    if subprocess.getstatusoutput("ip a | grep " + ip)[0] == 0:
         NODE_DATA["LOCALTION"] = "local"
     else:
         NODE_DATA["LOCALTION"] = "remote"
@@ -86,6 +86,18 @@ def write_conf(ip, password, port=22, user="root"):
     except paramiko.ssh_exception.NoValidConnectionsError as e:
         mugen_log.logging("error", e)
         sys.exit(1)
+
+    if os.path.exists(conf_path):
+        stdin, stdout, stderr = ssh.exec_command(
+            "ip a | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | awk -F '/' '{print $1}'"
+        )
+        for remote_ip in stdout.read().decode("utf-8").strip("\n").split("\n"):
+            exitcode, output = subprocess.getstatusoutput(
+                "grep " + remote_ip + " " + conf_path
+            )
+            if exitcode == 0:
+                mugen_log.logging("warn", ip + "和已录入到配置文件中的" + remote_ip + "是同一台机器.")
+                sys.exit(0)
 
     stdin, stdout, stderr = ssh.exec_command("hostnamectl | grep 'Virtualization: kvm'")
     if stdout.read().decode("utf-8").strip("\n") == "":

@@ -38,20 +38,21 @@ def get_test_nic(node=1):
     Returns:
         [str]: 网卡名
     """
-    if os.environ.get("NODE" + str(node) + "_LOCALTION") == "local":
-        tmpfile = rpm_manage.rpm_install(pkgs="lshw")[1]
+    exitcode, tmpfile = rpm_manage.rpm_install(pkgs="lshw", node=node)
+    if exitcode != 0:
+        mugen_log.logging(
+            "error",
+            "Failed to install the dependent software package required to obtain the network card.",
+        )
+        sys.exit(exitcode)
 
+    if os.environ.get("NODE" + str(node) + "_LOCALTION") == "local":
         output = subprocess.getoutput(
             "lshw -class network | grep -A 5 'description: Ethernet interface' | grep 'logical name:' | awk '{print $NF}' | grep -v '"
             + os.environ.get("NODE" + str(node) + "_NIC")
             + "'"
         ).replace("\n", " ")
-
-        if tmpfile is not None:
-            rpm_manage.rpm_remove(tmpfile=tmpfile)
     else:
-        tmpfile = rpm_manage.rpm_install(pkgs="lshw", node=2)[1]
-
         conn = ssh_cmd.pssh_conn(
             os.environ.get("NODE" + str(node) + "_IPV4"),
             os.environ.get("NODE" + str(node) + "_PASSWORD"),
@@ -68,14 +69,14 @@ def get_test_nic(node=1):
 
         ssh_cmd.pssh_close(conn)
 
-        if tmpfile is not None:
-            rpm_manage.rpm_remove(node=2, tmpfile=tmpfile)
+    if tmpfile is not None:
+        rpm_manage.rpm_remove(node=node, tmpfile=tmpfile)
 
     return output
 
 
 def get_test_disk(node=1):
-    """获取可测试使用的网卡
+    """获取可测试使用的磁盘
 
     Args:
         node (int, optional): 节点号. Defaults to 1.
@@ -120,9 +121,9 @@ if __name__ == "__main__":
     parser.add_argument("--device", type=str, choices=["nic", "disk"], default="nic")
     args = parser.parse_args()
 
-    if args.drive == "nic":
+    if args.device == "nic":
         print(get_test_nic(args.node))
-    elif args.drive == "disk":
+    elif args.device == "disk":
         print(get_test_disk(args.node))
     else:
         mugen_log.logging(

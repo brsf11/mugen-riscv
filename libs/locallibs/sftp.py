@@ -23,6 +23,7 @@ import stat
 import re
 import paramiko
 import argparse
+import subprocess
 
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(SCRIPT_PATH)
@@ -147,7 +148,7 @@ def psftp_put(conn, local_dir=os.getcwd(), local_file="", remote_dir=""):
 
     sftp = paramiko.SFTPClient.from_transport(conn.get_transport())
 
-    if ssh_cmd.pssh_cmd(conn, "test -d " + local_dir)[0]:
+    if subprocess.getstatusoutput("test -d " + local_dir)[0]:
         mugen_log.logging("error", "local dir:%s does not exist" % local_dir)
         conn.close()
         sys.exit(1)
@@ -156,7 +157,7 @@ def psftp_put(conn, local_dir=os.getcwd(), local_file="", remote_dir=""):
     if local_file == "":
         all_file = get_local_file(local_dir)
     else:
-        if ssh_cmd.pssh_cmd(conn, "test -f " + local_file)[0]:
+        if subprocess.getstatusoutput("test -f " + local_file)[0]:
             mugen_log.logging("error", "local file:%s does not exist" % local_file)
             conn.close()
             sys.exit(1)

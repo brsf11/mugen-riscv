@@ -12,6 +12,7 @@ import time
 import os
 import sys
 import argparse
+import re
 
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(SCRIPT_PATH)
@@ -26,15 +27,25 @@ def sleep_wait(wait_time, cmd=None, mode=1):
         cmd ([str], optional): 执行的命令. Defaults to None.
         mode (int, optional): 命令执行等待模式. Defaults to 1.
     """
+    if list(wait_time)[-1] == "m":
+        wait_time = int(wait_time.replace("m", "")) * 60
+    elif list(wait_time)[-1] == "h":
+        wait_time = int(wait_time.replace("m", "")) * 3600
+    elif re.search("[0-9]|s", list(wait_time)[-1]):
+        wait_time = int(wait_time.replace("s", ""))
+    else:
+        mugen_log.logging("error", "sleep_wait的等待超时时长当前只支持小时(h),分钟(m),秒(s).")
+        sys.exit(1)
+
     if not cmd:
         time.sleep(wait_time)
         sys.exit(0)
     if cmd and mode == 1:
         try:
+            print(cmd)
             output = subprocess.check_output(
-                cmd,
-                stderr=subprocess.STDOUT,
-                timeout=int(wait_time),
+                "{}".format(cmd),
+                timeout=wait_time,
                 shell=True,
             )
             exitcode = 0
