@@ -63,10 +63,9 @@ function exec_case() {
 
     exec 6>&1
     exec 7>&2
-
     exec >"$log_path"/"$(date +%Y-%m-%d-%T)".log 2>&1
 
-    timeout --preserve-status $TIMEOUT $cmd
+    SLEEP_WAIT $TIMEOUT "$cmd"
     ret_code=$?
 
     exec 1>&6 6>&-
@@ -128,7 +127,7 @@ function run_test_case() {
 
     local time_out
     time_out=$(grep -w --fixed-strings EXECUTE_T ${test_case}.* 2>/dev/nul | awk -F '=' '{print $NF}' | tr -d '"')
-    test -n "$time_out" && TIMEOUT=$time_out
+    test -n "$time_out" && local TIMEOUT=$time_out
 
     local script_type
     script_type=$(find . -name "${test_case}.*" | awk -F '.' '{print $NF}')
@@ -169,7 +168,6 @@ function run_all_cases() {
     }
 
     for test_suite in ${test_suites[*]}; do
-
         run_test_suite "$test_suite"
     done
 }
