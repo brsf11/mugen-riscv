@@ -89,9 +89,9 @@ function POST_TEST_DEFAULT() {
 
 function main() {
     if [ -n "$(type -t post_test)" ]; then
-        trap post_test EXIT INT TERM || exit 1
+        trap post_test EXIT INT HUP TERM || exit 1
     else
-        trap POST_TEST_DEFAULT EXIT INT TERM || exit 1
+        trap POST_TEST_DEFAULT EXIT INT HUP TERM || exit 1
     fi
 
     if ! rpm -qa | grep expect >/dev/null 2>&1; then

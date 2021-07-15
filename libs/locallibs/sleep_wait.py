@@ -42,20 +42,26 @@ def sleep_wait(wait_time, cmd=None, mode=1):
         sys.exit(0)
     if cmd and mode == 1:
         try:
-            print(cmd)
-            output = subprocess.check_output(
-                "{}".format(cmd),
-                timeout=wait_time,
+            p = subprocess.Popen(
+                cmd,
+                stderr=sys.stderr,
+                close_fds=True,
+                stdout=sys.stdout,
+                text=True,
                 shell=True,
             )
+            p.communicate(timeout=wait_time)
             exitcode = 0
-            print(output.decode("utf-8"))
         except subprocess.CalledProcessError as e:
             mugen_log.logging("error", "CallError ：" + e.output.decode("utf-8"))
             exitcode = e.returncode
         except subprocess.TimeoutExpired as e:
             mugen_log.logging("error", "Timeout : " + str(e))
+            p.send_signal(2)
             exitcode = 143
+        except KeyboardInterrupt as e:
+            mugen_log.logging("error", "KeyboardInterrupt : 使用ctrl c结束了进程.")
+            exitcode = 1
         except Exception as e:
             mugen_log.logging("error", "Unknown Error : " + str(e))
             exitcode = 1
