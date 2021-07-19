@@ -19,7 +19,6 @@
 source ${OET_PATH}/conf/mugen.env
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-#export TIMEOUT="60m"
 export LANG=en_US.UTF-8
 export SYS_CONF_PATH=/etc/pkgship
 export USER_CONF_PATH=/home
@@ -244,7 +243,7 @@ function GET_RANDOM_PKGNAME() {
     # Get count
     count=$(cat pkg_list.txt | wc -l)
     # Get a randome in 1~count
-    random=$(($RANDOM % $count + 1))
+    random=$((RANDOM % count + 1))
 
     printf $(cat pkg_list.txt | head -n $random | tail -n 1)
 
@@ -373,8 +372,6 @@ function GET_DNF_REPOQUERY() {
 function COMPARE_DNF() {
     expect=$1
     actual=$2
-    # sed -i "s/[[:space:]]//g" $expect
-    # sed -i "s/[[:space:]]//g" $actual
     cat $actual | grep -Ev "^$=|[#;]">./actual_grep_deal
     cat $expect | grep -Ev "^$=|[#;]" >./expect_grep_deal
 
