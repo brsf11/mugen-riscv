@@ -51,7 +51,7 @@ def sleep_wait(wait_time, cmd=None, mode=1):
                 shell=True,
             )
             p.communicate(timeout=wait_time)
-            exitcode = 0
+            exitcode = p.returncode
         except subprocess.CalledProcessError as e:
             mugen_log.logging("error", "CallError ：" + e.output.decode("utf-8"))
             exitcode = e.returncode
