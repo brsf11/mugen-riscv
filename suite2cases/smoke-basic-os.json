@@ -1,5 +1,6 @@
 {
     "path": "\"${OET_PATH}\"/testcases/smoke-test/smoke-basic-os",
+    "machine num": 2,
     "cases": [
         {
             "name": "oe_test_acl_001"
@@ -26,7 +27,8 @@
             "name": "oe_test_CPUinfo_001"
         },
         {
-            "name": "oe_test_criu"
+            "name": "oe_test_criu",
+            "machine num": 2
         },
         {
             "name": "oe_test_dateinfo_001"
