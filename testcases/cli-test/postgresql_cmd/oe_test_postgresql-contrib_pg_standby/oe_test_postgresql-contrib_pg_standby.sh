@@ -11,7 +11,7 @@
 # #############################################
 # @Author    :   wangshan
 # @Contact   :   wangshan@163.com
-# @Date      :   2021-10-15
+# @Date      :   2020-10-15
 # @License   :   Mulan PSL v2
 # @Desc      :   pg_standby
 # ############################################
@@ -21,12 +21,12 @@ source ../common/lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     postgresql_install
+    mkdir -p /var/lib/pgsql/standby_log
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    mkdir -p /var/lib/pgsql/standby_log
     su - postgres -c "pg_standby /var/lib/pgsql/standby_log %f %p %r -d -c &"
     CHECK_RESULT $?
     kill -9 $(pgrep -f 'pg_standby /var/lib/pgsql/standby_log %f %p %r -d -c')
