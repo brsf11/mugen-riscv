@@ -7,7 +7,7 @@ function create_logfile(){
 	for((j=0;j<500;j++));do
 		touch /home/auditd_test > /dev/null
 		chmod 777 /home/auditd_test > /dev/null
-		rm -rf /home.auditd_test > /dev/null
+		rm -rf /home/auditd_test > /dev/null
 	done
 	auditctl -W /home/auditd_test -p rwxa
 }

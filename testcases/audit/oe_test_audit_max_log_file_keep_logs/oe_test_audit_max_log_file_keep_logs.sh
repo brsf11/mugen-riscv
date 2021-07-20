@@ -17,7 +17,6 @@
 #@Desc      	:   set max log file keep logs
 #####################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
 source ../common/comlib.sh
 
 function run_test()
@@ -39,7 +38,7 @@ function run_test()
             	if [[ "$old_time" != "$new_time" && "$old_size" -lt "$new_size" && "$old_num" -le "$new_num" ]]; then
 	    		break
 		else
-			CHECK_RESULT 1 1 0
+			CHECK_RESULT 1 0 0 "error"
 		fi		
 	    
             }

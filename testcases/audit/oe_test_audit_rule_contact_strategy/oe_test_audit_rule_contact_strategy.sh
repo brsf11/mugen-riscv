@@ -46,11 +46,11 @@ function run_test()
             if [ $head_ret -eq 0 ] && [ $tail_ret -ne 0 ]; then 
 		    break
 	    else
-		    sleep 1
+		    SLEEP_WAIT 1
  	    fi
     done
     if [ $i -eq 10 ]; then
-	   CHECK_RESULT 1 0 0
+	   CHECK_RESULT 1 0 0 "error"
     fi 
     LOG_INFO "End to run test."
 }

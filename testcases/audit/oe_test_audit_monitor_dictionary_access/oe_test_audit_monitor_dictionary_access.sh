@@ -18,6 +18,7 @@
 #####################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
+
 function run_test()
 {
     LOG_INFO "Start to run test."
@@ -33,7 +34,7 @@ function run_test()
     mkdir -p /opt/test/
     CHECK_RESULT $? 0 0 "create failed"
     endtime=$(date +%T)
-    sleep 1
+    SLEEP_WAIT 1
     ausearch -ts "${starttime}" -te "${endtime}" -f /opt -k opt_changes
     CHECK_RESULT $? 
     LOG_INFO "End to run test."

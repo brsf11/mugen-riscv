@@ -36,13 +36,13 @@ function run_test()
     for ((i=0;i,10;i++));do 
 	    ausearch -ts "${starttime}" -te "${endtime}" -k passwd_changes
 	    if [[ $? -ne 0 ]];then
-		    sleep 1
+		    SLEEP_WAIT 1
 	    else
 	   	 break
 	    fi
     done
     if [[ $i -eq 10 ]];then 
-	    return 1
+	    CHECK_RESULT $? 0 0 "error"
     fi
     LOG_INFO "End to run test."
 }

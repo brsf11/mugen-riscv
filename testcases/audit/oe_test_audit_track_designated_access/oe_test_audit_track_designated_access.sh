@@ -27,9 +27,7 @@ function run_test()
     auditctl -D
     CHECK_RESULT $? 0 0 "delete failed"
     record=$(autrace /usr/bin/ls | grep ausearch | awk -F "'" '{print $2}' )
-    CHECK_RESULT $? 0 0 "awk failed"
-    $record
-    CHECK_RESULT $? 0 0 "search failed"
+    CHECK_RESULT $? 0 0 "grep failed"
     LOG_INFO "End to run test."
 }
 

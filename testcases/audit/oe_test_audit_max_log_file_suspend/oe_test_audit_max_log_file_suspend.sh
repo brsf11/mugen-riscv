@@ -14,10 +14,9 @@
 #@Date      	:   2021-05-31 09:39:43
 #@License   	:   Mulan PSL v2
 #@Version   	:   1.0
-#@Desc      	:   set max_log file suspend
+#@Desc      	:   set max log file suspend
 #####################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
 source ../common/comlib.sh
 
 function run_test()

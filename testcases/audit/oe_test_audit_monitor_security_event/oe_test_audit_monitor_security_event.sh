@@ -42,13 +42,13 @@ function run_test()
     send "exit \\r"
     expect eof
 EOF
-    sleep 10
+    SLEEP_WAIT 10
     endtime=$(SSH_CMD "date +%T" "$NODE1_IPV4" "$NODE1_PASSWORD" "$NODE1_USER")
     SSH_CMD "ausearch -ts ${starttime} -te ${endtime} -m USER_LOGIN -sv no > /tmp/log.log 2>&1 & " "$NODE1_IPV4" "$NODE1_PASSWORD" "$NODE1_USER"
-    sleep 5
+    SLEEP_WAIT 5
     SSH_SCP "$NODE1_USER"@"$NODE1_IPV4":/tmp/log.log /tmp/ "$NODE1_PAWWORD"
     cat < /tmp/log.log |grep "<no matches>"
-    CHECK_RESULT $? 1 0
+    CHECK_RESULT $? 1 0 "grep failed"
     LOG_INFO "End to run test."
 }
 

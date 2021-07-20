@@ -17,16 +17,17 @@
 #@Desc      	:   set max log file action ignore
 #####################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
 source ../common/comlib.sh
 
-function run_test()
-{
-    LOG_INFO "Start to run test."
+function pre_test(){
     sed -i 's/max_log_file = 8/max_log_file = 1/g' "/etc/audit/auditd.conf"
     sed -i 's/num_logs = 5/num_logs = 2/g' "/etc/audit/auditd.conf"
     sed -i 's/max_log_file_action = ROTATE/max_log_file_action = IGNORE/g' "/etc/audit/auditd.conf"
     service auditd restart
+}
+function run_test()
+{
+    LOG_INFO "Start to run test."
     old_time=$(stat /var/log/audit/audit.log |grep "Access" | tail -n 1 | awk '{print $2,$3}')
     old_size=$(du -ks /var/log/audit/ | awk '{print $1}')
     old_num=$(find /var/log/audit -name "audit.log*" | wc -l)
@@ -42,7 +43,7 @@ function run_test()
 			}
 	    }
         test "$i" -eq 9 &&{
-                CHECK_RESULT 1 0 0
+                CHECK_RESULT 1 0 0 "error"
         }
     done
 

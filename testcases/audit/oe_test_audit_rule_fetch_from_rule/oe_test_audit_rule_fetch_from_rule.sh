@@ -23,7 +23,6 @@ function pre_test()
 {
     LOG_INFO "Start to prepare the test environment."
     echo "-w /etc/passwd -p wa -k passwd_changes" >>/opt/test.rules
-    CHECK_RESULT $? 0 0 
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -31,12 +30,12 @@ function run_test()
 {
     LOG_INFO "Start to run test."
     systemctl start auditd
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $? 0 0 "start failed"
     auditctl -D
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $? 0 0 "delete failed"
     auditctl -R /opt/test.rules
     auditctl -l | grep -e "-w /etc/passwd -p wa -k passwd_changes"
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $? 0 0 "grep failed"
     LOG_INFO "End to run test."
 }
 

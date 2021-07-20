@@ -17,14 +17,12 @@
 #@Desc      	:   set max log file syslog
 #####################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
 source ../common/comlib.sh
 
 function pre_test()
 {
     LOG_INFO "Start to prepare the test environment."
     ls /var/log/audit/audit.log && rm -rf /var/log/audit/audit.log 
-    return 0
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -39,7 +37,7 @@ function run_test()
     if [ "${logSize}" -gt 1024 ];then
 	    for (( j = 0;j < 50; j++));do
 		    search_log SCEN_003
-		    sleep 1
+		    SLEEP_WAIT 1
 	    done
 	    CHECK_RESULT $? 0 0 "search failed"
 	    grep -iE "Audit daemon is low on disk space for logging" /var/log/messages

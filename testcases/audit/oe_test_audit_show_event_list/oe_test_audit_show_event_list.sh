@@ -23,9 +23,9 @@ function run_test()
 {
     LOG_INFO "Start to run test."
     systemctl start auditd
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $? 0 0 "start failed"
     aureport -e -ts today -te today
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $? 0 0 "aureport failed"
     LOG_INFO "End to run test."
 }
 main "$@"

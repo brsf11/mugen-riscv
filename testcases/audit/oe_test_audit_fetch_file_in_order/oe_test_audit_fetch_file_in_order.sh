@@ -18,22 +18,22 @@
 #####################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
+
 function pre_test(){
     LOG_INFO "Start to run test"
     DNF_INSTALL audit-help
-    sleep 1
     LOG_INFO "End to prepare the environment"
 }
 function run_test()
 {
     LOG_INFO "Start to run test."
     systemctl start auditd
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $? 0 0 "start failed"
     auditctl -D
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $? 0 0 "delete failed"
     cp -raf /usr/share/doc/audit-help/rules/30-ospp-v42.rules /etc/audit/rules.d
     cp -raf /usr/share/doc/audit-help/rules/10-base-config.rules /etc/audit/rules.d
-    sleep 1
+    SLEEP_WAIT 1
     augenrules --load
     CHECK_RESULT $? 0 0 "load failed"
     auditctl -l | grep -e "-a always,exit"
@@ -44,7 +44,7 @@ function post_test()
 {
     LOG_INFO "Start to restore the test environment."
     auditctl -D
-    rm -rf /etc/audit/rules.d/20-ospp-v42.rules
+    DNF_REMOVE audit-help
     LOG_INFO "End to restore the test environment."
 }
 

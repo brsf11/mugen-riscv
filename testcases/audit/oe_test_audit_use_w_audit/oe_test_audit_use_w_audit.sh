@@ -19,21 +19,15 @@
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function pre_test()
-{
-    LOG_INFO "Start to prepare the test environment."
-    auditctl -w /home -p wa -k home_changes
-    CHECK_RESULT $? 0 0
-    auditctl -l | grep -e "-w /home -p wa -k home_changes"
-    CHECK_RESULT $? 0 0 "grep failed"
-    LOG_INFO "End to prepare the test environment."
-}
-
 function run_test()
 {
     LOG_INFO "Start to run test."
     systemctl start auditd
     CHECK_RESULT $? 0 0 "start failed"
+    auditctl -w /home -p wa -k home_changes
+    CHECK_RESULT $? 0 0 "add failed"
+    auditctl -l | grep -e "-w /home -p wa -k home_changes"
+    CHECK_RESULT $? 0 0 "grep failed"
     auditctl -W /home -p wa -k home_changes
     CHECK_RESULT $? 0 0 "delete failed"
     auditctl -l | grep -e "-w /home -p wa -k home_changes"

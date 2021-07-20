@@ -17,7 +17,6 @@
 #@Desc      	:   set max log file rotate
 #####################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
 source ../common/comlib.sh
 
 function run_test()
@@ -37,25 +36,25 @@ function run_test()
 	    	if [ $(("$new_num" - "$old_num")) -ge 1 ]; then
 			break
 		else
-			CHECK_RESULT 1 0 0
+			CHECK_RESULT 1 0 0 "first error"
 			break
 		fi
 	 }
  	test "$i" -eq 9 &&{
-		CHECK_RESULT 1 0 0
+		CHECK_RESULT 1 0 0 "second error"
 	}
     done
 
     for ((i=0;i<10;i++));do
 	    old_time=$(stat /var/log/audit/audit.log |grep "Access" |tail -n 1 | awk '{print $2,$3}')
 	    create_logfile
-	    new_time=$(stat /var/log/audit/audit.log |grep "Access" |tail -n 1 | awk '{print $2,$3}')
+	    new_time=$(stat /var/log/audit/audit.log.1 |grep "Access" |tail -n 1 | awk '{print $2,$3}')
 	    log_num=$(find /var/log/audit/ -maxdepth 1 -name "audit.log*" |wc -l)
-	    test "$old_time" = "$new_time" && test "$log_num" -eq 1 && {
+	    test "$old_time" = "$new_time" && test "$log_num" -eq 2 && {
 	    	break
 	    }  
    	    test "$i" -eq 9 &&{
-	    	CHECK_RESULT 1 1 0
+	    	CHECK_RESULT 1 0 0 "third error"
 	    }
     done
     LOG_INFO "End to run test."

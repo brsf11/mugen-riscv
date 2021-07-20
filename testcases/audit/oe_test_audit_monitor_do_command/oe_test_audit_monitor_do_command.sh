@@ -18,6 +18,7 @@
 #####################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
+
 function run_test()
 {
     LOG_INFO "Start to run test."
@@ -36,7 +37,7 @@ function run_test()
     CHECK_RESULT $? 0 0 "login failed"
     endtime=$(date +%T)
     ausearch -ts "${starttime}" -te "${endtime}" -k command |grep pwd
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "ausearch failed"
     LOG_INFO "End to run test."
 }
 function post_test()
