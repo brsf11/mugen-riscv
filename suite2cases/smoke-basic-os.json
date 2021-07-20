@@ -1,0 +1,164 @@
+{
+    "path": "\"${OET_PATH}\"/testcases/smoke-test/smoke-basic-os",
+    "cases": [
+        {
+            "name": "oe_test_acl_001"
+        },
+        {
+            "name": "oe_test_basic_ssh_001"
+        },
+        {
+            "name": "oe_test_cat_001"
+        },
+        {
+            "name": "oe_test_cd_002"
+        },
+        {
+            "name": "oe_test_chmod_001"
+        },
+        {
+            "name": "oe_test_chown_001"
+        },
+        {
+            "name": "oe_test_cp_001"
+        },
+        {
+            "name": "oe_test_CPUinfo_001"
+        },
+        {
+            "name": "oe_test_criu"
+        },
+        {
+            "name": "oe_test_dateinfo_001"
+        },
+        {
+            "name": "oe_test_dd_001"
+        },
+        {
+            "name": "oe_test_file_001"
+        },
+        {
+            "name": "oe_test_grep_001"
+        },
+        {
+            "name": "oe_test_group_001"
+        },
+        {
+            "name": "oe_test_group_002"
+        },
+        {
+            "name": "oe_test_haproxy"
+        },
+        {
+            "name": "oe_test_hdparm"
+        },
+        {
+            "name": "oe_test_httpd"
+        },
+        {
+            "name": "oe_test_iscsi"
+        },
+        {
+            "name": "oe_test_ln_001"
+        },
+        {
+            "name": "oe_test_localectl_001"
+        },
+        {
+            "name": "oe_test_log_001"
+        },
+        {
+            "name": "oe_test_ls_001"
+        },
+        {
+            "name": "oe_test_lsscsi"
+        },
+        {
+            "name": "oe_test_lzo"
+        },
+        {
+            "name": "oe_test_MEMinfo_001"
+        },
+        {
+            "name": "oe_test_mkdir_001"
+        },
+        {
+            "name": "oe_test_mv_001"
+        },
+        {
+            "name": "oe_test_ndctl"
+        },
+        {
+            "name": "oe_test_network_001"
+        },
+        {
+            "name": "oe_test_nfs"
+        },
+        {
+            "name": "oe_test_numactl"
+        },
+        {
+            "name": "oe_test_openssl"
+        },
+        {
+            "name": "oe_test_pciutils"
+        },
+        {
+            "name": "oe_test_perf"
+        },
+        {
+            "name": "oe_test_pwd_001"
+        },
+        {
+            "name": "oe_test_rmdir_001"
+        },
+        {
+            "name": "oe_test_rsync"
+        },
+        {
+            "name": "oe_test_sevice_001"
+        },
+        {
+            "name": "oe_test_skopeo"
+        },
+        {
+            "name": "oe_test_syslog_dmesg_001"
+        },
+        {
+            "name": "oe_test_syslog_journalctl_001"
+        },
+        {
+            "name": "oe_test_syslog_journalctl_002"
+        },
+        {
+            "name": "oe_test_syslog_journald_001"
+        },
+        {
+            "name": "oe_test_syslog_logrotate_001"
+        },
+        {
+            "name": "oe_test_syslog_messages_001"
+        },
+        {
+            "name": "oe_test_tar_001"
+        },
+        {
+            "name": "oe_test_touch_001"
+        },
+        {
+            "name": "oe_test_umask_001"
+        },
+        {
+            "name": "oe_test_user_001"
+        },
+        {
+            "name": "oe_test_user_002"
+        },
+        {
+            "name": "oe_test_user_003"
+        },
+        {
+            "name": "oe_test_yumgroup_001"
+        }
+    ]
+}
