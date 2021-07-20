@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/autofs",
+    "cases": [
+        {
+            "name": "oe_test_autofs"
+        }
+    ]
+}
