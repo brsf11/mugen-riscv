@@ -22,12 +22,12 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL bcrypt
+    touch test{1..8}
     LOG_INFO "Finish preparing the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    touch test{1..8}
     expect <<EOF
         log_file logpd
         spawn bcrypt -o test1
@@ -116,8 +116,7 @@ EOF
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    roc=$(ls | grep -v ".sh")
-    rm -rf $roc
+    rm -rf test*
     DNF_REMOVE
     LOG_INFO "Finish restoring the test environment."
 }

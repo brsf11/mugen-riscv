@@ -73,11 +73,11 @@ function run_test() {
     CHECK_RESULT $?
     cpack3 -P "testpack" -G "STGZ"
     CHECK_RESULT $?
-    cat demo1-1.0.0-Linux.sh | grep -a "testpack Installer Version: 1.0.0, Copyright (c) demo1"
+    grep -a "testpack Installer Version: 1.0.0, Copyright (c) demo1" demo1-1.0.0-Linux.sh
     CHECK_RESULT $?
     cpack3 -R "2.2.3" -G "STGZ"
     CHECK_RESULT $?
-    cat demo1-1.0.0-Linux.sh | grep -a "demo1 Installer Version: 2.2.3, Copyright (c) demo1"
+    grep -a "demo1 Installer Version: 2.2.3, Copyright (c) demo1" demo1-1.0.0-Linux.sh
     CHECK_RESULT $?
     OPENEULER_VERSION=$(awk '{print$3}' /etc/openEuler-release)
     if [ ${OPENEULER_VERSION} == 20.09 ]; then
@@ -97,7 +97,7 @@ function run_test() {
     CHECK_RESULT $?
     cpack3 --vendor "Huawei" -G "STGZ"
     CHECK_RESULT $?
-    cat demo1-1.0.0-Linux.sh | grep -a "demo1 Installer Version: 1.0.0, Copyright (c) Huawei"
+    grep -a "demo1 Installer Version: 1.0.0, Copyright (c) Huawei" demo1-1.0.0-Linux.sh
     CHECK_RESULT $?
     LOG_INFO "End of the test."
 }
