@@ -1,0 +1,29 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/cmake",
+    "cases": [
+        {
+            "name": "oe_test_ccmake"
+        },
+        {
+            "name": "oe_test_ccmake3"
+        },
+        {
+            "name": "oe_test_cmake"
+        },
+        {
+            "name": "oe_test_cmake3"
+        },
+        {
+            "name": "oe_test_cpack"
+        },
+        {
+            "name": "oe_test_cpack3"
+        },
+        {
+            "name": "oe_test_ctest"
+        },
+        {
+            "name": "oe_test_ctest3"
+        }
+    ]
+}

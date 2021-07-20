@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/bcrypt",
+    "cases": [
+        {
+            "name": "oe_test_bcrypt"
+        }
+    ]
+}
