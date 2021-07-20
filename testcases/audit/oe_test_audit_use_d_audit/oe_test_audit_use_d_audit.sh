@@ -23,7 +23,7 @@ function run_test()
 {
     LOG_INFO "Start to run test."
     systemctl start auditd
-    CHECH_RESULT $? 0 0 "start failed"
+    CHECK_RESULT $? 0 0 "start failed"
     auditctl -D
     CHECK_RESULT $? 0 0 "delete failed"
     auditctl -a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time_change
@@ -33,7 +33,7 @@ function run_test()
     auditctl -d always,exit -F arch=b64 -S adjtimex -S settimeofday -k time_change
     CHECK_RESULT $? 0 0 "delete failed"
     auditctl -l | grep -e "-a always,exit -F arch=b64 -S settimeofday,adjtimex -F key=time_change"
-    CHECH_RESULT $? 1 0 "grep delete failed"
+    CHECK_RESULT $? 1 0 "grep delete failed"
     LOG_INFO "End to run test."
 }
 
