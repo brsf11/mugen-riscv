@@ -24,7 +24,7 @@ function search_log(){
 	for((i=0;i<10;i++));do
 		ausearch -k "${audit_key}" -ts "${starttime}" -te "${endtime}"
 		if [[ $? -ne 0 ]];then
-			sleep 1
+			SLEEP_WAIT 1
 		else
 			break
 		fi
