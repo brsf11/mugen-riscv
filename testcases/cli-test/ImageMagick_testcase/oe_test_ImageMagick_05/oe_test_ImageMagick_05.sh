@@ -12,22 +12,20 @@
 #@Author    	:   guochenyang_wx5323712
 #@Contact   	:   lemon.higgins@aliyun.com
 #@Date      	:   2020-10-10 09:30:43
-#@License   	:   
+#@License   	:
 #@Version   	:   1.0
 #@Desc      	:   verification ImageMagick‘s command
 #####################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-function pre_test()
-{
+function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ImageMagick
-    LOG_INFO "End to prepare the test environment."
-}
-function run_test()
-{
-    LOG_INFO "Start to run test." 
     cp -r ../common ../common1
     cd ../common1
+    LOG_INFO "End to prepare the test environment."
+}
+function run_test() {
+    LOG_INFO "Start to run test."
     convert -crop 300x400+10+10 test1.jpg dest.jpg
     CHECK_RESULT $?
     test -f dest.jpg
@@ -40,7 +38,7 @@ function run_test()
     CHECK_RESULT $?
     test -f dest2.jpg
     CHECK_RESULT $?
-    convert test1.jpg -crop 100x100 destxt.jpg 
+    convert test1.jpg -crop 100x100 destxt.jpg
     CHECK_RESULT $?
     test -f destxt-1.jpg
     CHECK_RESULT $?
@@ -52,11 +50,11 @@ function run_test()
     CHECK_RESULT $?
     test -f biankuang1.jpg
     CHECK_RESULT $?
-    convert -draw 'text 0,0"JD.COM"' -fill 'rgba(221,34,17,0.25)' -pointsize 36 -gravity center  test2.jpg  watermark.jpg
+    convert -draw 'text 0,0"JD.COM"' -fill 'rgba(221,34,17,0.25)' -pointsize 36 -gravity center test2.jpg watermark.jpg
     CHECK_RESULT $?
     test -f watermark.jpg
     CHECK_RESULT $?
-    convert  -size 100x100  xc:none  -fill '#d90f02'  -pointsize 18 -gravity center  -draw 'rotate -45 text 0,0 "JD.COM"' -resize 60%  miff:-  |  composite  -tile  -dissolve 25  -  test3.jpg  watermark1.jpg
+    convert -size 100x100 xc:none -fill '#d90f02' -pointsize 18 -gravity center -draw 'rotate -45 text 0,0 "JD.COM"' -resize 60% miff:- | composite -tile -dissolve 25 - test3.jpg watermark1.jpg
     CHECK_RESULT $?
     test -f watermark1.jpg
     CHECK_RESULT $?
@@ -66,8 +64,7 @@ function run_test()
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
-function post_test()
-{
+function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
     rm -rf ../common1

@@ -12,22 +12,20 @@
 #@Author    	:   guochenyang_wx5323712
 #@Contact   	:   lemon.higgins@aliyun.com
 #@Date      	:   2020-10-10 09:30:43
-#@License   	:   
+#@License   	:
 #@Version   	:   1.0
 #@Desc      	:   verification ImageMagick‘s command
 #####################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-function pre_test()
-{
+function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ImageMagick
-    LOG_INFO "End to prepare the test environment."
-}
-function run_test()
-{
-    LOG_INFO "Start to run test." 
     cp -r ../common ../common1
     cd ../common1
+    LOG_INFO "End to prepare the test environment."
+}
+function run_test() {
+    LOG_INFO "Start to run test."
     composite -gravity southeast test1.jpg test3.jpg des2.jpg
     CHECK_RESULT $?
     test -f des2.jpg
@@ -65,8 +63,7 @@ function run_test()
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
-function post_test()
-{
+function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
     rm -rf ../common1

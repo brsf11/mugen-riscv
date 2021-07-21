@@ -12,22 +12,20 @@
 #@Author    	:   guochenyang_wx5323712
 #@Contact   	:   lemon.higgins@aliyun.com
 #@Date      	:   2020-10-10 09:30:43
-#@License   	:   
+#@License   	:
 #@Version   	:   1.0
 #@Desc      	:   verification ImageMagick‘s command
 #####################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-function pre_test()
-{
+function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ImageMagick
-    LOG_INFO "End to prepare the test environment."
-}
-function run_test()
-{
-    LOG_INFO "Start to run test." 
     cp -r ../common ../common1
     cd ../common1
+    LOG_INFO "End to prepare the test environment."
+}
+function run_test() {
+    LOG_INFO "Start to run test."
     convert test2.jpg test2.png
     CHECK_RESULT $?
     test -f test2.png
@@ -35,7 +33,7 @@ function run_test()
     compare test2.jpg test2.png diff2.png
     test -f diff2.png
     CHECK_RESULT $?
-    compare -metric mae test1.jpg test1.jpg -compose src -highlight-color red  -lowlight-color black diff1.png
+    compare -metric mae test1.jpg test1.jpg -compose src -highlight-color red -lowlight-color black diff1.png
     CHECK_RESULT $?
     test -f diff1.png
     CHECK_RESULT $?
@@ -49,10 +47,9 @@ function run_test()
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
-function post_test()
-{
+function post_test() {
     LOG_INFO "Start to restore the test environment."
-    DNF_REMOVE 
+    DNF_REMOVE
     rm -rf ../common1
     LOG_INFO "End to restore the test environment."
 }
