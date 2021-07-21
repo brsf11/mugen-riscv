@@ -25,7 +25,7 @@ function run_test()
     sed -i 's/max_log_file = 8/max_log_file = 1/g' "/etc/audit/auditd.conf"
     sed -i 's/max_log_file_action = ROTATE/max_log_file_action = SUSPEND/g' "/etc/audit/auditd.conf"
     service auditd restart
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "start failed"
      logsize=$(du -s /var/log/audit/audit.log | awk '{print $1}')
     if [ "${logsize}" -gt 1024 ];then
             service auditd status | grep "active"
