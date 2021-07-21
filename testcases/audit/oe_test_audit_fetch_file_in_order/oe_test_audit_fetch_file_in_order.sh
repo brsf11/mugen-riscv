@@ -43,7 +43,7 @@ function post_test()
 {
     LOG_INFO "Start to restore the test environment."
     auditctl -D
-    DNF_REMOVE audit-help
+    DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
 
