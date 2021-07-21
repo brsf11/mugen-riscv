@@ -1,5 +1,5 @@
 {
-    "path": "$OET_PATH/testcases/package-test/easymock",
+    "path": "$OET_PATH/testcases/cli-test/easymock",
     "cases": [
         {
             "name": "oe_test_easymock_junit4"
