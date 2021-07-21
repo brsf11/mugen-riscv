@@ -15,7 +15,6 @@
 #@License   	:   
 #@Version   	:   1.0
 #@Desc      	:   verification clang‘s command
-
 #####################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test()

@@ -1,4 +1,4 @@
-!/usr/bin/bash
+#!/usr/bin/bash
 
 # Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
@@ -15,7 +15,6 @@
 #@License   	:   
 #@Version   	:   1.0
 #@Desc      	:   verification ImageMagick‘s command
-
 #####################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test()
