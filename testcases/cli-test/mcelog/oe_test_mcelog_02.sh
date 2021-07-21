@@ -16,45 +16,59 @@
 #@Desc          :   mcelog is a tool used to check for hardware error on x86 Linux.
 #####################################
 
-if [ "${NODE1_FRAME}" != "x86_64" ]; then
-    echo "Non X86 architecture,this function is not supported"
-else
-    source "${OET_PATH}/libs/locallibs/common_lib.sh"
+source "${OET_PATH}/libs/locallibs/common_lib.sh"
 
-    function pre_test() {
-        LOG_INFO "Start to prepare the test environment."
+function pre_test() {
+    LOG_INFO "Start to prepare the test environment."
+    if [ "${NODE1_FRAME}" != "x86_64" ]; then
+        echo "Non X86 architecture,this function is not supported"
+        exit 1
+    else
         DNF_INSTALL mcelog
-        LOG_INFO "End to prepare the test environment."
-    }
+    fi
+    #    [ "${NODE1_FRAME}" == "x86_64" ] && DNF_INSTALL mcelog
+    LOG_INFO "End to prepare the test environment."
+}
 
-    function run_test() {
-        LOG_INFO "Start to run test."
-        mcelog --cpu k8
-        CHECK_RESULT $?
-        mcelog --cpu p4
-        CHECK_RESULT $?
-        mcelog --cpu core2
-        CHECK_RESULT $?
-        mcelog --cpu generic
-        CHECK_RESULT $?
-        mcelog --cpumhz 50
-        CHECK_RESULT $?
-        mcelog --raw
-        CHECK_RESULT $?
-        mcelog --syslog-error
-        CHECK_RESULT $?
-        mcelog --no-syslog
-        CHECK_RESULT $?
-        mcelog --dmi
-        CHECK_RESULT $?
-        LOG_INFO "End to run test."
-    }
+function run_test() {
+    LOG_INFO "Start to run test."
+    mcelog --cpu k8
+    CHECK_RESULT $?
+    mcelog --cpu p4
+    CHECK_RESULT $?
+    mcelog --cpu core2
+    CHECK_RESULT $?
+    mcelog --cpu generic
+    CHECK_RESULT $?
+    mcelog --cpumhz 50
+    CHECK_RESULT $?
+    mcelog --raw
+    CHECK_RESULT $?
+    mcelog --daemon --syslog-error --dmi --no-imc-log --filter --num-errors N
+    CHECK_RESULT $?
+    mcelog_id1=$(pgrep -f "mcelog --daemon --syslog-error --dmi --no-imc-log --filter --num-errors N")
+    CHECK_RESULT $?
+    kill -9 $mcelog_id1
+    CHECK_RESULT $?
+    mcelog --daemon --no-syslog --no-dmi --no-filter
+    CHECK_RESULT $?
+    mcelog_id2=$(pgrep -f "mcelog --daemon --no-syslog --no-dmi --no-filter")
+    CHECK_RESULT $?
+    kill -9 $mcelog_id2
+    CHECK_RESULT $?
+    mcelog --is-cpu-supported
+    CHECK_RESULT $?
+    nohup mcelog --daemon --foreground &
+    CHECK_RESULT $?
+    kill -9 $(pgrep -f "mcelog --daemon --foreground")
+    CHECK_RESULT $?
+    LOG_INFO "End to run test."
+}
 
-    function post_test() {
-        LOG_INFO "Start to restore the test environment."
-        DNF_REMOVE
-        LOG_INFO "End to restore the test environment."
-    }
+function post_test() {
+    LOG_INFO "Start to restore the test environment."
+    DNF_REMOVE
+    LOG_INFO "End to restore the test environment."
+}
 
-    main "$@"
-fi
+main "$@"

@@ -40,7 +40,6 @@ EOF
     SLEEP_WAIT 5
     cd /mnt01/nfs || exit 1
     df -h | grep "${NODE2_IPV4}:/shared"
-    cd - || exit 1
 }
 
 function clear_env() {

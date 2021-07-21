@@ -16,63 +16,64 @@
 #@Desc          :   mcelog is a tool used to check for hardware error on x86 Linux.
 #####################################
 
-if [ "${NODE1_FRAME}" != "x86_64" ]; then
-    echo "Non X86 architecture,this function is not supported"
-else
-    source ${OET_PATH}/libs/locallibs/common_lib.sh
+source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-    function pre_test() {
-        LOG_INFO "Start to prepare the test environment."
+function pre_test() {
+    LOG_INFO "Start to prepare the test environment."
+    if [ "${NODE1_FRAME}" != "x86_64" ]; then
+        echo "Non X86 architecture,this function is not supported"
+        exit 1
+    else
         DNF_INSTALL "mcelog gcc gcc-c++ flex dialog git"
-        LOG_INFO "End to prepare the test environment."
-    }
+    fi
+    LOG_INFO "End to prepare the test environment."
+}
 
-    function run_test() {
-        LOG_INFO "Start to run test."
-        cat >correct <<EOF
+function run_test() {
+    LOG_INFO "Start to run test."
+    cat >correct <<EOF
 CPU 1 BANK 2
 STATUS corrected
 RIP 0x12341234
 EOF
-        aer-inject --help 2>&1 | grep 'Usage'
-        CHECK_RESULT $?
-        aer-inject --version 2>&1 | grep 'aer-inject'
-        CHECK_RESULT $?
+    aer-inject --help 2>&1 | grep 'Usage'
+    CHECK_RESULT $?
+    aer-inject --version 2>&1 | grep 'aer-inject'
+    CHECK_RESULT $?
 
-        echo "3" >/sys/devices/system/machinecheck/machinecheck0/tolerant
-        CHECK_RESULT $?
-        modprobe mce-inject
-        CHECK_RESULT $?
-        mce-inject correct
-        CHECK_RESULT $?
-        SLEEP_WAIT 3 "grep 'Hardware Error' /var/log/messages" 2
-        CHECK_RESULT $?
+    echo "3" >/sys/devices/system/machinecheck/machinecheck0/tolerant
+    CHECK_RESULT $?
+    modprobe mce-inject
+    CHECK_RESULT $?
+    mce-inject correct
+    CHECK_RESULT $?
+    SLEEP_WAIT 3 "grep 'Hardware Error' /var/log/messages" 2
+    CHECK_RESULT $?
 
-        mcelog --help 2>&1 | grep 'Usage'
-        CHECK_RESULT $?
-        mcelog --ignorenodev --daemon --syslog --logfile=/var/log/mcelog --pidfile haha.txt
-        CHECK_RESULT $?
-        SLEEP_WAIT 3 "test -f /var/log/mcelog -a -f haha.txt" 2
-        CHECK_RESULT $?
-        test $(pgrep -f "mcelog --ignorenodev --daemon") -eq $(cat haha.txt)
-        CHECK_RESULT $?
-        mcelog --client
-        CHECK_RESULT $?
-        mcelog --ascii </var/log/mcelog | grep 'Hardware event'
-        CHECK_RESULT $?
-        mcelog --ascii --file /var/log/mcelog | grep 'Hardware event'
-        CHECK_RESULT $?
-        LOG_INFO "End to run test."
-    }
+    mcelog --help 2>&1 | grep 'Usage'
+    CHECK_RESULT $?
+    mcelog --ignorenodev --daemon --syslog --logfile=/var/log/mcelog --pidfile haha.txt
+    CHECK_RESULT $?
+    SLEEP_WAIT 3 "test -f /var/log/mcelog -a -f haha.txt" 2
+    CHECK_RESULT $?
+    test $(pgrep -f "mcelog --ignorenodev --daemon") -eq $(cat haha.txt)
+    CHECK_RESULT $?
+    mcelog --client
+    CHECK_RESULT $?
+    mcelog --ascii </var/log/mcelog | grep 'Hardware event'
+    CHECK_RESULT $?
+    mcelog --ascii --file /var/log/mcelog | grep 'Hardware event'
+    CHECK_RESULT $?
+    LOG_INFO "End to run test."
+}
 
-    function post_test() {
-        LOG_INFO "Start to restore the test environment."
-        kill -9 $(pgrep -f "mcelog --ignorenodev --daemon")
-        echo "0" >/sys/devices/system/machinecheck/machinecheck0/tolerant
-        rm -f correct /var/log/mcelog haha.txt
-        DNF_REMOVE
-        LOG_INFO "End to restore the test environment."
-    }
+function post_test() {
+    LOG_INFO "Start to restore the test environment."
+    kill -9 $(pgrep -f "mcelog --ignorenodev --daemon")
+    echo "0" >/sys/devices/system/machinecheck/machinecheck0/tolerant
+    rm -f correct /var/log/mcelog haha.txt
+    DNF_REMOVE
+    LOG_INFO "End to restore the test environment."
+}
 
-    main "$@"
-fi
+main "$@"

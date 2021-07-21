@@ -6,9 +6,6 @@
         },
         {
             "name": "oe_test_mcelog_02"
-        },
-        {
-            "name": "oe_test_mcelog_03"
         }
     ]
 }
