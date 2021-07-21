@@ -47,7 +47,6 @@ function run_test()
     dd if=/dev/zero of=/tmp/log/audit/audit_log bs=1M count="${count_size}"
     search_log available_disk_space
     SLEEP_WAIT 5
-    service auditd status 
     service auditd status | grep "active (running)"
     CHECK_RESULT $? 0 0 "grep active failed"
     SLEEP_WAIT 5
