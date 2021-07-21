@@ -21,7 +21,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test(){
     LOG_INFO "Start to run test"
-    DNF_INSTALL audit-help
+    DNF_INSTALL
     LOG_INFO "End to prepare the environment"
 }
 function run_test()
