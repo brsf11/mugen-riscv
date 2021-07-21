@@ -23,9 +23,8 @@ function run_test()
 {
     LOG_INFO "Start to run test."
     systemctl start auditd
-    CHECK_RESULT $? 0 0
     aureport -u -i --summary | grep "User Summary Report"
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $? 0 0 "grep failed"
     LOG_INFO "End to run test."
 }
 main "$@"
