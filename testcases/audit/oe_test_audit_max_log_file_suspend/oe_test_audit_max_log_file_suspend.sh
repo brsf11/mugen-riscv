@@ -19,24 +19,27 @@
 
 source ../common/comlib.sh
 
-function run_test()
-{
-    LOG_INFO "Start to run test."
+function pre_test(){
+    LOG_INFO "Start to prepare the test environment."
     sed -i 's/max_log_file = 8/max_log_file = 1/g' "/etc/audit/auditd.conf"
     sed -i 's/max_log_file_action = ROTATE/max_log_file_action = SUSPEND/g' "/etc/audit/auditd.conf"
     service auditd restart
-    CHECK_RESULT $? 0 0 "start failed"
-     logsize=$(du -s /var/log/audit/audit.log | awk '{print $1}')
+    LOG_INFO "End to prepare the environment"
+}
+function run_test()
+{
+    LOG_INFO "Start to run test."
+    logsize=$(du -s /var/log/audit/audit.log | awk '{print $1}')
     if [ "${logsize}" -gt 1024 ];then
             service auditd status | grep "active"
             CHECK_RESULT $? 0 0 "grep first failed"
-            search_log SCEN_004
-	    CHECK_RESULT $? 1 0 "grep first failed"
+            search_log test
+	        CHECK_RESULT $? 1 0 "grep first failed"
     else
             create_logfile
-	    service auditd status | grep -e "active"
-	    CHECK_RESULT $? 0 0 "grep second failed"
-            search_log SCEN_004
+	        service auditd status | grep -e "active"
+	        CHECK_RESULT $? 0 0 "grep second failed"
+            search_log test
             CHECK_RESULT $? 1 0 "search second failed"
     fi
     LOG_INFO "End to run test."
