@@ -241,7 +241,7 @@ function GET_RANDOM_PKGNAME() {
     # Get all pkg name
     sqlite3 ../../common_lib/sqlite/$sqliteName "select name from packages;" &>pkg_list.txt
     # Get count
-    count=$(cat pkg_list.txt | wc -l)
+    count=$(wc -l pkg_list.txt | awk '{print $1}')
     # Get a randome in 1~count
     random=$((RANDOM % count + 1))
 
