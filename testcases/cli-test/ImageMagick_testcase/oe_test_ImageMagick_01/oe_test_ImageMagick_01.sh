@@ -9,11 +9,10 @@
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
 ####################################
-#@Author    	:   guochenyang_wx5323712
-#@Contact   	:   lemon.higgins@aliyun.com
+#@Author    	:   guochenyang
+#@Contact   	:   377012421@qq.com
 #@Date      	:   2020-10-10 09:30:43
-#@License   	:
-#@Version   	:   1.0
+#@License   	:   Mulan PSL v2
 #@Desc      	:   verification ImageMagick‘s command
 #####################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
