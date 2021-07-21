@@ -14,13 +14,13 @@ function create_logfile(){
 function search_log(){
 	audit_key=$1
 	auditctl -w /tmp/"${audit_key}" -p rwxa -k "${audit_key}"
-	CHECK_RESULT $?
+	CHECK_RESULT $? 0 0 "failed"
 	starttime=$(date +%T)
 	touch /tmp/"${audit_key}"
 	rm -rf /tmp/"${audit_key}"
 	endtime=$(date +%T)
 	auditctl -W /tmp/"${audit_key}" -p rwxa -k "${audit_key}"
-	CHECK_RESULT $?
+	CHECK_RESULT $? 0 0 "second failed"
 	for((i=0;i<10;i++));do
 		ausearch -k "${audit_key}" -ts "${starttime}" -te "${endtime}"
 		if [[ $? -ne 0 ]];then
