@@ -43,19 +43,11 @@ function run_test() {
     CHECK_RESULT $?
     doxygen -w html HTMLheader HTMLfooter HTML-mode
     CHECK_RESULT $?
-    grep "The standard CSS for doxygen" HTML-mode
-    CHECK_RESULT $?
-    grep "HTML header for doxygen" HTMLheader
-    CHECK_RESULT $?
-    grep "HTML footer for doxygen" HTMLfooter
+    grep "The standard CSS for doxygen" HTML-mode && grep "HTML header for doxygen" HTMLheader && grep "HTML footer for doxygen" HTMLfooter
     CHECK_RESULT $?
     doxygen -w latex Latexheader Latex-mode config_file
     CHECK_RESULT $?
-    grep "stylesheet for doxygen" config_file
-    CHECK_RESULT $?
-    grep "Latex header for doxygen" Latexheader
-    CHECK_RESULT $?
-    grep "Latex footer for doxygen" Latex-mode
+    grep "stylesheet for doxygen" config_file && grep "Latex header for doxygen" Latexheader && grep "Latex footer for doxygen" Latex-mode
     CHECK_RESULT $?
     doxygen -e rtf rtf-extensions-file
     CHECK_RESULT $?

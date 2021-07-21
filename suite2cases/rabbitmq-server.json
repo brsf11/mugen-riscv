@@ -1,5 +1,6 @@
 {
     "path": "\"${OET_PATH}\"/testcases/cli-test/rabbitmq-server",
+    "machine num": 2,
     "cases": [
         {
             "name": "oe_test_rabbitmqctl_access"
@@ -9,7 +10,7 @@
         },
         {
             "name": "oe_test_rabbitmqctl_cluster",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_rabbitmqctl_encode"

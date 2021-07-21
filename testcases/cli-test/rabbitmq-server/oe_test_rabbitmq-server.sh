@@ -41,11 +41,7 @@ function run_test() {
     CHECK_RESULT $?
     systemctl status rabbitmq-server | grep "inactive (dead)"
     CHECK_RESULT $?
-    rabbitmq-server -detached >result 2>&1
-    CHECK_RESULT $?
-    grep "PID file not written; -detached was passed." result
-    CHECK_RESULT $?
-    grep "ERROR" result
+    rabbitmq-server -detached 2>&1 | xargs | grep "PID file not written; -detached was passed." | grep "ERROR"
     CHECK_RESULT $? 1 0
     LOG_INFO "Finish test!"
 }

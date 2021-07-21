@@ -27,15 +27,15 @@ function pre_test() {
     DNF_INSTALL rabbitmq-server
     which firewalld && systemctl stop firewalld
     systemctl restart rabbitmq-server
+    rabbitmqctl add_vhost ${vhost_name}
+    rabbitmqctl add_user ${user_mq} ${passwd_mq}
+    rabbitmqctl eval 'rabbit_amqqueue:declare({resource, <<"/">>, queue, <<"test-queue">>}, true, false, [], none, "test").'
+    rabbitmqctl eval "rabbit_amqqueue:declare({resource, <<\"${vhost_name}\">>, queue, <<\"test-queue\">>}, true, false, [], none, \"test\")."
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    rabbitmqctl add_vhost ${vhost_name}
-    rabbitmqctl add_user ${user_mq} ${passwd_mq}
-    rabbitmqctl eval 'rabbit_amqqueue:declare({resource, <<"/">>, queue, <<"test-queue">>}, true, false, [], none, "test").'
-    rabbitmqctl eval "rabbit_amqqueue:declare({resource, <<\"${vhost_name}\">>, queue, <<\"test-queue\">>}, true, false, [], none, \"test\")."
     rabbitmqctl purge_queue test-queue | grep "Purging queue"
     CHECK_RESULT $?
     rabbitmq-plugins enable rabbitmq_federation_management
