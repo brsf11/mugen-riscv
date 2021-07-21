@@ -22,21 +22,20 @@ source ../common/comlib.sh
 function pre_test()
 {
     LOG_INFO "Start to prepare the test environment."
-    ls /var/log/audit/audit.log && rm -rf /var/log/audit/audit.log 
+    ls /var/log/audit/audit.log && rm -rf /var/log/audit/audit.log
+    sed -i 's/max_log_file = 8/max_log_file = 1/g' "/etc/audit/auditd.conf"
+    sed -i 's/max_log_file_action = ROTATE/max_log_file_action = SYSLOG/g' "/etc/audit/auditd.conf"
+    service auditd restart
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test()
 {
     LOG_INFO "Start to run test."
-    sed -i 's/max_log_file = 8/max_log_file = 1/g' "/etc/audit/auditd.conf"
-    sed -i 's/max_log_file_action = ROTATE/max_log_file_action = SYSLOG/g' "/etc/audit/auditd.conf"
-    service auditd restart
-    CHECK_RESULT $?
     logSize=$(du -s /var/log/audit/audit.log | awk '{print $1}')
     if [ "${logSize}" -gt 1024 ];then
 	    for (( j = 0;j < 50; j++));do
-		    search_log SCEN_003
+		    search_log test
 		    SLEEP_WAIT 1
 	    done
 	    CHECK_RESULT $? 0 0 "search failed"
@@ -46,7 +45,7 @@ function run_test()
 	    create_logfile
 	    grep -iE "Audit daemon is low on disk space for logging" /var/log/messages
 	    CHECK_RESULT $? 0 0 "grep second failed"
-	    search_log SCEN_003
+	    search_log test
 	    CHECK_RESULT $? 0 0 "search second failed"
     fi
     LOG_INFO "End to run test."
