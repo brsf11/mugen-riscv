@@ -1,0 +1,56 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/freeradius",
+    "cases": [
+        {
+            "name": "oe_test_freeradius_freeradius_raddebugAndCheckrad"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius_radiusd"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius_radiusdAndRadmin"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radclient"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radclient2"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_rad_counter"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radcryptAndRadeapclient"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radeapclient"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radlast"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radlastAndRadsniff"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radsniff"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radsniff2"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radsqlrelay"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radtestAndRadwho"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radwho"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radzap"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_rlm_ippool_toolAndSmbencrypt"
+        }
+    ]
+}
