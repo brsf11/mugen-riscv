@@ -74,7 +74,6 @@ function post_test()
     LOG_INFO "Start to restore the test environment."
     kill ${pid}
     rm -rf log 1.txt audit_socket /home/test wait_poll
-    CHECK_RESULT $? 0 0 "failed to rm"
     sed -i 's/active = yes/active = no/g' "${path}"
     service auditd restart
     auditctl -D
