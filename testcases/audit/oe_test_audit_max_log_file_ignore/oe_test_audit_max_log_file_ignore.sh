@@ -32,8 +32,8 @@ function run_test()
     old_size=$(du -ks /var/log/audit/ | awk '{print $1}')
     old_num=$(find /var/log/audit -name "audit.log*" | wc -l)
     for ((i=0;i<10;i++));do
-            create_logfile
-            new_size=$(du -ks /var/log/audit/ | awk '{print $1}')
+        create_logfile
+        new_size=$(du -ks /var/log/audit/ | awk '{print $1}')
 	    new_time=$(stat /var/log/audit/audit.log |grep "Access" | tail -n 1 | awk '{print $2,$3}')
 	    new_num=$(find /var/log/audit -name "audit.log*" | wc -l)
 	    log_size=$(du -ks /var/log/audit/audit.log | awk '{print $1}')
