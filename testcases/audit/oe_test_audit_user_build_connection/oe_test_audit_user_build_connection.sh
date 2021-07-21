@@ -34,7 +34,7 @@ function run_test()
 {
     LOG_INFO "Start to run test."
     nohup unbuffer ./audit_socket >log 2>&1 &
-    sleep 1
+    SLEEP_WAIT 1
     cat log | grep "start audit thread now!"
     CHECK_RESULT $? 0 0 "grep failed"
     touch /home/test
@@ -46,7 +46,7 @@ function run_test()
 	    if [ -f 1.txt ]; then
 		    break
 	    fi 
-	    sleep 1
+	    SLEEP_WAIT 1
     done
     if [ $i -eq 15 ];then
 	    CHECK_RESULT 1 0 0 "i failed"
@@ -59,7 +59,7 @@ function run_test()
 			    if [ $? -eq 0 ];then
 				    break
 			    fi
-			    sleep 1
+			    SLEEP_WAIT 1
 		    done
 		    if [ $j -eq 30 ];then
 			    CHECK_RESULT 1 0 0 "grep j failed"
