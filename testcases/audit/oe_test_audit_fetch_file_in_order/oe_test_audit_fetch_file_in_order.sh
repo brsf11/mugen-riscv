@@ -27,8 +27,7 @@ function pre_test(){
 function run_test()
 {
     LOG_INFO "Start to run test."
-    systemctl start auditd
-    CHECK_RESULT $? 0 0 "start failed"
+    service auditd restart
     auditctl -D
     CHECK_RESULT $? 0 0 "delete failed"
     cp -raf /usr/share/doc/audit-help/rules/30-ospp-v42.rules /etc/audit/rules.d
