@@ -23,9 +23,7 @@ function pre_test() {
 
     DNF_INSTALL "freeradius freeradius-utils"
     touch /var/log/radius/radutmp
-    if [ ! -e /var/log/radius/radutmp ]; then
-        exit 1
-    fi
+    test -e /var/log/radius/radutmp
 
     LOG_INFO "End to prepare the test environment."
 }
