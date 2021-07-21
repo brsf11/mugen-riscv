@@ -22,7 +22,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test()
 {
     LOG_INFO "Start to run test."
-    systemctl start auditd
+    service auditd restart
     CHECK_RESULT $? 0 0 "start failed"
     aureport -e -i --summary | grep "Event Summary Report"
     CHECK_RESULT $? 0 0 "grep failed"
