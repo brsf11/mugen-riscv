@@ -1,0 +1,8 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+PROJECT(TEST_APP)
+AUX_SOURCE_DIRECTORY(. DIR_SRCS)
+ADD_EXECUTABLE(my_test ${DIR_SRCS})
+enable_testing()
+add_test (test_run2 my_test 1 2)
+add_test (test_1_plus_3 my_test 1 3)
+set_tests_properties (test_1_plus_3 PROPERTIES PASS_REGULAR_EXPRESSION "is 4")
