@@ -20,10 +20,12 @@
 source ../common/comlib.sh
 
 function pre_test(){
+    LOG_INFO "Start to run test"
     sed -i 's/max_log_file = 8/max_log_file = 1/g' "/etc/audit/auditd.conf"
     sed -i 's/num_logs = 5/num_logs = 2/g' "/etc/audit/auditd.conf"
     sed -i 's/max_log_file_action = ROTATE/max_log_file_action = IGNORE/g' "/etc/audit/auditd.conf"
     service auditd restart
+    LOG_INFO "End to prepare the environment"
 }
 function run_test()
 {
