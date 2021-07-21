@@ -17,8 +17,8 @@
 #@Desc      	:   monitor file access
 #####################################
 
-#source ${OET_PATH}/libs/locallibs/common_lib.sh
-source /root/test-tools/mugen/libs/locallibs/common_lib.sh
+source ${OET_PATH}/libs/locallibs/common_lib.sh
+
 function run_test()
 {
     LOG_INFO "Start to run test."
@@ -30,7 +30,7 @@ function run_test()
     auditctl -l | grep -e "-w /etc/passwd -p wa -k passwd_changes"
     CHECK_RESULT $? 0 0 "catch failed"
     starttime=$(date +%T)
-    useradd "Jevons"
+    useradd Jevons
     CHECK_RESULT $? 0 0 "useradd failed"
     endtime=$(date +%T)
     for ((i=0;i,10;i++));do 
@@ -49,7 +49,7 @@ function run_test()
 function post_test()
 {
     LOG_INFO "Start to restore the test environment."
-    userdel "Jevons"
+    userdel -rf Jevons
     auditctl -D
     LOG_INFO "End to restore the test environment."
 }
