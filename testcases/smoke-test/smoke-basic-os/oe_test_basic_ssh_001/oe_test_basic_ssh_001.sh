@@ -18,20 +18,16 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-function config_params() {
-    LOG_INFO "This test case has no config params to load!"
-}
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    cat /etc/passwd | grep "testuser1:" && userdel -rf testuser1
+    grep "testuser1:" /etc/passwd && userdel -rf testuser1
     useradd testuser1
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    sed -i 's/#%wheel/%wheel/g' /etc/sudoers
     usermod -aG wheel testuser1
     passwd testuser1 <<EOF
 ${NODE1_PASSWORD}
@@ -40,7 +36,7 @@ EOF
     password="${NODE1_PASSWORD}"
     expect <<EOF1
         set timeout 15
-        log_file log
+        log_file /tmp/log
         spawn ssh testuser1@127.0.0.1 pwd
         expect {
                 "*(yes/no*" {
@@ -54,7 +50,7 @@ EOF
         }
         expect eof
 EOF1
-    cat log | grep "/home/testuser1"
+    grep "/home/testuser1" /tmp/log
     CHECK_RESULT $?
 
     LOG_INFO "Finish test!"
@@ -63,7 +59,7 @@ EOF1
 function post_test() {
     LOG_INFO "start environment cleanup."
     userdel -rf testuser1
-    rm -rf log
+    rm -rf /tmp/log
     LOG_INFO "Finish environment cleanup!"
 }
 

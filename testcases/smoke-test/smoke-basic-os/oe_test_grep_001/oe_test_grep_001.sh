@@ -18,13 +18,6 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-function config_params() {
-    LOG_INFO "This test case has no config params to load!"
-}
-
-function pre_test() {
-    LOG_INFO "This test case does not require environment preparation!"
-}
 
 function run_test() {
     LOG_INFO "Start testing..."
@@ -39,11 +32,11 @@ function run_test() {
     grep --help | grep "Usage"
     CHECK_RESULT $?
 
-    ls test && rm -rf test
-    echo 'abc' >test
-    grep -i 'A' test
+    ls /tmp/test && rm -rf /tmp/test
+    echo 'abc' >/tmp/test
+    grep -i 'A' /tmp/test
     CHECK_RESULT $?
-    grep -v 'A' test
+    grep -v 'A' /tmp/test
     CHECK_RESULT $?
     grep -r 'ssh_config' /etc/ssh
     CHECK_RESULT $?
@@ -52,7 +45,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    rm -rf test
+    rm -rf /tmp/test
     LOG_INFO "Finish environment cleanup!"
 }
 

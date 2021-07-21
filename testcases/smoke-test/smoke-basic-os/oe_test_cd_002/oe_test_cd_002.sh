@@ -18,9 +18,6 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-function config_params() {
-    LOG_INFO "This test case has no config params to load!"
-}
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
@@ -38,7 +35,7 @@ function run_test() {
     CHECK_RESULT $?
     cd ..
     CHECK_RESULT $?
-    pwd | grep $current_path
+    pwd | grep "${current_path}"
     CHECK_RESULT $?
     cd -
     CHECK_RESULT $?
@@ -49,7 +46,8 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    cd ${current_path}
+    cd "${current_path}"
+    rm -rf example
     LOG_INFO "Finish environment cleanup!"
 }
 

@@ -18,32 +18,29 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-function config_params() {
-    LOG_INFO "This test case has no config params to load!"
-}
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    cat /etc/passwd | grep "test:" && userdel -rf test
+    grep "test:" /etc/passwd && userdel -rf test
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
     useradd test
-    echo $NODE1_PASSWORD | passwd test --stdin
+    echo "${NODE1_PASSWORD}" | passwd test --stdin
 
-    mkdir -p tmp/tmp01
+    mkdir -p /tmp/tmp/tmp01
 
-    [ $(ls -l tmp | tail -n 1 | awk -F ' ' '{print $3}') == "root" ]
+    [ $(ls -l /tmp/tmp | tail -n 1 | awk -F ' ' '{print $3}') == "root" ]
     CHECK_RESULT $?
-    [ $(ls -l tmp | tail -n 1 | awk -F ' ' '{print $4}') == "root" ]
+    [ $(ls -l /tmp/tmp | tail -n 1 | awk -F ' ' '{print $4}') == "root" ]
     CHECK_RESULT $?
 
-    chown -R test:test tmp
+    chown -R test:test /tmp/tmp
     CHECK_RESULT $?
-    own_user02=$(ls -l tmp | tail -n 1 | awk -F ' ' '{print $3}')
-    own_group02=$(ls -l tmp | tail -n 1 | awk -F ' ' '{print $4}')
+    own_user02=$(ls -l /tmp/tmp | tail -n 1 | awk -F ' ' '{print $3}')
+    own_group02=$(ls -l /tmp/tmp | tail -n 1 | awk -F ' ' '{print $4}')
 
     [ "$own_user02" == "test" ]
     CHECK_RESULT $?
@@ -57,7 +54,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    rm -rf tmp
+    rm -rf /tmp/tmp
     userdel -rf test
     LOG_INFO "Finish environment cleanup!"
 }

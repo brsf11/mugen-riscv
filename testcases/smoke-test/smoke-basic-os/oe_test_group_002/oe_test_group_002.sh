@@ -18,16 +18,13 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-function config_params() {
-    LOG_INFO "This test case has no config params to load!"
-}
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    cat /etc/passwd | grep "testuser1:" && userdel -rf testuser1
+    grep "testuser1:" /etc/passwd && userdel -rf testuser1
     useradd testuser1
-    cat /etc/group | grep "testgroup1:" && groupdel testgroup1
-    cat /etc/group | grep "testgroup2:" && groupdel testgroup2
+    grep "testgroup1:" /etc/group && groupdel testgroup1
+    grep "testgroup2:" /etc/group && groupdel testgroup2
     groupadd testgroup1
     groupmod -g 66 testgroup1
     LOG_INFO "End of environmental preparation!"
@@ -37,20 +34,20 @@ function run_test() {
     LOG_INFO "Start testing..."
     groupmod -g 88 testgroup1
     CHECK_RESULT $?
-    cat /etc/group | grep testgroup1 | grep 88
+    grep testgroup1 /etc/group | grep 88
     CHECK_RESULT $?
 
     groupmod -n testgroup2 testgroup1
     CHECK_RESULT $?
-    cat /etc/group | grep testgroup2 | grep 88
+    grep testgroup2 /etc/group | grep 88
     CHECK_RESULT $?
 
-    cat /etc/group | grep testgroup1
+    grep testgroup1 /etc/group
     CHECK_RESULT $? 1
 
     usermod -a -G testgroup2 testuser1
     CHECK_RESULT $?
-    cat /etc/group | grep testgroup2 | grep testuser1
+    grep testgroup2 /etc/group | grep testuser1
     CHECK_RESULT $?
 
     groupmod --help

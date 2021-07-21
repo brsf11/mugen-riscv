@@ -18,31 +18,24 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-function config_params() {
-    LOG_INFO "This test case has no config params to load!"
-}
-
-function pre_test() {
-    LOG_INFO "This test case does not require environment preparation!"
-}
 
 function run_test() {
     LOG_INFO "Start testing..."
     ls test1 || touch test1
-    ls /home/test1 && rm -rf /home/test1
-    cp test1 /home
-    ls /home/test1
+    ls /tmp/test1 && rm -rf /tmp/test1
+    cp test1 /tmp
+    ls /tmp/test1
     CHECK_RESULT $?
 
     ls test2/test3 || mkdir -p test2/test3
-    ls /home/test2 && rm -rf /home/test2
-    cp -r test2 /home
-    ls /home/test2
+    ls /tmp/test2 && rm -rf /tmp/test2
+    cp -r test2 /tmp
+    ls /tmp/test2
     CHECK_RESULT $?
 
     cp --help | grep "Usage"
     CHECK_RESULT $?
-    ls /home/test4 && rm -rf /home/test4
+    ls /tmp/test4 && rm -rf /tmp/test4
     cp -s test1 test4
     CHECK_RESULT $?
     ls -l test4 | grep "test4 -> test1"
@@ -52,7 +45,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    rm -rf test1 test2 /home/test1 /home/test2 test4
+    rm -rf test1 test2 /tmp/test1 /tmp/test2 test4
     LOG_INFO "Finish environment cleanup!"
 }
 

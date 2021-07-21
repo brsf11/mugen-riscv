@@ -18,13 +18,6 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-function config_params() {
-    LOG_INFO "This test case has no config params to load!"
-}
-
-function pre_test() {
-    LOG_INFO "This test case does not require environment preparation!"
-}
 
 function run_test() {
     LOG_INFO "Start testing..."
@@ -35,10 +28,6 @@ function run_test() {
     file --help | grep "Usage"
     CHECK_RESULT $?
     LOG_INFO "Finish test!"
-}
-
-function post_test() {
-    LOG_INFO "This test case does not require environment cleanup!"
 }
 
 main $@

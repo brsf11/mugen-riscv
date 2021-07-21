@@ -18,27 +18,16 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-function config_params() {
-    LOG_INFO "This test case has no config params to load!"
-}
-
-function pre_test() {
-    LOG_INFO "This test case does not require environment preparation!"
-}
 
 function run_test() {
     LOG_INFO "Start testing..."
     cat /etc/passwd | grep "root:x:0:0:root:/root:/bin/bash"
     CHECK_RESULT $?
-    cat -n /etc/passwd | grep "root:x:0:0:root:/root:/bin/bash"
+    cat -n /etc/passwd | grep "root:x:0:0:root:/root:/bin/bash" | awk -F ' ' '{print $1}' | grep 1
     CHECK_RESULT $?
     cat --help | grep "Usage"
     CHECK_RESULT $?
     LOG_INFO "Finish test!"
-}
-
-function post_test() {
-    LOG_INFO "This test case does not require environment cleanup!"
 }
 
 main $@
