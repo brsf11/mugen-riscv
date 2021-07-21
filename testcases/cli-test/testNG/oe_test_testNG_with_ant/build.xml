@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TestNG" default="runtest" basedir=".">
+<property name="srcdir" location="${basedir}/src"/>
+<property name="libdir" location="${basedir}/lib" />
+<property name="testng.output.dir" location="${basedir}/test-output" />
+<property name="testng.file" value="TExpBase.xml" />
+<path id="cp">
+<fileset dir="${libdir}" includes="*jar" />
+<pathelement location="${basedir}/bin" />
+</path>
+<!-- Define <testng> task -->
+<taskdef name="testng" classname="org.testng.TestNGAntTask">
+<classpath>
+<pathelement location="./lib/testng.jar"/>
+</classpath>
+</taskdef>
+<target name="clean">
+<delete dir="${basedir}/bin" />
+</target>
+<target name="compile" depends="clean">
+<mkdir dir="${basedir}/bin" />
+<javac srcdir="${srcdir}" encoding="UTF-8" destdir="${basedir}/bin" classpathref="cp" includeantruntime="off" debug="on" debuglevel="lines,vars,source" />
+</target>
+<target name="runtest" depends="compile">
+<testng outputdir="${testng.output.dir}" classpathref="cp">
+<xmlfileset dir="${basedir}" includes="${testng.file}"/>
+</testng>
+</target>
+</project>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="suite_testng" verbose="1">
+ <parameter name="str" value="suite"/>
+  <test name="test_assert">
+    <classes>
+       <class name="TExpAssert"/>
+    </classes>
+  </test>
+  <test name="test_beforeAfter">
+    <classes>
+       <class name="TExpBase"/>
+    </classes>
+  </test>
+  <test name="test_group1">
+    <groups>
+    <define name="ostype">
+      <include name="windows"/>
+      <include name="linux"/>
+    </define>
+    <define name="all">
+      <include name="ostype"/>
+    </define>
+    <run>
+      <include name="all"/>
+    </run>
+    </groups>
+    <classes>
+       <class name="TExpGroups"/>
+    </classes>
+  </test>
+  <test name="test_group2">
+    <groups>
+    <run>
+      <include name="methodgroup1"/>
+	  <exclude name="methodgroup2"/>
+    </run>
+    </groups>
+    <classes>
+       <class name="TExpGroups"/>
+    </classes>
+  </test>
+  <test name="test_group3">
+    <groups>
+    <run>
+      <include name="classgroup"/>
+    </run>
+    </groups>
+    <classes>
+       <class name="TExpGroups"/>
+    </classes>
+  </test>
+   <test name="test_group4">
+    <groups>
+    <run>
+      <include name="linux.*"/>
+    </run>
+    </groups>
+    <classes>
+       <class name="TExpGroups"/>
+    </classes>
+  </test>
+  <test name="test_listern">
+    <classes>
+       <class name="TExpListern"/>
+    </classes>
+  </test>
+  <test name="test_parameter">
+    <parameter name="str" value="test"/>
+	<parameter name="before" value="before"/>
+	<parameter name="name" value="wjf"/>
+	<parameter name="sex" value="man"/>
+    <classes>
+       <class name="TExpParameters"/>
+    </classes>
+  </test>
+</suite>
