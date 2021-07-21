@@ -1,0 +1,35 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/postgresql_cmd",
+    "cases": [
+        {
+            "name": "oe_test_postgresql_clusterdb"
+        },
+        {
+            "name": "oe_test_postgresql-contrib_oid2name01"
+        },
+        {
+            "name": "oe_test_postgresql-contrib_pg_archivecleanup"
+        },
+        {
+            "name": "oe_test_postgresql-contrib_pgbench01"
+        },
+        {
+            "name": "oe_test_postgresql-contrib_pgbench02"
+        },
+        {
+            "name": "oe_test_postgresql-contrib_pgbench03"
+        },
+        {
+            "name": "oe_test_postgresql-contrib_pgbench04"
+        },
+        {
+            "name": "oe_test_postgresql-contrib_pg_standby"
+        },
+        {
+            "name": "oe_test_postgresql-contrib_pg_test_fsync"
+        },
+        {
+            "name": "oe_test_postgresql-contrib_pg_waldump"
+        }
+    ]
+}
