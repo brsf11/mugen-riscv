@@ -21,16 +21,14 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test()
 {
     LOG_INFO "Start to prepare the test environment."
-    DNF_INSTALL clang
-    DNF_INSTALL clang-tools-extra
-    local_path=${OET_PATH}/testcases/clang_testcase/common
+    DNF_INSTALL "clang clang-tools-extra"
     LOG_INFO "End to prepare the test environment."
 }
 function run_test()
 {
     LOG_INFO "Start to run test." 
-    cd $local_path
-    cp $local_path/test.c $local_path/test.cpp
+    cp  -r ../common ../common1
+    cd ../common1
     clang-format -i test.c
     CHECK_RESULT $?
     clang-format -style=google test.c
@@ -40,6 +38,8 @@ function run_test()
     clang-format -style=file test.c
     CHECK_RESULT $?
     clang-format -lines=1:2 test.c
+    CHECK_RESULT $?
+    test -f test.cpp
     CHECK_RESULT $?
     clang-check test.cpp
     CHECK_RESULT $?
@@ -54,6 +54,7 @@ function run_test()
 function post_test()
 {
     LOG_INFO "Start to restore the test environment."
+    rm -rf ../common1
     DNF_REMOVE 
     LOG_INFO "End to restore the test environment."
 }

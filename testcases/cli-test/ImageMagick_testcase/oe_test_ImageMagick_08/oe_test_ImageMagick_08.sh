@@ -22,16 +22,15 @@ function pre_test()
 {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ImageMagick
-    local_path=${OET_PATH}/testcases/ImageMagick_testcase
     LOG_INFO "End to prepare the test environment."
 }
 function run_test()
 {
     LOG_INFO "Start to run test." 
-    cd $local_path/
-    cp -r common common1
-    cd common1
+    cp -r ../common ../common1
+    cd ../common1
     mogrify -resize 50% test1.jpg
+    test -f test1.jpg
     CHECK_RESULT $?
     mogrify -resize 256x256 *.jpg
     CHECK_RESULT $?
@@ -53,7 +52,7 @@ function post_test()
 {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf $local_path/common1
+    rm -rf ../common1
     LOG_INFO "End to restore the test environment."
 }
 main "$@"
