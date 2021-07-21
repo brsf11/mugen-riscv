@@ -22,8 +22,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test()
 {
     LOG_INFO "Start to run test."
-    systemctl start auditd
-    CHECK_RESULT $? 0 0 "service start failed"
+    service auditd restart
     auditctl -D
     CHECK_RESULT $? 0 0 "delete rules failed"
     auditctl -w /etc/passwd -p wa -k passwd_changes
