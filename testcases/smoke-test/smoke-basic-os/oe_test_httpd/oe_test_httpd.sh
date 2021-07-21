@@ -20,22 +20,28 @@
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
+    LOG_INFO "Start environment preparation."
     DNF_INSTALL "httpd curl"
+    LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
+    LOG_INFO "Start testing..."
     systemctl start httpd
     CHECK_RESULT $?
     curl -o index.html localhost
     CHECK_RESULT $?
     grep -q "openEuler" index.html
     CHECK_RESULT $?
+    LOG_INFO "Finish test!"
 }
 
 function post_test() {
+    LOG_INFO "start environment cleanup."
     systemctl stop httpd
     rm -rf index.html
     DNF_REMOVE
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main $@

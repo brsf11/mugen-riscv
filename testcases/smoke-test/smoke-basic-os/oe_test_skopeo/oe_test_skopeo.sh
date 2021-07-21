@@ -20,11 +20,14 @@
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
+    LOG_INFO "Start environment preparation."
     DNF_INSTALL skopeo
+    LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
-    for ((i = 0; i < 10; i++)); do
+    LOG_INFO "Start testing..."
+    for ((i = 0; i < 60; i++)); do
         if skopeo list-tags --tls-verify=false docker://docker.io/nginx; then
             flag_result=1
             break
@@ -33,7 +36,7 @@ function run_test() {
     done
     CHECK_RESULT $flag_result 1
     flag_result=0
-    for ((i = 0; i < 10; i++)); do
+    for ((i = 0; i < 60; i++)); do
         if skopeo inspect --tls-verify=false docker://docker.io/nginx; then
             flag_result=1
             break
@@ -41,8 +44,11 @@ function run_test() {
         sleep 1
     done
     CHECK_RESULT $flag_result 1
+    LOG_INFO "Finish test!"
 }
 function post_test() {
+    LOG_INFO "start environment cleanup."
     DNF_REMOVE
+    LOG_INFO "Finish environment cleanup!"
 }
 main $@

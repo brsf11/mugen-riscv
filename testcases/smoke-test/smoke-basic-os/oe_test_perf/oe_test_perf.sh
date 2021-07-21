@@ -20,10 +20,13 @@
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
+    LOG_INFO "Start environment preparation."
     DNF_INSTALL "perf file"
+    LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
+    LOG_INFO "Start testing..."
     perf list >txt 2>/tmp/error.log
     test -s /tmp/error.log && return 1
     timeout -k 15 1 perf record || ls perf.data
@@ -34,11 +37,14 @@ function run_test() {
     CHECK_RESULT $?
     file /tmp/perf.log | grep -i ASCII
     CHECK_RESULT $?
+    LOG_INFO "Finish test!"
 }
 
 function post_test() {
+    LOG_INFO "start environment cleanup."
     rm -rf perf.data /tmp/perf.log txt /tmp/error.log
     DNF_REMOVE
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main $@

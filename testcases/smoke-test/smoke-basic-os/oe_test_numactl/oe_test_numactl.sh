@@ -20,21 +20,27 @@
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
+    LOG_INFO "Start environment preparation."
     DNF_INSTALL "numactl numad"
+    LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
+    LOG_INFO "Start testing..."
     numactl -s | grep policy
     CHECK_RESULT $?
     numactl --physcpubind 0 --membind 0 numactl -H
     CHECK_RESULT $?
     systemctl restart numad
     CHECK_RESULT $?
+    LOG_INFO "Finish test!"
 }
 
 function post_test() {
+    LOG_INFO "start environment cleanup."
     systemctl stop numad
     DNF_REMOVE
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main $@

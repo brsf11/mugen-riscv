@@ -22,10 +22,13 @@ encry_file=/tmp/encry_$$
 decry_file=/tmp/decry_$$
 
 function pre_test() {
+    LOG_INFO "Start environment preparation."
     DNF_INSTALL openssl
+    LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
+    LOG_INFO "Start testing..."
     openssl enc -des3 -pbkdf2 -pass pass:abc123 -in /etc/fstab -out $encry_file
     CHECK_RESULT $?
     diff /etc/fstab $encry_file && return 1
@@ -37,11 +40,14 @@ function run_test() {
     CHECK_RESULT $?
     openssl x509 -in cert.crt -noout -text | grep "CN" | grep "openeuler" | grep "oec"
     CHECK_RESULT $?
+    LOG_INFO "Finish test!"
 }
 
 function post_test() {
+    LOG_INFO "start environment cleanup."
     rm -rf cert.crt rsa_private.key $encry_file $decry_file
     DNF_REMOVE
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main $@

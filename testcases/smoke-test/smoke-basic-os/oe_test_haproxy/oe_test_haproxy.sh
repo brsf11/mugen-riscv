@@ -22,6 +22,7 @@ conf="/etc/httpd/conf/httpd.conf"
 se_stat="Enforcing"
 
 function pre_test() {
+    LOG_INFO "Start environment preparation."
     DNF_INSTALL "httpd curl haproxy"
     se_stat=$(getenforce)
     getenforce | grep Enforcing && setenforce 0
@@ -30,9 +31,11 @@ function pre_test() {
     cp $conf httpd.conf
     sed -i s/"Listen 80"/"Listen 5001"/ $conf
     systemctl restart httpd
+    LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
+    LOG_INFO "Start testing..."
     curl -o index.html localhost && return 1
     systemctl restart haproxy
     CHECK_RESULT $?
@@ -40,15 +43,18 @@ function run_test() {
     CHECK_RESULT $?
     grep -q "openEuler" index.html
     CHECK_RESULT $?
+    LOG_INFO "Finish test!"
 }
 
 function post_test() {
+    LOG_INFO "start environment cleanup."
     systemctl stop haproxy
     systemctl stop httpd
     mv httpd.conf $conf
     setenforce "$se_stat"
     rm -rf index.html
     DNF_REMOVE
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main $@

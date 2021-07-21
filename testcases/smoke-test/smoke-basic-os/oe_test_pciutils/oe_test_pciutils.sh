@@ -20,21 +20,27 @@
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
+    LOG_INFO "Start environment preparation."
     DNF_INSTALL pciutils
+    LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
+    LOG_INFO "Start testing..."
     lspci 2>/tmp/error.log
     test -s /tmp/error.log && return 1
     update-pciids
     CHECK_RESULT $?
     lspci | grep "00:00.0"
     CHECK_RESULT $?
+    LOG_INFO "Finish test!"
 }
 
 function post_test() {
+    LOG_INFO "start environment cleanup."
     test -f /tmp/error.log && rm -f error.log
     DNF_REMOVE
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main $@

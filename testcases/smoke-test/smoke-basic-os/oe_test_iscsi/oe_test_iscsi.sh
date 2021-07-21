@@ -25,15 +25,18 @@ iscsi_name="iqn.2020-07.org.openeuler:iscsi$$"
 firewall_status=0
 
 function pre_test() {
+    LOG_INFO "Start environment preparation."
     DNF_INSTALL "open-iscsi multipath-tools target-restore targetcli"
     dd if=/dev/zero of=$lun1 count=10 bs=1M
     dd if=/dev/zero of=$lun2 count=10 bs=1M
     systemctl status --no-pager firewalld && firewall_status=1
     systemctl stop firewalld
     mv /etc/iscsi/initiatorname.iscsi .
+    LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
+    LOG_INFO "Start testing..."
     echo -e "cd /\n clearconfig confirm=true\n" | targetcli
     echo -e "cd /backstores/fileio\n create name=disk1 file_or_dev=${lun1}\n" | targetcli
     echo -e "cd /backstores/fileio\n create name=disk2 file_or_dev=${lun2}\n" | targetcli
@@ -67,10 +70,11 @@ function run_test() {
     systemctl stop multipathd
     systemctl stop iscsid
     systemctl stop target
+    LOG_INFO "Finish test!"
 }
 
 function post_test() {
-    set +e
+    LOG_INFO "start environment cleanup."
     iscsiadm -m node -p ${local_addr} -u
     iscsiadm -m node -o delete -p ${local_addr}
     systemctl stop multipathd
@@ -81,6 +85,7 @@ function post_test() {
     rm -rf $lun1 $lun2
     test ${firewall_status} -eq 1 && systemctl restart firewalld
     DNF_REMOVE
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main $@

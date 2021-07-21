@@ -23,13 +23,16 @@ server_dir=/home/nfs_server_$$
 client_dir=/home/nfs_client_$$
 
 function pre_test() {
+    LOG_INFO "Start environment preparation."
     DNF_INSTALL "nfs-utils nfs4-acl-tools"
     useradd $test_user
     mkdir $server_dir $client_dir
     test -f /etc/exports && cp /etc/exports .
+    LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
+    LOG_INFO "Start testing..."
     echo "$server_dir *(rw,sync,no_root_squash)" >>/etc/exports
     systemctl restart nfs-server
     CHECK_RESULT $?
@@ -52,15 +55,18 @@ function run_test() {
     sudo -u $test_user cat $client_dir/file
     umount $client_dir
     CHECK_RESULT $?
+    LOG_INFO "Finish test!"
 }
 
 function post_test() {
+    LOG_INFO "start environment cleanup."
     umount $client_dir
     rm -rf $client_dir $server_dir
     userdel -r $test_user
     rm -f /tmp/error.log
     test -f exports && mv exports /etc/exports
     DNF_REMOVE
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main $@
