@@ -41,7 +41,6 @@ function run_test() {
     rm -rf test.*
     su - postgres -c "pgbench --log-prefix=test -l" 2>&1 | grep "starting vacuum...end"
     CHECK_RESULT $?
-    ls test.*
     su - postgres -c "pgbench -L 1" 2>&1 | grep "starting vacuum...end"
     CHECK_RESULT $?
     su - postgres -c "pgbench -M simple" 2>&1 | grep "starting vacuum...end"
