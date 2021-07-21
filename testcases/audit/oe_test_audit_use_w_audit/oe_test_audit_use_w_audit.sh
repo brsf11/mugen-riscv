@@ -22,8 +22,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test()
 {
     LOG_INFO "Start to run test."
-    systemctl start auditd
-    CHECK_RESULT $? 0 0 "start failed"
+    service auditd restart
     auditctl -w /home -p wa -k home_changes
     CHECK_RESULT $? 0 0 "add failed"
     auditctl -l | grep -e "-w /home -p wa -k home_changes"
