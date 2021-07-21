@@ -37,11 +37,7 @@ function run_test() {
         CHECK_RESULT $?
     fi
     if [[ "$(dmidecode -s system-product-name)" =~ "KVM" ]]; then
-        test $(lshw -c memory | grep "bank" | wc -l) -eq 1
-        CHECK_RESULT $?
-    fi
-    if [[ "$(dmidecode -s system-product-name)" =~ "KVM" ]]; then
-        test $(lshw -c memory | grep bank -A 10 | grep size | wc -l) -eq 1
+        test $(lshw -c memory | grep "bank" | wc -l) -eq 1 && test $(lshw -c memory | grep bank -A 10 | grep size | wc -l) -eq 1
         CHECK_RESULT $?
     fi
     LOG_INFO "Finish test!"

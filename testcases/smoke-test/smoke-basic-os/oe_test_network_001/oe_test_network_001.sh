@@ -18,7 +18,6 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-card_name=$(ip a | grep 255 | grep -v ' virbr' | grep -v 'lo ' | grep -v 'docker' | awk -F' ' '{print $NF}')
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
@@ -28,27 +27,28 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start testing..."
-    nmcli connection show | grep "${card_name}"
+    nmcli connection show | grep "${NODE1_NIC}"
     CHECK_RESULT $?
-    ip link | grep "${card_name}"
+    ip link | grep "${NODE1_NIC}"
     CHECK_RESULT $?
     route | grep default
     CHECK_RESULT $?
-    ethtool "${card_name}"
+    ethtool "${NODE1_NIC}"
     CHECK_RESULT $?
-    ifconfig | grep "${card_name}"
+    ifconfig | grep "${NODE1_NIC}"
     CHECK_RESULT $?
-    ip a show "${card_name}" | grep 192.1.1.11 && ip addr del 192.1.1.11 dev "${card_name}"
-    ip addr add 192.1.1.11 dev "${card_name}"
+    ip a show "${NODE1_NIC}" | grep 192.1.1.11 && ip addr del 192.1.1.11 dev "${NODE1_NIC}"
+    ip addr add 192.1.1.11 dev "${NODE1_NIC}"
     CHECK_RESULT $?
-    ip a show "${card_name}" | grep 192.1.1.11
+    ip a show "${NODE1_NIC}" | grep 192.1.1.11
     CHECK_RESULT $?
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    ip addr del 192.1.1.11 dev "${card_name}"
+    ip addr del 192.1.1.11 dev "${NODE1_NIC}"
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
 

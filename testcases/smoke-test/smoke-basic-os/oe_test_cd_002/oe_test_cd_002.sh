@@ -21,7 +21,7 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    current_path=$(pwd)
+    current_path=$(dirname $0)
     ls example && rm -rf example
     LOG_INFO "End of environmental preparation!"
 }

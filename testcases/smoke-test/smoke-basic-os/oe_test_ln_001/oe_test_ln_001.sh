@@ -21,16 +21,16 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    ls /home/Music && rm -rf /home/Music
+    ls /tmp/Music && rm -rf /tmp/Music
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
     ls Music || touch Music
-    ln -s Music /home
+    ln -s Music /tmp
     CHECK_RESULT $?
-    ls -l /home/Music | grep Music
+    ls -l /tmp/Music | grep Music
     CHECK_RESULT $?
 
     ln --help | grep "Usage"
@@ -40,7 +40,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    rm -rf /home/Music Music
+    rm -rf /tmp/Music Music
     LOG_INFO "Finish environment cleanup!"
 }
 
