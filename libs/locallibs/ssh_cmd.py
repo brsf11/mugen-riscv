@@ -74,7 +74,7 @@ def pssh_cmd(conn, cmd):
 
     exitcode = stdout.channel.recv_exit_status()
 
-    if exitcode is 0:
+    if exitcode == 0:
         output = stdout.read().decode("utf-8").strip("\n")
     else:
         output = stderr.read().decode("utf-8").strip("\n")
