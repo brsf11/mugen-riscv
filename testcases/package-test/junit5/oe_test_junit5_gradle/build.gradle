@@ -1,0 +1,27 @@
+buildscript {
+  repositories {
+      mavenCentral()
+  }
+  dependencies {
+      classpath ("org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4")
+  }}
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.junit.platform.gradle.plugin'
+repositories {
+  jcenter()
+}
+dependencies {
+  testCompile 'org.assertj:assertj-core:3.9.0'
+  testCompile group: 'org.mockito', name: 'mockito-core', version: '2.15.0'
+testCompile("org.junit.jupiter:junit-jupiter-api:5.3.1") //提      供junit5的api
+	implementation(localGroovy())
+	testImplementation('org.junit.platform:junit-platform-runner:1.5.0')
+testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1") //提供junit5 运行engine
+}
+junitPlatform {
+  details 'tree'
+} 
+
+
+
