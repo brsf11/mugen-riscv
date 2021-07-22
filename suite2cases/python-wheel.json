@@ -2,18 +2,10 @@
     "path": "$OET_PATH/testcases/cli-test/python-wheel",
     "cases": [
         {
-            "name": "oe_test_python-wheel_python2-wheel_command",
-            "machine": {
-                "type": "kvm",
-                "num": 1
-            }
+            "name": "oe_test_python-wheel_python2-wheel_command"
         },
         {
-            "name": "oe_test_python-wheel_python3-wheel_command",
-            "machine": {
-                "type": "kvm",
-                "num": 1
-            }
+            "name": "oe_test_python-wheel_python3-wheel_command"
         }
     ]
 }
