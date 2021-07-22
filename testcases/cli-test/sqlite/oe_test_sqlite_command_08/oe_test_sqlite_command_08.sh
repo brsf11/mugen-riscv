@@ -12,8 +12,9 @@
 #@Contact   	:   377012421@qq.com
 #@Date      	:   2020-07-02 09:00:43
 #@License   	:   Mulan PSL v2
-#@Desc      	:   verification sqlite‘s .headers command
+#@Desc      	:   verification sqlite‘s .dump  command
 #####################################
+
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start to run test."
@@ -27,13 +28,17 @@ function run_test() {
           SALARY         REAL
           );\n"
     expect "sqlite>"
-    send ".headers on\n"
+    send ".read ../common/insert.txt\n"
     expect "sqlite>"
-    send ".separator \",\"\n"
-    expect "sqlite>"
-    send ".import ../common/import.txt COMPANY\n"
+    send ".echo on\n"
     expect "sqlite>"
     send ".output ../common/output.txt\n"
+    expect "sqlite>"
+    send "select *from COMPANY;\n"
+    expect "sqlite>"
+    send ".echo off\n"
+    expect "sqlite>"
+    send ".output ../common/output1.txt\n"
     expect "sqlite>"
     send "select *from COMPANY;\n"
     expect "sqlite>"
@@ -41,39 +46,15 @@ function run_test() {
     expect eof
     exit
 END
-    expect <<-END
-    spawn sqlite3 ../common/test.db
-    send "CREATE TABLE COMPANY1(
-          ID INT PRIMARY KEY     NOT NULL,
-          NAME           TEXT    NOT NULL,
-          AGE            INT     NOT NULL,
-          ADDRESS        CHAR(50),
-          SALARY         REAL
-          );\n"
-    expect "sqlite>"
-    send ".headers off\n"
-    expect "sqlite>"
-    send ".separator \",\"\n"
-    expect "sqlite>"
-    send ".import ../common/import.txt COMPANY1\n"
-    expect "sqlite>"
-    send ".output ../common/output1.txt\n"
-    expect "sqlite>"
-    send "select *from COMPANY1;\n"
-    expect "sqlite>"
-    send ".quit\n"
-    expect eof
-    exit
-END
-    CHECK_RESULT "$(wc -l ../common/output.txt | grep -cE "24")" 1
-    CHECK_RESULT "$(wc -l ../common/output1.txt | grep -cE "23")" 1
+    CHECK_RESULT "$(wc -l ../common/output.txt | grep -cE "25")" 1
+    CHECK_RESULT "$(grep -cE "select" ../common/output.txt)" 1
+    CHECK_RESULT "$(wc -l ../common/output1.txt | grep -cE "24")" 1
+    CHECK_RESULT "$(grep "select" ../common/output1.txt)" 1
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -rf ../common/test.db
-    rm -rf ../common/output.txt
-    rm -rf ../common/output1.txt
+    rm -rf ../common/test.db ../common/output*.txt
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

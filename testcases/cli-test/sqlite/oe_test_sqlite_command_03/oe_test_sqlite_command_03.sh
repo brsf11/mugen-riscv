@@ -11,12 +11,14 @@
 #@Author    	:   guochenyang
 #@Contact   	:   377012421@qq.com
 #@Date      	:   2020-07-02 09:00:43
-#@License   	:   Mulan PSL v2
-#@Desc      	:   verification sqlite‘s .import command
+#@License   	:   Mulan PSL v2  
+#@Desc      	:   verification sqlite‘s .table和.schema command
 #####################################
+
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-function run_test() {
-    LOG_INFO "Start to run test."
+function run_test()
+{
+    LOG_INFO "Start to run test." 
     expect <<-END
     spawn sqlite3 ../common/test.db
     send "CREATE TABLE COMPANY(
@@ -27,9 +29,7 @@ function run_test() {
           SALARY         REAL
           );\n"
     expect "sqlite>"
-    send ".separator \",\"\n"
-    expect "sqlite>"
-    send ".import ../common/import.txt COMPANY\n"
+    send ".read ../common/insert.txt\n"
     expect "sqlite>"
     send ".output ../common/output.txt\n"
     expect "sqlite>"
@@ -39,13 +39,13 @@ function run_test() {
     expect eof
     exit
 END
-    CHECK_RESULT "$(wc -l ../common/output.txt | grep -cE "23")" 1
+    CHECK_RESULT "$(wc -l ../common/output.txt | grep -cE "24")" 1 
     LOG_INFO "End to run test."
 }
-function post_test() {
+function post_test()
+{
     LOG_INFO "Start to restore the test environment."
-    rm -rf ../common/test.db
-    rm -rf ../common/output.txt
+    rm -rf ../common/test.db ../common/output.txt
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

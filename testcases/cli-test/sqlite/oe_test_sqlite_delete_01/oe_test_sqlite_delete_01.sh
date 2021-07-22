@@ -12,50 +12,43 @@
 #@Contact   	:   377012421@qq.com
 #@Date      	:   2020-07-02 09:00:43
 #@License   	:   Mulan PSL v2
-#@Desc      	:   verification sqlite‘s .backup and .restore  command
+#@Desc      	:   verification sqlite‘s update command
 #####################################
+
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start to run test."
     expect <<-END
     spawn sqlite3 ../common/test.db
     send "CREATE TABLE COMPANY(
-          ID INT PRIMARY KEY     NOT NULL,
-          NAME           TEXT    NOT NULL,
-          AGE            INT     NOT NULL,
-          ADDRESS        CHAR(50),
-          SALARY         REAL
-          );\n"
+        ID INT PRIMARY KEY     NOT NULL,
+        NAME    TEXT    NOT NULL,
+        AGE     INT     NOT NULL,
+        ADDRESS CHAR(50),
+        SALARY  REAL    CHECK(SALARY > 0)
+        );\n"
     expect "sqlite>"
     send ".read ../common/insert.txt\n"
     expect "sqlite>"
-    send ".backup ../common/db.bak\n"
-    expect "sqlite>"
-    send "delete from COMPANY;\n"
-    expect "sqlite>"
     send ".output ../common/output.txt\n"
     expect "sqlite>"
-    send "select *from COMPANY;\n"
+    send "select * from COMPANY WHERE ID = 7;\n"
     expect "sqlite>"
-    send ".restore ../common/db.bak\n"
+    send "DELETE FROM COMPANY WHERE ID = 7;\n"
     expect "sqlite>"
-    send ".output ../common/output1.txt\n"
-    expect "sqlite>"
-    send "select *from COMPANY;\n"
+    send "select * from COMPANY WHERE ID = 7;\n"
     expect "sqlite>"
     send ".quit\n"
     expect eof
     exit
 END
-    CHECK_RESULT "$(wc -l ../common/output.txt | grep -cE "0")" 1
-    CHECK_RESULT "$(wc -l ../common/output1.txt | grep -cE "24")" 1
+    CHECK_RESULT "$(awk 'NR==1' ../common/output.txt | grep -cE "7")" 1
+    CHECK_RESULT "$(wc -l ../common/output.txt | grep -cE "1")" 1
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -rf ../common/db.bak
-    rm -rf ../common/output*
-    rm -rf ../common/test.db
+    rm -rf ../common/test.db ../common/output.txt
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

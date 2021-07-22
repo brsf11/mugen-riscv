@@ -11,13 +11,13 @@
 #@Author    	:   guochenyang
 #@Contact   	:   377012421@qq.com
 #@Date      	:   2020-07-02 09:00:43
-#@License   	:   Mulan PSL v2  
-#@Desc      	:   verification sqlite‘s .table和.schema command
+#@License   	:   Mulan PSL v2
+#@Desc      	:   verification sqlite‘s .dump  command
 #####################################
+
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-function run_test()
-{
-    LOG_INFO "Start to run test." 
+function run_test() {
+    LOG_INFO "Start to run test."
     expect <<-END
     spawn sqlite3 ../common/test.db
     send "CREATE TABLE COMPANY(
@@ -30,6 +30,18 @@ function run_test()
     expect "sqlite>"
     send ".read ../common/insert.txt\n"
     expect "sqlite>"
+    send ".quit\n"
+    expect eof
+    exit
+END
+    sqlite3 ../common/test.db .dump >../common/test.sql
+    CHECK_RESULT $?
+    rm -rf ../common/test.db
+    SLEEP_WAIT 2
+    sqlite3 ../common/test.db <../common/test.sql
+    SLEEP_WAIT 5
+    expect <<-END
+    spawn sqlite3 ../common/test.db
     send ".output ../common/output.txt\n"
     expect "sqlite>"
     send "select *from COMPANY;\n"
@@ -38,14 +50,12 @@ function run_test()
     expect eof
     exit
 END
-    CHECK_RESULT "$(wc -l ../common/output.txt | grep -cE "24")" 1 
+    CHECK_RESULT "$(wc -l ../common/output.txt | grep -cE "24")" 1
     LOG_INFO "End to run test."
 }
-function post_test()
-{
+function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -rf ../common/test.db
-    rm -rf ../common/output.txt
+    rm -rf ../common/test.db ../common/output.txt ../common/test.sql
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

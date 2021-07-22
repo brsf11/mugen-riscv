@@ -14,6 +14,7 @@
 #@License   	:   Mulan PSL v2  
 #@Desc      	:   verification sqlite‘s quit/exit command
 #####################################
+
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test()
 {
