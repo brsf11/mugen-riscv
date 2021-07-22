@@ -72,6 +72,7 @@ function post_test()
     sed -i 's/active = yes/active = no/g' "${path}"
     service auditd restart
     auditctl -D
+    DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
 
