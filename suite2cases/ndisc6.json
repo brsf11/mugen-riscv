@@ -1,0 +1,42 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/ndisc6",
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_ndisc6_addr2name",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_ndisc6_name2addr",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_ndisc6_ndisc6",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_ndisc6_rdisc6",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_ndisc6_rdnssd",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_ndisc6_rltraceroute6",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_ndisc6_tcpspray",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_ndisc6_tcptraceroute6",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_ndisc6_tracert6",
+            "machine num": 2
+        }
+    ]
+}
