@@ -13,9 +13,9 @@
 #@Author        :   wangjingfeng
 #@Contact       :   1136232498@qq.com
 #@Date          :   2020/12/24
+#@License       :   Mulan PSL v2
 #@Desc          :   freeradius-utils command parameter automation use case
 ####################################
-
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test() {
@@ -23,9 +23,7 @@ function pre_test() {
 
     DNF_INSTALL "freeradius freeradius-utils net-tools"
     cp /var/log/wtmp /var/log/radius/radwtmp
-    if [ ! -e /var/log/radius/radwtmp ]; then
-        exit 1
-    fi
+    test -e /var/log/radius/radwtmp
 
     LOG_INFO "End to prepare the test environment."
 }

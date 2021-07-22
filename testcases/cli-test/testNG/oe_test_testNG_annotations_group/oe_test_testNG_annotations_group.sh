@@ -14,10 +14,8 @@
 #@Contact       :   1136232498@qq.com
 #@Date          :   2020/4/29
 #@License       :   Mulan PSL v2
-#@Version       :   1.0
 #@Desc          :   Group related notes
 ####################################
-
 source ../common/common_lib.sh
 
 function pre_test() {
