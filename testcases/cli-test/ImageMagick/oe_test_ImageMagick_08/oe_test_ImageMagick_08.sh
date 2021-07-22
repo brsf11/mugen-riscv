@@ -19,54 +19,35 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ImageMagick
-    cp -r ../common ../common1
-    cd ../common1
+    cp -r ../common ./tmp
+    cd ./tmp
     LOG_INFO "End to prepare the test environment."
 }
 function run_test() {
     LOG_INFO "Start to run test."
-    convert -crop 300x400+10+10 test1.jpg dest.jpg
+    mogrify -resize 50% test1.jpg
+    test -f test1.jpg
     CHECK_RESULT $?
-    test -f dest.jpg
+    mogrify -resize 256x256 *.jpg
     CHECK_RESULT $?
-    convert test2.jpg -gravity center -crop 100x80+0+0 dest1.jpg
+    convert test2.jpg test2.png
+    mogrify -format jpg *.png
     CHECK_RESULT $?
-    test -f dest1.jpg
+    identify test1.jpg | grep "test1.jpg JPEG"
     CHECK_RESULT $?
-    convert test2.jpg -gravity southeast -crop 100x80+10+5 dest2.jpg
+    identify -verbose test1.jpg | grep "Image: test1.jpg"
     CHECK_RESULT $?
-    test -f dest2.jpg
+    identify -depth 8 -size 900x518 test1.jpg | grep "8-bit"
     CHECK_RESULT $?
-    convert test1.jpg -crop 100x100 destxt.jpg
+    identify -verbose -features 1 -moments -unique test1.jpg | grep "identify:features: 1"
     CHECK_RESULT $?
-    test -f destxt-1.jpg
-    CHECK_RESULT $?
-    convert -mattecolor " #2E8B57" -frame 60x60 test1.jpg biankuang.png
-    CHECK_RESULT $?
-    test -f biankuang.png
-    CHECK_RESULT $?
-    convert -border 60x60 -bordercolor " #FF1493" test2.jpg biankuang1.jpg
-    CHECK_RESULT $?
-    test -f biankuang1.jpg
-    CHECK_RESULT $?
-    convert -draw 'text 0,0"JD.COM"' -fill 'rgba(221,34,17,0.25)' -pointsize 36 -gravity center test2.jpg watermark.jpg
-    CHECK_RESULT $?
-    test -f watermark.jpg
-    CHECK_RESULT $?
-    convert -size 100x100 xc:none -fill '#d90f02' -pointsize 18 -gravity center -draw 'rotate -45 text 0,0 "JD.COM"' -resize 60% miff:- | composite -tile -dissolve 25 - test3.jpg watermark1.jpg
-    CHECK_RESULT $?
-    test -f watermark1.jpg
-    CHECK_RESULT $?
-    composite -gravity north test1.jpg test3.jpg des.jpg
-    CHECK_RESULT $?
-    test -f des.jpg
-    CHECK_RESULT $?
+    CHECK_RESULT "$(identify -precision 5 -define identify:locate=maximum -define identify:limit=3 test1.jpg | grep -cE 'Red|Green|Blue')" 3
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ../common1
+    rm -rf ./tmp
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

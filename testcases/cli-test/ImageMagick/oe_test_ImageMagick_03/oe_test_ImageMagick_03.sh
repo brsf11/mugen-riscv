@@ -19,38 +19,42 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ImageMagick
-    cp -r ../common ../common1
-    cd ../common1
+    cp -r ../common ./tmp
+    cd ./tmp
     LOG_INFO "End to prepare the test environment."
 }
 function run_test() {
     LOG_INFO "Start to run test."
-    convert -resize 900x600 -quality 70 -strip test3.jpg thumbnail.jpg
-    CHECK_RESULT "$(identify -verbose thumbnail.jpg | grep Quality | grep -cE '70')" 1
-    convert -resize 900x600 -quality 100 -strip test3.jpg thumbnail1.jpg
-    CHECK_RESULT "$(identify -verbose thumbnail1.jpg | grep Quality | grep -cE '100')" 1
-    convert -resize 900x600 -quality 101 -strip test3.jpg thumbnail2.jpg
-    CHECK_RESULT "$(identify -verbose thumbnail2.jpg | grep Quality | grep -cE '100')" 1
-    convert -resize 900x600 -quality -1 -strip test3.jpg thumbnail3.jpg
-    CHECK_RESULT "$(identify -verbose thumbnail3.jpg | grep Quality | grep -cE '100')" 1
-    convert -resize '150x100!' test1.jpg suof1.jpg
+    convert test1.jpg -region 127x650+1070+150 -resize 120% -fill "#eae4ba" -colorize 100% result.jpg
     CHECK_RESULT $?
-    test -f suof1.jpg
+    test -f result.jpg
     CHECK_RESULT $?
-    convert -resize '150x100>' test2.jpg suof2.jpg
+    convert -rotate 270 test3.jpg test3-final.jpg
     CHECK_RESULT $?
-    test -f suof2.jpg
+    test -f test3-final.jpg
     CHECK_RESULT $?
-    convert -resize '150x100<' test3.jpg suof3.jpg
+    convert -fill black -pointsize 60 -font helvetica -draw 'text 100,800 "hello"' test3.jpg hello.jpg
     CHECK_RESULT $?
-    test -f suof3.jpg
+    test -f hello.jpg
+    CHECK_RESULT $?
+    convert -flip test1.jpg bar.jpg
+    CHECK_RESULT $?
+    test -f bar.jpg
+    CHECK_RESULT $?
+    convert -flop test1.jpg bar1.jpg
+    CHECK_RESULT $?
+    test -f bar1.jpg
+    CHECK_RESULT $?
+    convert -negate test1.jpg bar2.jpg
+    CHECK_RESULT $?
+    test -f bar2.jpg
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ../common1
+    rm -rf ./tmp
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

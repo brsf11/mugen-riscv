@@ -19,53 +19,54 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ImageMagick
-    cp -r ../common ../common1
-    cd ../common1
+    cp -r ../common ./tmp
+    cd ./tmp
     LOG_INFO "End to prepare the test environment."
 }
 function run_test() {
     LOG_INFO "Start to run test."
-    composite -gravity southeast test1.jpg test3.jpg des2.jpg
+    convert -crop 300x400+10+10 test1.jpg dest.jpg
     CHECK_RESULT $?
-    test -f des2.jpg
+    test -f dest.jpg
     CHECK_RESULT $?
-    composite -gravity center test1.jpg test3.jpg des1.jpg
+    convert test2.jpg -gravity center -crop 100x80+0+0 dest1.jpg
     CHECK_RESULT $?
-    test -f des1.jpg
+    test -f dest1.jpg
     CHECK_RESULT $?
-    composite test1.jpg -resize 200% -compose bumpmap -gravity southwest test2.jpg z.jpg
-    SLEEP_WAIT 5
+    convert test2.jpg -gravity southeast -crop 100x80+10+5 dest2.jpg
     CHECK_RESULT $?
-    test -f z.jpg
+    test -f dest2.jpg
     CHECK_RESULT $?
-    composite -compose multiply -gravity Center -geometry +70-5 test1.jpg test2.jpg z1.jpg
-    SLEEP_WAIT 5
+    convert test1.jpg -crop 100x100 destxt.jpg
     CHECK_RESULT $?
-    test -f z1.jpg
+    test -f destxt-1.jpg
     CHECK_RESULT $?
-    composite -watermark 30% -gravity south test1.jpg test2.jpg z2.jpg
+    convert -mattecolor " #2E8B57" -frame 60x60 test1.jpg biankuang.png
     CHECK_RESULT $?
-    test -f z2.jpg
+    test -f biankuang.png
     CHECK_RESULT $?
-    composite label:Center -gravity center test2.jpg z3.jpg
-    SLEEP_WAIT 5
+    convert -border 60x60 -bordercolor " #FF1493" test2.jpg biankuang1.jpg
     CHECK_RESULT $?
-    test -f z3.jpg
+    test -f biankuang1.jpg
     CHECK_RESULT $?
-    compare -verbose -metric mae test2.jpg test2.jpg difference.png
+    convert -draw 'text 0,0"JD.COM"' -fill 'rgba(221,34,17,0.25)' -pointsize 36 -gravity center test2.jpg watermark.jpg
     CHECK_RESULT $?
-    test -f difference.png
+    test -f watermark.jpg
     CHECK_RESULT $?
-    compare -channel red -metric mae test3.jpg test3.jpg difference1.png
+    convert -size 100x100 xc:none -fill '#d90f02' -pointsize 18 -gravity center -draw 'rotate -45 text 0,0 "JD.COM"' -resize 60% miff:- | composite -tile -dissolve 25 - test3.jpg watermark1.jpg
     CHECK_RESULT $?
-    test -f difference1.png
+    test -f watermark1.jpg
+    CHECK_RESULT $?
+    composite -gravity north test1.jpg test3.jpg des.jpg
+    CHECK_RESULT $?
+    test -f des.jpg
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ../common1
+    rm -rf ./tmp
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

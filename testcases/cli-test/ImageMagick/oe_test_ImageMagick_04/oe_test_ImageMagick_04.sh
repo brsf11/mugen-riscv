@@ -19,35 +19,46 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ImageMagick
-    cp -r ../common ../common1
-    cd ../common1
+    cp -r ../common ./tmp
+    cd ./tmp
     LOG_INFO "End to prepare the test environment."
 }
 function run_test() {
     LOG_INFO "Start to run test."
-    mogrify -resize 50% test1.jpg
-    test -f test1.jpg
+    convert -monochrome test1.jpg bar3.jpg
     CHECK_RESULT $?
-    mogrify -resize 256x256 *.jpg
+    test -f bar3.jpg
     CHECK_RESULT $?
-    convert test2.jpg test2.png
-    mogrify -format jpg *.png
+    convert -paint 4 test1.jpg bar4.jpg
     CHECK_RESULT $?
-    identify test1.jpg | grep "test1.jpg JPEG"
+    test -f bar4.jpg
     CHECK_RESULT $?
-    identify -verbose test1.jpg | grep "Image: test1.jpg"
+    convert -charcoal 2 test2.jpg bar5.jpg
     CHECK_RESULT $?
-    identify -depth 8 -size 900x518 test1.jpg | grep "8-bit"
+    test -f bar5.jpg
     CHECK_RESULT $?
-    identify -verbose -features 1 -moments -unique test1.jpg | grep "identify:features: 1"
+    convert -spread 30 test2.jpg bar6.jpg
     CHECK_RESULT $?
-    CHECK_RESULT "$(identify -precision 5 -define identify:locate=maximum -define identify:limit=3 test1.jpg | grep -cE 'Red|Green|Blue')" 3
+    test -f bar6.jpg
+    CHECK_RESULT $?
+    convert -swirl 67 test2.jpg bar7.jpg
+    CHECK_RESULT $?
+    test -f bar7.jpg
+    CHECK_RESULT $?
+    convert -raise 5x5 test2.jpg bar8.jpg
+    CHECK_RESULT $?
+    test -f bar8.jpg
+    CHECK_RESULT $?
+    convert +raise 5x5 test2.jpg bar9.jpg
+    CHECK_RESULT $?
+    test -f bar9.jpg
+    CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ../common1
+    rm -rf ./tmp
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

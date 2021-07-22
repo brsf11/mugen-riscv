@@ -19,45 +19,37 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL clang
-    cp -r ../common ../common1
-    cd ../common1
+    cp -r ../common ./tmp
+    cd ./tmp
     LOG_INFO "End to prepare the test environment."
 }
 function run_test() {
     LOG_INFO "Start to run test."
-    clang -ccc-print-phases test.c
+    clang -ftime-report test.c
     CHECK_RESULT $?
-    clang -rewrite-objc test.c
+    clang -dump-raw-token test.c
     CHECK_RESULT $?
-    clang -#\#\# test.c -o main
+    clang test.c -fsyntax-only
     CHECK_RESULT $?
-    clang -E test.c
+    clang++ -E test.c -o test.i
     CHECK_RESULT $?
-    clang -O3 -S -fobjc-arc -emit-llvm test.c -o test.ll
+    test -f test.i
     CHECK_RESULT $?
-    test -f test.ll
+    clang++ -S test.i
     CHECK_RESULT $?
-    clang -fmodules -fsyntax-only -Xclang -ast-dump test.c
+    clang++ -c test.s
     CHECK_RESULT $?
-    clang -fmodules -fsyntax-only -Xclang -dump-tokens test.c
-    CHECK_RESULT $?
-    clang -S -fobjc-arc test.c -o test.s
-    CHECK_RESULT $?
-    test -f test.s
-    CHECK_RESULT $?
-    clang -fmodules -c test.c -o test.o
-    CHECK_RESULT $?
-    test -f test.o
-    CHECK_RESULT $?
-    clang test.o -o test
+    clang++ -o test test.c
     CHECK_RESULT $?
     test -f test
+    CHECK_RESULT $?
+    clang-format test.c
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -rf ../common1
+    rm -rf ./tmp
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }

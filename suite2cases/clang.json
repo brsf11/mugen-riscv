@@ -1,5 +1,5 @@
 {
-    "path": "$OET_PATH/testcases/cli-test/clang_testcase",
+    "path": "$OET_PATH/testcases/cli-test/clang",
     "cases": [
         {
             "name": "oe_test_clang_01"

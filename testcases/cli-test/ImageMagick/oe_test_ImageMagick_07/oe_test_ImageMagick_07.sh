@@ -19,46 +19,37 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ImageMagick
-    cp -r ../common ../common1
-    cd ../common1
+    cp -r ../common ./tmp
+    cd ./tmp
     LOG_INFO "End to prepare the test environment."
 }
 function run_test() {
     LOG_INFO "Start to run test."
-    convert -monochrome test1.jpg bar3.jpg
+    convert test2.jpg test2.png
     CHECK_RESULT $?
-    test -f bar3.jpg
+    test -f test2.png
     CHECK_RESULT $?
-    convert -paint 4 test1.jpg bar4.jpg
+    compare test2.jpg test2.png diff2.png
+    test -f diff2.png
     CHECK_RESULT $?
-    test -f bar4.jpg
+    compare -metric mae test1.jpg test1.jpg -compose src -highlight-color red -lowlight-color black diff1.png
     CHECK_RESULT $?
-    convert -charcoal 2 test2.jpg bar5.jpg
+    test -f diff1.png
     CHECK_RESULT $?
-    test -f bar5.jpg
+    montage -background '#336699' -geometry +4+4 test1.jpg test2.jpg montage.jpg
     CHECK_RESULT $?
-    convert -spread 30 test2.jpg bar6.jpg
+    test -f montage.jpg
     CHECK_RESULT $?
-    test -f bar6.jpg
+    montage -label %f -frame 5 -background '#336699' -geometry +4+4 test1.jpg test2.jpg frame.jpg
     CHECK_RESULT $?
-    convert -swirl 67 test2.jpg bar7.jpg
-    CHECK_RESULT $?
-    test -f bar7.jpg
-    CHECK_RESULT $?
-    convert -raise 5x5 test2.jpg bar8.jpg
-    CHECK_RESULT $?
-    test -f bar8.jpg
-    CHECK_RESULT $?
-    convert +raise 5x5 test2.jpg bar9.jpg
-    CHECK_RESULT $?
-    test -f bar9.jpg
+    test -f frame.jpg
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ../common1
+    rm -rf ./tmp
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

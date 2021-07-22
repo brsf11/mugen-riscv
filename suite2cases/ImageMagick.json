@@ -1,5 +1,5 @@
 {
-    "path": "$OET_PATH/testcases/cli-test/ImageMagick_testcase",
+    "path": "$OET_PATH/testcases/cli-test/ImageMagick",
     "cases": [
         {
             "name": "oe_test_ImageMagick_01"

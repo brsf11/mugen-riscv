@@ -12,15 +12,15 @@
 #@Author    	:   guochenyang
 #@Contact   	:   377012421@qq.com
 #@Date      	:   2020-10-10 09:30:43
-#@License       :   Mulan PSL v2
+#@License   	:   Mulan PSL v2
 #@Desc      	:   verification ImageMagick‘s command
 #####################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ImageMagick
-    cp -r ../common ../common1
-    cd ../common1
+    cp -r ../common ./tmp
+    cd ./tmp
     LOG_INFO "End to prepare the test environment."
 }
 function run_test() {
@@ -29,27 +29,36 @@ function run_test() {
     CHECK_RESULT $?
     test -f test2.png
     CHECK_RESULT $?
-    compare test2.jpg test2.png diff2.png
-    test -f diff2.png
+    convert test2.png test2.bmp
     CHECK_RESULT $?
-    compare -metric mae test1.jpg test1.jpg -compose src -highlight-color red -lowlight-color black diff1.png
+    test -f test2.bmp
     CHECK_RESULT $?
-    test -f diff1.png
+    convert test2.bmp test2.gif
     CHECK_RESULT $?
-    montage -background '#336699' -geometry +4+4 test1.jpg test2.jpg montage.jpg
+    test -f test2.gif
     CHECK_RESULT $?
-    test -f montage.jpg
+    convert test2.gif test2.tiff
     CHECK_RESULT $?
-    montage -label %f -frame 5 -background '#336699' -geometry +4+4 test1.jpg test2.jpg frame.jpg
+    test -f test2.tiff
     CHECK_RESULT $?
-    test -f frame.jpg
+    convert test2.tiff test2.pcx
+    CHECK_RESULT $?
+    test -f test2.pcx
+    CHECK_RESULT $?
+    convert -sample 50%x50% test1.jpg test1_sj.jpg
+    CHECK_RESULT $?
+    test -f test1_sj.jpg
+    CHECK_RESULT $?
+    convert -resize 1024x576 test1_sj.jpg test1_tz.jpg
+    CHECK_RESULT $?
+    test -f test1_tz.jpg
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ../common1
+    rm -rf ./tmp
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

@@ -12,53 +12,53 @@
 #@Author    	:   guochenyang
 #@Contact   	:   377012421@qq.com
 #@Date      	:   2020-10-10 09:30:43
-#@License   	:   Mulan PSL v2
-#@Desc      	:   verification ImageMagick‘s command
+#@License       :   Mulan PSL v2
+#@Desc      	:   verification clang‘s command
 #####################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    DNF_INSTALL ImageMagick
-    cp -r ../common ../common1
-    cd ../common1
+    DNF_INSTALL clang
+    cp -r ../common ./tmp
+    cd ./tmp
     LOG_INFO "End to prepare the test environment."
 }
 function run_test() {
     LOG_INFO "Start to run test."
-    convert test2.jpg test2.png
+    clang -ccc-print-phases test.c
     CHECK_RESULT $?
-    test -f test2.png
+    clang -rewrite-objc test.c
     CHECK_RESULT $?
-    convert test2.png test2.bmp
+    clang -#\#\# test.c -o main
     CHECK_RESULT $?
-    test -f test2.bmp
+    clang -E test.c
     CHECK_RESULT $?
-    convert test2.bmp test2.gif
+    clang -O3 -S -fobjc-arc -emit-llvm test.c -o test.ll
     CHECK_RESULT $?
-    test -f test2.gif
+    test -f test.ll
     CHECK_RESULT $?
-    convert test2.gif test2.tiff
+    clang -fmodules -fsyntax-only -Xclang -ast-dump test.c
     CHECK_RESULT $?
-    test -f test2.tiff
+    clang -fmodules -fsyntax-only -Xclang -dump-tokens test.c
     CHECK_RESULT $?
-    convert test2.tiff test2.pcx
+    clang -S -fobjc-arc test.c -o test.s
     CHECK_RESULT $?
-    test -f test2.pcx
+    test -f test.s
     CHECK_RESULT $?
-    convert -sample 50%x50% test1.jpg test1_sj.jpg
+    clang -fmodules -c test.c -o test.o
     CHECK_RESULT $?
-    test -f test1_sj.jpg
+    test -f test.o
     CHECK_RESULT $?
-    convert -resize 1024x576 test1_sj.jpg test1_tz.jpg
+    clang test.o -o test
     CHECK_RESULT $?
-    test -f test1_tz.jpg
+    test -f test
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
+    rm -rf ./tmp
     DNF_REMOVE
-    rm -rf ../common1
     LOG_INFO "End to restore the test environment."
 }
 main "$@"
