@@ -21,11 +21,6 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "colm colm-devel"
-    LOG_INFO "End to prepare the test environment."
-}
-
-function run_test() {
-    LOG_INFO "Start to run test."
     touch mu.txt
     cat >zjl.c <<EOF
 #include<stdio.h>
@@ -46,6 +41,11 @@ for(i=1;i<5;i++) {
 }
 EOF
     gcc zjl.c -o zhu
+    LOG_INFO "End to prepare the test environment."
+}
+
+function run_test() {
+    LOG_INFO "Start to run test."
     colm --help | grep 'usage'
     CHECK_RESULT $?
     colm --version | grep "Colm version"

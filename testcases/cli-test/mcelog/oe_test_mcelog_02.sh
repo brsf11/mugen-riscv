@@ -26,7 +26,6 @@ function pre_test() {
     else
         DNF_INSTALL mcelog
     fi
-    #    [ "${NODE1_FRAME}" == "x86_64" ] && DNF_INSTALL mcelog
     LOG_INFO "End to prepare the test environment."
 }
 

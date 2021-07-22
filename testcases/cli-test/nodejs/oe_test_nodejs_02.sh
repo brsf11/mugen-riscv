@@ -21,12 +21,12 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL nodejs
+    echo 'console.log("Hello,Kitty");' >my.js
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    echo 'console.log("Hello,Kitty");' >my.js
     node --experimental-modules my.js | grep 'Hello,Kitty'
     CHECK_RESULT $?
     node --experimental-repl-await my.js | grep 'Hello,Kitty'

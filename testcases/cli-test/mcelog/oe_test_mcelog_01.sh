@@ -26,16 +26,16 @@ function pre_test() {
     else
         DNF_INSTALL "mcelog gcc gcc-c++ flex dialog git"
     fi
-    LOG_INFO "End to prepare the test environment."
-}
-
-function run_test() {
-    LOG_INFO "Start to run test."
     cat >correct <<EOF
 CPU 1 BANK 2
 STATUS corrected
 RIP 0x12341234
 EOF
+    LOG_INFO "End to prepare the test environment."
+}
+
+function run_test() {
+    LOG_INFO "Start to run test."
     aer-inject --help 2>&1 | grep 'Usage'
     CHECK_RESULT $?
     aer-inject --version 2>&1 | grep 'aer-inject'

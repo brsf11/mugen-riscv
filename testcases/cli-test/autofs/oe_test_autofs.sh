@@ -21,12 +21,12 @@ source "common_autofs.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
+    map_name=/etc/auto.master
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    map_name=/etc/auto.master
     automount_daemon_id=$(pgrep -f "automount --foreground --dont-check-daemon")
     [ -n "$automount_daemon_id" ]
     CHECK_RESULT $?
