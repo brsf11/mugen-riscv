@@ -33,6 +33,9 @@ function pre_test()
 function run_test()
 {
     LOG_INFO "Start to run test."
+    path=$(find / -name af_unix.conf)
+    sed -i 's/active = no/active = yes/g' "${path}"
+    CHECK_RESULT $? 0 0 "change failed" 
     nohup unbuffer ./audit_socket >log 2>&1 &
     SLEEP_WAIT 1
     cat log | grep "start audit thread now!"
