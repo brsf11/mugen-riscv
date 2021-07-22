@@ -38,25 +38,21 @@ function run_test() {
     echo "531681" >example.pid
     nbdkit -P example.pid example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example.pid example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    kill -9 $(ps -aux | grep "example.pid example1" | awk 'NR==1{print $2}')
     CHECK_RESULT $?
     nbdkit -p 10809 example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "10809 example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    kill -9 $(ps -aux | grep "10809 example1" | awk 'NR==1{print $2}')
     CHECK_RESULT $?
     nbdkit -r example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "nbdkit -r example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    kill -9 $(ps -aux | grep "nbdkit -r example1" | awk 'NR==1{print $2}')
     CHECK_RESULT $?
     nbdkit --run hostname example1
     CHECK_RESULT $?
     nbdkit --selinux-label system_u:object_r:svirt_t:s0 example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "system_u:object_r:svirt_t:s0 example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    kill -9 $(ps -aux | grep "system_u:object_r:svirt_t:s0 example1" | awk 'NR==1{print $2}')
     CHECK_RESULT $?
     nbdkit --threads 1 example1
     CHECK_RESULT $?
