@@ -72,9 +72,6 @@ function run_test() {
     CHECK_RESULT $?
     iscsiadm -m node -o delete -p ${local_addr}
     CHECK_RESULT $?
-    systemctl stop multipathd
-    systemctl stop iscsid
-    systemctl stop target
     LOG_INFO "Finish test!"
 }
 
