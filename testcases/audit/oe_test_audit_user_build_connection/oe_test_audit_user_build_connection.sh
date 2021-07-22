@@ -54,21 +54,13 @@ function run_test()
     if [ $i -eq 15 ];then
 	    CHECK_RESULT 1 0 0 "i failed"
     fi
-    if [ -f 1.txt ];then
-	    grep "/home/test" 1.txt
-	    if [ $? -ne 0 ];then
-		    for ((j=0;j<30;j++));do
-			    grep "/home/test" 1.txt
-			    if [ $? -eq 0 ];then
-				    break
-			    fi
-			    SLEEP_WAIT 1
-		    done
-		    if [ $j -eq 30 ];then
-			    CHECK_RESULT 1 0 0 "grep j failed"
-		    fi
-	    fi
-    fi
+    [ -f 1.txt ] && {
+        for ((j=0;j<30;j++));do
+            grep -wq "/home/test" 1.txt && break
+            SLEEP_WAIT 1
+        done
+        [ $j -eq 30 ] && CHECK_RESULT 1 0 0 "grep j failed"
+    }
     LOG_INFO "End to run test."
 }
 
