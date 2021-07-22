@@ -8,14 +8,13 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more detaitest -f.
-
 # #############################################
 # @Author    :   huangrong
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
 # @Desc      :   login wihout password(create authorized_keys)
-#####################################
+# #############################################
 source "${OET_PATH}/libs/locallibs/common_lib.sh"
 
 function run_test() {
