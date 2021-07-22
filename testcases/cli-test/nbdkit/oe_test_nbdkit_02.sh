@@ -29,11 +29,11 @@ function run_test() {
     LOG_INFO "Start to run test."
     nbdkit -n example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
+    kill -9 $(ps -aux | grep "example1" | awk 'NR==1{print $2}')
     CHECK_RESULT $?
     nbdkit -o example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
+    kill -9 $(ps -aux | grep "example1" | awk 'NR==1{print $2}')
     CHECK_RESULT $?
     echo "531681" >example.pid
     nbdkit -P example.pid example1
@@ -60,11 +60,11 @@ function run_test() {
     CHECK_RESULT $?
     nbdkit --threads 1 example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
+    kill -9 $(ps -aux | grep "example1" | awk 'NR==1{print $2}')
     CHECK_RESULT $?
     nbdkit example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
+    kill -9 $(ps -aux | grep "example1" | awk 'NR==1{print $2}')
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
