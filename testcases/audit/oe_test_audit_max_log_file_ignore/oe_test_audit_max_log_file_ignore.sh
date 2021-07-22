@@ -34,6 +34,7 @@ function run_test()
     for ((i=0;i<10;i++));do
         create_logfile
         new=$(ls -i /var/log/audit/audit.log | awk -F" " '{print $1}')
+        log_size=$(du -ks /var/log/audit/audit.log | awk '{print $1}')
         test "$log_size" -gt 1024 &&{
             	test "$old" == "$new"&&{
 				break
