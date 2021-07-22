@@ -1,0 +1,15 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/iperf3",
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_iperf3_command_client"
+        },
+        {
+            "name": "oe_test_iperf3_command_clientAndShared"
+        },
+        {
+            "name": "oe_test_iperf3_command_serverAndBase"
+        }
+    ]
+}
