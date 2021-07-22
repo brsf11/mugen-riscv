@@ -11,7 +11,7 @@
 # #############################################
 # @Author    :   wangshan
 # @Contact   :   wangshan@163.com
-# @Date      :   2021-10-15
+# @Date      :   2020-10-15
 # @License   :   Mulan PSL v2
 # @Desc      :   createuser
 # ############################################
@@ -33,7 +33,6 @@ function run_test() {
     expect "Enter it again:"
     send "123456\n"
     expect eof
-    exit
 END
     CHECK_RESULT $?
     su - postgres -c "psql postgres -tAc  \"select * from pg_roles;\"" | grep testuser11
