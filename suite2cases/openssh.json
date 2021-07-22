@@ -1,69 +1,69 @@
 {
     "path": "\"${OET_PATH}\"/testcases/cli-test/openssh",
-    "machine num":2,
+    "machine num": 2,
     "cases": [
         {
             "name": "oe_test_openssh_cipher"
         },
         {
             "name": "oe_test_openssh_keychecking_no",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_keyscan",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_locked",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_no_password",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_port",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_scp_p",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_scp_P",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_scp_q",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_scp_r",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_scp",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_sftp",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_ssh_agent",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_ssh_command",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_ssh-copy-id",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_openssh_ssh_user",
-            "machine num":2
+            "machine num": 2
         }
     ]
 }
