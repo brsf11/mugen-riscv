@@ -47,6 +47,7 @@ function run_test()
 function post_test()
 {
     LOG_INFO "Start to restore the test environment."
+    userdel -rf Jevons
     auditctl -D
     LOG_INFO "End to restore the test environment."
 }

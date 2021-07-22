@@ -23,7 +23,6 @@ function pre_test()
 {
     LOG_INFO "Start to prepare the test environment."
     cp -raf /var/log/ /tmp/
-    cat ${AUDIT_PATH}
     sed -i 's/log_file = \/var\/log\/audit\/audit.log/log_file = \/tmp\/log\/audit\/audit.log/g' "/etc/audit/auditd.conf"
     sed -i 's/max_log_file_action = ROTATE/max_log_file_action = KEEP_LOGS/g' "/etc/audit/auditd.conf"
     service auditd restart
@@ -61,7 +60,6 @@ function post_test()
     sed -i 's/log_file = \/tmp\/log\/audit\/audit.log/log_file = \/var\/log\/audit\/audit.log/g' "${AUDIT_PATH}"
     sed -i 's/max_log_file_action = KEEP_LOGS/max_log_file_action = ROTATE/g' "${AUDIT_PATH}"
     service auditd restart
-    cat ${AUDIT_PATH}
     rm -rf /tmp/log
     LOG_INFO "End to restore the test environment."
 }

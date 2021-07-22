@@ -22,33 +22,31 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test()
 {
     LOG_INFO "Start to prepare the test environment."
-    SSH_CMD "useradd Jevons" "$NODE1_IPV4" "$NODE1_PASSWORD" "$NODE1_USER"
-    SSH_CMD "echo HUAWEI666 | passwd Jevons --stdin" "$NODE1_IPV4" "$NODE1_PASSWORD" "$NODE1_USER" 
+    useradd Jevons
+    echo "HUAWEI666" | passwd Jevons --stdin
     LOG_INFO "End to prepare the test environment."
 }
 function run_test()
 {
     LOG_INFO "Start to run test."
-    SSH_CMD "systemctl start auditd" "$NODE1_IPV4" "$NODE1_PASSWORD" "$NODE1_USER"
-    SSH_CMD "auditctl -D" "$NODE1_IPV4" "$NODE1_PASSWORD" "$NODE1_USER"
-    starttime=$(SSH_CMD "date +%T" "$NODE1_IPV4" "$NODE1_PASSWORD" "$NODE1_USER")
+    service auditd restart
+    auditctl -D
+    CHECK_RESULT $? 0 0 "delete failed"
+    starttime=$(date +%T)
     expect <<EOF
-    spawn ssh Jevons@${NODE1_IPV4}
+    spawn ssh Jevons@localhost
     expect{
     	"*yes/no*" { send "yes\\r"; exp_continue }
-    	"password:" { send "${NODE1_PASSWORD}\\r" }
+    	"password:" { send "Huawei6666\\r" }
     }
     expect "*#"
     send "exit \\r"
     expect eof
 EOF
-    SLEEP_WAIT 10
-    endtime=$(SSH_CMD "date +%T" "$NODE1_IPV4" "$NODE1_PASSWORD" "$NODE1_USER")
-    SLEEP_WAIT 1
-    SSH_CMD "ausearch -ts ${starttime} -te ${endtime} -ul 1000 -m USER_LOGIN -x ssh -sv yes> /tmp/log.log 2>&1 & " "$NODE1_IPV4" "$NODE1_PASSWORD" "$NODE1_USER"
-    SLEEP_WAIT 5
-    SSH_SCP "$NODE1_USER"@"$NODE1_IPV4":/tmp/log.log /tmp/ "$NODE1_PAWWORD"
-    cat < /tmp/log.log |grep "<no matches>"
+    endtime=$(date +%T)
+    ausearch -ts ${starttime} -te ${endtime} -ul 1000 -m USER_LOGIN -x ssh -sv yes> /tmp/log.log 
+    CHECK_RESULT $? 1 0 "ausearch failed"
+    cat < /tmp/log.log |grep -e "<no matches>"
     CHECK_RESULT $? 1 0 "grep failed"
     LOG_INFO "End to run test."
 }
@@ -56,8 +54,7 @@ EOF
 function post_test()
 {
     LOG_INFO "Start to restore the test environment."
-    SSH_CMD "userdel Jevons" "$NODE1_IPV4" "$NODE1_PASSWORD" "$NODE1_USER"
-    SSH_CMD "rm -rf /tmp/log.log" "$NODE1_IPV4" "$NODE1_PASSWORD" "$NODE1_USER"
+    userdel -rf Jevons
     rm -rf /tmp/log.log
     LOG_INFO "End to restore the test environment."
 }
