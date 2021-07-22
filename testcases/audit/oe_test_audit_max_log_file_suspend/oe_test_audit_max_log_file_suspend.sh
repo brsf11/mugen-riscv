@@ -34,11 +34,11 @@ function run_test()
             service auditd status | grep "active"
             CHECK_RESULT $? 0 0 "grep first failed"
             search_log test
-	        CHECK_RESULT $? 1 0 "grep first failed"
+            CHECK_RESULT $? 1 0 "grep first failed"
     else
             create_logfile
-	        service auditd status | grep -e "active"
-	        CHECK_RESULT $? 0 0 "grep second failed"
+            service auditd status | grep -e "active"
+            CHECK_RESULT $? 0 0 "grep second failed"
             search_log test
             CHECK_RESULT $? 1 0 "search second failed"
     fi
