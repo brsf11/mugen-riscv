@@ -27,6 +27,8 @@ function run_test()
     CHECK_RESULT $? 0 0 "delete failed"
     record=$(autrace /usr/bin/ls | grep ausearch | awk -F "'" '{print $2}' )
     CHECK_RESULT $? 0 0 "grep failed"
+    $record | aureport --summary -i
+    CHECK_RESULT $? 0 0 "aureport failed"
     LOG_INFO "End to run test."
 }
 
