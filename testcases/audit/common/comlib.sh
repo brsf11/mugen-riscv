@@ -29,6 +29,7 @@ function create_logfile(){
 	done
 	auditctl -W /home/auditd_test -p rwxa
 }
+
 function search_log(){
 	audit_key=$1
 	auditctl -w /tmp/"${audit_key}" -p rwxa -k "${audit_key}"
