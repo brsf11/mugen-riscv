@@ -23,35 +23,25 @@ function pre_test() {
     deploy_env
     local_disks=$(TEST_DISK 1)
     local_disk=$(echo $local_disks | awk -F " " '/sd[a-z]/ {for(i=1;i<=NF;i++) if ($i~/sd/ && $i!~/[0-9]/)j=i;print $j}')
+    test_dm=$(ls -l /dev/mapper/ | grep mpatha | awk -F "/" '{print $2}' | head -n 1)
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    test_dm=$(ls -l /dev/mapper/ | grep mpatha | awk -F "/" '{print $2}' | head -n 1)
     multipath -t | grep -E "devices|blacklist_exceptions|blacklist|defaults|overrides"
     CHECK_RESULT $?
-    multipath -r -v3 >rdebug 2>&1
+    multipath -r -v3 2>&1 | grep "delegating"
     CHECK_RESULT $?
-    grep "delegating" rdebug
-    CHECK_RESULT $?
-    multipath -i -v3 /dev/mapper/mpatha >idebug 2>&1
-    CHECK_RESULT $?
-    grep "scope limited to 3600" idebug
+    multipath -i -v3 /dev/mapper/mpatha 2>&1 | grep "scope limited to 3600"
     CHECK_RESULT $?
     cd /etc/multipath/ || exit 1
-    multipath -B bindings -v3 >/tmp/Bdebug 2>&1
+    multipath -B bindings -v3 2>&1 | grep "binding"
     CHECK_RESULT $?
-    grep "binding" /tmp/Bdebug
-    CHECK_RESULT $?
-    multipath -b bindings -v3 /dev/mapper/mpatha >/tmp/bdebug 2>&1
-    CHECK_RESULT $?
-    grep "loaded successfully" /tmp/bdebug
+    multipath -b bindings -v3 /dev/mapper/mpatha 2>&1 | grep "loaded successfully"
     CHECK_RESULT $?
     cd - || exit 1
-    multipath -v3 -p multibus >pdebug 2>&1
-    CHECK_RESULT $?
-    grep "multipath" pdebug
+    multipath -v3 -p multibus 2>&1 | grep "multipath"
     CHECK_RESULT $?
     multipath -c /dev/${local_disk} | grep "MULTIPATH"
     CHECK_RESULT $?

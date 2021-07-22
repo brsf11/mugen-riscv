@@ -35,45 +35,37 @@ function run_test() {
     chmod 0600 client-key.pem
     nbdkit --tls-certificates=/root/ndbkit/ example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     mkdir -m 0700 /tmp/keys
     psktool -u rich -p /tmp/keys/keys.psk
     nbdkit --tls=require --tls-psk=/tmp/keys/keys.psk example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     nbdkit --tls=on --tls-psk=/tmp/keys/keys.psk example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     nbdkit --tls off example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     nbdkit --tls-verify-peer example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     nbdkit -U - example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     nbdkit -u root example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     nbdkit -v example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     nbdkit_version=$(rpm -qa nbdkit | awk -F '-' '{print $2}')
     nbdkit -V | grep "$nbdkit_version"

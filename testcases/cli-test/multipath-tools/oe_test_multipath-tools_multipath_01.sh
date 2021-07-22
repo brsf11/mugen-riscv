@@ -23,6 +23,7 @@ function pre_test() {
     deploy_env
     local_disks=$(TEST_DISK 1)
     local_disk=$(echo $local_disks | awk -F " " '/sd[a-z]/ {for(i=1;i<=NF;i++) if ($i~/sd/ && $i!~/[0-9]/)j=i;print $j}')
+    test_dm=$(ls -l /dev/mapper/ | grep mpatha | awk -F "/" '{print $2}' | head -n 1)
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -34,7 +35,6 @@ function run_test() {
     CHECK_RESULT $?
     multipath -l | grep "mpath" -A 10
     CHECK_RESULT $?
-    test_dm=$(ls -l /dev/mapper/ | grep mpatha | awk -F "/" '{print $2}' | head -n 1)
     multipath -v3 -f /dev/$test_dm
     CHECK_RESULT $?
     test -L /dev/mapper/mpatha1
@@ -49,17 +49,11 @@ function run_test() {
     CHECK_RESULT $?
     grep "0000" /etc/multipath/wwids
     CHECK_RESULT $?
-    multipath -v3 -C /dev/$test_dm >check_log 2>&1
+    multipath -v3 -C /dev/$test_dm 2>&1 | grep -E "checker|sda|/dev/$test_dm"
     CHECK_RESULT $?
-    grep -E "checker|sda|/dev/$test_dm" check_log
+    multipath -v3 -q 2>&1 | grep -C 10 "paths list"
     CHECK_RESULT $?
-    multipath -v3 -q >qdebug 2>&1
-    CHECK_RESULT $?
-    grep -C 10 "paths list" qdebug
-    CHECK_RESULT $?
-    multipath -v3 -d >ddebug 2>&1
-    CHECK_RESULT $?
-    grep -i "dev" ddebug
+    multipath -v3 -d 2>&1 | grep -i "dev"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

@@ -33,38 +33,31 @@ function run_test() {
     CHECK_RESULT $?
     nbdkit --exit-with-parent example1 &
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     nbdkit --exportname EXPORTNAME example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     nbdkit -f example1 &
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     nbdkit --filter fua example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     nbdkit --group 123 example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     nbdkit -i ${NODE1_IPV4} example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     nbdkit --log syslog example1
     CHECK_RESULT $?
-    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}')
-    kill -9 $pid
+    pid=$(ps -aux | grep "example1" | awk 'NR==1{print $2}') && kill -9 $pid
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
