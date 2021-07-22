@@ -42,7 +42,9 @@ function run_test()
         if [[ "$old" != "$new" && "$old_size" -lt "$new_size" && "$old_num" -le "$new_num" ]]; then
             break
         else
-            CHECK_RESULT 1 0 0 "error"
+            test "$i" -eq 9 &&{
+                CHECK_RESULT 1 0 0 "keep_logs error"
+            }
         fi		
 	    
         }
