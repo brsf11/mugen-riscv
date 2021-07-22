@@ -13,9 +13,9 @@
 #@Author        :   wangjingfeng
 #@Contact       :   1136232498@qq.com
 #@Date          :   2020/12/22
+#@License       :   Mulan PSL v2
 #@Desc          :   freeradius command parameter automation use case
 ####################################
-
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test() {

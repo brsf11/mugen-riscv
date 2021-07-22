@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suite_groups" verbose="1">
+  <test name="test1">
+    <groups>
+    <define name="ostype">
+      <include name="windows"/>
+      <include name="linux"/>
+    </define>
+    <define name="all">
+      <include name="ostype"/>
+    </define>
+    <run>
+      <include name="all"/>
+    </run>
+    </groups>
+    <classes>
+       <class name="TExpGroups"/>
+    </classes>
+  </test>
+  <test name="test2">
+    <groups>
+    <run>
+      <include name="methodgroup1"/>
+	  <exclude name="methodgroup2"/>
+    </run>
+    </groups>
+    <classes>
+       <class name="TExpGroups"/>
+    </classes>
+  </test>
+  <test name="test3">
+    <groups>
+    <run>
+      <include name="classgroup"/>
+    </run>
+    </groups>
+    <classes>
+       <class name="TExpGroups"/>
+    </classes>
+  </test>
+   <test name="test4">
+    <groups>
+    <run>
+      <include name="linux.*"/>
+    </run>
+    </groups>
+    <classes>
+       <class name="TExpGroups"/>
+    </classes>
+  </test>
+</suite>
