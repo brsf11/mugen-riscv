@@ -1,5 +1,5 @@
 {
-    "path": "$OET_PATH/testcases/audit",
+    "path": "$OET_PATH/testcases/cli-test/audit",
     "cases": [
         {
             "name": "oe_test_audit_monitor_file_access"
