@@ -33,7 +33,7 @@ function create_logfile(){
 function search_log(){
 	audit_key=$1
 	auditctl -w /tmp/"${audit_key}" -p rwxa -k "${audit_key}"
-	CHECK_RESULT $? 0 0 "failed"
+	CHECK_RESULT $? 0 0 " add rules failed"
 	starttime=$(date +%T)
 	touch /tmp/"${audit_key}"
 	rm -rf /tmp/"${audit_key}"
