@@ -18,8 +18,13 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-out_file="output.txt"
-last_num=20
+
+function config_params() {
+    LOG_INFO "Start to config params of the case."
+    out_file="output.txt"
+    last_num=20
+    LOG_INFO "End to config params of the case."
+}
 
 function pre_test() {
     LOG_INFO "Start environment preparation."

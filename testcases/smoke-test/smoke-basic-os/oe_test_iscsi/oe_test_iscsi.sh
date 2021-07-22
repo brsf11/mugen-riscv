@@ -18,11 +18,16 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-lun1=/home/iscsi_lun1_$$
-lun2=/home/iscsi_lun2_$$
-local_addr="127.0.0.1"
-iscsi_name="iqn.2020-07.org.openeuler:iscsi$$"
-firewall_status=0
+
+function config_params() {
+    LOG_INFO "Start to config params of the case."
+    lun1=/home/iscsi_lun1_$$
+    lun2=/home/iscsi_lun2_$$
+    local_addr="127.0.0.1"
+    iscsi_name="iqn.2020-07.org.openeuler:iscsi$$"
+    firewall_status=0
+    LOG_INFO "End to config params of the case."
+}
 
 function pre_test() {
     LOG_INFO "Start environment preparation."

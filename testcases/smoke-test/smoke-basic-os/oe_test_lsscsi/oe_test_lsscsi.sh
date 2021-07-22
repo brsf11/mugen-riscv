@@ -35,7 +35,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    test -f /tmp/error.log && cat /tmp/error.log && rm -f /tmp/error.log
+    test -f /tmp/error.log && rm -f /tmp/error.log
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

@@ -18,8 +18,13 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-encry_file=/tmp/encry_$$
-decry_file=/tmp/decry_$$
+
+function config_params() {
+    LOG_INFO "Start to config params of the case."
+    encry_file=/tmp/encry_$$
+    decry_file=/tmp/decry_$$
+    LOG_INFO "End to config params of the case."
+}
 
 function pre_test() {
     LOG_INFO "Start environment preparation."

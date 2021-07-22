@@ -18,9 +18,14 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-test_user=nfs_test_$$
-server_dir=/home/nfs_server_$$
-client_dir=/home/nfs_client_$$
+
+function config_params() {
+    LOG_INFO "Start to config params of the case."
+    test_user=nfs_test_$$
+    server_dir=/home/nfs_server_$$
+    client_dir=/home/nfs_client_$$
+    LOG_INFO "End to config params of the case."
+}
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
