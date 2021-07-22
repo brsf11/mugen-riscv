@@ -30,6 +30,36 @@
         },
         {
             "name": "oe_test_postgresql-contrib_pg_waldump"
+        },
+        {
+            "name": "oe_test_postgresql-contrib_vacuumlo"
+        },
+        {
+            "name": "oe_test_postgresql_createdb"
+        },
+        {
+            "name": "oe_test_postgresql_createuser01"
+        },
+        {
+            "name": "oe_test_postgresql_createuser02"
+        },
+        {
+            "name": "oe_test_postgresql-devel_ecpg"
+        },
+        {
+            "name": "oe_test_postgresql-devel_pg_config01"
+        },
+        {
+            "name": "oe_test_postgresql-devel_pg_config02"
+        },
+        {
+            "name": "oe_test_postgresql_dropdb-dropuser"
+        },
+        {
+            "name": "oe_test_postgresql_pg_dump01"
+        },
+        {
+            "name": "oe_test_postgresql_vacuumdb"
         }
     ]
 }
