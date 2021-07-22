@@ -59,7 +59,6 @@ END
     expect "Shall the new role be a superuser? (y/n)"
     send "y\n"
     expect eof
-    exit
 END
     CHECK_RESULT $?
     su - postgres -c "psql postgres -tAc \"select * from pg_roles;\" | grep \"testuser17\""
