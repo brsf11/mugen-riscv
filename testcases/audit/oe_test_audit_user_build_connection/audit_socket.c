@@ -24,7 +24,6 @@ void writeLogLine(const char *fileName,const char *content)
 	fclose(fp);
 }
 
-
 int main(void)
 {
 	int fd,len;
@@ -54,7 +53,6 @@ int main(void)
 		return -1;
 	}
 
-
 	(void)memset(&un,0,sizeof(un));
 	un.sun_family=AF_UNIX;
 	(void)strcpy(un.sun_path,"/var/run/audispd_events");
@@ -66,20 +64,13 @@ int main(void)
 		return -1;
 	}
 
-
-
-
-
 	printf("start audisp plugin ok! fd=%d\r\n",fd);
-
 	struct pollfd fds;
 	fds.fd=fd;
 	fds.events=POLLIN;
 	printf("start audit thread now!\r\n");
 	int ind=0;
-	for(ind=0;ind<20;ind++){
-		
-		
+	for(ind=0;ind<20;ind++){		
 		if(poll(&fds,1,1000)>0){
 			int len=0;
 			sleep(2);
@@ -91,11 +82,8 @@ int main(void)
 				writeLogLine("./1.txt",buf);
 				printf("%s\r\n",buf);
 			}
-		}
-		
-		system("echo OK >./wait_poll");
-
-	
+		}		
+		system("echo OK >./wait_poll");	
 	}
 	return 0;
 }
