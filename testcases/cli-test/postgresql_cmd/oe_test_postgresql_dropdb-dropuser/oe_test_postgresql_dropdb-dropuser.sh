@@ -21,12 +21,12 @@ source ../common/lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     postgresql_install
+    su - postgres -c "createdb tempdb"
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    su - postgres -c "createdb tempdb"
     su - postgres -c "dropdb -e tempdb"
     CHECK_RESULT $?
     su - postgres -c "psql postgres -tAc \"\l tempdb;\"" | grep tempdb
