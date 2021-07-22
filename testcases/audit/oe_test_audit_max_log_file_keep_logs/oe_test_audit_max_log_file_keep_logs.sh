@@ -31,15 +31,15 @@ function run_test()
 {
     LOG_INFO "Start to run test."
     for ((i=0;i<10;i++));do
-        old_time=$(stat /var/log/audit/audit.log |grep "Access" | tail -n 1 | awk '{print $2,$3}')
         old_size=$(du -ks /var/log/audit/ | awk '{print $1}')
         old_num=$(find /var/log/audit -maxdepth 1 -name "audit.log*" | wc -l)
+        old=$(ls -i /var/log/audit/audit.log* | tail -n 1 | awk '{print $1}')
         create_logfile
-        new_time=$(stat /var/log/audit/audit.log |grep "Access" | tail -n 1 | awk '{print $2,$3}')
+        new=$(ls -i /var/log/audit/audit.log* | tail -n 1 | awk '{print $1}')
         new_size=$(du -ks /var/log/audit/ | awk '{print $1}')
         new_num=$(find /var/log/audit -maxdepth 1 -name "audit.log*" | wc -l)
         test $(("$new_size" - "$old_size")) -gt 1024 &&{
-        if [[ "$old_time" != "$new_time" && "$old_size" -lt "$new_size" && "$old_num" -le "$new_num" ]]; then
+        if [[ "$old" != "$new" && "$old_size" -lt "$new_size" && "$old_num" -le "$new_num" ]]; then
             break
         else
             CHECK_RESULT 1 0 0 "error"
