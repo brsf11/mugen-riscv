@@ -39,7 +39,7 @@ function run_test()
         new_time=$(stat /var/log/audit/audit.log |grep "Access" | tail -n 1 | awk '{print $2,$3}')
         new_num=$(find /var/log/audit -name "audit.log*" | wc -l)
         log_size=$(du -ks /var/log/audit/audit.log | awk '{print $1}')
-	    test "$log_size" -gt 1024 &&{
+        test "$log_size" -gt 1024 &&{
             	test "$old_time" == "$new_time" && test "$old_size" -lt "$new_size" && test "$old_num" -eq "$new_num" &&{
 				break
 			}
