@@ -1,8 +1,0 @@
-- dbname: openeuler-2009
-  src_db_file: https://repo.openeuler.org/openEuler-20.09/source
-  bin_db_file: https://repo.openeuler.org/openEuler-20.09/everything/aarch64
-  priority: 1
-- dbname: fedora
-  src_db_file: file:///etc/pkgship/repo/fedora/src
-  bin_db_file: file:///etc/pkgship/repo/fedora/bin
-  priority: 2

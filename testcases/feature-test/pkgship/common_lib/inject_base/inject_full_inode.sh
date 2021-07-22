@@ -21,7 +21,7 @@ function inject_full_inode() {
     mkdir $test_dir/testSpace
     i=0
     while [[ "$?" == "0" ]]; do
-        i=$(($i + 1))
+        i=$((i + 1))
         touch $test_dir/testSpace/testsFile$i
     done
 }
