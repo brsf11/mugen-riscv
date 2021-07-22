@@ -32,10 +32,7 @@ function run_test() {
     find-jar easymock | grep "/usr/share/java/easymock.jar"
     CHECK_RESULT $?
 
-    mkdir -p com/example/shade/log4j
-    CHECK_RESULT $?
-    mkdir lib
-    CHECK_RESULT $?
+    mkdir -p com/example/shade/log4j lib
     shade-jar org.apache.log4j com.example.shaded.log4j /usr/share/java/log4j.jar lib/shaded-log4j.jar
     CHECK_RESULT $?
     test -f lib/shaded-log4j.jar

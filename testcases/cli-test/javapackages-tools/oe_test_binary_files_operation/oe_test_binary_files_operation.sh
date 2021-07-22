@@ -40,7 +40,6 @@ function run_test() {
     test -f hello.tar.gz
     CHECK_RESULT $?
     touch exclusion
-    CHECK_RESULT $?
     clean-binary-files -e exclusion -l -a hello.tar.gz >instructions
     CHECK_RESULT $?
     grep "remove hello/" instructions
