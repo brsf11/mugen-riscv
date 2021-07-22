@@ -18,6 +18,7 @@
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
+
 function pre_junit5() {
     DNF_INSTALL junit5
     java_version=$(rpm -qa 'java*' | grep 'java-.*-openjdk' | head -1 | awk -F - '{print $2}')

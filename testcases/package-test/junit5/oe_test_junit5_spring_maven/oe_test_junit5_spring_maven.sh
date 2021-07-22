@@ -18,6 +18,7 @@
 # #############################################
 
 source "../common/lib.sh"
+
 function pre_test() {
     LOG_INFO "Start environment preparation."
     pre_junit5
