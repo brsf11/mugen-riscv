@@ -19,7 +19,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start to run test."
     expect <<-END
-    spawn sqlite3 ../common/test.db
+    spawn sqlite3 ./test.db
     send "CREATE TABLE COMPANY(
           ID INT PRIMARY KEY     NOT NULL,
           NAME           TEXT    NOT NULL,
@@ -28,7 +28,7 @@ function run_test() {
           SALARY         REAL
           );\n"
     expect "sqlite>"
-    send ".output ../common/output.txt\n"
+    send ".output ./output.txt\n"
     expect "sqlite>"
     send ".database\n"
     expect "main"
@@ -38,16 +38,15 @@ function run_test() {
     expect "sqlite>"
     send ".quit\n"
     expect eof
-    exit
 END
-    CHECK_RESULT "$(awk 'NR==1' ../common/output.txt | grep -cE "main")" 1
-    CHECK_RESULT "$(awk 'NR==2' ../common/output.txt)" COMPANY
-    CHECK_RESULT "$(awk 'NR==3' ../common/output.txt | grep -cE "CREATE TABLE COMPANY")" 1
+    CHECK_RESULT "$(awk 'NR==1' ./output.txt | grep -cE "main")" 1
+    CHECK_RESULT "$(awk 'NR==2' ./output.txt)" COMPANY
+    CHECK_RESULT "$(awk 'NR==3' ./output.txt | grep -cE "CREATE TABLE COMPANY")" 1
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -rf ../common/test.db
+    rm -rf ./test.db ./output.txt
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

@@ -20,30 +20,26 @@ function run_test()
 {
     LOG_INFO "Start to run test." 
     expect <<-END
-    spawn sqlite3 test.db
+    spawn sqlite3 ./test.db
     send ".quit"
-    expect eof
-    exit
+    expect eof   
 END
     pwd
     CHECK_RESULT $?
     SLEEP_WAIT 2
     expect <<-END
-    spawn sqlite3 test.db
+    spawn sqlite3 ./test.db
     send ".exit"
     expect eof
-    exit
 END
     pwd
     CHECK_RESULT $? 
-
-
     LOG_INFO "End to run test."
 }
 function post_test()
 {
     LOG_INFO "Start to restore the test environment."
-    rm ../common/test.db
+    rm ./test.db
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

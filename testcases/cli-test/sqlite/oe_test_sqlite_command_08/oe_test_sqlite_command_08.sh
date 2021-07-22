@@ -19,7 +19,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start to run test."
     expect <<-END
-    spawn sqlite3 ../common/test.db
+    spawn sqlite3 ./test.db
     send "CREATE TABLE COMPANY(
           ID INT PRIMARY KEY     NOT NULL,
           NAME           TEXT    NOT NULL,
@@ -32,29 +32,28 @@ function run_test() {
     expect "sqlite>"
     send ".echo on\n"
     expect "sqlite>"
-    send ".output ../common/output.txt\n"
+    send ".output ./output.txt\n"
     expect "sqlite>"
     send "select *from COMPANY;\n"
     expect "sqlite>"
     send ".echo off\n"
     expect "sqlite>"
-    send ".output ../common/output1.txt\n"
+    send ".output ./output1.txt\n"
     expect "sqlite>"
     send "select *from COMPANY;\n"
     expect "sqlite>"
     send ".quit\n"
     expect eof
-    exit
 END
-    CHECK_RESULT "$(wc -l ../common/output.txt | grep -cE "25")" 1
-    CHECK_RESULT "$(grep -cE "select" ../common/output.txt)" 1
-    CHECK_RESULT "$(wc -l ../common/output1.txt | grep -cE "24")" 1
-    CHECK_RESULT "$(grep "select" ../common/output1.txt)" 1
+    CHECK_RESULT "$(wc -l ./output.txt | grep -cE "25")" 1
+    CHECK_RESULT "$(grep -cE "select" ./output.txt)" 1
+    CHECK_RESULT "$(wc -l ./output1.txt | grep -cE "24")" 1
+    CHECK_RESULT "$(grep "select" ./output1.txt)" 1
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -rf ../common/test.db ../common/output*.txt
+    rm -rf ./test.db ./output*.txt
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

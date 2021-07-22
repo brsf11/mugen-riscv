@@ -19,7 +19,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start to run test."
     expect <<-END
-    spawn sqlite3 ../common/test.db
+    spawn sqlite3 ./test.db
     send "CREATE TABLE COMPANY１(
         ID INT PRIMARY KEY     NOT NULL,
         NAME           TEXT    NOT NULL,
@@ -28,7 +28,7 @@ function run_test() {
     expect "sqlite>"
     send "ALTER TABLE COMPANY１ RENAME TO OLD_COMPANY;\n"
     expect "sqlite>"
-    send ".output ../common/output.txt\n"
+    send ".output ./output.txt\n"
     expect "sqlite>"
     send ".table\n"
     expect "sqlite>"
@@ -36,21 +36,20 @@ function run_test() {
     expect "sqlite>"
     send "ALTER TABLE OLD_COMPANY ADD COLUMN SEX char(1);\n"
     expect "sqlite>"
-    send "INSERT INTO OLD_COMPANY VALUES (1, 'Paul', 32, '女');\n"
+    send "INSERT INTO OLD_COMPANY VALUES (1, 'Paul', 32, 'female');\n"
     expect "sqlite>"
     send "select * from OLD_COMPANY;\n"
     expect "sqlite>"
     send ".quit\n"
     expect eof
-    exit
 END
-    CHECK_RESULT "$(grep -cE "OLD_COMPANY" ../common/output.txt)" 1
-    CHECK_RESULT "$(grep -cE "SEX|女" ../common/output.txt)" 2
+    CHECK_RESULT "$(grep -cE "OLD_COMPANY" ./output.txt)" 1
+    CHECK_RESULT "$(grep -cE "SEX|female" ./output.txt)" 2
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -rf ../common/test.db ../common/output.txt
+    rm -rf ./test.db ./output.txt
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

@@ -20,14 +20,14 @@ function run_test()
 {
     LOG_INFO "Start to run test." 
     expect <<-END
-    spawn sqlite3 ../common/test.db
+    spawn sqlite3 ./test.db
     send "CREATE TABLE COMPANY(
           ID INT PRIMARY KEY     NOT NULL,
           NAME           TEXT    NOT NULL,
           AGE            INT     DEFAULT 28
         );\n"
     expect "sqlite>"
-    send ".output ../common/output.txt\n"
+    send ".output ./output.txt\n"
     expect "sqlite>"
     send "INSERT INTO COMPANY (ID,NAME) VALUES (1, 'Paul' );\n"
     expect "sqlite>"
@@ -35,15 +35,14 @@ function run_test()
     expect "sqlite>"
     send ".quit\n"
     expect eof
-    exit
 END
-    CHECK_RESULT "$(grep -cE "28" ../common/output.txt)" 1
+    CHECK_RESULT "$(grep -cE "28" ./output.txt)" 1
     LOG_INFO "End to run test."
 }
 function post_test()
 {
     LOG_INFO "Start to restore the test environment."
-    rm -rf ../common/test.db ../common/output.txt
+    rm -rf ./test.db ./output.txt
     LOG_INFO "End to restore the test environment."
 }
 main "$@"
