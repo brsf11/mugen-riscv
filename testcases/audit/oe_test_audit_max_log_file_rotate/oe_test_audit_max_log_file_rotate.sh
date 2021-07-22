@@ -33,19 +33,19 @@ function run_test()
     old_size=$(du -ks /var/log/audit/ | awk '{print $1}')
     old_num=$(find /var/log/audit -name "audit.log*" | wc -l)
     for ((i=0;i<10;i++));do
-	    create_logfile
-	    new_size=$(du -ks /var/log/audit/ | awk '{print $1}')
-	    test $(("$new_size" - "$old_size")) -gt 1024 &&{
-		new_num=$(find /var/log/audit -name "audit.log*" | wc -l)
-	    	if [ $(("$new_num" - "$old_num")) -ge 1 ]; then
-			break
-		else
-			CHECK_RESULT 1 0 0 "first error"
-			break
-		fi
-	 }
- 	test "$i" -eq 9 &&{
-		CHECK_RESULT 1 0 0 "second error"
+        create_logfile
+        new_size=$(du -ks /var/log/audit/ | awk '{print $1}')
+        test $(("$new_size" - "$old_size")) -gt 1024 &&{
+        new_num=$(find /var/log/audit -name "audit.log*" | wc -l)
+        if [ $(("$new_num" - "$old_num")) -ge 1 ]; then
+            break
+        else
+            CHECK_RESULT 1 0 0 "first error"
+            break
+        fi
+    }
+    test "$i" -eq 9 &&{
+        CHECK_RESULT 1 0 0 "second error"
 	}
     done
 
