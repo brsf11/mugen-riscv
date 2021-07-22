@@ -56,7 +56,7 @@ function run_test()
         new=$(ls -i /var/log/audit/audit.log.1 | awk '{print $1}')
 	    new_time=$(stat /var/log/audit/audit.log.1 |grep "Access" |tail -n 1 | awk '{print $2,$3}')
 	    log_num=$(find /var/log/audit/ -maxdepth 1 -name "audit.log*" |wc -l)
-	    test "$old_time" = "$new_time" && test "$log_num" -eq 2 && test "$old" != "$new" &&{
+	    test "$old_time" = "$new_time" && test "$log_num" -eq 2 && test "$old" -ne "$new" &&{
 	    	break
 	    }  
    	    test "$i" -eq 9 &&{
