@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/nbdkit",
+    "cases": [
+        {
+            "name": "oe_test_nbdkit_01"
+        },
+        {
+            "name": "oe_test_nbdkit_02"
+        },
+        {
+            "name": "oe_test_nbdkit_03"
+        }
+    ]
+}

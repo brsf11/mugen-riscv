@@ -1,0 +1,44 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/multipath-tools",
+    "machine num": 2,
+    "add disk": [
+        4
+    ],
+    "cases": [
+        {
+            "name": "oe_test_multipath-tools_kpartx",
+            "machine num": 2,
+            "add disk": [
+                4
+            ]
+        },
+        {
+            "name": "oe_test_multipath-tools_mpathconf",
+            "machine num": 2,
+            "add disk": [
+                4
+            ]
+        },
+        {
+            "name": "oe_test_multipath-tools_mpathpersist",
+            "machine num": 2,
+            "add disk": [
+                4
+            ]
+        },
+        {
+            "name": "oe_test_multipath-tools_multipath_01",
+            "machine num": 2,
+            "add disk": [
+                4
+            ]
+        },
+        {
+            "name": "oe_test_multipath-tools_multipath_02",
+            "machine num": 2,
+            "add disk": [
+                4
+            ]
+        }
+    ]
+}

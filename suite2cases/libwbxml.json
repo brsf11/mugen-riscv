@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/libwbxml",
+    "cases": [
+        {
+            "name": "oe_test_libwbxml_wbxml2xml"
+        },
+        {
+            "name": "oe_test_libwbxml_xml2wbxml"
+        }
+    ]
+}
