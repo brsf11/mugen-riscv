@@ -46,7 +46,7 @@ function run_test()
     }
     test "$i" -eq 9 &&{
         CHECK_RESULT 1 0 0 "second error"
-	}
+    }
     done
 
     for ((i=0;i<10;i++));do
