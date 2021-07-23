@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
@@ -17,7 +16,7 @@
 # @Desc      :   The usage of commands in ndisc6 package
 # ############################################
 
-source "common_ndisc6.sh"
+source "../common/common_ndisc6.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
@@ -26,26 +25,24 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    tcpspray -4 -v -f echo.c localhost 7 | grep "Sending 102400 bytes"
+    rdnssd -f &
+    kill -9 $(pgrep -w nss)
+    rdnssd -H /etc/rdnssd/merge-hook
     CHECK_RESULT $?
-    tcpspray -6 -f echo.c localhost 7 | grep "Transmitted 102400 bytes"
+    kill -9 $(ps -aux | grep "/etc/rdnssd/merge-hook" | head -n -1 | awk '{print $2}')
+    rdnssd -p /var/run/rdnssd.pid
     CHECK_RESULT $?
-    tcpspray -e -v -f echo.c localhost 7 | grep "Received 102400 bytes"
+    kill -9 $(ps -aux | grep "/var/run/rdnssd.pid" | head -n -1 | awk '{print $2}')
+    rdnssd -r /etc/resolv.conf
     CHECK_RESULT $?
+    kill -9 $(ps -aux | grep "/etc/resolv.conf" | head -n -1 | awk '{print $2}')
+    rdnssd -u nobody
+    CHECK_RESULT $?
+    kill -9 $(ps -aux | grep "rdnssd -u nobody" | head -n -1 | awk '{print $2}')
     ndisc6_version=$(rpm -qa ndisc6 | awk -F '-' '{print $2}')
-    tcpspray -V | grep "${ndisc6_version}"
+    rdnssd -V | grep "${ndisc6_version}"
     CHECK_RESULT $?
-    tcpspray -h | grep tcpspray
-    CHECK_RESULT $?
-    tcpspray6 -4 -v -f echo.c localhost 7 | grep "Sending 102400 bytes"
-    CHECK_RESULT $?
-    tcpspray6 -6 -f echo.c localhost 7 | grep "Transmitted 102400 bytes"
-    CHECK_RESULT $?
-    tcpspray6 -e -v -f echo.c localhost 7 | grep "Received 102400 bytes"
-    CHECK_RESULT $?
-    tcpspray6 -V | grep "${ndisc6_version}"
-    CHECK_RESULT $?
-    tcpspray6 -h | grep tcpspray
+    rdnssd -h | grep rdnssd
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

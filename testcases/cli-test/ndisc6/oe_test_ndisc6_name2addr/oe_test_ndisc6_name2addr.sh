@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
@@ -17,7 +16,7 @@
 # @Desc      :   The usage of commands in ndisc6 package
 # ############################################
 
-source "common_ndisc6.sh"
+source "../common/common_ndisc6.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
@@ -26,26 +25,25 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    addr2name -4 ${NODE1_IPV4} | grep "newlocalhost"
+    name2addr -4 newlocalhost | grep "${NODE1_IPV4}"
     CHECK_RESULT $?
-    addr2name -6 ${NODE1_IPV6} | grep "newlocalhost"
+    name2addr -6 newlocalhost | grep "${NODE1_IPV6}"
     CHECK_RESULT $?
-    addr2name -c ${NODE1_IPV4} | grep "newlocalhost"
+    name2addr -c newlocalhost | grep "${NODE1_NIC[0]}"
     CHECK_RESULT $?
-    addr2name -c ${NODE1_IPV6} | grep "newlocalhost"
+    name2addr -m localhost newlocalhost | grep -E "${NODE1_IPV4}|${NODE1_IPV6}"
     CHECK_RESULT $?
-    addr2name -m ${NODE1_IPV4} ${NODE1_IPV6} | grep "newlocalhost"
+    name2addr -n -r ${NODE1_IPV4} | grep "newlocalhost"
     CHECK_RESULT $?
-    addr2name -n ${NODE1_IPV4} | grep "newlocalhost"
-    CHECK_RESULT $?
-    addr2name -n ${NODE1_IPV6} | grep "newlocalhost"
-    CHECK_RESULT $?
-    addr2name -r newlocalhost | grep "newlocalhost"
+    name2addr -n -r ${NODE1_IPV6} | grep "newlocalhost"
     CHECK_RESULT $?
     ndisc6_version=$(rpm -qa ndisc6 | awk -F '-' '{print $2}')
-    addr2name -V | grep "${ndisc6_version}"
+    name2addr -V | grep "${ndisc6_version}"
     CHECK_RESULT $?
-    addr2name -h | grep "help"
+    name2addr -h | grep "name2addr"
+    CHECK_RESULT $?
+    echo "hello world" >file
+    dnssort -r file | grep "hello world"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

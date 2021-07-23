@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
@@ -17,7 +16,7 @@
 # @Desc      :   The usage of commands in ndisc6 package
 # ############################################
 
-source "common_ndisc6.sh"
+source "../common/common_ndisc6.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
@@ -26,18 +25,20 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    rdisc6 -q ${NODE2_IPV6} ${NODE2_NIC[0]} | grep "Soliciting"
-    CHECK_RESULT $? 0 1
-    rdisc6 -r 5 ${NODE2_IPV6} ${NODE2_NIC[0]} | tail -n +2 | head -n -1 | wc -l | grep 5
+    ndisc6 -1 -r 3 -w 1000 ${NODE2_IPV6} ${NODE2_NIC[0]} | grep -i "${NODE2_MAC}"
     CHECK_RESULT $?
-    /usr/bin/time -o runtime rdisc6 -r 1 -w 2000 ${NODE2_IPV6} ${NODE2_NIC[0]}
-    CHECK_RESULT $? 0 1
-    grep "0:02.00" runtime
+    ndisc6 -m -r 3 -w 1000 ${NODE2_IPV6} ${NODE2_NIC[0]} | grep -i "${NODE2_MAC}"
+    CHECK_RESULT $?
+    ndisc6 -n -r 3 -w 1000 ${NODE2_IPV6} ${NODE2_NIC[0]} | grep -i "${NODE2_MAC}"
+    CHECK_RESULT $?
+    ndisc6 -q -r 3 -w 1000 ${NODE2_IPV6} ${NODE2_NIC[0]} | grep -i "${NODE2_MAC}"
     CHECK_RESULT $?
     ndisc6_version=$(rpm -qa ndisc6 | awk -F '-' '{print $2}')
-    rdisc6 -V | grep "${ndisc6_version}"
+    ndisc6 -V | grep "${ndisc6_version}"
     CHECK_RESULT $?
-    rdisc6 -h | grep "rdisc6"
+    ndisc6 -v -r 3 -w 1000 ${NODE2_IPV6} ${NODE2_NIC[0]} | grep -i "${NODE2_MAC}"
+    CHECK_RESULT $?
+    ndisc6 -h | grep "ndisc6"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

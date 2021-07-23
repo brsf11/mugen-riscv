@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
@@ -17,7 +16,7 @@
 # @Desc      :   The usage of commands in ndisc6 package
 # ############################################
 
-source "common_ndisc6.sh"
+source "../common/common_ndisc6.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
@@ -26,25 +25,26 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    name2addr -4 newlocalhost | grep "${NODE1_IPV4}"
+    tcpspray -4 -v -f echo.c localhost 7 | grep "Sending 102400 bytes"
     CHECK_RESULT $?
-    name2addr -6 newlocalhost | grep "${NODE1_IPV6}"
+    tcpspray -6 -f echo.c localhost 7 | grep "Transmitted 102400 bytes"
     CHECK_RESULT $?
-    name2addr -c newlocalhost | grep "${NODE1_NIC[0]}"
-    CHECK_RESULT $?
-    name2addr -m localhost newlocalhost | grep -E "${NODE1_IPV4}|${NODE1_IPV6}"
-    CHECK_RESULT $?
-    name2addr -n -r ${NODE1_IPV4} | grep "newlocalhost"
-    CHECK_RESULT $?
-    name2addr -n -r ${NODE1_IPV6} | grep "newlocalhost"
+    tcpspray -e -v -f echo.c localhost 7 | grep "Received 102400 bytes"
     CHECK_RESULT $?
     ndisc6_version=$(rpm -qa ndisc6 | awk -F '-' '{print $2}')
-    name2addr -V | grep "${ndisc6_version}"
+    tcpspray -V | grep "${ndisc6_version}"
     CHECK_RESULT $?
-    name2addr -h | grep "name2addr"
+    tcpspray -h | grep tcpspray
     CHECK_RESULT $?
-    echo "hello world" >file
-    dnssort -r file | grep "hello world"
+    tcpspray6 -4 -v -f echo.c localhost 7 | grep "Sending 102400 bytes"
+    CHECK_RESULT $?
+    tcpspray6 -6 -f echo.c localhost 7 | grep "Transmitted 102400 bytes"
+    CHECK_RESULT $?
+    tcpspray6 -e -v -f echo.c localhost 7 | grep "Received 102400 bytes"
+    CHECK_RESULT $?
+    tcpspray6 -V | grep "${ndisc6_version}"
+    CHECK_RESULT $?
+    tcpspray6 -h | grep tcpspray
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
