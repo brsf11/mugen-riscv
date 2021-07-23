@@ -31,21 +31,21 @@ function run_test()
     LOG_INFO "Start to run test."
     service auditd restart
     auditctl -D
-    CHECK_RESULT $? 0 0 "failed"
+    CHECK_RESULT $? 0 0 "delete failed"
     auditctl -a always,exit -S all -F uid="${uid}" -k syscall
-    CHECK_RESULT $? 0 0 "failed"
+    CHECK_RESULT $? 0 0 "add failed"
     auditctl -l | grep -e "-a always,exit -S all -F uid=${uid}"
-    CHECK_RESULT $? 0 0 "failed"
+    CHECK_RESULT $? 0 0 "grep failed"
     auditctl -A never,task
-    CHECK_RESULT $? 0 0 "failed"
+    CHECK_RESULT $? 0 0 "add second failed"
     auditctl -l | grep -e "-a never,task"
-    CHECK_RESULT $? 0 0 "failed"
+    CHECK_RESULT $? 0 0 "grep second failed"
     starttime=$(date +%T)
     su - Jevons -c "pwd"
     CHECK_RESULT $? 0 0 "failed"
     endtime=$(date +%T)
     ausearch -k syscall -ts ${starttime} -te ${endtime} -x pwd
-    CHECK_RESULT $? 1 0 "failed"
+    CHECK_RESULT $? 1 0 "ausearch failed"
     LOG_INFO "End to run test."
 }
 
