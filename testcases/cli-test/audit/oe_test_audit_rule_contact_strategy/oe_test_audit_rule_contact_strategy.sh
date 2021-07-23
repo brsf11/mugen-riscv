@@ -36,7 +36,7 @@ function run_test()
     for ((i=0;i<10;i++)); do
 	    starttime=$(date +%T)
 	    cat /etc/passwd
-	    CHECK_RESULT $?
+	    CHECK_RESULT $? 0 0 "cat failed"
 	    endtime=$(date +%T)
 	    ausearch -k head -ts "${starttime}" -te "${endtime}" -x cat
 	    head_ret=$?
@@ -49,7 +49,7 @@ function run_test()
  	    fi
     done
     if [ $i -eq 10 ]; then
-	   CHECK_RESULT 1 0 0 "error"
+	   CHECK_RESULT 1 0 0 "contact error"
     fi 
     LOG_INFO "End to run test."
 }
@@ -57,7 +57,6 @@ function post_test()
 {
     LOG_INFO "Start to restore the test environment."
     auditctl -D
-
     LOG_INFO "End to restore the test environment."
 }
 
