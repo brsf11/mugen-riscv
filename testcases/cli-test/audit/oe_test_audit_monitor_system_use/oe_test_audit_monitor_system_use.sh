@@ -19,14 +19,18 @@
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
+function pre_test(){
+    LOG_INFO "Start to prepare the test environment."
+    useradd Jevons
+    uid=$(id -u Jevons)
+    LOG_INFO "End to prepare the environment"
+}
 function run_test()
 {
     LOG_INFO "Start to run test."
     service auditd restart
     auditctl -D
     CHECK_RESULT $? 0 0 "clean failed"
-    useradd Jevons
-    uid=$(id -u Jevons)
     auditctl -a always,exit -S all -F uid="${uid}" -k syscall
     CHECK_RESULT $? 0 0 "add rule failed"
     auditctl -l | grep -e "-a always,exit -S all -F uid=${uid}"
