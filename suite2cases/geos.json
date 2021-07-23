@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/geos",
+    "cases": [
+        {
+            "name": "oe_test_geos_commandAndbaseFun"
+        }
+    ]
+}
