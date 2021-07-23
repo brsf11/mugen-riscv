@@ -41,7 +41,7 @@ function run_test()
 	    fi
     done
     if [[ $i -eq 10 ]];then 
-	    CHECK_RESULT $? 0 0 "error"
+	    CHECK_RESULT $? 0 0 "monitor file access error"
     fi
     LOG_INFO "End to run test."
 }
