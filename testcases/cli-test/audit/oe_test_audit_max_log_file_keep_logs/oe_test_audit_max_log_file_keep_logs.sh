@@ -46,7 +46,6 @@ function run_test()
                 CHECK_RESULT 1 0 0 "keep_logs error"
             }
         fi		
-	    
         }
     done
     LOG_INFO "End to run test."
