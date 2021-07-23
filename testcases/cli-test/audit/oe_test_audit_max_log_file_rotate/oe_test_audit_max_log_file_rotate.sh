@@ -50,11 +50,9 @@ function run_test()
     done
 
     for ((i=0;i<10;i++));do
-	    old_time=$(stat /var/log/audit/audit.log |grep "Access" |tail -n 1 | awk '{print $2,$3}')
         old=$(ls -i /var/log/audit/audit.log | awk '{print $1}')
 	    create_logfile
         new=$(ls -i /var/log/audit/audit.log.1 | awk '{print $1}')
-	    new_time=$(stat /var/log/audit/audit.log.1 |grep "Access" |tail -n 1 | awk '{print $2,$3}')
 	    log_num=$(find /var/log/audit/ -maxdepth 1 -name "audit.log*" |wc -l)
 	    test "$log_num" -eq 2 && test "$old" -ne "$new" &&{
 	    	break
