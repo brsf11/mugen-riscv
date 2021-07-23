@@ -20,15 +20,19 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL memcached
+    systemctl start memcached
     LOG_INFO "End to prepare the test environment."
 }
 function run_test() {
     LOG_INFO "Start to run test."
     memcached -d start -u root
     CHECK_RESULT $?
+    ps -ef | grep memcached
+    CHECK_RESULT $?
     memcached -d shutdown -u root
     CHECK_RESULT $?
     memcached -d restart -u root
+    CHECK_RESULT $?
     CHECK_RESULT $?
     memcached -d uninstall -u root
     CHECK_RESULT $?
@@ -40,13 +44,15 @@ function run_test() {
     CHECK_RESULT $?
     memcached -d -l 127.0.0.1 -u root
     CHECK_RESULT $?
-    memcached -d -m 2048 -l 127.0.0.1 -p 11211 -u root
+    memcached -d -m 1024 -l 127.0.0.1 -p 11211 -u root
     CHECK_RESULT $?
-    
+    memcached-tool 127.0.0.1:11211 settings |grep "maxconns        1024"
+    CHECK_RESULT $?  
     LOG_INFO "End to run test."
 }
 function post_test() {
     LOG_INFO "Start to restore the test environment."
+    systemctl stop memcached
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
