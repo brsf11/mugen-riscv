@@ -35,7 +35,7 @@ function run_test()
     endtime=$(date +%T)
     SLEEP_WAIT 1
     ausearch -ts "${starttime}" -te "${endtime}" -f /opt -k opt_changes
-    CHECK_RESULT $? 
+    CHECK_RESULT $? 0 0 "ausearch failed"
     LOG_INFO "End to run test."
 }
 function post_test()
