@@ -64,7 +64,6 @@ function run_test()
 function post_test()
 {
     LOG_INFO "Start to restore the test environment."
-    kill ${pid}
     rm -rf log 1.txt audit_socket /home/test wait_poll
     sed -i 's/active = yes/active = no/g' "${path}"
     service auditd restart
