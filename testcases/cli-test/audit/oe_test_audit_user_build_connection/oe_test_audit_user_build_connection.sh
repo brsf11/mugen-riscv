@@ -27,20 +27,17 @@ function pre_test()
     service auditd restart
     DNF_INSTALL gcc
     gcc -o audit_socket audit_socket.c
+    touch /home/test
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test()
 {
     LOG_INFO "Start to run test."
-    path=$(find / -name af_unix.conf)
-    sed -i 's/active = no/active = yes/g' "${path}"
-    CHECK_RESULT $? 0 0 "change failed" 
     nohup unbuffer ./audit_socket >log 2>&1 &
     SLEEP_WAIT 1
     cat log | grep "start audit thread now!"
     CHECK_RESULT $? 0 0 "grep failed"
-    touch /home/test
     auditctl -w /home/test -p a
     {
     chmod 777 /home/test
