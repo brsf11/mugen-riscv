@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 ####################################
 #@Author        :   wangjingfeng
 #@Contact       :   1136232498@qq.com
@@ -63,8 +62,7 @@ function post_test() {
     LOG_INFO "Start to restore the test environment."
 
     DNF_REMOVE
-    rm -rf ./geos_test
-    rm -rf /tmp/geosfile
+    rm -rf ./geos_test /tmp/geosfile
 
     LOG_INFO "End to restore the test environment."
 }

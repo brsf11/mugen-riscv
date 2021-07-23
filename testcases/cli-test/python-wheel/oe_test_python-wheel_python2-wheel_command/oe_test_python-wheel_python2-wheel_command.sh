@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 ####################################
 #@Author        :   wangjingfeng
 #@Contact       :   1136232498@qq.com
@@ -33,6 +32,7 @@ function pre_test() {
     )
     DNF_INSTALL "python2-wheel python2-pyxdg python2-keyring"
     pip2 install keyrings.alt
+    wheelpy=$(python2 -V 2>&1 | awk '{print $2}' | awk -F '.' '{print $1"."$2}')
 
     LOG_INFO "End to prepare the test environment."
 }
@@ -40,7 +40,6 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start to run test."
 
-    wheelpy=$(python2 -V 2>&1 | awk '{print $2}' | awk -F '.' '{print $1"."$2}')
     wheel-2 -h | grep "usage"
     CHECK_RESULT $? 0 0 "wheel-2 -h execution failed."
     wheel-2 --help | grep "usage"
@@ -86,9 +85,7 @@ function post_test() {
     rm -rf "$(which wjfexe)"
     pip2 uninstall wjfpkg -y
     DNF_REMOVE
-    rm -rf "${testpath}"
-    rm -rf wjfpkg-1.0-py"${wheelpy}"-none-any.whl
-    rm -rf wjfpkg-1.0
+    rm -rf "${testpath}" wjfpkg-1.0-py"${wheelpy}"-none-any.whl wjfpkg-1.0
 
     LOG_INFO "End to restore the test environment."
 }

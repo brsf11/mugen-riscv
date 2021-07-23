@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 ####################################
 #@Author        :   wangjingfeng
 #@Contact       :   1136232498@qq.com
@@ -35,6 +34,7 @@ function pre_test() {
     if [ "$(expr $(rpm -q python3-wheel | awk -F '-' '{print $3}' | awk -F '.' '{print $1"."$2}') \>= 0.32)" -eq 0 ]; then
         pre_env_old_version
     fi
+    wheelpy=$(python3 -V | awk '{print $2}' | awk -F '.' '{print $1"."$2}')
 
     LOG_INFO "End to prepare the test environment."
 }
@@ -42,7 +42,6 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start to run test."
 
-    wheelpy=$(python3 -V | awk '{print $2}' | awk -F '.' '{print $1"."$2}')
     wheel-3 -h | grep "usage"
     CHECK_RESULT $? 0 0 "wheel-3 -h execution failed."
     wheel-3 --help | grep "usage"
@@ -69,8 +68,7 @@ function post_test() {
         clean_new_version
     fi
     DNF_REMOVE
-    rm -rf "${testpath}"
-    rm -rf wjfpkg-1.0
+    rm -rf "${testpath}" wjfpkg-1.0
 
     LOG_INFO "End to restore the test environment."
 }
