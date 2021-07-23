@@ -37,7 +37,7 @@ function run_test() {
     CHECK_RESULT $?
     memcached -d -p 11211 -f 1.5 -u root -I 524288
     CHECK_RESULT $?
-    memcached-tool 127.0.0.1:11211 stats | grep "hash_bytes      524288"
+    memcached-tool 127.0.0.1:11211 stats | grep "hash_bytes.*524288"
     CHECK_RESULT $?
     memcached-tool 127.0.0.1:11211 display | grep "Item_Size"
     CHECK_RESULT $?

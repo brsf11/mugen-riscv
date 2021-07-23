@@ -46,7 +46,7 @@ function run_test() {
     CHECK_RESULT $?
     memcached -d -m 1024 -l 127.0.0.1 -p 11211 -u root
     CHECK_RESULT $?
-    memcached-tool 127.0.0.1:11211 settings |grep "maxconns        1024"
+    memcached-tool 127.0.0.1:11211 settings |grep "maxconns.*1024"
     CHECK_RESULT $?  
     LOG_INFO "End to run test."
 }
