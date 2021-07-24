@@ -1,0 +1,97 @@
+spawn ssh testuser@172.168.128.35
+
+Authorized users only. All activities may be monitored and reported.
+testuser@172.168.128.35's password: 
+
+Authorized users only. All activities may be monitored and reported.
+Last failed login: Sat Jul 24 10:03:56 UTC 2021 from 172.168.128.35 on ssh:notty
+There were 66 failed login attempts since the last successful login.
+
+
+Welcome to 4.19.90-2106.3.0.0095.oe1.x86_64
+
+System information as of time: 	Sat Jul 24 10:53:17 UTC 2021
+
+System load: 	[0;33;40m0.05[0m
+Processes: 	90
+Memory used: 	3.7%
+Swap used: 	0.0%
+Usage On: 	7%
+IP address: 	172.168.128.35
+Users online: 	2
+
+
+
+]0;testuser@localhost:~[testuser@localhost ~]$ spawn ssh testuser@172.168.128.35
+
+Authorized users only. All activities may be monitored and reported.
+testuser@172.168.128.35's password: 
+
+Authorized users only. All activities may be monitored and reported.
+Last failed login: Sat Jul 24 10:03:56 UTC 2021 from 172.168.128.35 on ssh:notty
+There were 66 failed login attempts since the last successful login.
+
+
+Welcome to 4.19.90-2106.3.0.0095.oe1.x86_64
+
+System information as of time: 	Sat Jul 24 10:55:16 UTC 2021
+
+System load: 	[0;33;40m0.00[0m
+Processes: 	90
+Memory used: 	3.7%
+Swap used: 	0.0%
+Usage On: 	7%
+IP address: 	172.168.128.35
+Users online: 	2
+
+
+
+]0;testuser@localhost:~[testuser@localhost ~]$ spawn ssh testuser@172.168.128.35
+
+Authorized users only. All activities may be monitored and reported.
+testuser@172.168.128.35's password: 
+
+Authorized users only. All activities may be monitored and reported.
+Last failed login: Sat Jul 24 10:03:56 UTC 2021 from 172.168.128.35 on ssh:notty
+There were 66 failed login attempts since the last successful login.
+
+
+Welcome to 4.19.90-2106.3.0.0095.oe1.x86_64
+
+System information as of time: 	Sat Jul 24 10:56:03 UTC 2021
+
+System load: 	[0;33;40m0.00[0m
+Processes: 	91
+Memory used: 	3.7%
+Swap used: 	0.0%
+Usage On: 	7%
+IP address: 	172.168.128.35
+Users online: 	2
+
+
+
+]0;testuser@localhost:~[testuser@localhost ~]$ spawn ssh testuser@172.168.128.35
+
+Authorized users only. All activities may be monitored and reported.
+testuser@172.168.128.35's password: 
+
+Authorized users only. All activities may be monitored and reported.
+Last failed login: Sat Jul 24 10:03:56 UTC 2021 from 172.168.128.35 on ssh:notty
+There were 66 failed login attempts since the last successful login.
+
+
+Welcome to 4.19.90-2106.3.0.0095.oe1.x86_64
+
+System information as of time: 	Sat Jul 24 10:58:35 UTC 2021
+
+System load: 	[0;33;40m0.01[0m
+Processes: 	91
+Memory used: 	3.7%
+Swap used: 	0.0%
+Usage On: 	7%
+IP address: 	172.168.128.35
+Users online: 	2
+
+
+
+]0;testuser@localhost:~[testuser@localhost ~]$ 
