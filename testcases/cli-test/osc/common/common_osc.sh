@@ -29,9 +29,15 @@ user=test666
 pass=test666@123
 EOF
     branches_path=home:test666:branches:openEuler:Mainline
+    currentDir=$(
+        cd "$(dirname $0)" || exit 1
+        pwd
+    )
 }
 
 function clear_env() {
+    cd $currentDir || exit 1
+    rm -rf $branches_path
     rm -f /root/.oscrc
     DNF_REMOVE
 }

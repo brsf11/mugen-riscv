@@ -27,6 +27,9 @@ function config_params() {
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL oemaker
+    os_name=$(grep '^NAME=' /etc/os-release | awk -F '=' '{print $NF}' | tr -d '"')
+    os_version=$(grep '^VERSION_ID=' /etc/os-release | awk -F '=' '{print $NF}' | tr -d '"')
+    repo_address=$(grep -i 'everything' /etc/yum.repos.d/openEuler.repo | grep -v name | grep 'baseurl' | awk -F '=' '{print $NF}')
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -34,9 +37,6 @@ function run_test() {
     LOG_INFO "Start to run test."
     oemaker -h | grep 'Usage'
     CHECK_RESULT $?
-    os_name=$(cat /etc/os-release | grep '^NAME=' | awk -F '=' '{print $NF}' | tr -d '"')
-    os_version=$(cat /etc/os-release | grep '^VERSION_ID=' | awk -F '=' '{print $NF}' | tr -d '"')
-    repo_address=$(cat /etc/yum.repos.d/openEuler.repo | grep -i 'everything' | grep -v name | grep 'baseurl' | awk -F '=' '{print $NF}')
     oemaker -t standard -p ${os_name} -v ${os_version} -r '' -s ${repo_address}
     CHECK_RESULT $?
     test -f /result/${os_name}-${os_version}-${NODE1_FRAME}-dvd.iso

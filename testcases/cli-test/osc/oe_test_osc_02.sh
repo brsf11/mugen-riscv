@@ -16,7 +16,7 @@
 #@Desc          :   OSC is a command line tool based on OBS, which is equivalent to the interface of OBS.
 #####################################
 
-source "common_osc.sh"
+source "common/common_osc.sh"
 
 function config_params() {
     LOG_INFO "Start to config params of the case."
@@ -53,14 +53,13 @@ function run_test() {
     nohup osc patchinfo >osc_patchinfo.log 2>&1 &
     SLEEP_WAIT 3 "grep 'patchinfo' osc_patchinfo.log" 2
     CHECK_RESULT $?
+    osc rdelete $branches_path patchinfo -m "delete package_patchinfo"
+    osc rdelete $branches_path xzz -m "delete package_xzz"
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    osc rdelete $branches_path patchinfo -m "delete package_patchinfo"
-    osc rdelete $branches_path xzz -m "delete package_xzz"
-    rm -rf ../$branches_path
     clear_env
     LOG_INFO "End to restore the test environment."
 }

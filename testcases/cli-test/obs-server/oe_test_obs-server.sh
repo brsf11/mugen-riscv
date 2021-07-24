@@ -56,6 +56,8 @@ function run_test() {
     nohup obsworker start >obsworker.log 2>&1 &
     SLEEP_WAIT 3 "grep 'http://localhost:5252/getworkercode' obsworker.log" 2
     CHECK_RESULT $?
+    kill -9 $(pgrep -f obsworker)
+    CHECK_RESULT $?
 
     command_list=$(rpm -ql obs-server | grep bin | grep rcobs*)
     for command in $command_list; do

@@ -16,7 +16,7 @@
 #@Desc          :   OSC is a command line tool based on OBS, which is equivalent to the interface of OBS.
 #####################################
 
-source "common_osc.sh"
+source "common/common_osc.sh"
 
 function config_params() {
     LOG_INFO "Start to config params of the case."
@@ -29,6 +29,7 @@ function pre_test() {
     DNF_INSTALL osc
     osc checkout $branches_path | grep 'revision'
     cd $branches_path || exit 1
+    user_name=$(cat /root/.oscrc | grep user | awk -F '=' '{print $NF}')
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -38,7 +39,6 @@ function run_test() {
     osc commit -m "create new package" | grep 'Sending'
     osc token
     CHECK_RESULT $?
-    user_name=$(cat /root/.oscrc | grep user | awk -F '=' '{print $NF}')
     osc whois | grep "$user_name"
     CHECK_RESULT $?
     osc copypac openEuler:Mainline glibc $branches_path glibc | grep 'comment'
@@ -62,16 +62,15 @@ function run_test() {
     CHECK_RESULT $?
     osc pdiff
     CHECK_RESULT $?
+    cd .. || exit 1
+    osc rdelete $branches_path glibc -m "delete package_glibc"
+    osc rdelete $branches_path xzz -m "delete package_xzz"
+    osc commit -n
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    cd .. || exit 1
-    osc rdelete $branches_path glibc -m "delete package_glibc"
-    osc rdelete $branches_path xzz -m "delete package_xzz"
-    osc commit -n
-    rm -rf ../$branches_path
     clear_env
     LOG_INFO "End to restore the test environment."
 }

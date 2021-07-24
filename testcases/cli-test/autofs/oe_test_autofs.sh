@@ -16,7 +16,7 @@
 #@Desc          :   Autofs is a program that can automatically load the specified directory as needed.
 #####################################
 
-source "common_autofs.sh"
+source "common/common_autofs.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."

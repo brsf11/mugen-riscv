@@ -16,7 +16,7 @@
 #@Desc          :   osc build
 #####################################
 
-source "common_osc.sh"
+source "common/common_osc.sh"
 
 function config_params() {
     LOG_INFO "Start to config params of the case."
@@ -100,7 +100,7 @@ function post_test() {
     rm -f testlog*
     cd .. || exit 1
     osc rdelete $branches_path chrpath -m "delete package_chrpath" --force
-    rm -rf ../$branches_path /root/osc/
+    rm -rf /root/osc/
     clear_env
     LOG_INFO "End to restore the test environment."
 }

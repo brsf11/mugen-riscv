@@ -16,7 +16,7 @@
 #@Desc          :   OSC is a command line tool based on OBS, which is equivalent to the interface of OBS.
 #####################################
 
-source "common_osc.sh"
+source "common/common_osc.sh"
 
 function config_params() {
     LOG_INFO "Start to config params of the case."
@@ -61,14 +61,13 @@ function run_test() {
     CHECK_RESULT $?
     osc commit -n | grep 'Committed revision'
     CHECK_RESULT $?
+    osc del 3.txt 4.txt
+    osc commit -n
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    osc del 3.txt 4.txt
-    osc commit -n
-    rm -rf ../../$branches_path
     clear_env
     LOG_INFO "End to restore the test environment."
 }
