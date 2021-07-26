@@ -29,19 +29,19 @@ function run_test() {
     LOG_INFO "Start testing..."
     javac -cp ../common/junit-platform-console-standalone-1.6.2.jar -d . TestJunit5.java
     CHECK_RESULT $?
-    java -jar ../common/junit-platform-console-standalone-1.6.2.jar -cp ./ --class-path . --scan-class-path >result
+    java -jar ../common/junit-platform-console-standalone-1.6.2.jar -cp ./ --class-path . --scan-class-path >/tmp/result
     CHECK_RESULT $?
-    grep '14 tests successful' result
+    grep '14 tests successful' /tmp/result
     CHECK_RESULT $?
-    grep '0 tests failed' result
+    grep '0 tests failed' /tmp/result
     CHECK_RESULT $?
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    clean_junit5
-    rm -rf com result
+    DNF_REMOVE
+    rm -rf com /tmp/result
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"

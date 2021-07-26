@@ -29,21 +29,21 @@ function run_test() {
     LOG_INFO "Start testing..."
     javac -cp ../common/junit-platform-console-standalone-1.6.2.jar -d . TestJunit5.java
     CHECK_RESULT $?
-    java -jar ../common/junit-platform-console-standalone-1.6.2.jar -cp ./ --class-path . --scan-class-path >java_result
+    java -jar ../common/junit-platform-console-standalone-1.6.2.jar -cp ./ --class-path . --scan-class-path >/tmp/java_result
     CHECK_RESULT $? 1
-    diff java_return java_result | grep '<'
+    diff java_return /tmp/java_result | grep '<'
     CHECK_RESULT $? 0 1
-    grep 'TestC() is @Disabled' java_result
+    grep 'TestC() is @Disabled' /tmp/java_result
     CHECK_RESULT $?
-    grep 'TestD() timed out after 1 second' java_result
+    grep 'TestD() timed out after 1 second' /tmp/java_result
     CHECK_RESULT $?
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    clean_junit5
-    rm -rf com java_result
+    DNF_REMOVE
+    rm -rf com /tmp/java_result
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"

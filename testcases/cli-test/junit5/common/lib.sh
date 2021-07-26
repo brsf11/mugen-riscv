@@ -34,10 +34,6 @@ function pre_maven() {
     export PATH=$PATH:$MAVEN_HOME
 }
 
-function clean_junit5() {
-    DNF_REMOVE
-}
-
 function clean_maven() {
     DNF_REMOVE
     source /etc/profile >/dev/null

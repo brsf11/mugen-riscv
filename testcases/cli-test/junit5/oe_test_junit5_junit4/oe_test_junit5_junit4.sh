@@ -23,6 +23,12 @@ function pre_test() {
     LOG_INFO "Start environment preparation."
     pre_junit5
     pre_maven
+    mkdir -p junit5-junit4/src/test/java/com/example/project/
+    mkdir -p junit5-junit4/src/main/java/com/example/project/
+    cp pom.xml junit5-junit4
+    cp JUnit4Test.java junit5-junit4/src/test/java/com/example/project/
+    cp JUnit5Test.java junit5-junit4/src/test/java/com/example/project/
+    cd junit5-junit4 || exit 1
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -30,17 +36,11 @@ function run_test() {
     LOG_INFO "Start testing..."
     mvn -version
     CHECK_RESULT $?
-    mkdir -p junit5-junit4/src/test/java/com/example/project/
-    mkdir -p junit5-junit4/src/main/java/com/example/project/
-    cp pom.xml junit5-junit4
-    cp JUnit4Test.java junit5-junit4/src/test/java/com/example/project/
-    cp JUnit5Test.java junit5-junit4/src/test/java/com/example/project/
-    cd junit5-junit4 || exit 1
-    mvn test >result
+    mvn test >/tmp/result
     CHECK_RESULT $?
-    grep 'Tests run: 2, Failures: 0, Errors: 0' result
+    grep 'Tests run: 2, Failures: 0, Errors: 0' /tmp/result
     CHECK_RESULT $?
-    grep 'BUILD SUCCESS' result
+    grep 'BUILD SUCCESS' /tmp/result
     CHECK_RESULT $?
     cd - || exit 1
     LOG_INFO "Finish test!"
@@ -48,9 +48,9 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    clean_junit5
+    DNF_REMOVE
     clean_maven
-    rm -rf junit5-junit4 result
+    rm -rf junit5-junit4 /tmp/result
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"

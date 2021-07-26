@@ -28,6 +28,11 @@ function pre_test() {
     export JAVA_HOME PATH
     export GRADLE_HOME=usr/share/gradle
     export PATH=$PATH:$GRADLE_HOME
+    mkdir -p junit5-gradle/src/test/java/com/example/project/
+    mkdir -p junit5-gradle/src/main/java/com/example/project/
+    cp build.gradle junit5-gradle
+    cp SecondTest.java junit5-gradle/src/test/java/com/example/project/
+    cd junit5-gradle || exit 1
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -35,11 +40,6 @@ function run_test() {
     LOG_INFO "Start testing..."
     gradle -version
     CHECK_RESULT $?
-    mkdir -p junit5-gradle/src/test/java/com/example/project/
-    mkdir -p junit5-gradle/src/main/java/com/example/project/
-    cp build.gradle junit5-gradle
-    cp SecondTest.java junit5-gradle/src/test/java/com/example/project/
-    cd junit5-gradle || exit 1
     gradle build >/tmp/gradle_result &
     wait
     sleep 1
@@ -53,7 +53,6 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    clean_junit5
     DNF_REMOVE
     rm -rf junit5-gradle /tmp/gradle_result
     source /etc/profile >/dev/null

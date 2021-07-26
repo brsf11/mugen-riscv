@@ -29,6 +29,12 @@ function pre_test() {
     export ANT_HOME=/usr/share/ant
     export PATH=$PATH:$ANT_HOME/bin
     cp ../common/junit-platform-console-standalone-1.6.2.jar /usr/share/ant/lib/
+    mkdir -p junit5_ant/src/test/java/com/example/project/
+    mkdir -p junit5_ant/src/main/java/com/example/project/
+    cp Calculator.java junit5_ant/src/main/java/com/example/project/
+    cp CalculatorTests.java junit5_ant/src/test/java/com/example/project/
+    cp build.xml junit5_ant
+    cd junit5_ant || exit 1
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -36,12 +42,6 @@ function run_test() {
     LOG_INFO "Start testing..."
     ant -version
     CHECK_RESULT $?
-    mkdir -p junit5_ant/src/test/java/com/example/project/
-    mkdir -p junit5_ant/src/main/java/com/example/project/
-    cp Calculator.java junit5_ant/src/main/java/com/example/project/
-    cp CalculatorTests.java junit5_ant/src/test/java/com/example/project/
-    cp build.xml junit5_ant
-    cd junit5_ant || exit 1
     ant test >/tmp/ant_result &
     wait
     grep '1 tests successful' /tmp/ant_result
@@ -54,7 +54,6 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    clean_junit5
     DNF_REMOVE
     rm -rf junit5_ant /tmp/ant_result
     source /etc/profile >/dev/null

@@ -23,7 +23,6 @@ public class TestJunit5 {
     @Test
     void TestB() {
         Person person = new Person().getDefaultPerson();
-        String firstName = person.getFirstName();
         assertAll("person",
                 () -> assertEquals("John", person.getFirstName()),
                 () -> assertEquals("Doe", person.getLastName())

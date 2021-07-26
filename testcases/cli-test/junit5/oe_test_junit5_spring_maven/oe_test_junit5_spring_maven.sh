@@ -24,6 +24,11 @@ function pre_test() {
     pre_junit5
     DNF_INSTALL "springframework springframework-test"
     pre_maven
+    mkdir -p junit5-spring/src/test/java/com/example/springjunit5
+    mkdir -p junit5-spring/src/test/java/com/example/springjunit5
+    cp pom.xml junit5-spring
+    cp SpringJunit5ApplicationTests.java junit5-spring/src/test/java/com/example/springjunit5/
+    cd junit5-spring || exit 1
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -31,13 +36,8 @@ function run_test() {
     LOG_INFO "Start testing..."
     mvn -version
     CHECK_RESULT $?
-    mkdir -p junit5-spring/src/test/java/com/example/springjunit5
-    mkdir -p junit5-spring/src/test/java/com/example/springjunit5
-    cp pom.xml junit5-spring
-    cp SpringJunit5ApplicationTests.java junit5-spring/src/test/java/com/example/springjunit5/
-    cd junit5-spring || exit 1
-    mvn test >result
-    grep 'BUILD SUCCESS' result
+    mvn test >/tmp/result
+    grep 'BUILD SUCCESS' /tmp/result
     CHECK_RESULT $?
     cd - || exit 1
     LOG_INFO "Finish test!"
@@ -45,7 +45,6 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    clean_junit5
     DNF_REMOVE
     clean_maven
     LOG_INFO "Finish environment cleanup!"

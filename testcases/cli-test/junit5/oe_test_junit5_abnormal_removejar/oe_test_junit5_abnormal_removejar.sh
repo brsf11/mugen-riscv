@@ -41,8 +41,8 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    clean_junit5
-    rm -rf com tmp
+    DNF_REMOVE
+    rm -rf com
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"
