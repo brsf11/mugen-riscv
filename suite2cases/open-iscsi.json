@@ -1,0 +1,14 @@
+{
+    "path": "\"${OET_PATH}\"/testcases/cli-test/open-iscsi",
+    "add disk": [
+        2
+    ],
+    "cases": [
+        {
+            "name": "oe_test_open-iscsi_iscsiadm"
+        },
+        {
+            "name": "oe_test_open-iscsi_iscsistart_iscsiuio"
+        }
+    ]
+}
