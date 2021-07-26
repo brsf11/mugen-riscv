@@ -46,8 +46,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
 
-    rm -f /home/pkgshipuser/uwsgi.txt
-    rm -f ${SYS_CONF_PATH}/package.ini
+    rm -f /home/pkgshipuser/uwsgi.txt ${SYS_CONF_PATH}/package.ini
     mv ${SYS_CONF_PATH}/package.ini.bak ${SYS_CONF_PATH}/package.ini
     REVERT_ENV
     

@@ -59,9 +59,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
 
-    rm -rf /文件夹1
-    rm -rf /var/log/pkgship-operation/日志HellO@10.log
-    rm -f ${SYS_CONF_PATH}/package.ini
+    rm -rf /文件夹1 /var/log/pkgship-operation/日志HellO@10.log ${SYS_CONF_PATH}/package.ini
     mv ${SYS_CONF_PATH}/package.ini.bak ${SYS_CONF_PATH}/package.ini
     REVERT_ENV
     

@@ -39,7 +39,7 @@ function run_test() {
     pkgship dbs | grep "openeuler-lts"
     CHECK_RESULT $? 0 0 "database init failed."
 
-    pkgship init -filepath 2&>1
+    pkgship init -filepath
     cat ${LOG_PATH}/pkgship/log_info.log | grep ERROR >/dev/null
     CHECK_RESULT $? 0 0 "The log doesn't show ERROR msg."
 
@@ -51,8 +51,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
 
-    rm -rf /home/pkgshipuser/uwsgi.log
-    rm -rf ${SYS_CONF_PATH}/conf.yaml
+    rm -rf /home/pkgshipuser/uwsgi.log ${SYS_CONF_PATH}/conf.yaml
     mv ${SYS_CONF_PATH}/package.ini.bak ${SYS_CONF_PATH}/package.ini
     mv ${SYS_CONF_PATH}/conf.yaml.bak ${SYS_CONF_PATH}/conf.yaml
     REVERT_ENV
