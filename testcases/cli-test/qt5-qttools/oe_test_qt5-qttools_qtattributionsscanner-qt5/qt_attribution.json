@@ -1,0 +1,7 @@
+{
+	"Id": "cmake_topological_sort",
+	"Name": "CMake Topological Sort",
+	"License": "Boost Software License - Version 1.0",
+	"Copyright": "Copyright 2010 Kitware, Inc",
+	"QDocModule": "qtcore"
+}

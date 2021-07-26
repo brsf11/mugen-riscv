@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="GB2312"?>
+<QHelpCollectionProject version="1.0">
+<assistant>
+<title>我的帮助系统</title>
+<applicationIcon></applicationIcon>
+<cacheDirectory>cache/myHelp</cacheDirectory>
+<homePage>qthelp://myhelp/doc/html/index.html</homePage>
+<startPage>qthelp://myhelp/doc/html/index.html</startPage>
+<aboutMenuText>
+   <text>关于该帮助</text>
+</aboutMenuText>
+<aboutDialog>
+</aboutDialog>
+<enableDocumentationManager>false</enableDocumentationManager>
+<enableAddressBar>false</enableAddressBar>
+<enableFilterFunctionality>false</enableFilterFunctionality>
+</assistant>
+<docFiles>
+<generate>
+   <file>
+     <input>assistant.qhp</input>
+     <output>assistant.qch</output>
+   </file>
+</generate>
+<register>
+   <file>assistant.qch</file>
+</register>
+</docFiles>
+</QHelpCollectionProject>
