@@ -13,54 +13,46 @@
 #@Contact       :   zhujinlong@163.com
 #@Date          :   2020-10-12
 #@License       :   Mulan PSL v2
-#@Desc          :   Autofs is a program that can automatically load the specified directory as needed.
+#@Desc          :   A wrapper for the user, group and hosts NSS API.
 #####################################
 
-source "common/common_autofs.sh"
+source ${OET_PATH}/libs/locallibs/common_lib.sh
+
+function config_params() {
+    LOG_INFO "Start to config params of the case."
+    if ! grep 'Bruce_liu' /etc/passwd; then
+        useradd Bruce_liu
+    fi
+    LOG_INFO "End to config params of the case."
+}
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    deploy_env
-    map_name=/etc/auto.master
+    DNF_INSTALL nss_wrapper
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    automount_daemon_id=$(pgrep -f "automount --foreground --dont-check-daemon")
-    [ -n "$automount_daemon_id" ]
+    nss_wrapper.pl --help | grep 'usage'
     CHECK_RESULT $?
-    automount -h 2>&1 | grep 'Usage'
+    su - Bruce_liu -c "cd /root" 2>&1 | grep 'Permission denied'
     CHECK_RESULT $?
-    automount -V | grep "$(rpm -qa autofs | awk -F '-' '{print $2}')"
+    nss_wrapper.pl --action add --type member --member Bruce_liu --group_path /etc/group --name root --passwd_path /etc/passwd
     CHECK_RESULT $?
-    automount -p /tmp/automount_pid $map_name
+    su - Bruce_liu -c "cd /root;pwd" | grep '/root'
     CHECK_RESULT $?
-    test $(cat /tmp/automount_pid) -eq $(pgrep -f automount_pid)
+    nss_wrapper.pl --action delete --type member --member Bruce_liu --group_path /etc/group --name root --passwd_path /etc/passwd
     CHECK_RESULT $?
-    kill -9 $(pgrep -f automount_pid)
-    CHECK_RESULT $?
-    automount -M 20 $map_name
-    CHECK_RESULT $?
-    kill -9 $(pgrep -f 'automount -M')
-    CHECK_RESULT $?
-    automount -d $map_name
-    CHECK_RESULT $?
-    kill -9 $(pgrep -f 'automount -d')
-    CHECK_RESULT $?
-    automount -m -v $map_name | grep "autofs dump map information"
-    CHECK_RESULT $?
-    touch /run/autofs.fifodevel
-    automount -l 2 devel | grep "Successfully set log priority for devel"
-    CHECK_RESULT $?
-    grep -a '2' /run/autofs.fifodevel
+    su - Bruce_liu -c "cd /root" 2>&1 | grep 'Permission denied'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    clear_env
+    DNF_REMOVE
+    userdel -rf Bruce_liu
     LOG_INFO "End to restore the test environment."
 }
 

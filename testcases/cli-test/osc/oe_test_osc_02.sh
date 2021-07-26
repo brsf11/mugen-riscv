@@ -11,50 +11,50 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-10-12
+#@Date          :   2020-11-2
 #@License       :   Mulan PSL v2
-#@Desc          :   Autofs is a program that can automatically load the specified directory as needed.
+#@Desc          :   OSC is a command line tool based on OBS, which is equivalent to the interface of OBS.
 #####################################
 
-source "common/common_autofs.sh"
+source "common/common_osc.sh"
+
+function config_params() {
+    LOG_INFO "Start to config params of the case."
+    deploy_env
+    LOG_INFO "End to config params of the case."
+}
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    deploy_env
-    map_name=/etc/auto.master
+    DNF_INSTALL osc
+    osc checkout $branches_path | grep 'revision'
+    cd $branches_path || exit 1
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    automount_daemon_id=$(pgrep -f "automount --foreground --dont-check-daemon")
-    [ -n "$automount_daemon_id" ]
+    osc mkpac xzz | grep 'xzz'
     CHECK_RESULT $?
-    automount -h 2>&1 | grep 'Usage'
+    osc commit -m "create new package" | grep 'Sending'
     CHECK_RESULT $?
-    automount -V | grep "$(rpm -qa autofs | awk -F '-' '{print $2}')"
+    osc rdelete $branches_path xzz -m "delete package"
     CHECK_RESULT $?
-    automount -p /tmp/automount_pid $map_name
+    osc update | grep "Updating"
     CHECK_RESULT $?
-    test $(cat /tmp/automount_pid) -eq $(pgrep -f automount_pid)
+    osc undelete $branches_path xzz -m "restore deletion package"
     CHECK_RESULT $?
-    kill -9 $(pgrep -f automount_pid)
+    osc up | grep "Updating"
     CHECK_RESULT $?
-    automount -M 20 $map_name
+    osc meta prj $branches_path | grep 'project name'
     CHECK_RESULT $?
-    kill -9 $(pgrep -f 'automount -M')
+    osc my prj -m | grep "$branches_path"
     CHECK_RESULT $?
-    automount -d $map_name
+    nohup osc patchinfo >osc_patchinfo.log 2>&1 &
+    SLEEP_WAIT 3 "grep 'patchinfo' osc_patchinfo.log" 2
     CHECK_RESULT $?
-    kill -9 $(pgrep -f 'automount -d')
-    CHECK_RESULT $?
-    automount -m -v $map_name | grep "autofs dump map information"
-    CHECK_RESULT $?
-    touch /run/autofs.fifodevel
-    automount -l 2 devel | grep "Successfully set log priority for devel"
-    CHECK_RESULT $?
-    grep -a '2' /run/autofs.fifodevel
-    CHECK_RESULT $?
+    osc rdelete $branches_path patchinfo -m "delete package_patchinfo"
+    osc rdelete $branches_path xzz -m "delete package_xzz"
     LOG_INFO "End to run test."
 }
 

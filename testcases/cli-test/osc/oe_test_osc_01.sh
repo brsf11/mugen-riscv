@@ -11,49 +11,40 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-10-12
+#@Date          :   2020-11-2
 #@License       :   Mulan PSL v2
-#@Desc          :   Autofs is a program that can automatically load the specified directory as needed.
+#@Desc          :   OSC is a command line tool based on OBS, which is equivalent to the interface of OBS.
 #####################################
 
-source "common/common_autofs.sh"
+source "common/common_osc.sh"
+
+function config_params() {
+    LOG_INFO "Start to config params of the case."
+    deploy_env
+    LOG_INFO "End to config params of the case."
+}
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    deploy_env
-    map_name=/etc/auto.master
+    DNF_INSTALL osc
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    automount_daemon_id=$(pgrep -f "automount --foreground --dont-check-daemon")
-    [ -n "$automount_daemon_id" ]
+    osc --help | grep 'Usage'
     CHECK_RESULT $?
-    automount -h 2>&1 | grep 'Usage'
+    osc --version | grep [0-9]
     CHECK_RESULT $?
-    automount -V | grep "$(rpm -qa autofs | awk -F '-' '{print $2}')"
+    osc man | grep 'man page'
     CHECK_RESULT $?
-    automount -p /tmp/automount_pid $map_name
+    osc list | grep 'openEuler'
     CHECK_RESULT $?
-    test $(cat /tmp/automount_pid) -eq $(pgrep -f automount_pid)
+    osc api http://117.78.1.88 | grep 'Open Build Service API'
     CHECK_RESULT $?
-    kill -9 $(pgrep -f automount_pid)
+    osc checkout $branches_path | grep 'revision'
     CHECK_RESULT $?
-    automount -M 20 $map_name
-    CHECK_RESULT $?
-    kill -9 $(pgrep -f 'automount -M')
-    CHECK_RESULT $?
-    automount -d $map_name
-    CHECK_RESULT $?
-    kill -9 $(pgrep -f 'automount -d')
-    CHECK_RESULT $?
-    automount -m -v $map_name | grep "autofs dump map information"
-    CHECK_RESULT $?
-    touch /run/autofs.fifodevel
-    automount -l 2 devel | grep "Successfully set log priority for devel"
-    CHECK_RESULT $?
-    grep -a '2' /run/autofs.fifodevel
+    osc cat $branches_path/zjl/last_file.txt | grep 'momohao'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

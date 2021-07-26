@@ -1,0 +1,29 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/osc",
+    "cases": [
+        {
+            "name": "oe_test_osc_01"
+        },
+        {
+            "name": "oe_test_osc_02"
+        },
+        {
+            "name": "oe_test_osc_03"
+        },
+        {
+            "name": "oe_test_osc_04"
+        },
+        {
+            "name": "oe_test_osc_05"
+        },
+        {
+            "name": "oe_test_osc_06"
+        },
+        {
+            "name": "oe_test_osc_07"
+        },
+        {
+            "name": "oe_test_osc_build"
+        }
+    ]
+}
