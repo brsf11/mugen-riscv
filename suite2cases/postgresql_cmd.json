@@ -59,6 +59,36 @@
             "name": "oe_test_postgresql_pg_dump01"
         },
         {
+            "name": "oe_test_postgresql_pg_dump02"
+        },
+        {
+            "name": "oe_test_postgresql_pg_dump03"
+        },
+        {
+            "name": "oe_test_postgresql_pg_dumpall01"
+        },
+        {
+            "name": "oe_test_postgresql_pg_isready"
+        },
+        {
+            "name": "oe_test_postgresql_pg_restore01"
+        },
+        {
+            "name": "oe_test_postgresql_pg_restore02"
+        },
+        {
+            "name": "oe_test_postgresql_psql01"
+        },
+        {
+            "name": "oe_test_postgresql_psql02"
+        },
+        {
+            "name": "oe_test_postgresql_psql03"
+        },
+        {
+            "name": "oe_test_postgresql_reindexdb"
+        },
+        {
             "name": "oe_test_postgresql_vacuumdb"
         }
     ]
