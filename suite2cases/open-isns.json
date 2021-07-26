@@ -1,0 +1,11 @@
+{
+    "path": "\"${OET_PATH}\"/testcases/cli-test/open-isns",
+    "cases": [
+        {
+            "name": "oe_test_open-isns_isnsadm"
+        },
+        {
+            "name": "oe_test_open-isns_isnsd_isnsdd"
+        }
+    ]
+}

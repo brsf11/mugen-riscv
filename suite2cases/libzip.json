@@ -1,0 +1,14 @@
+{
+    "path": "\"${OET_PATH}\"/testcases/cli-test/libzip",
+    "cases": [
+        {
+            "name": "oe_test_libzip_zipcmp"
+        },
+        {
+            "name": "oe_test_libzip_zipmerge"
+        },
+        {
+            "name": "oe_test_libzip_ziptool"
+        }
+    ]
+}

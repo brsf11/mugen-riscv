@@ -1,0 +1,8 @@
+{
+    "path": "\"${OET_PATH}\"/testcases/cli-test/keepalived-cli",
+    "cases": [
+        {
+            "name": "oe_test_keepalived_cli"
+        }
+    ]
+}
