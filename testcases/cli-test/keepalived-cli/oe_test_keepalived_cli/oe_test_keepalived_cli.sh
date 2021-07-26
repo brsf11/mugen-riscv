@@ -16,23 +16,15 @@
 # @License   :   Mulan PSL v2
 # @Desc      :   command test - keepalived
 # ############################################
-source "${OET_PATH}"/libs/locallibs/common_lib.sh
-function RANDOM_IP() {
-    while true; do
-        random_ip=${NODE1_IPV4[0]%.*}.$(shuf -e $(seq 1 254) | head -n 1)
-        ping -c 3 "${random_ip}" &>/dev/nul || {
-            printf "%s" "$random_ip"
-            break
-        }
-    done
-}
+source ./common_lib.sh
+
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL keepalived
     systemctl stop firewalld
     setenforce 0
-    net_card=$(ip a | grep "${NODE1_IPV4}" | awk '{print $NF}')
-    remote_net_card=$(SSH_CMD "ip a | grep ${NODE2_IPV4} | awk '{print \$NF}'" "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}" | tail -n 1 | awk -F '\r' '{print $1}')
+    net_card=${NODE1_NIC}
+    remote_net_card=${NODE2_NIC}
     keepalived_ip=$(RANDOM_IP)
     cp -rf keepalived.conf /etc/keepalived/
     sed -i "s/TEST_VIP/${keepalived_ip}/g" /etc/keepalived/keepalived.conf

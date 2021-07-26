@@ -17,8 +17,7 @@
 #####################################
 source "${OET_PATH}"/libs/locallibs/common_lib.sh
 function TARGET_CONF() {
-    SSH_SCP ./common/disk_info.sh "${NODE2_USER}"@"${NODE2_IPV4}":/tmp/ "${NODE2_PASSWORD}"
-    unused_disk="$(SSH_CMD "sh /tmp/disk_info.sh" "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}" | tail -n 1 | tr -d "echo|\r| ")"
+    unused_disk=$(TEST_DISK 2)
     test_disk=/dev/"${unused_disk}"1
     LOCAL_NICS=$(ip route | grep ${NODE1_IPV4} | awk '{print$3}')
     LOCAL_MAC=$(cat /sys/class/net/${LOCAL_NICS}/address)

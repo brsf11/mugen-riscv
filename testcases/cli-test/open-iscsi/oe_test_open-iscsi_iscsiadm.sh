@@ -20,6 +20,7 @@ source ./common/open-iscsi_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "open-iscsi net-tools"
+    DNF_INSTALL "targetcli net-tools" 2
     TARGET_CONF
     LOG_INFO "Finish preparing the test environment."
 }
@@ -85,7 +86,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    SSH_CMD "dnf remove targetcli net-tools -y;sleep 1;
+    SSH_CMD "
     dd if=/dev/zero of=/dev/${unused_disk} bs=2G count=1;
     rm -rf /tmp/disk_info.sh;
     " "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"

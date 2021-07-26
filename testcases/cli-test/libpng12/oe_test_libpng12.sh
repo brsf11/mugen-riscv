@@ -48,7 +48,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    DNF_REMOVE "libpng12 libpng12-devel"
+    DNF_REMOVE
     LOG_INFO "Finish restoring the test environment."
 }
 
