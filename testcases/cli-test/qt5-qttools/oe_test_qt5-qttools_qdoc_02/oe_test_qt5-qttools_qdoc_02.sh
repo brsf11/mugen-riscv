@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2020 Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
@@ -52,13 +51,9 @@ function run_test() {
     CHECK_RESULT $?
     grep "erro" ./html/.index
     CHECK_RESULT $?
-    qdoc example.qdocconf -outputdir ./html --debug >result 2>&1
+    qdoc example.qdocconf -outputdir ./html --debug 2>&1 | grep -i "debug"
     CHECK_RESULT $?
-    grep -i "debug" result
-    CHECK_RESULT $?
-    qdoc example.qdocconf -outputdir ./html --prepare >result 2>&1
-    CHECK_RESULT $?
-    grep "loading" result
+    qdoc example.qdocconf -outputdir ./html --prepare 2>&1 | grep "loading"
     CHECK_RESULT $? 0 1
     test -d ./html/images/
     CHECK_RESULT $? 0 1

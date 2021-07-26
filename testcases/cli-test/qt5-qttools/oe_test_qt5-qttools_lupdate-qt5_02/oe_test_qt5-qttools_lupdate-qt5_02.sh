@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2020 Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
@@ -42,9 +41,7 @@ function run_test() {
     CHECK_RESULT $?
     lupdate-qt5 -pro-out /tmp ../hello.pro -ts hello.ts | grep "/tmp/.qmake.stash"
     CHECK_RESULT $?
-    lupdate-qt5 -pro-debug ../hello.pro -ts hello.ts >debug 2>&1
-    CHECK_RESULT $?
-    grep -i "debug" debug && rm -rf debug hello.ts
+    lupdate-qt5 -pro-debug ../hello.pro -ts hello.ts 2>&1 | grep -i "debug" && rm -rf hello.ts
     CHECK_RESULT $?
     lupdate-qt5 -source-language POSIX ../hello.cpp -ts hello.ts
     CHECK_RESULT $?

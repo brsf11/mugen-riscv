@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2020 Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
@@ -32,21 +31,15 @@ function run_test() {
     CHECK_RESULT $?
     qtattributionsscanner-qt5 -v | grep "Qt Attributions Scanner"
     CHECK_RESULT $?
-    qtattributionsscanner-qt5 --verbose --output-format json -o outputfile.json ./ >result 2>&1
-    CHECK_RESULT $?
-    grep "json" result && rm -rf result
+    qtattributionsscanner-qt5 --verbose --output-format json -o outputfile.json ./ 2>&1 | grep "json"
     CHECK_RESULT $?
     qtattributionsscanner-qt5 --filter QDocModule=qtcore -o outputfile.json ./
     CHECK_RESULT $?
     grep "qtcore" outputfile.json
     CHECK_RESULT $?
-    qtattributionsscanner-qt5 --verbose --basedir ./ -o outputfile.json ./ >result 2>&1
+    qtattributionsscanner-qt5 --verbose --basedir ./ -o outputfile.json ./ 2>&1 | grep "scanning ./"
     CHECK_RESULT $?
-    grep "scanning ./" result && rm -rf result
-    CHECK_RESULT $?
-    qtattributionsscanner-qt5 --verbose -o outputfile.json ./ >result 2>&1
-    CHECK_RESULT $?
-    grep "done" result && rm -rf result
+    qtattributionsscanner-qt5 --verbose -o outputfile.json ./ 2>&1 | grep "done"
     CHECK_RESULT $?
     test -z "$(qtattributionsscanner-qt5 -s -o outputfile.json ./)"
     CHECK_RESULT $?

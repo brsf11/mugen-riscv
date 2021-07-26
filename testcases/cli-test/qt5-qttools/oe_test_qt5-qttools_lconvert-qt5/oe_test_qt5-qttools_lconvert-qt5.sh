@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2020 Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
@@ -81,9 +80,7 @@ function run_test() {
     CHECK_RESULT $?
     grep " ui " swedish
     CHECK_RESULT $? 1
-    lconvert-qt5 -i swedish.qph -o swedish -verbose >verbose 2>&1
-    CHECK_RESULT $?
-    grep "Source" verbose
+    lconvert-qt5 -i swedish.qph -o swedish -verbose 2>&1 | grep "Source"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
