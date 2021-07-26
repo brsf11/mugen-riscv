@@ -58,7 +58,7 @@ function post_test() {
     mv /etc/sudoers-bak /etc/sudoers -f
     mv /etc/openEuler_security/usr-security.conf-bak /etc/openEuler_security/usr-security.conf -f
     rm -rf /tmp/M_test /tmp/m_test /tmp/sm_test /tmp/touch_test
-    DNF_REMOVE httpd
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
 

@@ -53,6 +53,7 @@ function post_test() {
     mv /etc/at.allow-bak /etc/at.allow -f
     userdel -rf testuser1
     userdel -rf testuser2
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
 
