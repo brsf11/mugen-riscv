@@ -28,7 +28,7 @@ function run_test() {
     LOG_INFO "Start to run test."
     su - postgres -c "pg_dump -Z 1 -Ft -Fd testdb -f tmpdir >testfile"
     CHECK_RESULT $?
-    grep "grant" /var/lib/pgsql/testfile && rm -rf /var/lib/pgsql/tmpdir
+    grep "grant" /var/lib/pgsql/testfile
     CHECK_RESULT $? 1
     su - postgres -c "pg_dump testdb -Z 0" | grep "database dump complete"
     CHECK_RESULT $?
