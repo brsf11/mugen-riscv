@@ -1,0 +1,56 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/sqlite",
+    "cases": [
+        {
+            "name": "oe_test_sqlite_alter_01"
+        },
+        {
+            "name": "oe_test_sqlite_command_01"
+        },
+        {
+            "name": "oe_test_sqlite_command_02"
+        },
+        {
+            "name": "oe_test_sqlite_command_03"
+        },
+        {
+            "name": "oe_test_sqlite_command_04"
+        },
+        {
+            "name": "oe_test_sqlite_command_05"
+        },
+        {
+            "name": "oe_test_sqlite_command_06"
+        },
+        {
+            "name": "oe_test_sqlite_command_07"
+        },
+        {
+            "name": "oe_test_sqlite_command_08"
+        },
+        {
+            "name": "oe_test_sqlite_delete_01"
+        },
+        {
+            "name": "oe_test_sqlite_function_01"
+        },
+        {
+            "name": "oe_test_sqlite_function_02"
+        },
+        {
+            "name": "oe_test_sqlite_function_03"
+        },
+        {
+            "name": "oe_test_sqlite_function_04"
+        },
+        {
+            "name": "oe_test_sqlite_update_01"
+        },
+        {
+            "name": "oe_test_sqlite_select_05"
+        },
+        {
+            "name": "oe_test_sqlite_create_06"
+        }
+    ]
+}

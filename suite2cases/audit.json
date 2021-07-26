@@ -1,0 +1,77 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/audit",
+    "cases": [
+        {
+            "name": "oe_test_audit_monitor_file_access"
+        },
+	{
+            "name": "oe_test_audit_monitor_dictionary_access"
+        },
+	{
+            "name": "oe_test_audit_monitor_system_use"
+        },
+	{
+            "name": "oe_test_audit_monitor_do_command"
+        },
+	{
+            "name": "oe_test_audit_monitor_security_event"
+        },
+	{
+            "name": "oe_test_audit_monitor_network_visit"
+        },
+	{
+            "name": "oe_test_audit_track_designated_access"
+        },
+	{
+            "name": "oe_test_audit_use_d_audit"
+        },
+	{
+            "name": "oe_test_audit_use_w_audit"
+        },
+	{
+            "name": "oe_test_audit_rule_contact_strategy"
+        },
+	{
+            "name": "oe_test_audit_rule_conflict_strategy"
+        },
+        {
+            "name": "oe_test_audit_rule_fetch_from_rule"
+        },
+        {
+            "name": "oe_test_audit_fetch_file_in_order"
+        },
+	{            
+	    "name": "oe_test_audit_count_time"
+        },
+	{
+            "name": "oe_test_audit_count_number_of_event"
+        },
+	{
+            "name": "oe_test_audit_show_event_list"
+        },
+	{
+            "name": "oe_test_audit_user_build_connection"
+        },
+	{
+            "name": "oe_test_audit_max_log_file_rotate"
+        },
+	{
+            "name": "oe_test_audit_max_log_file_ignore"
+        },
+	{
+            "name": "oe_test_audit_max_log_file_syslog"
+        },
+	{
+            "name": "oe_test_audit_max_log_file_suspend"
+        },
+	{
+            "name": "oe_test_audit_max_log_file_keep_logs"
+        },
+	{
+            "name": "oe_test_audit_available_disk_space"
+        }
+
+
+    ]
+}
+
