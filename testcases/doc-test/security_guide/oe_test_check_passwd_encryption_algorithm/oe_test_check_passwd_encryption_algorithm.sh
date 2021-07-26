@@ -27,6 +27,7 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start executing testcase."
     useradd test
+    CHECK_RESULT $? 0 0 "add test failed"
     passwd test <<EOF
 ${NODE1_PASSWORD}
 ${NODE1_PASSWORD}

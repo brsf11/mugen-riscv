@@ -21,7 +21,6 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     cp /etc/pam.d/system-auth /etc/pam.d/system-auth-bak
-    echo >/etc/security/opasswd
     grep "^test:" /etc/passwd && userdel -rf test
     LOG_INFO "End of environmental preparation!"
 }
@@ -34,28 +33,28 @@ function run_test() {
 test1
 test1
 EOF
-    CHECK_RESULT $? 0 1
+    CHECK_RESULT $? 0 1 "check passwd(test1) failed"
     passwd test <<EOF
 openeuler12
 openeuler12
 EOF
-    CHECK_RESULT $? 0 1
+    CHECK_RESULT $? 0 1 "check passwd(openeuler12) failed"
     passwd test <<EOF
 Adminstrator12#$
 Adminstrator12#$
 EOF
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "check passwd(Adminstrator12#$) failed"
     passwd test <<EOF
 Adminstrator12#$
 Adminstrator12#$
 EOF
-    CHECK_RESULT $? 0 1
+    CHECK_RESULT $? 0 1 "check passwd(Adminstrator12#$) failed"
     passwd test <<EOF
 test1
 test1
 test1
 EOF
-    CHECK_RESULT $? 0 1
+    CHECK_RESULT $? 0 1 "check passwd(test1) failed"
     LOG_INFO "Finish testcase execution."
 }
 
@@ -63,6 +62,7 @@ function post_test() {
     LOG_INFO "start environment cleanup."
     mv /etc/pam.d/system-auth-bak /etc/pam.d/system-auth -f
     userdel -rf test
+    echo >/etc/security/opasswd
     LOG_INFO "Finish environment cleanup!"
 }
 

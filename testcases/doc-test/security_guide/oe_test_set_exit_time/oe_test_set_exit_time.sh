@@ -21,10 +21,9 @@
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    rm -rf /tmp/ssh_remote.sh
-    SSH_CMD "cp /etc/profile /etc/profile.bak
-            echo \\'TMOUT=30\\' >/etc/profile
-            source /etc/profile" ${NODE1_IPV4} ${NODE1_PASSWORD} ${NODE1_USER}
+    cp /etc/profile /etc/profile.bak
+    echo \\'TMOUT=30\\' >/etc/profile
+    source /etc/profile
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -58,8 +57,8 @@ EOF1" >/tmp/ssh_remote.sh
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    SSH_CMD "mv /etc/profile.bak  /etc/profile
-            source /etc/profile" ${NODE1_IPV4} ${NODE1_PASSWORD} ${NODE1_USER}
+    mv /etc/profile.bak /etc/profile -f
+    source /etc/profile
     rm -rf /tmp/ssh_remote.sh
     LOG_INFO "Finish environment cleanup!"
 }

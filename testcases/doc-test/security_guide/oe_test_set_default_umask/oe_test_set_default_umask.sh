@@ -20,8 +20,11 @@
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    rm -rf test1 test2 
-    grep "^test:" /etc/passwd && userdel -rf test
+    useradd test
+    passwd test <<EOF
+${NODE1_PASSWORD}
+${NODE1_PASSWORD}
+EOF
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -35,19 +38,13 @@ function run_test() {
     touch /home/test2
     ls -l /home/test2 | grep "\-rw\-r\-\-r\-\-"
     CHECK_RESULT $? 0 0 "file permission verification failed"
+    su - test -c "mkdir test3"
+    su - test -c "ls -l | grep "test3" | grep 'drwxr\-xr\-x'"
+    CHECK_RESULT $? 0 0 "dir permission verification failed"
+    su - test -c "touch test4"
+    su - test -c "ls -l test4 | grep '\-rw\-r\-\-r\-\-'"
+    CHECK_RESULT $? 0 0 "file permission verification failed"
     LOG_INFO "Finish testcase execution."
-    useradd test
-    passwd test <<EOF
-${NODE1_PASSWORD}
-${NODE1_PASSWORD}
-EOF
-   su - test -c "mkdir test3"
-   su - test -c "ls -l | grep "test3" | grep 'drwxr\-xr\-x'"
-   CHECK_RESULT $? 0 0 "dir permission verification failed"
-   su - test -c "touch test4"
-   su - test -c "ls -l test4 | grep '\-rw\-r\-\-r\-\-'"
-   CHECK_RESULT $? 0 0 "file permission verification failed"
-
 }
 function post_test() {
     LOG_INFO "start environment cleanup."

@@ -51,8 +51,6 @@ function run_test() {
     CHECK_RESULT $?
     sysctl -p | grep 'kernel.dmesg_restrict = 1' 
     CHECK_RESULT $?
-    sysctl -p | grep 'kernel.sched_autogroup_enabled = 1' 
-    CHECK_RESULT $? 0 1
     sysctl -p | grep 'kernel.sysrq = 0' 
     CHECK_RESULT $?
     sysctl -p | grep 'net.ipv4.conf.all.secure_redirects = 0'

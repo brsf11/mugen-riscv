@@ -22,7 +22,6 @@ function pre_test() {
 	LOG_INFO "Start environmental preparation."
 	grep "^test:" /etc/passwd && userdel -rf test
 	ls testlog && rm -rf testlog
-	rm -rf /root/.ssh/known_hosts
 	LOG_INFO "End of environmental preparation!"
 }
 
@@ -44,64 +43,41 @@ EOF
 	}
 	expect {
 		"assword:" {
-		send "test\\r"
+		send "test\\r";
+                exp_continue;
 		}
-	}
-	expect {
-		"assword:" {
-		send "test\\r"
-		}
-	}
-	expect {
-		"assword:" {
-		send "test\\r"
-		}
-	}
-	expect {
-		"]" {
-		send "exit\\r"
-		}
-	}
+	
+        }
 	expect eof
 EOF1
 	[ $(grep -c 'Permission denied' testlog) -eq 3 ]
-	CHECK_RESULT $?
+	CHECK_RESULT $? 0 0 "grep 'Permission denied' failed"
 	rm -rf testlog
-	expect <<EOF1
+        expect <<EOF1
         log_file testlog
         set timeout 15
-        spawn ssh test@127.0.0.1 
+        spawn ssh test@127.0.0.1
         expect {
-            "*yes/no*" {
+                "*yes/no*" {
                 send "yes\\r"
-            }
+                }
         }
         expect {
-            "assword:" {
-                send "test\\r"
-            }
+                "assword:" {
+                send "${NODE1_PASSWORD}\\r";
+                exp_continue;
+                }
         }
         expect {
-            "assword:" {
-                send "test\\r"
-            }
-        }
-        expect {
-            "assword:" {
-                send "test\\r"
-            }
-        }
-        expect {
-            "]" {
+                "]" {
                 send "exit\\r"
-            }
+                }
         }
         expect eof
 EOF1
-	grep 'Permission denied' testlog
-	CHECK_RESULT $?
-	rm -rf testlog
-	SLEEP_WAIT 65
+        [ $(grep -c 'Permission denied' testlog) -eq 3 ]
+        CHECK_RESULT $? 0 0 "lock failed"
+	SLEEP_WAIT 45
 	expect <<EOF1
 	log_file testlog
 	set timeout 15
@@ -124,7 +100,7 @@ EOF1
 	expect eof
 EOF1
 	grep '\[test@localhost' testlog
-	CHECK_RESULT $?
+	CHECK_RESULT $? 0 0 "login failed"
 	LOG_INFO "Finish test!"
 }
 

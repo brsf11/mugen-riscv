@@ -24,18 +24,16 @@ function run_test() {
     find / -type d -perm -0002 ! -perm -1000 -ls | grep -v proc | wc -l
     CHECK_RESULT $? 0 0 "find global writable directory failed"
     testdir=$(mktemp -d)
-    CHECK_RESULT $?
     test -d ${testdir}
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "exec mktemp failed"
     chmod 777 ${testdir}
     ls -al ${testdir} | awk 'NR==2' | grep "drwxrwxrwx"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "exec chmod failed"
     find /tmp -type d -perm -0002 ! -perm -1000 -ls | grep -v proc | grep ${testdir}
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "find global writable directory(${testdir}) failed"
     chmod +t ${testdir}
-    CHECK_RESULT $?
     ls -al ${testdir} | awk 'NR==2' | grep "drwxrwxrwt"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "add sticky bit attribute failed"
     LOG_INFO "Finish testcase execution."
 }
 

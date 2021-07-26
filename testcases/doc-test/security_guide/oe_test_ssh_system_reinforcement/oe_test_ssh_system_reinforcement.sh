@@ -54,8 +54,4 @@ function run_test() {
     LOG_INFO "End of environmental preparation!"
 }
 
-function post_test() {
-    LOG_INFO "This test case do not require environmental to cleanup!"
-}
-
 main "$@"

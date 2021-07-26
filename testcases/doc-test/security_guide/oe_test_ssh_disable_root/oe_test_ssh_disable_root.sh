@@ -54,7 +54,7 @@ EOF
 
 function post_test() {
     LOG_INFO "Start cleanning environment."
-    mv /etc/ssh/sshd_config-bak /etc/ssh/sshd_config
+    mv /etc/ssh/sshd_config-bak /etc/ssh/sshd_config -f
     systemctl restart sshd
     rm -rf testlog
     LOG_INFO "Finish environment cleanup!"

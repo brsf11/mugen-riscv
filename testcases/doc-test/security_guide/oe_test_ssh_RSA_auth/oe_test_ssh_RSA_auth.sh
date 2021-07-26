@@ -21,7 +21,7 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function run_test() {
     LOG_INFO "Start executing testcase."
     grep "^RSAAuthentication yes" /etc/ssh/sshd_config
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "RSAAuthentication is not yes"
     expect <<EOF
         set timeout 15
         spawn ssh-keygen
@@ -43,7 +43,7 @@ function run_test() {
         expect eof
 EOF
     ls -l /root/.ssh | grep id_rsa
-    CHECK_RESULT $? 0 0 "grep id_rsa failed"
+    CHECK_RESULT $? 0 0 "id_rsa file is not exist"
     expect <<EOF
         set timeout 15
         spawn ssh-copy-id -i /root/.ssh/id_rsa.pub ${NODE2_USER}@${NODE2_IPV4}
@@ -60,7 +60,7 @@ EOF
         expect eof
 EOF
     SSH_CMD "grep ssh-rsa /root/.ssh/authorized_keys" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
-    CHECK_RESULT $? 0 0 ""
+    CHECK_RESULT $? 0 0 "NODE2 grep ssh-rsa /root/.ssh/authorized_keys failed"
     expect <<EOF
         set timeout 15
         log_file testlog
@@ -73,7 +73,7 @@ EOF
         expect eof
 EOF
     grep "System information as of time" testlog
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "ssh log failed"
     SSH_CMD "rm -rf /root/.ssh/authorized_keys" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     expect <<EOF
         set timeout 15
@@ -96,7 +96,7 @@ EOF
         expect eof
 EOF
     ls -l /root/.ssh | grep id_dsa
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "id_dsa file is not exist" 
     expect <<EOF
         set timeout 15
         spawn ssh-copy-id -i /root/.ssh/id_dsa.pub ${NODE2_USER}@${NODE2_IPV4}
@@ -113,7 +113,7 @@ EOF
         expect eof
 EOF
     SSH_CMD "grep ssh-dss /root/.ssh/authorized_keys" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "NODE2 grep ssh-dss /root/.ssh/authorized_keys failed"
     expect <<EOF
         set timeout 15
         log_file testlog1
@@ -126,7 +126,7 @@ EOF
         expect eof
 EOF
     grep "password:" testlog1
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Need password"
     LOG_INFO "Finish testcase execution."
 }
 
