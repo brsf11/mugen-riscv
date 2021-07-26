@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/sqlite-jdbc",
+    "cases": [
+        {
+            "name": "oe_test_sqlite-jdbc_connect"
+        }
+    ]
+}

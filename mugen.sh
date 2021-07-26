@@ -25,7 +25,6 @@ export OET_PATH
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 [[ -d "/etc/mugen" ]] && export conf_file="/etc/mugen/mugen.json" || export conf_file="${OET_PATH}/conf/mugen.json"
-REPOSITORY="https://gitee.com/openeuler/integration-test.git"
 
 TIMEOUT="30m"
 COMMAND_X="no"

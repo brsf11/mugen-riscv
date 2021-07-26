@@ -1,0 +1,44 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/testNG",
+    "cases": [
+        {
+            "name": "oe_test_testNG_annotations_assert"
+        },
+        {
+            "name": "oe_test_testNG_annotations_before_after"
+        },
+        {
+            "name": "oe_test_testNG_annotations_common"
+        },
+        {
+            "name": "oe_test_testNG_annotations_group"
+        },
+        {
+            "name": "oe_test_testNG_annotations_listen"
+        },
+        {
+            "name": "oe_test_testNG_annotations_parameters"
+        },
+        {
+            "name": "oe_test_testNG_exception"
+        },
+        {
+            "name": "oe_test_testNG_retry"
+        },
+        {
+            "name": "oe_test_testNG_thread"
+        },
+        {
+            "name": "oe_test_testNG_with_ant"
+        },
+        {
+            "name": "oe_test_testNG_with_Junit"
+        },
+        {
+            "name": "oe_test_testNG_with_maven"
+        },
+        {
+            "name": "oe_test_testNG_with_spring"
+        }
+    ]
+}

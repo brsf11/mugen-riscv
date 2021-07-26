@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/libosinfo",
+    "cases": [
+        {
+            "name": "oe_test_osinfo-detect"
+        },
+        {
+            "name": "oe_test_osinfo-install-script"
+        },
+        {
+            "name": "oe_test_osinfo-query"
+        }
+    ]
+}

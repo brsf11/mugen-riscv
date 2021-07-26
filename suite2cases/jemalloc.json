@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/jemalloc",
+    "cases": [
+        {
+            "name": "oe_test_jemalloc_01"
+        },
+        {
+            "name": "oe_test_jemalloc_02"
+        }
+    ]
+}

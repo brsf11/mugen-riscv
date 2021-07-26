@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/clang",
+    "cases": [
+        {
+            "name": "oe_test_clang_01"
+        },
+        {
+            "name": "oe_test_clang_02"
+        },
+        {
+            "name": "oe_test_clang_03"
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/ImageMagick",
+    "cases": [
+        {
+            "name": "oe_test_ImageMagick_01"
+        },
+        {
+            "name": "oe_test_ImageMagick_02"
+        },
+        {
+            "name": "oe_test_ImageMagick_03"
+        },
+        {
+            "name": "oe_test_ImageMagick_04"
+        },
+        {
+            "name": "oe_test_ImageMagick_05"
+        },
+        {
+            "name": "oe_test_ImageMagick_06"
+        },
+        {
+            "name": "oe_test_ImageMagick_07"
+        },
+        {
+            "name": "oe_test_ImageMagick_08"
+        }
+    ]
+}

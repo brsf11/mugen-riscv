@@ -54,7 +54,7 @@ def rpm_install(pkgs, node=1, tmpfile=""):
     Returns:
         [list]: 错误码，安装的包的列表
     """
-    if pkgs is "":
+    if pkgs == "":
         mugen_log.logging("error", "the following arguments are required:pkgs")
         sys.exit(1)
 
@@ -96,7 +96,7 @@ def rpm_install(pkgs, node=1, tmpfile=""):
 
     exitcode, result = func(conn=conn, cmd="dnf -y install " + pkgs)
 
-    if tmpfile is "":
+    if tmpfile == "":
         tmpfile = tempfile.mkstemp(dir="/tmp")[1]
 
     with open(tmpfile, "a+") as f:
@@ -120,7 +120,7 @@ def rpm_remove(node=1, pkgs="", tmpfile=""):
     Returns:
         list: 错误码，卸载列表或错误信息
     """
-    if pkgs is "" and tmpfile is "":
+    if pkgs == "" and tmpfile == "":
         mugen_log.logging(
             "error", "Packages or package files these need to be removed must be added"
         )
@@ -140,7 +140,7 @@ def rpm_remove(node=1, pkgs="", tmpfile=""):
         func = ssh_cmd.pssh_cmd
 
     depList = ""
-    if tmpfile is not "":
+    if tmpfile != "":
         with open(tmpfile, "r") as f:
             depList = f.read()
 
