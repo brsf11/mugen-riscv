@@ -110,7 +110,7 @@ function post_test() {
     sed -i "/master agentx/d" /etc/snmp/snmpd.conf
     kill -9 $(pgrep -f "keepalived -D")
     sed -i "/keepalived.log/d" >>/etc/rsyslog.conf
-    DNF_REMOVE keepalived
+    DNF_REMOVE
     rm -rf /etc/keepalived /var/log/keepalived* /tmp/keepalived
     ip addr del "${keepalived_ip}"/24 dev "${net_card}"
     SSH_CMD "
