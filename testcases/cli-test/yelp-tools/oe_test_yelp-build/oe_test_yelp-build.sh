@@ -47,9 +47,7 @@ function run_test()
 function post_test()
 {
     LOG_INFO "Start to restore the test environment."
-    rm -rf highlight.pack.js index.cache index.epub
-    rm -rf C.css yelp-build.html yelp.js
-    tm -rf yelp-build.page
+    rm -rf highlight.pack.js index.cache index.epub yelp-build.page C.css yelp-build.html yelp.js
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
