@@ -9,46 +9,46 @@
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
 ####################################
-#@Author    	:   Jevons
-#@Contact   	:   1557927445@qq.com
-#@Date      	:   2021-04-15 15:40:43
+#@Author    	:   Jevons                      
+#@Contact   	:   1557927445@qq.com                 
+#@Date      	:   2021-06-21 20:31:43               
 #@License   	:   Mulan PSL v2
-#@Version   	:   1.0
-#@Desc      	:   monitor system use
+#@Desc      	:   yelp build                  
 #####################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function pre_test(){
+function pre_test()
+{
     LOG_INFO "Start to prepare the test environment."
-    useradd Jevons
-    uid=$(id -u Jevons)
-    LOG_INFO "End to prepare the environment"
+    DNF_INSTALL "yelp-tools yelp"
+    wget https://gitlab.gnome.org/GNOME/yelp-tools/-/blob/master/help/C/yelp-build.page
+    LOG_INFO "End to prepare the test environment."
 }
+
 function run_test()
 {
     LOG_INFO "Start to run test."
-    service auditd restart
-    auditctl -D
-    CHECK_RESULT $? 0 0 "clean failed"
-    auditctl -a always,exit -S all -F uid="${uid}" -k syscall
-    CHECK_RESULT $? 0 0 "add rule failed"
-    auditctl -l | grep -e "-a always,exit -S all -F uid=${uid}"
-    CHECK_RESULT $? 0 0 "grep failed"
-    starttime=$(date +%T)
-    su - Jevons -c "pwd"
-    CHECK_RESULT $? 0 0 "login failed"
-    endtime=$(date +%T)
-    ausearch -ts "${starttime}" -te "${endtime}" -k syscall | grep pwd
-    CHECK_RESULT $? 0 0 "grep failed"
+    yelp-build html yelp-build.page
+    CHECK_RESULT $? 0 0 "html failed"
+    test -f "highlight.pack.js" 
+    CHECK_RESULT $? 0 0  "find html failed"
+    yelp-build cache yelp-build.page
+    CHECK_RESULT $? 0 0 "cache failed"
+    test -f "index.cache"
+    CHECK_RESULT $? 0 0 "find cache failed"
+    yelp-build epub yelp-build.page
+    CHECK_RESULT $? 0 0 "epub failed"
+    test -f "index.epub"
+    CHECK_RESULT $? 0 0 "find epub failed"
     LOG_INFO "End to run test."
 }
 
 function post_test()
 {
     LOG_INFO "Start to restore the test environment."
-    userdel -rf Jevons
-    auditctl -D
+    rm -rf highlight.pack.js index.cache index.epub yelp-build.page C.css yelp-build.html yelp.js
+    DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
 
