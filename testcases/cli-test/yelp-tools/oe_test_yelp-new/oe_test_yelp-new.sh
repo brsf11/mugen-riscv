@@ -30,11 +30,11 @@ function run_test()
     LOG_INFO "Start to run test."
     yelp-new --stub task Mallard 
     CHECK_RESULT $? 0 0 "stub failed"
-    find . -type f -name "Mallard.page.stub"
+    test -f "Mallard.page.stub"
     CHECK_RESULT $? 0 0 "find first failed"
     yelp-new --tmpl task Mallard
     CHECK_RESULT $? 0 0 "tmpl failed"
-    find . -type f -name "Mallard.page.tmpl"
+    test -f "Mallard.page.tmpl"
     CHECK_RESULT $? 0 0 "find second failed"
     LOG_INFO "End to run test."
 }
