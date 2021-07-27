@@ -1,5 +1,5 @@
 {
-    "path": "$OET_PATH/cli-test/testcases/postgresql_cmd",
+    "path": "$OET_PATH/testcases/cli-test/postgresql_cmd",
     "cases": [
         {
             "name": "oe_test_postgresql_clusterdb"
