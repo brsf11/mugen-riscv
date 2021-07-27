@@ -30,7 +30,6 @@ function deploy_env() {
 
 function clear_env() {
     kill -9 $(pgrep -f 'memcached -d -u')
-    roc=$(ls | grep -vE ".sh|config")
-    rm -rf $roc
+    rm -rf $(ls | grep -vE ".sh|config")
     DNF_REMOVE
 }
