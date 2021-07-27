@@ -36,12 +36,12 @@ function run_test() {
     CHECK_RESULT $?
     su - postgres -c "pg_recvlogical -d postgres --slot test --create-slot --start -f - &"
     CHECK_RESULT $?
-    sleep 3
+    SLEEP_WAIT 10 "pgrep -f 'slot test'" 3
     kill -9 $(pgrep -f 'slot test')
     su - postgres -c "pg_recvlogical -d postgres --drop-slot --slot test"
     su - postgres -c "pg_recvlogical -d postgres --slot test --create-slot --start  -f - -F 10 &"
     CHECK_RESULT $?
-    sleep 3
+    SLEEP_WAIT 10 "pgrep -f 'slot test'" 3
     kill -9 $(pgrep -f 'slot test')
     su - postgres -c "pg_recvlogical -d postgres --drop-slot --slot test"
     CHECK_RESULT $?
@@ -49,16 +49,17 @@ function run_test() {
     CHECK_RESULT $?
     su - postgres -c "pg_recvlogical -d postgres --slot test --start  -f - -I 0/A3FD7168 &"
     CHECK_RESULT $?
+    SLEEP_WAIT 10 "pgrep -f 'slot test'" 3
     kill -9 $(pgrep -f 'slot test')
     su - postgres -c "pg_recvlogical -d postgres --slot test --start  -n -f - &"
     CHECK_RESULT $?
-    sleep 3
+    SLEEP_WAIT 10 "pgrep -f 'slot test'" 3
     kill -9 $(pgrep -f 'slot test')
     su - postgres -c "pg_recvlogical -d postgres --drop-slot --slot test"
     CHECK_RESULT $?
     su - postgres -c "pg_recvlogical -d postgres --slot test --create-slot --start -f - -s 2 -v &"
     CHECK_RESULT $?
-    sleep 3
+    SLEEP_WAIT 10 "pgrep -f 'slot test'" 3
     kill -9 $(pgrep -f 'slot test')
     su - postgres -c "pg_recvlogical -d postgres --drop-slot -S test"
     CHECK_RESULT $?
