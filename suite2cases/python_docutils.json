@@ -1,0 +1,71 @@
+{
+    "path": "\"${OET_PATH}\"/testcases/cli-test/python-docutils",
+    "cases": [
+        {
+            "name": "oe_test_python-docutils_rst2html_01"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2html_02"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2html_03"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2html4_01"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2html4_02"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2html4_03"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2html5_01"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2html5_02"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2html5_03"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2latex_01"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2latex_02"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2latex_03"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2latex_04"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2pseudoxml_01"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2pseudoxml_02"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2s5_01"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2s5_02"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2s5_03"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2s5_04"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2xml_01"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2xml_02"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2xml_03"
+        }
+    ]
+}
