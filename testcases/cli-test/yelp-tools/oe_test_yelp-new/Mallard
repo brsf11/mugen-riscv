@@ -2,28 +2,28 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
                "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 <book>
- <bookinfo>
-  <title>My Book</title>
-  <author>
-   <firstname>My First Name</firstname>
-   <surname>My Last Name</surname>
-  </author>
-  <publisher>
-   <publishername>CSDN</publishername>
-  </publisher>
-  <isbn>ISBN#</isbn>
-  <copyright>
-   <year>2005</year>
-  </copyright>
- </bookinfo>
- <part>
-  <title>My Part</title>
-  <chapter>
-   <title>My Chapter</title>
-   <sect1>
-    <title>My Section1</title>
-    <para>This  is a demo of a book.</para>
-   </sect1>
-  </chapter>
- </part>
+    <bookinfo>
+        <title>My Book</title>
+        <author>
+            <firstname>My First Name</firstname>
+            <surname>My Last Name</surname>
+        </author>
+        <publisher>
+            <publishername>CSDN</publishername>
+        </publisher>
+        <isbn>ISBN#</isbn>
+        <copyright>
+            <year>2005</year>
+        </copyright>
+    </bookinfo>
+    <part>
+        <title>My Part</title>
+        <chapter>
+            <title>My Chapter</title>
+            <sect1>
+                <title>My Section1</title>
+                <para>This  is a demo of a book.</para>
+            </sect1>
+        </chapter>
+    </part>
 </book>
