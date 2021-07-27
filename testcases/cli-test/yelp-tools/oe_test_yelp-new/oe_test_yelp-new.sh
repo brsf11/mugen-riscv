@@ -22,6 +22,7 @@ function pre_test()
 {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "yelp-tools yelp"
+    wget https://gitlab.gnome.org/GNOME/yelp-tools/-/blob/master/help/C/yelp-new.page
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -43,6 +44,7 @@ function post_test()
 {
     LOG_INFO "Start to restore the test environment."
     rm -rf yelp-new.page.stub yelp-new.page.tmpl
+    rm -rf yelp-new.page 
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
