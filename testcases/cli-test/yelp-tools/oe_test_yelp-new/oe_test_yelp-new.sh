@@ -43,8 +43,7 @@ function run_test()
 function post_test()
 {
     LOG_INFO "Start to restore the test environment."
-    rm -rf yelp-new.page.stub yelp-new.page.tmpl
-    rm -rf yelp-new.page 
+    rm -rf yelp-new.page.stub yelp-new.page.tmpl yelp-new.page 
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
