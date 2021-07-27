@@ -27,10 +27,13 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start to run test."
     rst2html5 -r 1 error.rst test1.html
+    [ -e test1.html ]
     CHECK_RESULT $?
     rst2html5 -v error.rst test2.html
+    [ -e test2.html ]
     CHECK_RESULT $?
     rst2html5 -q error.rst test3.html
+    [ -e test3.html ]
     CHECK_RESULT $?
     rst2html5 --halt=1 error.rst test4.html 2>&1 | grep 'due to level-1'
     CHECK_RESULT $?

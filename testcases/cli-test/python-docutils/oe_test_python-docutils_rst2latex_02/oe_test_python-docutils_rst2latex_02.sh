@@ -27,10 +27,13 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start to run test."
     rst2latex -r 1 error.rst test1.tex
+    [ -e test1.tex ]
     CHECK_RESULT $?
     rst2latex -v error.rst test2.tex
+    [ -e test2.tex ]
     CHECK_RESULT $?
     rst2latex -q error.rst test3.tex
+    [ -e test3.tex ]
     CHECK_RESULT $?
     rst2latex --halt=1 error.rst test4.tex 2>&1 | grep 'due to level-1'
     CHECK_RESULT $?
