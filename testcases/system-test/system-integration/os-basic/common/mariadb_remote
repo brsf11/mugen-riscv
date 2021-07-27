@@ -1,0 +1,36 @@
+#!/usr/bin/expect
+
+# Copyright (c) 2020. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# This program is licensed under Mulan PSL v2.
+# You can use it according to the terms and conditions of the Mulan PSL v2.
+#          http://license.coscl.org.cn/MulanPSL2
+# THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+# EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+# MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+# See the Mulan PSL v2 for more details.
+
+# #############################################
+# @CaseName  :   mariadb_remote
+# @Author    :   Classicriver_jia
+# @Contact   :   classicriver_jia@foxmail.com
+# @Date      :   2020-4-9 
+# @License   :   Mulan PSL v2
+# @Desc      :   MariaDB remote execution script
+# #############################################
+
+set timeout 10
+log_file testlog
+spawn mysql -h local_ip -u root -plocal_password
+expect {
+        "Maria*" { send "create database test;\r"
+        expect "Maria*" { send "use test;\r"}
+        expect "Maria*" { send "create table testtable(id int(3), name char(8));\r"}
+        expect "Maria*" { send "insert into testtable values(\'01\',\'zhang\');\r"}
+        expect "Maria*" { send "insert into testtable values(\'02\',\'lisi\');\r"}
+        expect "Maria*" { send "select * from testtable;\r"}
+        expect "Maria*" { send "delete from testtable where id=\'01\';\r"}
+        expect "Maria*" { send "select * from testtable;\r"}
+        expect "Maria*" { send "exit\r"}
+}
+}
+expect eof
