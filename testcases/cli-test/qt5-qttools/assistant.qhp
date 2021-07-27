@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="GB2312"?>
+<QtHelpProject version="1.0">
+<namespace>myHelp</namespace>
+<virtualFolder>doc</virtualFolder>
+<filterSection>
+   <toc>
+     <section title="我的帮助" ref="html/index.html">
+       <section title="主页" ref="html/fst.html"></section>
+       <section title="副页" ref="html/snd.html"></section>
+     </section>
+   </toc>
+   <keywords>
+     <keyword name="first" ref="html/fst.html"/>
+     <keyword name="second" ref="html/snd.html"/>
+   </keywords>
+   <files>
+     <file>html/index.html</file>
+     <file>html/fst.html</file>
+     <file>html/snd.html</file>
+     <file>html/img/*.jpg</file>
+   </files>
+</filterSection>
+</QtHelpProject>
+
