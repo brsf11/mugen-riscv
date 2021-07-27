@@ -13,7 +13,6 @@
 #@Contact   	:   1557927445@qq.com
 #@Date      	:   2021-06-21 20:31:43
 #@License   	:   Mulan PSL v2
-#@Version   	:   1.0
 #@Desc      	:   yelp check
 #####################################
 
