@@ -1,0 +1,41 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/libmemcached",
+    "cases": [
+        {
+            "name": "oe_test_memaslap"
+        },
+        {
+            "name": "oe_test_memcapable"
+        },
+        {
+            "name": "oe_test_memcat"
+        },
+        {
+            "name": "oe_test_memcp"
+        },
+        {
+            "name": "oe_test_memdump-memerror"
+        },
+        {
+            "name": "oe_test_memexist"
+        },
+        {
+            "name": "oe_test_memflush"
+        },
+        {
+            "name": "oe_test_memping"
+        },
+        {
+            "name": "oe_test_memrm"
+        },
+        {
+            "name": "oe_test_memslap"
+        },
+        {
+            "name": "oe_test_memstat"
+        },
+        {
+            "name": "oe_test_memtouch"
+        }
+    ]
+}
