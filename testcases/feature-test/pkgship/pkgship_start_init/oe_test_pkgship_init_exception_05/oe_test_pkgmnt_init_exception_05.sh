@@ -63,7 +63,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
 
-    rm -rf ${SYS_CONF_PATH}/conf.yaml
+    rm -f ${SYS_CONF_PATH}/conf.yaml
     mv ${SYS_CONF_PATH}/conf.bak ${SYS_CONF_PATH}/conf.yaml
     REVERT_ENV
     

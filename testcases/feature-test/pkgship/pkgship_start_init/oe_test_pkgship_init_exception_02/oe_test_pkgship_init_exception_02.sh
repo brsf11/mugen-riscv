@@ -30,7 +30,7 @@ function run_test() {
     LOG_INFO "Start to run test."
 
     pkgship init -filepath 2>&1 | grep "error: argument -filepath: expected one argument" >/dev/null
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Execute cmd unexpectly."
     
     LOG_INFO "End to run test."
 }

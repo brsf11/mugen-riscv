@@ -30,7 +30,7 @@ function run_test() {
     LOG_INFO "Start to run test."
 
     pkgship init -filepath /home/conf.yaml 2>&1 | grep "system initialization configuration file does not exist" >/dev/null
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Execute cmd unexpectly."
     
     LOG_INFO "End to run test."
 }
