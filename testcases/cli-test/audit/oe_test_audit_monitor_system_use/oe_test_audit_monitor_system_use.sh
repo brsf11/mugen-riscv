@@ -40,6 +40,7 @@ function run_test()
     CHECK_RESULT $? 0 0 "login failed"
     endtime=$(date +%T)
     ausearch -ts "${starttime}" -te "${endtime}" -k syscall | grep pwd
+    CHECK_RESULT $? 0 0 "grep failed"
     LOG_INFO "End to run test."
 }
 

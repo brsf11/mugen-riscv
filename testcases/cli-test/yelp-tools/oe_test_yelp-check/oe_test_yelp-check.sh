@@ -28,7 +28,7 @@ function pre_test()
 function run_test()
 {
     LOG_INFO "Start to run test."
-    yelp-build cache DocBook_check
+    yelp-build cache yelp-check.page
     CHECK_RESULT $? 0 0 "build failed"
     yelp-check comments index.cache
     CHECK_RESULT $? 0 0 "check failed"

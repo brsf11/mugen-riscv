@@ -28,15 +28,15 @@ function pre_test()
 function run_test()
 {
     LOG_INFO "Start to run test."
-    yelp-build html DocBook 
+    yelp-build html yelp-build.page
     CHECK_RESULT $? 0 0 "html failed"
     test -f "highlight.pack.js" 
     CHECK_RESULT $? 0 0  "find html failed"
-    yelp-build cache DocBook
+    yelp-build cache yelp-build.page
     CHECK_RESULT $? 0 0 "cache failed"
     test -f "index.cache"
     CHECK_RESULT $? 0 0 "find cache failed"
-    yelp-build epub DocBook
+    yelp-build epub yelp-build.page
     CHECK_RESULT $? 0 0 "epub failed"
     test -f "index.epub"
     CHECK_RESULT $? 0 0 "find epub failed"
@@ -47,6 +47,7 @@ function post_test()
 {
     LOG_INFO "Start to restore the test environment."
     rm -rf highlight.pack.js index.cache index.epub
+    rm -rf C.css yelp-build.html yelp.js
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }

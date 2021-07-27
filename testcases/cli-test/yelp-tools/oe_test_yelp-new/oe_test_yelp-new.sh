@@ -28,13 +28,13 @@ function pre_test()
 function run_test()
 {
     LOG_INFO "Start to run test."
-    yelp-new --stub task Mallard 
+    yelp-new --stub task yelp-new.page 
     CHECK_RESULT $? 0 0 "stub failed"
-    test -f "Mallard.page.stub"
+    test -f "yelp-new.page.stub"
     CHECK_RESULT $? 0 0 "find first failed"
-    yelp-new --tmpl task Mallard
+    yelp-new --tmpl task yelp-new.page
     CHECK_RESULT $? 0 0 "tmpl failed"
-    test -f "Mallard.page.tmpl"
+    test -f "yelp-new.page.tmpl"
     CHECK_RESULT $? 0 0 "find second failed"
     LOG_INFO "End to run test."
 }
@@ -42,7 +42,7 @@ function run_test()
 function post_test()
 {
     LOG_INFO "Start to restore the test environment."
-    rm -rf Mallard.page.tmpl Mallard.page.stub .page.stub .page.tmpl
+    rm -rf yelp-new.page.stub yelp-new.page.tmpl
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
