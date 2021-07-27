@@ -10,7 +10,6 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @CaseName  :   oe_test_basic_UserMgmt_001
 # @Author    :   xuchunlin
 # @Contact   :   xcl_job@163.com
 # @Date      :   2020-04-09

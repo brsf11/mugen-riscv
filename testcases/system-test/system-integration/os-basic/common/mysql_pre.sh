@@ -10,7 +10,6 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @CaseName  :   mysql_pre
 # @Author    :   Classicriver
 # @Contact   :   classicriver_jia@foxmail.com
 # @Date      :   2020.4.27

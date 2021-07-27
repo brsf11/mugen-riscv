@@ -42,7 +42,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     userdel -rf test
-    mv /etc/sudoers.bak /etc/sudoers
+    mv /etc/sudoers.bak /etc/sudoers -f
     LOG_INFO "End to restore the test environment."
 }
 
