@@ -39,8 +39,7 @@ function run_test()
 function post_test()
 {
     LOG_INFO "Start to restore the test environment."
-    rm -rf yelp-check.page 
-    rm -rf index.cache 
+    rm -rf yelp-check.page index.cache 
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
