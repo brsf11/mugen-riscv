@@ -32,11 +32,11 @@ function run_test()
     CHECK_RESULT $? 0 0 "html failed"
     find . -type f -name "highlight.pack.js" 
     CHECK_RESULT $? 0 0  "find html failed"
-    yelp-build cache Mallard
+    yelp-build cache DocBook
     CHECK_RESULT $? 0 0 "cache failed"
     find . -type f -name "index.cache"
     CHECK_RESULT $? 0 0 "find cache failed"
-    yelp-build epub Mallard
+    yelp-build epub DocBook
     CHECK_RESULT $? 0 0 "epub failed"
     find . -type f -name "index.epub"
     CHECK_RESULT $? 0 0 "find epub failed"
