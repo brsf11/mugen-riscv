@@ -30,15 +30,15 @@ function run_test()
     LOG_INFO "Start to run test."
     yelp-build html DocBook 
     CHECK_RESULT $? 0 0 "html failed"
-    find . -type f -name "highlight.pack.js" 
+    test -f "highlight.pack.js" 
     CHECK_RESULT $? 0 0  "find html failed"
     yelp-build cache DocBook
     CHECK_RESULT $? 0 0 "cache failed"
-    find . -type f -name "index.cache"
+    test -f "index.cache"
     CHECK_RESULT $? 0 0 "find cache failed"
     yelp-build epub DocBook
     CHECK_RESULT $? 0 0 "epub failed"
-    find . -type f -name "index.epub"
+    test -f "index.epub"
     CHECK_RESULT $? 0 0 "find epub failed"
     LOG_INFO "End to run test."
 }
