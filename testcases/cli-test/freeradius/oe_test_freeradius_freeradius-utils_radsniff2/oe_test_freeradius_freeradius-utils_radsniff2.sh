@@ -21,7 +21,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
 
-    DNF_INSTALL "freeradius freeradius-utils"
+    DNF_INSTALL "freeradius freeradius-utils vim"
     systemctl start radiusd
     SLEEP_WAIT 1
 
