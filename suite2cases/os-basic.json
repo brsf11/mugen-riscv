@@ -1,5 +1,5 @@
 {
-    "path":"$OET_PATH/testcases/ystem-test/system-integration/os-basic",
+    "path":"$OET_PATH/testcases/system-test/system-integration/os-basic",
     "add network interface":2,
     "add disk":[2,2,2],
     "cases":[
