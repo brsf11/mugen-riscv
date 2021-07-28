@@ -21,7 +21,6 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function get_free_eth() {
     local num_eth=$1
-    echo ${NODE1_NIC[@]}
     NODE1_NIC=$(python3 ${OET_PATH}/libs/locallibs/get_test_device.py --node 1 --device nic)
     LOCAL_ETH=(${NODE1_NIC[@]/$(ip route | grep ${NODE1_IPV4} | awk '{print$3}')/})
     [ ${#LOCAL_ETH[@]} -ge ${num_eth} ] || exit 1
