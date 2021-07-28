@@ -34,32 +34,27 @@ function run_test() {
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pmconfig -s | grep 'export PCP_LOG_DIR'
     CHECK_RESULT $?
-    systemctl start pmie
-    CHECK_RESULT $?
-    systemctl status pmie | grep 'active' 
-    CHECK_RESULT $?
     /usr/libexec/pcp/bin/pmie_check -c /etc/pcp/pmie/control.d/local
     CHECK_RESULT $?
-    test -n $(pgrep -f pmie)
+    test -n $(pgrep -f /usr/bin/pmie)
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pmie_check -l /var/log/pcp/pmie/pmie_check.log
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pmie_check -C
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmie_check -NV | grep 'Restarting pmie for host'
+    /usr/libexec/pcp/bin/pmie_check -NV | grep "/var/log/pcp/pmie/$host_name"
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pmie_check -NT | grep "/var/log/pcp/pmie/$host_name"
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pmie_check -s
     CHECK_RESULT $?
-    test -z $(pgrep -f pmie)
+    test -z $(pgrep -f /usr/bin/pmie)
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    kill -9 $(pgrep -f /usr/bin/pmie)
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
