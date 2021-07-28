@@ -1,6 +1,5 @@
 {
     "path":"$OET_PATH/testcases/ystem-test/system-integration/os-basic",
-    "machine type":"Kvm",
     "add network interface":2,
     "add disk":[2,2,2],
     "cases":[
