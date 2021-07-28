@@ -75,6 +75,7 @@ function post_test() {
     }
     expect eof
 EOF
+    rm -f testlog
     LOG_INFO "End to restore the test environment."
 }
 
