@@ -40,7 +40,7 @@ function run_test() {
     )
     swig -module swig -java -I ${current_path}/
     CHECK_RESULT $?
-    test -f swig.java -a -f swigJNI.java -a -f _wrap.c && rm -rf swig.java swigJNI.java _wrap.c
+    test -f swig.java -a -f swigJNI.java -a -f _wrap.c
     CHECK_RESULT $?
     swig -java -ignoremissing example.i
     CHECK_RESULT $?

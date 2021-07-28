@@ -48,7 +48,7 @@ function run_test() {
     CHECK_RESULT $?
     swig -java -fastdispatch example.i
     CHECK_RESULT $?
-    cp example.i example-bak.i
+    cp -rf example.i example-bak.i
     sed -i '2s/module/modle/g' example.i
     swig -java -Fstandard example.i >standard 2>&1
     CHECK_RESULT $? 1
@@ -58,7 +58,7 @@ function run_test() {
     CHECK_RESULT $? 1
     grep "example.i(9)" microsoft
     CHECK_RESULT $?
-    cp example-bak.i example.i && rm -rf example-bak.i
+    cp -rf example-bak.i example.i && rm -rf example-bak.i
     LOG_INFO "End to run test."
 }
 

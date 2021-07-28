@@ -46,12 +46,12 @@ function run_test() {
     CHECK_RESULT $?
     swig -java -E example.i | grep -E ' swig.swg|typemap|rename predicates|endoffile'
     CHECK_RESULT $?
-    cp example.i example-bak.i
+    cp -rf example.i example-bak.i
     swig -java -external-runtime example.i
     CHECK_RESULT $?
     diff example.i example-bak.i >log
     CHECK_RESULT $? 1
-    cp example-bak.i example.i
+    cp -rf example-bak.i example.i
     swig -java -fakeversion 6 example.i
     CHECK_RESULT $?
     grep -i "version 6" example.java

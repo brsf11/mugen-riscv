@@ -48,7 +48,7 @@ function run_test() {
     swig -java -pcreversion example.i | grep -i "pcre version"
     CHECK_RESULT $?
     swig -java example.i
-    cp example_wrap.c example_wrap.c-bak
+    cp -rf example_wrap.c example_wrap.c-bak
     swig -java -small example.i
     CHECK_RESULT $?
     diff -q example_wrap.c example_wrap.c-bak
