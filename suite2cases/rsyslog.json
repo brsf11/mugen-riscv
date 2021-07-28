@@ -1,14 +1,17 @@
 {
     "path": "$OET_PATH/testcases/cli-test/rsyslog",
+    "machine num": 2,
     "cases": [
         {
             "name": "oe_test_rsyslog_abnormal_config"
         },
         {
-            "name": "oe_test_rsyslog_abnormal_template"
+            "name": "oe_test_rsyslog_abnormal_template",
+            "machine num": 2
         },
         {
-            "name": "oe_test_rsyslog_function_attribute"
+            "name": "oe_test_rsyslog_function_attribute",
+            "machine num": 2
         },
         {
             "name": "oe_test_rsyslog_function_discard"
@@ -17,7 +20,8 @@
             "name": "oe_test_rsyslog_function_facility"
         },
         {
-            "name": "oe_test_rsyslog_function_httpd"
+            "name": "oe_test_rsyslog_function_httpd",
+            "machine num": 2
         },
         {
             "name": "oe_test_rsyslog_function_imfile"
