@@ -11,67 +11,50 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2021-1-5
+#@Date          :   2020-10-23
 #@License       :   Mulan PSL v2
-#@Desc          :   mcelog is a tool used to check for hardware error on x86 Linux.
+#@Desc          :   pcp testing(pmconfig,pmie_check)
 #####################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source "common/common_pcp.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    if [ "${NODE1_FRAME}" != "x86_64" ]; then
-        echo "Non X86 architecture,this function is not supported"
-        exit
-    else
-        DNF_INSTALL "mcelog gcc gcc-c++ flex dialog git"
-    fi
-    cat >correct <<EOF
-CPU 1 BANK 2
-STATUS corrected
-RIP 0x12341234
-EOF
+    deploy_env
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    aer-inject --help 2>&1 | grep 'Usage'
+    /usr/libexec/pcp/bin/pmconfig -a | grep 'PCP_LOG_DIR'
     CHECK_RESULT $?
-    aer-inject --version 2>&1 | grep 'aer-inject'
+    /usr/libexec/pcp/bin/pmconfig -l | grep 'PCP_BIN_DIR'
     CHECK_RESULT $?
-
-    echo "3" >/sys/devices/system/machinecheck/machinecheck0/tolerant
+    /usr/libexec/pcp/bin/pmconfig -L | grep 'pcp_version'
     CHECK_RESULT $?
-    modprobe mce-inject
+    /usr/libexec/pcp/bin/pmconfig -s | grep 'export PCP_LOG_DIR'
     CHECK_RESULT $?
-    mce-inject correct
+    /usr/libexec/pcp/bin/pmie_check -c /etc/pcp/pmie/control.d/local
     CHECK_RESULT $?
-    SLEEP_WAIT 3 "grep 'Hardware Error' /var/log/messages" 2
+    test -n $(pgrep -f /usr/bin/pmie)
     CHECK_RESULT $?
-
-    mcelog --help 2>&1 | grep 'Usage'
+    /usr/libexec/pcp/bin/pmie_check -l /var/log/pcp/pmie/pmie_check.log
     CHECK_RESULT $?
-    mcelog --ignorenodev --daemon --syslog --logfile=/var/log/mcelog --pidfile haha.txt
+    /usr/libexec/pcp/bin/pmie_check -C
     CHECK_RESULT $?
-    SLEEP_WAIT 3 "test -f /var/log/mcelog -a -f haha.txt" 2
+    /usr/libexec/pcp/bin/pmie_check -NV | grep "/var/log/pcp/pmie/$host_name"
     CHECK_RESULT $?
-    test $(pgrep -f "mcelog --ignorenodev --daemon") -eq $(cat haha.txt)
+    /usr/libexec/pcp/bin/pmie_check -NT | grep "/var/log/pcp/pmie/$host_name"
     CHECK_RESULT $?
-    mcelog --client
+    /usr/libexec/pcp/bin/pmie_check -s
     CHECK_RESULT $?
-    mcelog --ascii </var/log/mcelog | grep 'Hardware event'
+    test -z $(pgrep -f /usr/bin/pmie)
     CHECK_RESULT $?
-    mcelog --ascii --file /var/log/mcelog | grep 'Hardware event'
-    CHECK_RESULT $?
-    kill -9 $(pgrep -f "mcelog --ignorenodev --daemon")
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    echo "0" >/sys/devices/system/machinecheck/machinecheck0/tolerant
-    rm -f correct /var/log/mcelog haha.txt
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }

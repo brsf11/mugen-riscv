@@ -11,32 +11,20 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-11-2
+#@Date          :   2020-10-23
 #@License       :   Mulan PSL v2
 #@Desc          :   Public class
 #####################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function deploy_env() {
-    cat >/root/.oscrc <<EOF
-[general]
-apiurl=http://117.78.1.88
-no_verify=1
-build-root=/root/osc/buildroot
-[http://117.78.1.88]
-user=test666
-pass=test666@123
-EOF
-    branches_path=home:test666:branches:openEuler:Mainline
-    currentDir=$(
-        cd "$(dirname $0)" || exit 1
-        pwd
-    )
-}
-
-function clear_env() {
-    cd $currentDir || exit 1
-    rm -rf $branches_path /root/.oscrc
-    DNF_REMOVE
+function deploy_env {
+    DNF_INSTALL pcp
+    systemctl enable pmcd
+    systemctl start pmcd
+    systemctl enable pmlogger
+    systemctl start pmlogger
+    SLEEP_WAIT 10
+    host_name=$(hostname)
+    pcp_version=$(rpm -qa pcp | awk -F '-' '{print $2}')
 }

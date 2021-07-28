@@ -11,55 +11,41 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2021-1-5
+#@Date          :   2020-10-23
 #@License       :   Mulan PSL v2
-#@Desc          :   mcelog is a tool used to check for hardware error on x86 Linux.
+#@Desc          :   pcp testing(pcp-summary,pcp-vmstat,pmcd_wait)
 #####################################
 
-source "${OET_PATH}/libs/locallibs/common_lib.sh"
+source "common/common_pcp.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    if [ "${NODE1_FRAME}" != "x86_64" ]; then
-        echo "Non X86 architecture,this function is not supported"
-        exit
-    else
-        DNF_INSTALL mcelog
-    fi
+    deploy_env
+    archive_data=$(pcp -h "$host_name" | grep 'primary logger:' | awk -F: '{print $NF}')
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    mcelog --cpu k8
+    /usr/libexec/pcp/bin/pcp-summary -a $archive_data | grep 'Performance'
     CHECK_RESULT $?
-    mcelog --cpu p4
+    /usr/libexec/pcp/bin/pcp-summary -D | grep 'log_archive'
     CHECK_RESULT $?
-    mcelog --cpu core2
+    /usr/libexec/pcp/bin/pcp-summary -h $host_name | grep 'platform'
     CHECK_RESULT $?
-    mcelog --cpu generic
+    /usr/libexec/pcp/bin/pcp-summary -a $archive_data -O @08 | grep 'archive'
     CHECK_RESULT $?
-    mcelog --cpumhz 50
+    /usr/libexec/pcp/bin/pcp-summary -n /var/lib/pcp/pmns/root | grep 'hardware'
     CHECK_RESULT $?
-    mcelog --raw
+    /usr/libexec/pcp/bin/pcp-summary -P | grep 'timezone'
     CHECK_RESULT $?
-    mcelog --daemon --syslog-error --dmi --no-imc-log --filter --num-errors N
+    /usr/libexec/pcp/bin/pcp-vmstat 1 10 | grep 'loadavg'
     CHECK_RESULT $?
-    mcelog_id1=$(pgrep -f "mcelog --daemon --syslog-error --dmi --no-imc-log --filter --num-errors N")
+    /usr/libexec/pcp/bin/pmcd_wait -h $host_name
     CHECK_RESULT $?
-    kill -9 $mcelog_id1
+    /usr/libexec/pcp/bin/pmcd_wait -t 30
     CHECK_RESULT $?
-    mcelog --daemon --no-syslog --no-dmi --no-filter
-    CHECK_RESULT $?
-    mcelog_id2=$(pgrep -f "mcelog --daemon --no-syslog --no-dmi --no-filter")
-    CHECK_RESULT $?
-    kill -9 $mcelog_id2
-    CHECK_RESULT $?
-    mcelog --is-cpu-supported
-    CHECK_RESULT $?
-    nohup mcelog --daemon --foreground &
-    CHECK_RESULT $?
-    kill -9 $(pgrep -f "mcelog --daemon --foreground")
+    /usr/libexec/pcp/bin/pmcd_wait -v
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

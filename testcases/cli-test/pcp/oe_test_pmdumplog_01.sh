@@ -11,55 +11,39 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2021-1-5
+#@Date          :   2020-10-14
 #@License       :   Mulan PSL v2
-#@Desc          :   mcelog is a tool used to check for hardware error on x86 Linux.
+#@Desc          :   pcp testing(pmdumplog)
 #####################################
 
-source "${OET_PATH}/libs/locallibs/common_lib.sh"
+source "common/common_pcp.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    if [ "${NODE1_FRAME}" != "x86_64" ]; then
-        echo "Non X86 architecture,this function is not supported"
-        exit
-    else
-        DNF_INSTALL mcelog
-    fi
+    deploy_env
+    archive_data=$(pcp -h "$host_name" | grep 'primary logger:' | awk -F: '{print $NF}')
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    mcelog --cpu k8
+    pmdumplog --version 2>&1 | grep "$pcp_version"
     CHECK_RESULT $?
-    mcelog --cpu p4
+    pmdumplog -a $archive_data | grep 'Archive timezone'
     CHECK_RESULT $?
-    mcelog --cpu core2
+    pmdumplog -d $archive_data | grep 'PMID'
     CHECK_RESULT $?
-    mcelog --cpu generic
+    pmdumplog -e $archive_data | grep 'Metric Labels'
     CHECK_RESULT $?
-    mcelog --cpumhz 50
+    pmdumplog -h $archive_data | grep 'PMID'
     CHECK_RESULT $?
-    mcelog --raw
+    pmdumplog -i $archive_data | grep 'Instance Domains'
     CHECK_RESULT $?
-    mcelog --daemon --syslog-error --dmi --no-imc-log --filter --num-errors N
+    pmdumplog -L $archive_data | grep 'Archive timezone'
     CHECK_RESULT $?
-    mcelog_id1=$(pgrep -f "mcelog --daemon --syslog-error --dmi --no-imc-log --filter --num-errors N")
+    pmdumplog -l $archive_data | grep 'Log Label'
     CHECK_RESULT $?
-    kill -9 $mcelog_id1
-    CHECK_RESULT $?
-    mcelog --daemon --no-syslog --no-dmi --no-filter
-    CHECK_RESULT $?
-    mcelog_id2=$(pgrep -f "mcelog --daemon --no-syslog --no-dmi --no-filter")
-    CHECK_RESULT $?
-    kill -9 $mcelog_id2
-    CHECK_RESULT $?
-    mcelog --is-cpu-supported
-    CHECK_RESULT $?
-    nohup mcelog --daemon --foreground &
-    CHECK_RESULT $?
-    kill -9 $(pgrep -f "mcelog --daemon --foreground")
+    pmdumplog -m $archive_data | grep 'metrics'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

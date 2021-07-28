@@ -11,55 +11,32 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2021-1-5
+#@Date          :   2020-10-14
 #@License       :   Mulan PSL v2
-#@Desc          :   mcelog is a tool used to check for hardware error on x86 Linux.
+#@Desc          :   pcp testing(pmdate)
 #####################################
 
-source "${OET_PATH}/libs/locallibs/common_lib.sh"
+source "common/common_pcp.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    if [ "${NODE1_FRAME}" != "x86_64" ]; then
-        echo "Non X86 architecture,this function is not supported"
-        exit
-    else
-        DNF_INSTALL mcelog
-    fi
+    deploy_env
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    mcelog --cpu k8
+    pmdate -5y %y%m%d-%H:%M:%S | grep "$(date '+%m')"
     CHECK_RESULT $?
-    mcelog --cpu p4
+    pmdate +3m %y%m%d-%H:%M:%S | grep "$(date '+%d')"
     CHECK_RESULT $?
-    mcelog --cpu core2
+    pmdate -5d %y%m%d-%H:%M:%S | grep "$(date '+%H')"
     CHECK_RESULT $?
-    mcelog --cpu generic
+    pmdate +3H %y%m%d-%H:%M:%S | grep "$(date '+%M')"
     CHECK_RESULT $?
-    mcelog --cpumhz 50
+    pmdate -5M %y%m%d-%H:%M:%S | grep "$(date '+%S')"
     CHECK_RESULT $?
-    mcelog --raw
-    CHECK_RESULT $?
-    mcelog --daemon --syslog-error --dmi --no-imc-log --filter --num-errors N
-    CHECK_RESULT $?
-    mcelog_id1=$(pgrep -f "mcelog --daemon --syslog-error --dmi --no-imc-log --filter --num-errors N")
-    CHECK_RESULT $?
-    kill -9 $mcelog_id1
-    CHECK_RESULT $?
-    mcelog --daemon --no-syslog --no-dmi --no-filter
-    CHECK_RESULT $?
-    mcelog_id2=$(pgrep -f "mcelog --daemon --no-syslog --no-dmi --no-filter")
-    CHECK_RESULT $?
-    kill -9 $mcelog_id2
-    CHECK_RESULT $?
-    mcelog --is-cpu-supported
-    CHECK_RESULT $?
-    nohup mcelog --daemon --foreground &
-    CHECK_RESULT $?
-    kill -9 $(pgrep -f "mcelog --daemon --foreground")
+    pmdate +3S %y%m%d-%H:%M:%S | grep "$(date '+%M')"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

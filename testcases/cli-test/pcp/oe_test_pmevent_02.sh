@@ -11,55 +11,42 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2021-1-5
+#@Date          :   2020-10-15
 #@License       :   Mulan PSL v2
-#@Desc          :   mcelog is a tool used to check for hardware error on x86 Linux.
+#@Desc          :   pcp testing(pmevent)
 #####################################
 
-source "${OET_PATH}/libs/locallibs/common_lib.sh"
+source "common/common_pcp.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    if [ "${NODE1_FRAME}" != "x86_64" ]; then
-        echo "Non X86 architecture,this function is not supported"
-        exit
-    else
-        DNF_INSTALL mcelog
-    fi
+    deploy_env
+    archive_data=$(pcp -h "$host_name" | grep 'primary logger:' | awk -F: '{print $NF}')
+    metric_name=disk.dev.write
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    mcelog --cpu k8
+    pmevent -L -s 10 $metric_name | grep 'interval'
     CHECK_RESULT $?
-    mcelog --cpu p4
+    pmevent --container=busybox vfs.inodes.count -s 10 | grep 'metric'
     CHECK_RESULT $?
-    mcelog --cpu core2
+    pmevent --derived=/var/lib/pcp/config/pmieconf/dm -s 10 $metric_name | grep 'metric'
     CHECK_RESULT $?
-    mcelog --cpu generic
+    pmevent -a $archive_data -d -s 10 $metric_name | grep 'metric'
     CHECK_RESULT $?
-    mcelog --cpumhz 50
+    pmevent -a $archive_data -f 3 -s 10 $metric_name | grep 'metric'
     CHECK_RESULT $?
-    mcelog --raw
+    pmevent -a $archive_data -i '' -s 10 $metric_name | grep 'metric'
     CHECK_RESULT $?
-    mcelog --daemon --syslog-error --dmi --no-imc-log --filter --num-errors N
+    pmevent -a $archive_data -r -s 10 $metric_name | grep 'metric'
     CHECK_RESULT $?
-    mcelog_id1=$(pgrep -f "mcelog --daemon --syslog-error --dmi --no-imc-log --filter --num-errors N")
+    pmevent -a $archive_data -v -s 10 $metric_name | grep 'metric'
     CHECK_RESULT $?
-    kill -9 $mcelog_id1
+    pmevent -a $archive_data -w 3 -s 10 $metric_name | grep 'metric'
     CHECK_RESULT $?
-    mcelog --daemon --no-syslog --no-dmi --no-filter
-    CHECK_RESULT $?
-    mcelog_id2=$(pgrep -f "mcelog --daemon --no-syslog --no-dmi --no-filter")
-    CHECK_RESULT $?
-    kill -9 $mcelog_id2
-    CHECK_RESULT $?
-    mcelog --is-cpu-supported
-    CHECK_RESULT $?
-    nohup mcelog --daemon --foreground &
-    CHECK_RESULT $?
-    kill -9 $(pgrep -f "mcelog --daemon --foreground")
+    pmevent -a $archive_data -x 50 -s 10 $metric_name | grep 'metric'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

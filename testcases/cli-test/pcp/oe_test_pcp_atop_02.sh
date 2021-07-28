@@ -11,61 +11,65 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2021-1-5
+#@Date          :   2020-10-28
 #@License       :   Mulan PSL v2
-#@Desc          :   mcelog is a tool used to check for hardware error on x86 Linux.
+#@Desc          :   (pcp-system-tools) (pcp-atop)
 #####################################
 
-source "${OET_PATH}/libs/locallibs/common_lib.sh"
+source "common/common_pcp.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    if [ "${NODE1_FRAME}" != "x86_64" ]; then
-        echo "Non X86 architecture,this function is not supported"
-        exit
-    else
-        DNF_INSTALL mcelog
-    fi
+    deploy_env
+    DNF_INSTALL pcp-system-tools
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    mcelog --cpu k8
+    nohup /usr/libexec/pcp/bin/pcp-atop -o >atop_o 2>&1 &
+    SLEEP_WAIT 7
+    grep 'procacct' atop_o
     CHECK_RESULT $?
-    mcelog --cpu p4
+    nohup /usr/libexec/pcp/bin/pcp-atop -u >atop_u 2>&1 &
+    SLEEP_WAIT 7
+    grep 'RUID' atop_u
     CHECK_RESULT $?
-    mcelog --cpu core2
+    nohup /usr/libexec/pcp/bin/pcp-atop -p >atop_p 2>&1 &
+    SLEEP_WAIT 7
+    grep 'SNET' atop_p
     CHECK_RESULT $?
-    mcelog --cpu generic
+    nohup /usr/libexec/pcp/bin/pcp-atop -j >atop_j 2>&1 &
+    SLEEP_WAIT 7
+    grep 'CID' atop_j
     CHECK_RESULT $?
-    mcelog --cpumhz 50
+    nohup /usr/libexec/pcp/bin/pcp-atop -M >atop_M 2>&1 &
+    SLEEP_WAIT 2
+    test -f atop_M
     CHECK_RESULT $?
-    mcelog --raw
+    nohup /usr/libexec/pcp/bin/pcp-atop -D >atop_D 2>&1 &
+    SLEEP_WAIT 7
+    grep 'DSK' atop_D
     CHECK_RESULT $?
-    mcelog --daemon --syslog-error --dmi --no-imc-log --filter --num-errors N
+    nohup /usr/libexec/pcp/bin/pcp-atop -N >atop_N 2>&1 &
+    SLEEP_WAIT 7
+    grep 'NET' atop_N
     CHECK_RESULT $?
-    mcelog_id1=$(pgrep -f "mcelog --daemon --syslog-error --dmi --no-imc-log --filter --num-errors N")
+    nohup /usr/libexec/pcp/bin/pcp-atop -A >atop_A 2>&1 &
+    SLEEP_WAIT 30
+    grep 'ACPU' atop_A
     CHECK_RESULT $?
-    kill -9 $mcelog_id1
-    CHECK_RESULT $?
-    mcelog --daemon --no-syslog --no-dmi --no-filter
-    CHECK_RESULT $?
-    mcelog_id2=$(pgrep -f "mcelog --daemon --no-syslog --no-dmi --no-filter")
-    CHECK_RESULT $?
-    kill -9 $mcelog_id2
-    CHECK_RESULT $?
-    mcelog --is-cpu-supported
-    CHECK_RESULT $?
-    nohup mcelog --daemon --foreground &
-    CHECK_RESULT $?
-    kill -9 $(pgrep -f "mcelog --daemon --foreground")
+    nohup /usr/libexec/pcp/bin/pcp-atop -w testdir -S -a >atop_wSa 2>&1 &
+    SLEEP_WAIT 2
+    test -d testdir
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
+    rm -rf ./testdir atop*
+    kill -9 $(pgrep -f /usr/libexec/pcp/bin/pcp-atop)
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
