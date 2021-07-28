@@ -19,7 +19,9 @@ source "${OET_PATH}/libs/locallibs/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
+    echo "localhost" >/tmp/hostname
     SSH_CMD "
+    echo 'localhost' >/tmp/hostname
     useradd sftpuser -d /home/sftpuser -p ${NODE2_PASSWORD}
     chown -R root /home/sftpuser/
     systemctl restart sshd
@@ -48,12 +50,12 @@ function run_test() {
     }
     expect {
         "sftp>" {
-            send "get /etc/hostname /home/\\r"
+            send "get /tmp/hostname /home/\\r"
         }
     }
     expect {
         "sftp>" {
-            send "put /etc/hostname /home/sftpuser/\\r"
+            send "put /tmp/hostname /home/sftpuser/\\r"
         }
     }
     expect {
@@ -78,10 +80,10 @@ function post_test() {
     SSH_CMD "
     chown -R sftpuser /home/sftpuser/
     userdel -r sftpuser
-    rm -rf /home/sftpuser/hostname
+    rm -rf /home/sftpuser/hostname /tmp/hostname
     systemctl restart sshd
     " "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
-    rm -rf /home/hostname
+    rm -rf /home/hostname /tmp/hostname
     LOG_INFO "End to restore the test environment."
 }
 
