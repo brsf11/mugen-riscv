@@ -25,4 +25,5 @@ function deploy_env {
     systemctl enable pmlogger
     systemctl start pmlogger
     SLEEP_WAIT 10
+    host_name=$(hostname)
 }

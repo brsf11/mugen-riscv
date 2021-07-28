@@ -26,17 +26,17 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    pmdate +3S %y%m%d-%H:%M:%S | grep '-'
+    pmdate -5y %y%m%d-%H:%M:%S | grep "$(date '+%m')"
     CHECK_RESULT $?
-    pmdate +3H %y%m%d-%H:%M:%S | grep '-'
-    CHECK_RESULT $? 
-    pmdate +3m %y%m%d-%H:%M:%S | grep '-'
+    pmdate +3m %y%m%d-%H:%M:%S | grep "$(date '+%d')"
     CHECK_RESULT $?
-    pmdate -5M %y%m%d-%H:%M:%S | grep '-'
+    pmdate -5d %y%m%d-%H:%M:%S | grep "$(date '+%H')"
     CHECK_RESULT $?
-    pmdate -5d %y%m%d-%H:%M:%S | grep '-'
+    pmdate +3H %y%m%d-%H:%M:%S | grep "$(date '+%M')"
     CHECK_RESULT $?
-    pmdate -5y %y%m%d-%H:%M:%S | grep '-'
+    pmdate -5M %y%m%d-%H:%M:%S | grep "$(date '+%S')"
+    CHECK_RESULT $?
+    pmdate +3S %y%m%d-%H:%M:%S | grep "$(date '+%M')"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

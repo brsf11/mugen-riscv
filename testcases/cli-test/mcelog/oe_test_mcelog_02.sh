@@ -22,7 +22,7 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     if [ "${NODE1_FRAME}" != "x86_64" ]; then
         echo "Non X86 architecture,this function is not supported"
-        exit 1
+        exit
     else
         DNF_INSTALL mcelog
     fi

@@ -21,7 +21,7 @@ source "common/common_pcp.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
-    archive_data=$(pcp -h localhost | grep 'primary logger:' | awk -F: '{print $NF}')
+    archive_data=$(pcp -h "$host_name" | grep 'primary logger:' | awk -F: '{print $NF}')
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -31,7 +31,7 @@ function run_test() {
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pcp-summary -D | grep 'log_archive'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pcp-summary -h localhost | grep 'platform'
+    /usr/libexec/pcp/bin/pcp-summary -h $host_name | grep 'platform'
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pcp-summary -a $archive_data -O @08 | grep 'archive'
     CHECK_RESULT $?
@@ -41,7 +41,7 @@ function run_test() {
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pcp-vmstat 1 10 | grep 'loadavg'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmcd_wait -h localhost
+    /usr/libexec/pcp/bin/pmcd_wait -h $host_name
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pmcd_wait -t 30
     CHECK_RESULT $?

@@ -100,7 +100,7 @@ END
     expect eof
     exit
 END
-    grep 'command' testlog6
+    grep "help \[ command \]" testlog6
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

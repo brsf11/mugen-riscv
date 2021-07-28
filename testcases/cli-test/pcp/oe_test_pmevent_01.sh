@@ -21,7 +21,7 @@ source "common/common_pcp.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
-    archive_data=$(pcp -h localhost | grep 'primary logger:' | awk -F: '{print $NF}')
+    archive_data=$(pcp -h "$host_name" | grep 'primary logger:' | awk -F: '{print $NF}')
     metric_name=disk.dev.write
     LOG_INFO "End to prepare the test environment."
 }
@@ -32,7 +32,7 @@ function run_test() {
     CHECK_RESULT $?
     pmevent -a $archive_data -A 3min $metric_name | grep 'metric'
     CHECK_RESULT $?
-    pmevent -h localhost -s 10 $metric_name | grep "$metric_name"
+    pmevent -h $host_name -s 10 $metric_name | grep "$metric_name"
     CHECK_RESULT $?
     pmevent -n /var/lib/pcp/pmns/root -s 10 $metric_name | grep 'semantics'
     CHECK_RESULT $?

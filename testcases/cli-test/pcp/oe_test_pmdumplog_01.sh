@@ -21,13 +21,15 @@ source "common/common_pcp.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
-    archive_data=$(pcp -h localhost | grep 'primary logger:' | awk -F: '{print $NF}')
+    archive_data=$(pcp -h "$host_name" | grep 'primary logger:' | awk -F: '{print $NF}')
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    pmdumplog --version 2>&1 | grep 'version'
+    pcp_version=$(rpm -qa pcp | awk -F '-' '{print $2}')
+    CHECK_RESULT $?
+    pmdumplog --version 2>&1 | grep "$pcp_version"
     CHECK_RESULT $?
     pmdumplog -a $archive_data | grep 'Archive timezone'
     CHECK_RESULT $?

@@ -37,7 +37,6 @@ EOF
 
 function clear_env() {
     cd $currentDir || exit 1
-    rm -rf $branches_path
-    rm -f /root/.oscrc
+    rm -rf $branches_path /root/.oscrc
     DNF_REMOVE
 }

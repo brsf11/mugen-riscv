@@ -28,39 +28,47 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start to run test."
     nohup /usr/libexec/pcp/bin/pcp-atop -o >atop_o 2>&1 &
-    SLEEP_WAIT 7 "grep 'procacct' atop_o" 2
+    SLEEP_WAIT 7
+    grep 'procacct' atop_o
     CHECK_RESULT $?
     nohup /usr/libexec/pcp/bin/pcp-atop -u >atop_u 2>&1 &
-    SLEEP_WAIT 7 "grep 'RUID' atop_u" 2
+    SLEEP_WAIT 7
+    grep 'RUID' atop_u
     CHECK_RESULT $?
     nohup /usr/libexec/pcp/bin/pcp-atop -p >atop_p 2>&1 &
-    SLEEP_WAIT 7 "grep 'SNET' atop_p" 2
+    SLEEP_WAIT 7
+    grep 'SNET' atop_p
     CHECK_RESULT $?
     nohup /usr/libexec/pcp/bin/pcp-atop -j >atop_j 2>&1 &
-    SLEEP_WAIT 7 "grep 'CID' atop_j" 2
+    SLEEP_WAIT 7
+    grep 'CID' atop_j
     CHECK_RESULT $?
     nohup /usr/libexec/pcp/bin/pcp-atop -M >atop_M 2>&1 &
-    SLEEP_WAIT 2 "test -f atop_M" 2
+    SLEEP_WAIT 2
+    test -f atop_M
     CHECK_RESULT $?
     nohup /usr/libexec/pcp/bin/pcp-atop -D >atop_D 2>&1 &
-    SLEEP_WAIT 7 "grep 'DSK' atop_D" 2
+    SLEEP_WAIT 7
+    grep 'DSK' atop_D
     CHECK_RESULT $?
     nohup /usr/libexec/pcp/bin/pcp-atop -N >atop_N 2>&1 &
-    SLEEP_WAIT 7 "grep 'NET' atop_N" 2
+    SLEEP_WAIT 7
+    grep 'NET' atop_N
     CHECK_RESULT $?
     nohup /usr/libexec/pcp/bin/pcp-atop -A >atop_A 2>&1 &
-    SLEEP_WAIT 30 "grep 'ACPU' atop_A" 2
+    SLEEP_WAIT 30
+    grep 'ACPU' atop_A
     CHECK_RESULT $?
     nohup /usr/libexec/pcp/bin/pcp-atop -w testdir -S -a >atop_wSa 2>&1 &
-    SLEEP_WAIT 2 "test -d testdir" 2
+    SLEEP_WAIT 2
+    test -d testdir
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -f atop*
-    rm -rf ./testdir
+    rm -rf ./testdir atop*
     kill -9 $(pgrep -f /usr/libexec/pcp/bin/pcp-atop)
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."

@@ -21,7 +21,7 @@ source "common/common_pcp.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
-    archive_data=$(pcp -h localhost | grep 'primary logger:' | awk -F: '{print $NF}')
+    archive_data=$(pcp -h "$host_name" | grep 'primary logger:' | awk -F: '{print $NF}')
     LOG_INFO "End to prepare the test environment."
 }
 
