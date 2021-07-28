@@ -45,8 +45,7 @@ function post_test() {
     DNF_REMOVE "maven java*"
     mv /etc/profile-bak /etc/profile -f
     source /etc/profile
-    rmdoc=$(ls | grep -vE ".xml|main|.sh|test")
-    rm -rf $rmdoc
+    rm -rf $(ls | grep -vE ".xml|main|.sh|test") /root/.m2
     LOG_INFO "Finish restoring the test environment."
 }
 

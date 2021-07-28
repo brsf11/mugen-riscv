@@ -43,8 +43,7 @@ function post_test() {
     DNF_REMOVE "ant* java*"
     mv /etc/profile-bak /etc/profile -f
     source /etc/profile
-    rmdoc=$(ls | grep -vE ".xml|.java|.sh")
-    rm -rf $rmdoc
+    rm -rf $(ls | grep -vE ".xml|.java|.sh")
     LOG_INFO "Finish restoring the test environment."
 }
 
