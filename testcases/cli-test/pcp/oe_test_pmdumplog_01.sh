@@ -27,8 +27,6 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    pcp_version=$(rpm -qa pcp | awk -F '-' '{print $2}')
-    CHECK_RESULT $?
     pmdumplog --version 2>&1 | grep "$pcp_version"
     CHECK_RESULT $?
     pmdumplog -a $archive_data | grep 'Archive timezone'

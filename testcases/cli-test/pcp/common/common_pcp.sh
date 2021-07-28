@@ -26,4 +26,5 @@ function deploy_env {
     systemctl start pmlogger
     SLEEP_WAIT 10
     host_name=$(hostname)
+    pcp_version=$(rpm -qa pcp | awk -F '-' '{print $2}')
 }

@@ -27,7 +27,7 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    pcp --version | grep 'version'
+    pcp --version | grep "$pcp_version"
     CHECK_RESULT $?
     pcp -a $archive_data -A 3min | grep 'Performance'
     CHECK_RESULT $?
