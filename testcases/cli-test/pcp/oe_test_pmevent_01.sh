@@ -28,7 +28,9 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    pmevent --version 2>&1 | grep 'version'
+    pcp_version=$(rpm -qa pcp | awk -F '-' '{print $2}')
+    CHECK_RESULT $?
+    pmevent --version 2>&1 | grep "$pcp_version"
     CHECK_RESULT $?
     pmevent -a $archive_data -A 3min $metric_name | grep 'metric'
     CHECK_RESULT $?
