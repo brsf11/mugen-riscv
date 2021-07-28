@@ -14,7 +14,6 @@
 # @Contact   :   lchutian@163.com
 # @Date      :   2020/05/20
 # @License   :   Mulan PSL v2
-# @Version   :   1.0
 # @Desc      :   public class integration
 # ############################################
 
@@ -28,8 +27,7 @@ function deploy_env() {
 
 function clear_env() {
     DNF_REMOVE "java* junit"
-    rmdoc=$(ls | grep -vE ".xml|.java|.sh|expect_result*")
-    rm -rf $rmdoc
+    rm -rf $(ls | grep -vE ".xml|.java|.sh|expect_result*")
 }
 
 function compile_java() {
