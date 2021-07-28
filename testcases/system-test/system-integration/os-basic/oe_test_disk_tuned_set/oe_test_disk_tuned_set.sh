@@ -21,7 +21,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "tuned dmidecode"
-    if [[ "$(dmidecode -s system-product-name)" =~ "KVM" ]]; then
+    if [[ "${NODE1_MACHINE}" =~ "KVM" ]]; then
         LOG_INFO "This only applies to physical machines."
         exit 0
     fi
