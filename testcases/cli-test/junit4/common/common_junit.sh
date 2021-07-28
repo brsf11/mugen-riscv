@@ -26,7 +26,7 @@ function deploy_env() {
 }
 
 function clear_env() {
-    DNF_REMOVE "java* junit"
+    DNF_REMOVE
     rm -rf $(ls | grep -vE ".xml|.java|.sh|expect_result*")
 }
 

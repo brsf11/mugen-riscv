@@ -40,7 +40,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     rm -rf /usr/share/ant/lib/junit.jar
-    DNF_REMOVE "ant* java*"
+    DNF_REMOVE
     mv /etc/profile-bak /etc/profile -f
     source /etc/profile
     rm -rf $(ls | grep -vE ".xml|.java|.sh")

@@ -26,6 +26,8 @@ function pre_test() {
     cp /etc/profile /etc/profile-bak
     echo -e "export MAVEN_HOME=/usr/share/maven\nexport PATH=\$PATH:\$MAVEN_HOME" >>/etc/profile
     source /etc/profile
+    mkdir libs
+    cp -r "$(rpm -ql junit | grep junit.jar)" "$(rpm -ql hamcrest | grep core.jar)" libs
     LOG_INFO "Finish preparing the test environment."
 }
 
@@ -42,7 +44,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    DNF_REMOVE "maven java*"
+    DNF_REMOVE
     mv /etc/profile-bak /etc/profile -f
     source /etc/profile
     rm -rf $(ls | grep -vE ".xml|main|.sh|test") /root/.m2
