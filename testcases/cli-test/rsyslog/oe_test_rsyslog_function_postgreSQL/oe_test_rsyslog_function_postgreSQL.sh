@@ -45,14 +45,12 @@ function run_test() {
     expect eof
     exit
 END
-    CHECK_RESULT $?
     psql -U rsyslog -d Syslog </usr/share/doc/rsyslog/pgsql-createDB.sql
     CHECK_RESULT $?
     cat >/etc/rsyslog.d/test.conf <<EOF
     \$ModLoad ompgsql
     *.*        :ompgsql:127.0.0.1,Syslog,rsyslog,rsyslog 
 EOF
-    CHECK_RESULT $?
     systemctl restart rsyslog
     CHECK_RESULT $?
     expect <<-END

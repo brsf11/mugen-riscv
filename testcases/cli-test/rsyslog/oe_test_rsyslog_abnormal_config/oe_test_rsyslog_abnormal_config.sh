@@ -21,7 +21,6 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start to run test."
     echo "#local7.*  /var/log/test" >/etc/rsyslog.d/test.conf
-    CHECK_RESULT $?
     rsyslogd -f /etc/rsyslog.d/test.conf -N1 2>&1 | grep "run failed with error"
     CHECK_RESULT $?
     LOG_INFO "End to run test."

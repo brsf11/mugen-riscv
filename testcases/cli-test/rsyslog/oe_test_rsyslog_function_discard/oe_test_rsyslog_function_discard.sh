@@ -21,7 +21,6 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start to run test."
     echo "local3.*    ~" >/etc/rsyslog.d/test.conf
-    CHECK_RESULT $?
     systemctl restart rsyslog
     CHECK_RESULT $?
     logger -t local3 -p local3.error "local3test"

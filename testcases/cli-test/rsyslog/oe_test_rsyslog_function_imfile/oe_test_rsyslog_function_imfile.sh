@@ -35,7 +35,6 @@ function run_test() {
       facility="local7")
     local7.*  /var/log/test
 EOF
-    CHECK_RESULT $?
     systemctl restart rsyslog
     CHECK_RESULT $?
     echo "testmessage" >>/etc/rsyslog.d/test

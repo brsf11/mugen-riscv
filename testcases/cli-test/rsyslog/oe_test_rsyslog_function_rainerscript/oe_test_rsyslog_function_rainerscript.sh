@@ -23,7 +23,6 @@ function run_test() {
     cat >/etc/rsyslog.d/test.conf <<EOF
     if \$syslogfacility-text == 'local5' and \$msg startswith 'NAME' and (\$msg contains 'error1' or \$msg contains 'error5') then /var/log/test
 EOF
-    CHECK_RESULT $?
     systemctl restart rsyslog
     CHECK_RESULT $?
     time=$(date +%s%N | cut -c 9-13)

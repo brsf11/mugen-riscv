@@ -33,7 +33,6 @@ function run_test() {
     \$ModLoad imtcp
     \$InputTCPServerRun 514
 EOF
-    CHECK_RESULT $?
     systemctl restart rsyslog
     CHECK_RESULT $?
     netstat -anpt | grep 514 | grep rsyslogd
@@ -44,9 +43,10 @@ EOF
     local7.*  @@${NODE1_IPV4};test-template
 EOF
     SSH_SCP client.conf ${NODE2_USER}@${NODE2_IPV4}:/etc/rsyslog.d/client.conf "${NODE2_PASSWORD}"
+    CHECK_RESULT $?
     SSH_CMD "
     systemctl restart rsyslog
-    logger -p local7.err "tcptesttemplate"
+    logger -p local7.err \"tcptesttemplate\"
     " ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     CHECK_RESULT $?
     SLEEP_WAIT 5

@@ -23,8 +23,6 @@ function run_test() {
     facility_list=("auth" "daemon" "security" "lpr" "mail" "syslog" "news" "user" "uucp" "local1")
     for facility in "${facility_list[@]}"; do
         echo "$facility.*   /var/log/test" >/etc/rsyslog.d/test.conf
-        CHECK_RESULT $?
-        SLEEP_WAIT 3
         systemctl restart rsyslog
         CHECK_RESULT $?
         time=$(date +%s%N | cut -c 9-13)

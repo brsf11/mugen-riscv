@@ -23,8 +23,6 @@ function run_test() {
     priority_list=("emerg" "alert" "crit" "err" "warning" "notice" "info" "debug")
     for priority in "${priority_list[@]}"; do
         echo "local5.=$priority   /var/log/test" >/etc/rsyslog.d/test.conf
-        CHECK_RESULT $?
-        SLEEP_WAIT 5
         systemctl restart rsyslog
         CHECK_RESULT $?
         time=$(date +%s%N | cut -c 9-13)

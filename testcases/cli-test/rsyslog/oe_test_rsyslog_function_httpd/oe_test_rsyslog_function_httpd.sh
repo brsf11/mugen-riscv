@@ -57,16 +57,16 @@ EOF
     CHECK_RESULT $?
     systemctl restart rsyslog
     CHECK_RESULT $?
-    SSH_CMD "
+    SSH_CMD "en  
     echo  '\$ModLoad imtcp\n\$InputTCPServerRun 514\n*.* /var/log/test' > /etc/rsyslog.d/server.conf
     systemctl restart rsyslog
     " ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     CHECK_RESULT $?
     SLEEP_WAIT 5
-    SSH_CMD "cat /var/log/test | grep "apache-access" | wc -l" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER} | tail -n 1 | grep 0
-    CHECK_RESULT $? 0 1
-    SSH_CMD "cat /var/log/test | grep "apache-error" | wc -l" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER} | tail -n 1 | grep 0
-    CHECK_RESULT $? 0 1
+    SSH_CMD "grep \"apache-access\" /var/log/test" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    CHECK_RESULT $?
+    SSH_CMD "grep \"apache-error\" /var/log/test" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 

@@ -32,7 +32,6 @@ function run_test() {
     \$ModLoad imtcp
     \$InputTCPServerRun 514
 EOF
-    CHECK_RESULT $?
     systemctl restart rsyslog
     CHECK_RESULT $?
     netstat -anpt | grep 514 | grep rsyslogd
