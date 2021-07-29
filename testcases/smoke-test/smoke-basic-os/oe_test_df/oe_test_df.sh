@@ -25,7 +25,7 @@ function run_test() {
     CHECK_RESULT $? 0
     df | grep 'G'
     CHECK_RESULT $? 1
-    df -h | grep 'G|M|K'
+    df -h | grep -E 'G|M|K'
     CHECK_RESULT $? 0
     df --help
     CHECK_RESULT $? 0
