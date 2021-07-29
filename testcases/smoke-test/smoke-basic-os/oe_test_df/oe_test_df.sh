@@ -22,13 +22,13 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function run_test() {
     LOG_INFO "Start testing..."
     df | grep '/dev/mapper/openeuler-root'
-    CHECK_RESULT $? 0
+    CHECK_RESULT $? 0 0 "log message"
     df | grep 'G'
-    CHECK_RESULT $? 1
+    CHECK_RESULT $? 1 0 "log message"
     df -h | grep -E 'G|M|K'
-    CHECK_RESULT $? 0
+    CHECK_RESULT $? 0 0 "log message"
     df --help
-    CHECK_RESULT $? 0
+    CHECK_RESULT $? 0 0 "log message"
     LOG_INFO "Finish test!"
 }
 
