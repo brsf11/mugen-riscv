@@ -22,8 +22,14 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "pcp-import-ganglia2pcp httpd ganglia ganglia-gmetad ganglia-gmond ganglia-web rrdtool"
     DNF_INSTALL "ganglia-gmond" 2
-    setenforce 0
-    systemctl stop firewalld
+    if systemctl status firewalld | grep running; then
+        systemctl stop firewalld
+        flag_result1=1
+    fi
+    if getenforce | grep Enforcing; then
+        setenforce 0
+        flag_result2=1
+    fi
     sed -i "s/data_source \"my cluster\" localhost/data_source \"cluster01\" ${NODE1_IPV4}/g" /etc/ganglia/gmetad.conf
     SLEEP_WAIT 10
     service gmond restart
@@ -32,6 +38,14 @@ function pre_test() {
     ls /var/lib/ganglia/rrds/unspecified/
     P_SSH_CMD --node 2 --cmd "
         systemctl stop firewalld;
+        if systemctl status firewalld | grep running; then
+            systemctl stop firewalld
+            flag_result3=1
+        fi
+        if getenforce | grep Enforcing; then
+            setenforce 0
+            flag_result4=1
+        fi
         setenforce 0;
         sed -i '/ name / s/unspecified/cluster01/' /etc/ganglia/gmond.conf;
         service gmond restart;"
@@ -54,6 +68,18 @@ function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
     rm -rf /var/lib/ganglia
+    if [ $flag_result1 -eq 1 ]; then
+        systemctl start firewalld
+    fi
+    if [ $flag_result2 -eq 1 ]; then
+        setenforce 1
+    fi
+    if [ $flag_result3 -eq 1 ]; then
+        P_SSH_CMD --node 2 --cmd "systemctl start firewalld"
+    fi
+    if [ $flag_result4 -eq 1 ]; then
+        P_SSH_CMD --node 2 --cmd "setenforce 1"
+    fi
     LOG_INFO "End to restore the test environment."
 }
 

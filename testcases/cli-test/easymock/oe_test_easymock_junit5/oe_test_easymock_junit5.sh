@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2020. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   tangxiaolan
 # @Contact   :   tangxiaolan0712@163.com
@@ -24,7 +23,7 @@ function pre_test() {
     java_version=$(rpm -qa java* | grep "java-.*-openjdk" | awk -F '-' '{print $2}')
     DNF_INSTALL java-${java_version}-devel
     mkdir libs
-    cp -r "$(rpm -ql junit5 | grep junit-jupiter-api.jar)" "$(rpm -ql easymock | grep easymock.jar)" "$(rpm -ql hamcrest | grep core.jar)" libs
+    cp -rf "$(rpm -ql junit5 | grep junit-jupiter-api.jar)" "$(rpm -ql easymock | grep easymock.jar)" "$(rpm -ql hamcrest | grep core.jar)" libs
     LOG_INFO "End to prepare the test environment."
 }
 

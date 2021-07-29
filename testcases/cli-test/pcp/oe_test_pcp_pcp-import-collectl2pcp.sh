@@ -45,7 +45,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    DNF_REMOVE "pcp-import-collectl2pcp tar"
+    DNF_REMOVE
     rm -rf ./collect* ./wget-log* /opt/hp*
     LOG_INFO "End to restore the test environment."
 }
