@@ -22,7 +22,6 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment."
 
     cp -p ${SYS_CONF_PATH}/package.ini ${SYS_CONF_PATH}/package.ini.bak
-    path=$(pwd)
     ACT_SERVICE
 
     LOG_INFO "End to prepare the test environment."
@@ -35,15 +34,15 @@ function run_test() {
     pkgship init | grep "The format of the yaml configuration file is wrong"
     CHECK_RESULT $? 0 0 "Check init while set file as package.ini unexpectly."
 
-    MODIFY_INI init_conf_path "$path/empty.yaml"
+    MODIFY_INI init_conf_path "./empty.yaml"
     pkgship init | grep "content of the database initialization configuration file cannot be empty"
     CHECK_RESULT $? 0 0 "Check init while set file as empty.yaml unexpectly."
 
-    MODIFY_INI init_conf_path "$path/over.yaml"
+    MODIFY_INI init_conf_path "./over.yaml"
     pkgship init | grep "The initialized configuration file is incorrectly formatted and lacks the necessary dbname field"
     CHECK_RESULT $? 0 0 "Check init while set file as over.yaml unexpectly."
 
-    MODIFY_INI init_conf_path "$path/duplicate.yaml"
+    MODIFY_INI init_conf_path "./duplicate.yaml"
     pkgship init | grep "There is a duplicate initialization configuration database name"
     CHECK_RESULT $? 0 0 "Check init while set file as duplicate.ini unexpectly."
 
