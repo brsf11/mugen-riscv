@@ -1,5 +1,6 @@
 {
     "path": "$OET_PATH/testcases/cli-test/pcp",
+    "machine num": 2,
     "cases": [
         {
             "name": "oe_test_dbpmda"
@@ -99,6 +100,22 @@
         },
         {
             "name": "oe_test_pcp_atop_02"
+        },
+	{
+            "name": "oe_test_pcp_pcp-import-collectl2pcp"
+        },
+        {
+            "name": "oe_test_pcp_pcp-import-ganglia2pcp",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_pcp_pcp-import-iostat2pcp"
+        },
+        {
+            "name": "oe_test_pcp_pcp-import-mrtg2pcp"
+        },
+        {
+            "name": "oe_test_pcp_pcp-import-sar2pcp"
         }
     ]
 }

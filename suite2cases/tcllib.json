@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/tcllib",
+    "cases": [
+        {
+            "name": "oe_test_tcllib_dtplite"
+        },
+        {
+            "name": "oe_test_tcllib_nns"
+        },
+        {
+            "name": "oe_test_tcllib_page"
+        }
+    ]
+}

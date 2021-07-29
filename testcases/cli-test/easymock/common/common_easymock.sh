@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2020. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -26,8 +26,7 @@ function deploy_env() {
 
 function clear_env() {
     DNF_REMOVE
-    rmdoc=$(ls | grep -vE ".sh|.java|.xml|expect_result|main|test")
-    rm -rf ${rmdoc}
+    rm -rf $(ls | grep -vE ".sh|.java|.xml|expect_result|main|test")
 }
 
 function compile_java() {

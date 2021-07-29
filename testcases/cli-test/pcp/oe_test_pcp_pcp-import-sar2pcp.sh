@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2020. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -8,29 +8,34 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
-# @Author    :   tangxiaolan
-# @Contact   :   tangxiaolan0712@163.com
-# @Date      :   2020/5/14
+# @Author    :   liujingjing
+# @Contact   :   liujingjing25812@163.com
+# @Date      :   2020/11/10
 # @License   :   Mulan PSL v2
-# @Desc      :   Easymock with JUnit5
+# @Desc      :   The usage of commands in pcp-import-sar2pcp binary package
 # ############################################
 
-source "../common/common_easymock.sh"
+source "$OET_PATH/libs/locallibs/common_lib.sh"
+
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    DNF_INSTALL "easymock junit5 maven"
-    java_version=$(rpm -qa java* | grep "java-.*-openjdk" | awk -F '-' '{print $2}')
-    DNF_INSTALL java-${java_version}-devel
-    mkdir libs
-    cp -r "$(rpm -ql junit5 | grep junit-jupiter-api.jar)" "$(rpm -ql easymock | grep easymock.jar)" "$(rpm -ql hamcrest | grep core.jar)" libs
+    DNF_INSTALL "pcp-import-sar2pcp sysstat"
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    mvn test | grep "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"$'\n'"BUILD SUCCESS"
+    sadc=$(rpm -ql sysstat | grep "/sa/sadc")
+    $sadc 1 10 datafile
+    CHECK_RESULT $?
+    test -f datafile
+    CHECK_RESULT $?
+    sar2pcp datafile datapcp
+    CHECK_RESULT $?
+    grep -aE "localhost|UTC|8" datapcp.index
+    CHECK_RESULT $?
+    test -f datapcp.0 -a -f datapcp.meta && rm -rf datapcp.0 datapcp.meta datapcp.index
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -38,7 +43,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf $(ls | grep -vE ".xml|main|.sh|test") /root/.m2
+    rm -rf datafile
     LOG_INFO "End to restore the test environment."
 }
 

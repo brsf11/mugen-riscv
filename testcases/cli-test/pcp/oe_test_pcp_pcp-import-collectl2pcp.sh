@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2020. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -8,36 +8,45 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/5/14
+# @Date      :   2020/11/10
 # @License   :   Mulan PSL v2
-# @Desc      :   Easymock combined with Maven to simulate the unimplemented interface
+# @Desc      :   The usage of commands in pcp-import-collectl2pcp binary package
 # ############################################
+source "$OET_PATH/libs/locallibs/common_lib.sh"
 
-source "../common/common_easymock.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    deploy_env
-    DNF_INSTALL maven
-    mkdir libs
-    cp -rf "$(rpm -ql junit | grep junit.jar)" "$(rpm -ql easymock | grep easymock.jar)" "$(rpm -ql hamcrest | grep core.jar)" libs
+    DNF_INSTALL "pcp-import-collectl2pcp tar"
+    wget -nd http://jaist.dl.sourceforge.net/sourceforge/collectl/collectl-3.1.3.src.tar.gz
+    tar zxvf collectl-3.1.3.src.tar.gz
+    cd collectl-3.1.3
+    ./INSTALL
+    cd -
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    mvn test | grep "Tests run: 3, Failures: 0, Errors: 0, Skipped: 0"$'\n'"BUILD SUCCESS"
+    collectl -c 5 -f collect &
+    SLEEP_WAIT 20
+    hostname=$(hostname | awk -F '.' '{print $1}')
+    inputfile=$(ls | grep "${hostname}")
+    test -f ${inputfile}
+    CHECK_RESULT $?
+    collectl2pcp -v ${inputfile} collectpcp | grep "New instance"
+    CHECK_RESULT $?
+    test -f collectpcp.0 -a -f collectpcp.index -a -f collectpcp.meta && rm -rf collectpcp.0 collectpcp.index collectpcp.meta
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    clear_env
-    rm -rf /root/.m2
+    DNF_REMOVE "pcp-import-collectl2pcp tar"
+    rm -rf ./collect* ./wget-log* /opt/hp*
     LOG_INFO "End to restore the test environment."
 }
 
