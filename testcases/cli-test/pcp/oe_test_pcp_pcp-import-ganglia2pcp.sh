@@ -30,23 +30,20 @@ function pre_test() {
         setenforce 0
         flag_result2=1
     fi
+    if P_SSH_CMD --node 2 --cmd "systemctl status firewalld | grep running"; then
+        P_SSH_CMD --node 2 --cmd "systemctl stop firewalld"
+        flag_result3=1
+    fi
+    if P_SSH_CMD --node 2 --cmd "getenforce | grep Enforcing"; then
+        P_SSH_CMD --node 2 --cmd "setenforce 0"
+        flag_result4=1
+    fi
     sed -i "s/data_source \"my cluster\" localhost/data_source \"cluster01\" ${NODE1_IPV4}/g" /etc/ganglia/gmetad.conf
     SLEEP_WAIT 10
     service gmond restart
     service httpd restart
     service gmetad restart
-    ls /var/lib/ganglia/rrds/unspecified/
     P_SSH_CMD --node 2 --cmd "
-        systemctl stop firewalld;
-        if systemctl status firewalld | grep running; then
-            systemctl stop firewalld
-            flag_result3=1
-        fi
-        if getenforce | grep Enforcing; then
-            setenforce 0
-            flag_result4=1
-        fi
-        setenforce 0;
         sed -i '/ name / s/unspecified/cluster01/' /etc/ganglia/gmond.conf;
         service gmond restart;"
     SLEEP_WAIT 60
