@@ -18,5 +18,3 @@
 ####################################
 
 test "$(ls / | grep -cE 'proc|usr|roor|var|sys|etc|boot|dev')" -eq 7
-
-sleep 30
