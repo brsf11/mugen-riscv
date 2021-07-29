@@ -16,19 +16,18 @@
 # @License   :   Mulan PSL v2
 # @Desc      :   File system common command test-df
 # ############################################
-
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function run_test() {
     LOG_INFO "Start testing..."
     df | grep '/dev/mapper/openeuler-root'
-    CHECK_RESULT $? 0 0 "log message"
+    CHECK_RESULT $? 0 0 "df display error"
     df | grep 'G'
-    CHECK_RESULT $? 1 0 "log message"
+    CHECK_RESULT $? 1 0 "df default display error"
     df -h | grep -E 'G|M|K'
-    CHECK_RESULT $? 0 0 "log message"
+    CHECK_RESULT $? 0 0 "df -h didn't find G|M|K"
     df --help
-    CHECK_RESULT $? 0 0 "log message"
+    CHECK_RESULT $? 0 0 "df --help error"
     LOG_INFO "Finish test!"
 }
 
