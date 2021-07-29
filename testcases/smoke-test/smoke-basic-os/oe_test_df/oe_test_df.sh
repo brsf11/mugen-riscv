@@ -19,11 +19,6 @@
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
-function pre_test() {
-    LOG_INFO "Start environment preparation."
-    LOG_INFO "End of environmental preparation!"
-}
-
 function run_test() {
     LOG_INFO "Start testing..."
     df | grep '/dev/mapper/openeuler-root'
@@ -35,11 +30,6 @@ function run_test() {
     df --help
     CHECK_RESULT $? 0
     LOG_INFO "Finish test!"
-}
-
-function post_test() {
-    LOG_INFO "start environment cleanup."
-    LOG_INFO "Finish environment cleanup!"
 }
 
 main $@
