@@ -12,7 +12,7 @@
 # #############################################
 # @Author    :   wangpeng
 # @Contact   :   wangpengb@uniontech.com
-# @Date      :   2121-07-29
+# @Date      :   2021-07-29
 # @License   :   Mulan PSL v2
 # @Desc      :   File system common command test-df
 # ############################################
@@ -30,7 +30,7 @@ function run_test() {
     CHECK_RESULT $? 0
     df | grep 'G'
     CHECK_RESULT $? 1
-    df -h | grep 'G'
+    df -h | grep 'G|M|K'
     CHECK_RESULT $? 0
     df --help
     CHECK_RESULT $? 0
