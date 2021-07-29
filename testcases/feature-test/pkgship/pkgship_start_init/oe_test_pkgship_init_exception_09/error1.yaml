@@ -1,0 +1,8 @@
+- dbname: openEuler-lts
+  src_db_file: file:///etc/pkgship/repo/openEuler-20.09/src
+  bin_db_file: file:///etc/pkgship/repo/openEuler-20.09/bin
+  priority: 1
+- dbname: fedora-lts
+  src_db_file: file:///etc/pkgship/repo/fedora/src
+  bin_db_file: file:///etc/pkgship/repo/fedora/bin
+  priority: 2.5
