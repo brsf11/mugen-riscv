@@ -52,9 +52,8 @@ include=my-profile_new" >/etc/tuned/modified-profile/tuned.conf
 
 function post_test() {
 	LOG_INFO "Start to restore the test environment."
-	rm -rf /etc/tuned/modified-profile /etc/tuned/my-profile_new
+	rm -rf /etc/tuned/modified-profile /etc/tuned/my-profile_new tuned_log
 	tuned-adm profile "$old_profile"
-	rm -rf tuned_log
 	DNF_REMOVE
 	LOG_INFO "End to restore the test environment."
 }

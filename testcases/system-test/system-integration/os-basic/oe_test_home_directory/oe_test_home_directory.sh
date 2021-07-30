@@ -57,8 +57,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     userdel -r testuser
-    rm -rf /home/new_test/
-    rm -rf /home/testuser/
+    rm -rf /home/new_test/ /home/testuser/
     LOG_INFO "End to restore the test environment."
 }
 

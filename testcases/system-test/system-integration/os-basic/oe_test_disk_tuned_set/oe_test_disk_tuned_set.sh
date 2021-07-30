@@ -21,7 +21,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "tuned dmidecode"
-    if [[ "${NODE1_MACHINE}" =~ "KVM" ]]; then
+    if [[ "${NODE1_MACHINE}"x == "kvm"x ]]; then
         LOG_INFO "This only applies to physical machines."
         exit 0
     fi
@@ -66,9 +66,8 @@ elevator=mq-deadline" >/etc/tuned/my-profile/tuned.conf
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -rf /etc/tuned/my-profile /etc/tuned/my-profile_new
+    rm -rf /etc/tuned/my-profile /etc/tuned/my-profile_new tuned_log
     echo "${old_scheduler}" >/sys/block/"$TEST_DISK"/queue/scheduler
-    rm -rf tuned_log
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
