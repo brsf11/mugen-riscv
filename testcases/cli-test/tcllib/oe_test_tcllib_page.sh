@@ -23,8 +23,6 @@ function pre_test() {
     DNF_INSTALL "tcllib xinetd"
     sed -i '6s/yes/no/g' /etc/xinetd.d/echo-stream
     systemctl restart xinetd
-    tcl_ver=$(rpm -qa tcl | awk -F '-' '{print $2}' | awk -F '.' '{print $1"."$2}')
-    tcllib_ver=$(rpm -qa tcllib | awk -F '-' '{print $2}')
     tcldir=$(rpm -ql tcllib | grep plugins | head -n 1)
     LOG_INFO "End to prepare the test environment."
 }
