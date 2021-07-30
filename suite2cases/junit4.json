@@ -1,0 +1,44 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/junit4",
+    "cases": [
+        {
+            "name": "oe_test_junit4_ant"
+        },
+        {
+            "name": "oe_test_junit4_assert"
+        },
+        {
+            "name": "oe_test_junit4_basic_annotation"
+        },
+        {
+            "name": "oe_test_junit4_compare_different_performances"
+        },
+        {
+            "name": "oe_test_junit4_execute_control"
+        },
+        {
+            "name": "oe_test_junit4_expected"
+        },
+        {
+            "name": "oe_test_junit4_maven"
+        },
+        {
+            "name": "oe_test_junit4_parameterized"
+        },
+        {
+            "name": "oe_test_junit4_performances"
+        },
+        {
+            "name": "oe_test_junit4_suite"
+        },
+        {
+            "name": "oe_test_junit4_TestCase_api"
+        },
+        {
+            "name": "oe_test_junit4_TestResult_api"
+        },
+        {
+            "name": "oe_test_junit4_TestSuite_api"
+        }
+    ]
+}

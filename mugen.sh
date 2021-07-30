@@ -175,7 +175,7 @@ function statistic_result() {
 
     LOG_INFO "A total of ${CASE_NUM} use cases were executed, with ${SUCCESS_NUM} successes and ${FAIL_NUM} failures."
 
-    [ ${FAIL_NUM} -ne 0 ] && exit 1
+    [ ${FAIL_NUM} -eq 0 ] && return 0 || return 1
 }
 
 while getopts "c:af:r:dx" option; do

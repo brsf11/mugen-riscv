@@ -22,7 +22,7 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     if [ "${NODE1_FRAME}" != "x86_64" ]; then
         echo "Non X86 architecture,this function is not supported"
-        exit 1
+        exit
     else
         DNF_INSTALL "mcelog gcc gcc-c++ flex dialog git"
     fi
@@ -64,12 +64,12 @@ function run_test() {
     CHECK_RESULT $?
     mcelog --ascii --file /var/log/mcelog | grep 'Hardware event'
     CHECK_RESULT $?
+    kill -9 $(pgrep -f "mcelog --ignorenodev --daemon")
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    kill -9 $(pgrep -f "mcelog --ignorenodev --daemon")
     echo "0" >/sys/devices/system/machinecheck/machinecheck0/tolerant
     rm -f correct /var/log/mcelog haha.txt
     DNF_REMOVE

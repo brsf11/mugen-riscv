@@ -89,6 +89,36 @@
             "name": "oe_test_postgresql_reindexdb"
         },
         {
+            "name": "oe_test_postgresql-server_initdb"
+        },
+        {
+            "name": "oe_test_postgresql-server_pg_basebackup"
+        },
+        {
+            "name": "oe_test_postgresql-server_pg_ctl"
+        },
+        {
+            "name": "oe_test_postgresql-server_pg_receivewal"
+        },
+        {
+            "name": "oe_test_postgresql-server_pg_recvlogical"
+        },
+        {
+            "name": "oe_test_postgresql-server_pg_resetwal"
+        },
+        {
+            "name": "oe_test_postgresql-server_pg_rewind"
+        },
+        {
+            "name": "oe_test_postgresql-server_postgres01"
+        },
+        {
+            "name": "oe_test_postgresql-server_postgres02"
+        },
+        {
+            "name": "oe_test_postgresql-server_postgresql-setup"
+        },
+        {
             "name": "oe_test_postgresql_vacuumdb"
         }
     ]

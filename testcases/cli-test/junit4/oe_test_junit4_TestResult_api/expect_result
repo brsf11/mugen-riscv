@@ -1,0 +1,5 @@
+Number of error = 0
+Number of failure = 0
+Number of test cases = 0
+testAdd(TestJunit3): expected:<[not ]ok> but was:<[]ok>
+false

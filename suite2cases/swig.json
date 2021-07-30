@@ -1,0 +1,38 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/swig",
+    "cases": [
+        {
+            "name": "oe_test_swig_01"
+        },
+        {
+            "name": "oe_test_swig_02"
+        },
+        {
+            "name": "oe_test_swig_03"
+        },
+        {
+            "name": "oe_test_swig_04"
+        },
+        {
+            "name": "oe_test_swig_05"
+        },
+        {
+            "name": "oe_test_swig_06"
+        },
+        {
+            "name": "oe_test_swig_07"
+        },
+        {
+            "name": "oe_test_swig_08"
+        },
+        {
+            "name": "oe_test_swig_09"
+        },
+        {
+            "name": "oe_test_swig_10"
+        },
+        {
+            "name": "oe_test_swig_11"
+        }
+    ]
+}
