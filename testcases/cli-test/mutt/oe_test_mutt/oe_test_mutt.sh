@@ -23,11 +23,6 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "mutt sendmail"
     export LANG="en_US.UTF-8"
-    LOG_INFO "Finish preparing the test environment."
-}
-
-function run_test() {
-    LOG_INFO "Start to run test."
     muttFile=$(find / -name Muttrc)
     cp $muttFile /root/.muttrc
     echo 'set charset="utf-8"
@@ -37,8 +32,12 @@ function run_test() {
     set from=root@itdhz.com
     set realname="itdhz"' >>/root/.muttrc
     touch test.jar
-    CHECK_RESULT $?
     echo "test mutt from lisa" >sendmail
+    LOG_INFO "Finish preparing the test environment."
+}
+
+function run_test() {
+    LOG_INFO "Start to run test."
     mutt -help | grep "usage: mutt"
     CHECK_RESULT $?
     mutt -version | grep "Copyright (C) 1996-2016 Michael R. Elkins and others"
