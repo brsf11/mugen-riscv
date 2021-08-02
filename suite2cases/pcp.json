@@ -4,7 +4,7 @@
     "cases": [
         {
             "name": "oe_test_dbpmda"
-	},
+        },
         {
             "name": "oe_test_pcp"
         },
@@ -101,7 +101,7 @@
         {
             "name": "oe_test_pcp_atop_02"
         },
-	{
+        {
             "name": "oe_test_pcp_pcp-import-collectl2pcp"
         },
         {
