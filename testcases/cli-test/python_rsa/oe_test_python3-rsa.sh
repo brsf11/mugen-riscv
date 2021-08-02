@@ -55,7 +55,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    DNF_REMOVE "python3-rsa"
+    DNF_REMOVE
     rm -rf ./bigfile ./*.txt ./*.pem ./*.rsa
     LOG_INFO "Finish restoring the test environment."
 }

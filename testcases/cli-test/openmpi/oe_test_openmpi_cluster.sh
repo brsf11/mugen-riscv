@@ -19,7 +19,7 @@ source "${OET_PATH}"/libs/locallibs/common_lib.sh
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    DNF_INSTALL "openmpi openmpi-devel"
+    DNF_INSTALL "openmpi openmpi-devel nfs-utils nfs-utils-devel"
     DNF_INSTALL "openmpi openmpi-devel nfs-utils nfs-utils-devel" 2
     mpi_path=$(whereis openmpi | awk '{print$2}')
     {
@@ -37,7 +37,6 @@ function pre_test() {
     source ~/.bashrc
     hostname node2;
     echo '${NODE1_IPV4} node1\n${NODE2_IPV4} node2' >> /etc/hosts;
-    cat $HOME/.bash_profile;
     " "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
     ping -c 3 node2 || exit 1
     SSH_CMD "ping -c 3 node1;rm -rf ~/.ssh/*;
@@ -60,7 +59,6 @@ function pre_test() {
     }
     "
     rm -rf /home/mpi_volumn && mkdir -p /home/mpi_volumn
-    DNF_INSTALL "nfs-utils nfs-utils-devel"
     echo "/home/mpi_volumn ${NODE1_IPV4} (rw,sync,no_root_squash,no_subtree_check,insecure)" >>/etc/exports
     systemctl start nfs
     systemctl stop firewalld

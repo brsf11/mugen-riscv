@@ -39,7 +39,7 @@ function run_test() {
 807@touch @/tmp/touch_test" >>/etc/openEuler_security/usr-security.conf
     /usr/sbin/security-tool.sh -d / -c /etc/openEuler_security/security.conf -u /etc/openEuler_security/usr-security.conf -l /var/log/openEuler-security.log -s
     CHECK_RESULT $?
-    ls /tmp/rm_test
+    [ -e /tmp/rm_test ]
     CHECK_RESULT $? 0 1
     grep '806@systemctl@httpd.service@start' /var/log/openEuler-security.log
     CHECK_RESULT $?
