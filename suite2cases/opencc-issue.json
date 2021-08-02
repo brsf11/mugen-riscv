@@ -1,0 +1,29 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/opencc-issue",
+    "cases": [
+        {
+            "name": "oe_test_opencc_change_ocd"
+        },
+        {
+            "name": "oe_test_opencc_s2t_duan"
+        },
+        {
+            "name": "oe_test_opencc_s2twp"
+        },
+        {
+            "name": "oe_test_opencc_s2tw"
+        },
+        {
+            "name": "oe_test_opencc_s2t_zhi"
+        },
+        {
+            "name": "oe_test_opencc_t2s"
+        },
+        {
+            "name": "oe_test_opencc_tsp"
+        },
+        {
+            "name": "oe_test_opencc_two"
+        }
+    ]
+}
