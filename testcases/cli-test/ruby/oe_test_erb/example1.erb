@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<% require 'prime' -%>
+<erb-example>
+    <calc><%= 1+1 %></calc>
+    <var><%= __FILE__ %></var>
+    <library><%= Prime.each(10).to_a.join(", ") %></library>
+</erb-example>
