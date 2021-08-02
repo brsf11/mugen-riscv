@@ -11,31 +11,42 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/5/14
+# @Date      :   2020/11/10
 # @License   :   Mulan PSL v2
-# @Desc      :   Easymock simulates unimplemented interfaces and uses JUnit assertion to verify the return value of mock object method
+# @Desc      :   The usage of commands in pcp-import-collectl2pcp binary package
 # ############################################
+source "$OET_PATH/libs/locallibs/common_lib.sh"
 
-source "../common/common_easymock.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    deploy_env
+    DNF_INSTALL "pcp-import-collectl2pcp tar"
+    wget -nd http://jaist.dl.sourceforge.net/sourceforge/collectl/collectl-3.1.3.src.tar.gz
+    tar zxvf collectl-3.1.3.src.tar.gz
+    cd collectl-3.1.3
+    ./INSTALL
+    cd -
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    compile_java
+    collectl -c 5 -f collect &
+    SLEEP_WAIT 20
+    hostname=$(hostname | awk -F '.' '{print $1}')
+    inputfile=$(ls | grep "${hostname}")
+    test -f ${inputfile}
     CHECK_RESULT $?
-    execute_java | grep -v JUnit | grep -v Time | grep -v "^$" >actual_result
-    diff actual_result expect_result
+    collectl2pcp -v ${inputfile} collectpcp | grep "New instance"
+    CHECK_RESULT $?
+    test -f collectpcp.0 -a -f collectpcp.index -a -f collectpcp.meta && rm -rf collectpcp.0 collectpcp.index collectpcp.meta
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    clear_env
+    DNF_REMOVE
+    rm -rf ./collect* ./wget-log* /opt/hp*
     LOG_INFO "End to restore the test environment."
 }
 

@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   tangxiaolan
 # @Contact   :   tangxiaolan0712@163.com
@@ -26,8 +25,7 @@ function deploy_env() {
 
 function clear_env() {
     DNF_REMOVE
-    rmdoc=$(ls | grep -vE ".sh|.java|.xml|expect_result|main|test")
-    rm -rf ${rmdoc}
+    rm -rf $(ls | grep -vE ".sh|.java|.xml|expect_result|main|test")
 }
 
 function compile_java() {

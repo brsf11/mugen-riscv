@@ -11,31 +11,34 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/5/14
+# @Date      :   2020/11/10
 # @License   :   Mulan PSL v2
-# @Desc      :   Easymock simulates unimplemented interfaces and uses JUnit assertion to verify the return value of mock object method
+# @Desc      :   The usage of commands in pcp-import-mrtg2pcp binary package
 # ############################################
 
-source "../common/common_easymock.sh"
+source "$OET_PATH/libs/locallibs/common_lib.sh"
+
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    deploy_env
+    DNF_INSTALL "pcp-import-mrtg2pcp mrtg"
+    disk_list=($(lsblk | awk '{print$1" "$6}' | grep disk | awk '{print$1}'))
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    compile_java
+    mrtg2pcp localhost ${disk_list[0]} UTF-8 /var/www/mrtg/mrtg-m.png mrtgpcp
     CHECK_RESULT $?
-    execute_java | grep -v JUnit | grep -v Time | grep -v "^$" >actual_result
-    diff actual_result expect_result
+    grep -aE "localhost|UTF-8" mrtgpcp.index
+    CHECK_RESULT $?
+    test -f mrtgpcp.0 -a -f mrtgpcp.meta && rm -rf mrtgpcp.0 mrtgpcp.meta mrtgpcp.index
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    clear_env
+    DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
 

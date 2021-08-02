@@ -11,31 +11,39 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/5/14
+# @Date      :   2020/11/10
 # @License   :   Mulan PSL v2
-# @Desc      :   Easymock simulates unimplemented interfaces and uses JUnit assertion to verify the return value of mock object method
+# @Desc      :   The usage of commands in pcp-import-sar2pcp binary package
 # ############################################
 
-source "../common/common_easymock.sh"
+source "$OET_PATH/libs/locallibs/common_lib.sh"
+
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    deploy_env
+    DNF_INSTALL "pcp-import-sar2pcp sysstat"
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    compile_java
+    sadc=$(rpm -ql sysstat | grep "/sa/sadc")
+    $sadc 1 10 datafile
     CHECK_RESULT $?
-    execute_java | grep -v JUnit | grep -v Time | grep -v "^$" >actual_result
-    diff actual_result expect_result
+    test -f datafile
+    CHECK_RESULT $?
+    sar2pcp datafile datapcp
+    CHECK_RESULT $?
+    grep -aE "localhost|UTC|8" datapcp.index
+    CHECK_RESULT $?
+    test -f datapcp.0 -a -f datapcp.meta && rm -rf datapcp.0 datapcp.meta datapcp.index
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    clear_env
+    DNF_REMOVE
+    rm -rf datafile
     LOG_INFO "End to restore the test environment."
 }
 
