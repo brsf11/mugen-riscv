@@ -31,7 +31,7 @@ function config_params() {
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
 
-    LOG_INFO "No pkgs need to install."
+    DNF_INSTALL "vim bc"
 
     LOG_INFO "End to prepare the test environment."
 }
@@ -54,7 +54,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
 
-    LOG_INFO "Nothing to do."
+    DNF_REMOVE
 
     LOG_INFO "End to restore the test environment."
 }
