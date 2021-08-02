@@ -4,7 +4,7 @@
     "cases": [
         {
             "name": "oe_test_dbpmda"
-        },
+	},
         {
             "name": "oe_test_pcp"
         },
