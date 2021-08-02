@@ -13,7 +13,6 @@
 #@Contact   	:   lemon.higgins@aliyun.com
 #@Date      	:   2020-04-09 09:39:43
 #@License   	:   Mulan PSL v2
-#@Version   	:   1.0
 #@Desc      	:   Take the test ls command as an example
 #####################################
 
@@ -46,7 +45,7 @@ function run_test() {
     CHECK_RESULT 0
 
     # 测试/目录下是否存在proc|usr|roor|var|sys|etc|boot|dev目录
-    CHECK_RESULT "$(ls / | grep -cE 'proc|usr|roor|var|sys|etc|boot|dev')" 7
+    CHECK_RESULT "$(ls / | grep -cE 'proc|usr|roor|var|sys|etc|boot|dev')" 7 0 "The system is missing a base directory."
 
     LOG_INFO "End to run test."
 }

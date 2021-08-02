@@ -13,7 +13,6 @@
 # @Contact   	:   lemon.higgins@aliyun.com
 # @Date      	:   2020-04-09 09:39:43
 # @License   	:   Mulan PSL v2
-# @Version   	:   1.0
 # @Desc      	:   Take the test ls command as an example
 #####################################
 
