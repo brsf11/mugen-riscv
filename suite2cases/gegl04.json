@@ -1,0 +1,11 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/gegl04",
+    "cases": [
+        {
+            "name": "oe_test_gegl04_gegl"
+        },
+        {
+            "name": "oe_test_gegl04_gegl-imgcmp"
+        }
+    ]
+}
