@@ -13,7 +13,6 @@
 #@Contact   	:   lemon.higgins@aliyun.com
 #@Date      	:   2020-04-09 09:39:43
 #@License   	:   Mulan PSL v2
-#@Version   	:   1.0
 #@Desc      	:   Take the test ls command as an example
 #####################################
 
@@ -32,7 +31,7 @@ function config_params() {
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
 
-    LOG_INFO "No pkgs need to install."
+    DNF_INSTALL "vim bc"
 
     LOG_INFO "End to prepare the test environment."
 }
@@ -46,7 +45,7 @@ function run_test() {
     CHECK_RESULT 0
 
     # 测试/目录下是否存在proc|usr|roor|var|sys|etc|boot|dev目录
-    CHECK_RESULT "$(ls / | grep -cE 'proc|usr|roor|var|sys|etc|boot|dev')" 7
+    CHECK_RESULT "$(ls / | grep -cE 'proc|usr|roor|var|sys|etc|boot|dev')" 7 0 "The system is missing a base directory."
 
     LOG_INFO "End to run test."
 }
@@ -55,7 +54,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
 
-    LOG_INFO "Nothing to do."
+    DNF_REMOVE
 
     LOG_INFO "End to restore the test environment."
 }

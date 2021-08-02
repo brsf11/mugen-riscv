@@ -171,7 +171,7 @@ function DNF_INSTALL() {
 }
 
 function DNF_REMOVE() {
-    node=${1-0}
+    node=${1-1}
     pkg_list=${2-""}
     mode=${3-0}
 
