@@ -14,7 +14,7 @@
 # @Contact   :   huyahui8@163.com
 # @Date      :   2021/02/04
 # @License   :   Mulan PSL v2
-# @Desc      :   View the CPU load of the indexw kernel thread when the VDO volume is not in use
+# @Desc      :   Print file line number
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -29,19 +29,19 @@ function run_test() {
     LOG_INFO "Start executing testcase."
     echo 'jq -n "[inputs[].data.user.videos.edges[]]|reverse|unique_by(.node.id)" f1.json f2.json | jq .[].node.lengthSeconds
 jq -n "[inputs[].data.user.videos.edges[]]|sort_by(.node.viewCount)|unique_by(.node.id)" f1.json f2.json | jq .[].node.lengthSeconds
-jq -n "now|strflocaltime(\"%Y-%m-%dT%H%M%S\")"' >tlist.txt
+jq -n "now|strflocaltime(\"%Y-%m-%dT%H%M%S\")"' >/tmp/tlist.txt
     echo '1
 2
-3' >diff_result
-    jq -R input_line_number tlist.txt >jq_result
+3' >/tmp/diff_result
+    jq -R input_line_number /tmp/tlist.txt >/tmp/jq_result
     CHECK_RESULT $?
-    diff diff_result jq_result
+    diff /tmp/diff_result /tmp/jq_result
     CHECK_RESULT $?
 }
 function post_test() {
     LOG_INFO "start environment cleanup."
     DNF_REMOVE 1
-    rm -rf tlist.txt jq_result diff_result
+    rm -rf /tmp/tlist.txt /tmp/jq_result /tmp/diff_result
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"

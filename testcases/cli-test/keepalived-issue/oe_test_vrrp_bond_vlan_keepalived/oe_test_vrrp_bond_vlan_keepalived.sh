@@ -14,7 +14,7 @@
 # @Contact   :   huyahui8@163.com
 # @Date      :   2021/02/04
 # @License   :   Mulan PSL v2
-# @Desc      :   View the CPU load of indexw kernel thread when VDO volume is not used
+# @Desc      :   Instance 20 vrrps to 20 VLAN subnets of bond, enable use vmac
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"

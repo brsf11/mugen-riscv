@@ -14,7 +14,7 @@
 # @Contact   :   huyahui8@163.com
 # @Date      :   2021/02/04
 # @License   :   Mulan PSL v2
-# @Desc      :   View the CPU load of the indexw kernel thread when the VDO volume is not in use
+# @Desc      :   Partition on the VOD volume, write data to the partition, restart and check whether the data is lost
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"

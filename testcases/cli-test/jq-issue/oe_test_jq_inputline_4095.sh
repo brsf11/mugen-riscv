@@ -14,7 +14,7 @@
 # @Contact   :   huyahui8@163.com
 # @Date      :   2021/02/04
 # @License   :   Mulan PSL v2
-# @Desc      :   View the CPU load of the indexw kernel thread when the VDO volume is not in use
+# @Desc      :   Print lines with a length of 4095 multiples
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -29,19 +29,19 @@ function run_test() {
     LOG_INFO "Start executing testcase."
     echo '1
 2
-3' >diff_result
-    python3 -c "print('0\n\"' + 'a'*4093 + '\"\n0');" | jq 'input_line_number' >jq_4095_result
-    diff diff_result jq_4095_result
+3' >/tmp/diff_result
+    python3 -c "print('0\n\"' + 'a'*4093 + '\"\n0');" | jq 'input_line_number' >/tmp/jq_4095_result
+    diff /tmp/diff_result /tmp/jq_4095_result
     CHECK_RESULT $?
-    python3 -c "print('0\n\"' + 'a'*16378 + '\"\n0');" | jq 'input_line_number' >jq_16380_result
-    diff diff_result jq_16380_result
+    python3 -c "print('0\n\"' + 'a'*16378 + '\"\n0');" | jq 'input_line_number' >/tmp/jq_16380_result
+    diff /tmp/diff_result /tmp/jq_16380_result
     CHECK_RESULT $?
 
 }
 function post_test() {
     LOG_INFO "start environment cleanup."
     DNF_REMOVE 1
-    rm -rf diff_result jq_16380_result jq_4095_result
+    rm -rf /tmp/diff_result /tmp/jq_16380_result /tmp/jq_4095_result
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"
