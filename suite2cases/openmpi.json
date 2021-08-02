@@ -1,0 +1,14 @@
+{
+    "path": "\"${OET_PATH}\"/testcases/cli-test/openmpi",
+    "cases": [
+        {
+            "name": "oe_test_openmpi_cluster"
+        },
+        {
+            "name": "oe_test_openmpi_single_01"
+        },
+        {
+            "name": "oe_test_openmpi_single_02"
+        }
+    ]
+}
