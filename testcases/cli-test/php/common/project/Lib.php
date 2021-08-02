@@ -3,3 +3,4 @@
     {
         echo "I am yunke()";
     }
+?>
