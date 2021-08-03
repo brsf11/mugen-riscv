@@ -22,10 +22,9 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL "atune-engine atune"
-    eth_name=$(ip route | grep "${NODE1_IPV4}" | awk '{print $3}')
     disk_name=$(lsblk | grep disk | awk 'NR==1{print $1}')
     sed -i "s\disk = sda\disk = ${disk_name}\g" /etc/atuned/atuned.cnf
-    sed -i "s\network = enp189s0f0\network = ${eth_name}\g" /etc/atuned/atuned.cnf
+    sed -i "s\network = enp189s0f0\network = ${NODE1_NIC}\g" /etc/atuned/atuned.cnf
     systemctl start atuned.service
     LOG_INFO "End of environmental preparation!"
 }
@@ -41,7 +40,7 @@ function post_test() {
     LOG_INFO "start environment cleanup."
     systemctl stop atuned.service
     sed -i "s\disk = ${disk_name}\disk = sda\g" /etc/atuned/atuned.cnf
-    sed -i "s\network = ${eth_name}\network = enp189s0f0\g" /etc/atuned/atuned.cnf
+    sed -i "s\network = ${NODE1_NIC}\network = enp189s0f0\g" /etc/atuned/atuned.cnf
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
