@@ -1,0 +1,14 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/libreswan",
+    "cases": [
+        {
+            "name": "oe_test_libreswan_ipsec_01"
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_02"
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_03"
+        }
+    ]
+}
