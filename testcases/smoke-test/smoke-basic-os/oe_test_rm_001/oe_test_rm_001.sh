@@ -35,8 +35,8 @@ function do_test(){
     rm -rf /tmp/test1
     CHECK_RESULT $? 0 0 "Failed to delete directory"
     rm --help
-    CHECK_RESULT $? 00 "rm --help failed"
-    LOG_INFO "Finish test!"
+    CHECK_RESULT $? 0 0 "rm --help failed"
+    LOG_INFO "Finished test!"
 }
 
 main $@
