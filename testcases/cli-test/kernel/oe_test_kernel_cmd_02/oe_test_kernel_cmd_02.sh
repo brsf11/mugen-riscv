@@ -35,15 +35,13 @@ function run_test() {
     CHECK_RESULT $?
     bpftool version | grep bpftool
     CHECK_RESULT $?
-    bpftool perf help
-    CHECK_RESULT $?
     bpftool perf help 2>&1 | grep Usage
     CHECK_RESULT $?
     bpftool perf show
     CHECK_RESULT $?
     bpftool perf list
     CHECK_RESULT $?
-    bpftool prog help
+    bpftool prog help 2>&1 | grep help
     CHECK_RESULT $?
     bpftool prog show --json id 3 2>&1 | grep error
     CHECK_RESULT $?
@@ -57,4 +55,3 @@ function post_test() {
 }
 
 main "$@"
-

@@ -19,47 +19,46 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    DNF_INSTALL "uuid"
+    DNF_INSTALL "uuid vim"
     LOG_INFO "Finish preparing the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
     uuid | grep "-"
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $?
     uuid -v4 | grep "-"
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $?
     uuid -v3 ns:URL http://www.baidu.com | grep "-"
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $?
     uuid -v5 ns:URL http://www.baidu.com | grep "-"
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $?
     mac_id=$(uuid | awk -F "-" '{print $5}')
     uuid -m | grep ${mac_id}
-    CHECK_RESULT $? 1 0
+    CHECK_RESULT $? 1
     uuid -n 10 | wc -l | grep 10
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $?
     uuid -n 10 -1
-    CHECK_RESULT $? 0 0
-    uuid -F BIN
-    CHECK_RESULT $? 0 0
-    uuid -F STR
-    CHECK_RESULT $? 0 0
-    uuid -F SIV
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $?
+    uuid -F BIN | xxd | grep "RT"
+    CHECK_RESULT $?
+    uuid -F STR | grep "-"
+    CHECK_RESULT $?
     uuid -F SIV | grep "-"
-    CHECK_RESULT $? 1 0
+    CHECK_RESULT $? 1
     uuid -o uuid_file
-    cat uuid_file | grep "-"
-    CHECK_RESULT $? 0 0
+    grep "-" uuid_file
+    CHECK_RESULT $?
     id=$(cat uuid_file)
     uuid -d ${id}
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $?
     LOG_INFO "End of the test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
+    rm -rf uuid_file
     LOG_INFO "Finish restoring the test environment."
 }
 
