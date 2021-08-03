@@ -1,0 +1,8 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/jetty",
+    "cases": [
+        {
+            "name": "oe_test_jetty_start"
+        }
+    ]
+}
