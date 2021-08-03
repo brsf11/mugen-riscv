@@ -28,12 +28,12 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    gegl -h
-    CHECK_RESULT $? 0 0
-    gegl --list-all
-    CHECK_RESULT $? 0 0
-    gegl gegl -X -v -p
-    CHECK_RESULT $? 0 0
+    gegl -h 2>&1 | grep usage
+    CHECK_RESULT $?
+    gegl --list-all | grep ":"
+    CHECK_RESULT $?
+    gegl gegl -X -v -p 2>&1 | grep "Parsed commandline"
+    CHECK_RESULT $?
     LOG_INFO "End of the test."
 }
 

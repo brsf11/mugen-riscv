@@ -30,9 +30,9 @@ function run_test() {
     PID="$!"
     SLEEP_WAIT 10
     curl http://0.0.0.0:8080/ | grep "JAAS Test"
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $?
     kill -9 ${PID}
-    CHECK_RESULT $? 0 0
+    CHECK_RESULT $?
     LOG_INFO "End of the test."
 }
 

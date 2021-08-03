@@ -28,8 +28,8 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    gegl-imgcmp common/1.jpg common/2.jpg
-    CHECK_RESULT $? 0 0
+    gegl-imgcmp common/1.jpg common/2.jpg | grep differ
+    CHECK_RESULT $?
     LOG_INFO "End of the test."
 }
 
