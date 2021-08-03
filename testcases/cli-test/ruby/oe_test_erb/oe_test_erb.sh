@@ -30,8 +30,7 @@ function run_test() {
     erb --help >helpinfo 2>&1
     grep -E "erb|-" helpinfo
     CHECK_RESULT $?
-    erb --version >versioninfo 2>&1
-    grep "erb.*[0-9]" versioninfo
+    erb --version 2>&1 | grep "erb.*[0-9]"
     CHECK_RESULT $?
     erb -x example1.erb | grep "_erbout"
     CHECK_RESULT $?
