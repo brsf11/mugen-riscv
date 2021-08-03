@@ -160,6 +160,9 @@
             "name": "oe_test_user_003"
         },
         {
+            "name": "oe_test_rm_001"
+        },
+        {
             "name": "oe_test_yumgroup_001"
         }
     ]
