@@ -1,5 +1,5 @@
 {
-    "path": "\"${OET_PATH}\"/testcases/cli-test/doxygen",
+    "path": "$OET_PATH/testcases/cli-test/doxygen",
     "cases": [
         {
             "name": "oe_test_doxygen"
