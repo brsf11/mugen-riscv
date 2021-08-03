@@ -1,0 +1,332 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/ocaml",
+    "cases": [
+        {
+            "name": "oe_test_ocaml_ocaml"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlc_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlc_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlc_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlc.byte_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlc.byte_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlc.byte_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlcmt"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlc.opt_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlc.opt_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlc.opt_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlcp_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlcp_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlcp_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlcp_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlcp.byte_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlcp.byte_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlcp.byte_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlcp.byte_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlcp.opt_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlcp.opt_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlcp.opt_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlcp.opt_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldebug"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldep_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldep_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldep.byte_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldep.byte_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldep.opt_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldep.opt_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldoc_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldoc_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldoc_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldoc_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldoc_05"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldoc.opt_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldoc.opt_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldoc.opt_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldoc.opt_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamldoc.opt_05"
+        },
+        {
+            "name": "oe_test_ocaml_ocaml-instr-report"
+        },
+        {
+            "name": "oe_test_ocaml_ocamllex_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamllex.byte"
+        },
+        {
+            "name": "oe_test_ocaml_ocamllex.opt"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmklib_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmklib_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmklib.byte_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmklib.byte_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmklib.opt_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmklib.opt_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop_05"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop.byte_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop.byte_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop.byte_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop.byte_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop.byte_05"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop.opt_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop.opt_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop.opt_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop.opt_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlmktop.opt_05"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlobjinfo"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt_05"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt_06"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt_07"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt_08"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.byte_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.byte_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.byte_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.byte_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.byte_05"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.byte_06"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.byte_07"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.byte_08"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.opt_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.opt_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.opt_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.opt_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.opt_05"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.opt_06"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.opt_07"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlopt.opt_08"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp_05"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.byte_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.byte_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.byte_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.byte_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.byte_05"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.opt_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.opt_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.opt_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.opt_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.opt_05"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlprof_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlprof.byte"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlprof.opt"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlyacc"
+        }
+    ]
+}
