@@ -56,7 +56,7 @@ function test_oneshot() {
     CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
 }
 
-test_enabled() {
+function test_enabled() {
     service=$1
     state=$(systemctl is-enabled "${service}")
     if [ "${state}" == "enabled" ]; then

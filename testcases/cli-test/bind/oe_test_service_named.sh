@@ -22,12 +22,12 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL bind
+    service=named.service
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    service=named.service
     log_time=$(date '+%Y-%m-%d %T')
     test_restart ${service}
     test_enabled ${service}

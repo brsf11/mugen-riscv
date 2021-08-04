@@ -14,7 +14,7 @@
 # @Contact   :   735811396@qq.com
 # @Date      :   2020/12/29
 # @License   :   Mulan PSL v2
-# @Desc      :   测试服务状态
+# @Desc      :   Test ceph-osd.target restart
 # #############################################
 
 source "../common/common_lib.sh"
