@@ -32,8 +32,6 @@ function run_test() {
     CHECK_RESULT $?
     rm -rf /etc/ipsec.d/*.db && ipsec initnss | grep "Initializing NSS database"
     CHECK_RESULT $?
-    find /etc/ipsec.d/ -name "*.db"
-    CHECK_RESULT $?
     ipsec checknss
     CHECK_RESULT $?
     ipsec checknflog | grep "nflog ipsec capture disabled"
