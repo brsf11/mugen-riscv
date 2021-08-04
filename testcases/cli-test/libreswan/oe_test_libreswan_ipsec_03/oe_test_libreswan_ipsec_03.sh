@@ -42,9 +42,7 @@ function run_test() {
     ipsec showhostkey --list | grep "RSA keyid"
     CHECK_RESULT $?
     rm -rf /run/pluto/pluto.pid && ipsec pluto
-    find /run/pluto/ -name pluto.pid
-    CHECK_RESULT $?
-    find /run/pluto/ -name pluto.ctl
+    [ -e /run/pluto/pluto.pid ] && [ -e /run/pluto/pluto.ctl ]
     CHECK_RESULT $?
     ipsec readwriteconf | grep conf
     CHECK_RESULT $?
@@ -64,4 +62,3 @@ function post_test() {
 }
 
 main "$@"
-
