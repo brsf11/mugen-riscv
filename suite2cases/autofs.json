@@ -3,7 +3,11 @@
     "machine num": 2,
     "cases": [
         {
-            "name": "oe_test_autofs"
+            "name": "oe_test_autofs",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_service_autofs"
         }
     ]
 }

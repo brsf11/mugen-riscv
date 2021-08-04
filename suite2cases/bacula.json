@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/bacula",
+    "cases": [
+        {
+            "name": "oe_test_service_bacula-dir"
+        },
+        {
+            "name": "oe_test_service_bacula-fd"
+        },
+        {
+            "name": "oe_test_service_bacula-sd"
+        }
+    ]
+}

@@ -24,11 +24,11 @@ function pre_test(){
     LOG_INFO "End of environmental preparation!"
 }
 
-function do_test(){
+function run_test(){
     LOG_INFO "Start testing"
     touch /tmp/test
     CHECK_RESULT $? 0 0 "File creation failed"
-    mkdir test1
+    mkdir /tmp/test1
     CHECK_RESULT $? 0 0 "Directory creation failed"
     rm -rf /tmp/test
     CHECK_RESULT $? 0 0 "Failed to delete files"

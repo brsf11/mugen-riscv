@@ -1,5 +1,5 @@
 {
-    "path": "\"${OET_PATH}\"/testcases/cli-test/openssh",
+    "path": "$OET_PATH/testcases/cli-test/openssh",
     "machine num": 2,
     "cases": [
         {

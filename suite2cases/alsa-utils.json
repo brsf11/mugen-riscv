@@ -1,5 +1,5 @@
 {
-    "path": "\"${OET_PATH}\"/testcases/cli-test/alsa-utils",
+    "path": "$OET_PATH/testcases/cli-test/alsa-utils",
     "cases": [
         {
             "name": "oe_test_service_alsa-restore"
