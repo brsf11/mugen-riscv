@@ -19,10 +19,15 @@
 
 source "../common/common_lib.sh"
 
-function run_test() {
-    LOG_INFO "Start testing..."
+function pre_test() {
+    LOG_INFO "Start environmental preparation."
     service=auditd
     log_time=$(date '+%Y-%m-%d %T')
+    LOG_INFO "End of environmental preparation!"
+}
+
+function run_test() {
+    LOG_INFO "Start testing..."
     service "${service}" restart
     CHECK_RESULT $? 0 0 "${service} restart failed"
     SLEEP_WAIT 5

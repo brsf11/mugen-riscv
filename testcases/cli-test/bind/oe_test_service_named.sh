@@ -14,27 +14,41 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test alsa-restore.service restart
+# @Desc      :   Test named.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL alsa-utils
-    rm -rf /etc/alsa/state-daemon.conf
+    DNF_INSTALL bind
+    service=named.service
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution alsa-restore.service
-    test_reload alsa-restore.service
+    log_time=$(date '+%Y-%m-%d %T')
+    test_restart ${service}
+    test_enabled ${service}
+    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING" | grep -v "Open /etc/dns_port.conf fail, return."
+    CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
+    systemctl start "${service}"
+    sed -i 's\ExecStart=/usr/sbin/named\ExecStart=/usr/sbin/named -4\g' /usr/lib/systemd/system/"${service}"
+    systemctl daemon-reload
+    systemctl reload "${service}"
+    CHECK_RESULT $? 0 0 "${service} reload failed"
+    systemctl status "${service}" | grep "Active: active"
+    CHECK_RESULT $? 0 0 "${service} reload causes the service status to change"
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
+    sed -i 's\ExecStart=/usr/sbin/named -4\ExecStart=/usr/sbin/named\g' /usr/lib/systemd/system/named.service
+    systemctl daemon-reload
+    systemctl reload named.service
+    systemctl stop named.service
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

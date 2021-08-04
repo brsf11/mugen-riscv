@@ -7,30 +7,33 @@
 # THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more detaitest -f.
+# See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   huangrong
-# @Contact   :   1820463064@qq.com
-# @Date      :   2020/10/23
+# @Author    :   zengcongwei
+# @Contact   :   735811396@qq.com
+# @Date      :   2020/12/29
 # @License   :   Mulan PSL v2
-# @Desc      :   Test alsa-restore.service restart
+# @Desc      :   Test ceph-mds.target restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL alsa-utils
-    rm -rf /etc/alsa/state-daemon.conf
+    DNF_INSTALL ceph-mds
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
-    LOG_INFO "Start testing..."
-    test_execution alsa-restore.service
-    test_reload alsa-restore.service
-    LOG_INFO "Finish test!"
+    LOG_INFO "Start to run test."
+    test_execution ceph-mds.target
+    systemctl start ceph-mds.target
+    systemctl reload ceph-mds.target 2>&1 | grep "Job type reload is not applicable for unit ceph-mds.target"
+    CHECK_RESULT $?
+    systemctl status ceph-mds.target | grep "Active: active"
+    CHECK_RESULT $?
+    LOG_INFO "End of the test."
 }
 
 function post_test() {

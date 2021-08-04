@@ -1,0 +1,32 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/ceph",
+    "cases": [
+        {
+            "name": "oe_test_service_rbdmap"
+        },
+        {
+            "name": "oe_test_target_ceph-fuse"
+        },
+        {
+            "name": "oe_test_target_ceph-mds"
+        },
+        {
+            "name": "oe_test_target_ceph-mgr"
+        },
+        {
+            "name": "oe_test_target_ceph-mon"
+        },
+        {
+            "name": "oe_test_target_ceph-osd"
+        },
+        {
+            "name": "oe_test_target_ceph-radosgw"
+        },
+        {
+            "name": "oe_test_target_ceph-rbd-mirror"
+        },
+        {
+            "name": "oe_test_target_ceph"
+        }
+    ]
+}

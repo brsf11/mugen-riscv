@@ -12,24 +12,28 @@
 # #############################################
 # @Author    :   huangrong
 # @Contact   :   1820463064@qq.com
-# @Date      :   2020/10/23
+# @Date      :   2021/04/28
 # @License   :   Mulan PSL v2
-# @Desc      :   Test alsa-restore.service restart
+# @Desc      :   Test clamav-milter.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL alsa-utils
-    rm -rf /etc/alsa/state-daemon.conf
+    DNF_INSTALL clamav-milter
+    echo "MilterSocket /run/clamav-milter/clamav-milter.socket
+User clamilt
+ClamdSocket tcp:${NODE1_IPV4}:7357
+LogSyslog yes
+" >/etc/mail/clamav-milter.conf
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution alsa-restore.service
-    test_reload alsa-restore.service
+    test_execution clamav-milter.service
+    test_reload clamav-milter.service
     LOG_INFO "Finish test!"
 }
 
