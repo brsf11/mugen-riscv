@@ -14,22 +14,22 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test alsa-restore.service restart
+# @Desc      :   Test cachefilesd.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL alsa-utils
-    rm -rf /etc/alsa/state-daemon.conf
+    DNF_INSTALL cachefilesd
     LOG_INFO "End of environmental preparation!"
 }
 
+
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution alsa-restore.service
-    test_reload alsa-restore.service
+    test_execution cachefilesd.service
+    test_reload cachefilesd.service
     LOG_INFO "Finish test!"
 }
 

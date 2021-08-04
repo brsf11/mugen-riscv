@@ -14,27 +14,36 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test alsa-restore.service restart
+# @Desc      :   Test rbdmap.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL alsa-utils
-    rm -rf /etc/alsa/state-daemon.conf
+    DNF_INSTALL ceph-common
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution alsa-restore.service
-    test_reload alsa-restore.service
+    test_execution rbdmap.service 
+    systemctl start rbdmap.service
+    sed -i 's\ExecStart=/usr/bin/rbdmap map\ExecStart=/usr/bin/rbdmap unmap\g' /usr/lib/systemd/system/rbdmap.service
+    systemctl daemon-reload
+    systemctl reload rbdmap.service
+    CHECK_RESULT $? 0 0 "rbdmap.service reload failed"
+    systemctl status rbdmap.service | grep "active (exited)"
+    CHECK_RESULT $? 0 0 "rbdmap.service reload causes the service status to change"
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
+    sed -i 's\ExecStart=/usr/bin/rbdmap unmap\ExecStart=/usr/bin/rbdmap map\g' /usr/lib/systemd/system/rbdmap.service
+    systemctl daemon-reload
+    systemctl reload rbdmap.service
+    systemctl stop rbdmap.service
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/clamav",
+    "cases": [
+        {
+            "name": "oe_test_service_clamav-clamonacc"
+        },
+        {
+            "name": "oe_test_service_clamav-milter"
+        }
+    ]
+}
