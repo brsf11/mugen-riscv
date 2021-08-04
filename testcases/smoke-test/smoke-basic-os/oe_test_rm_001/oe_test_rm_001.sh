@@ -18,12 +18,6 @@
 # ############################################
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
-function pre_test(){
-    LOG_INFO "Start environment preparation."
-    rm -rf /tmp/test && rm -rf /tmp/test1
-    LOG_INFO "End of environmental preparation!"
-}
-
 function run_test(){
     LOG_INFO "Start testing"
     touch /tmp/test
