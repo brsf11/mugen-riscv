@@ -1,0 +1,75 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/ipvsadm",
+    "machine num":4,
+    "cases": [
+        {
+            "name": "oe_test_ipvs_ADD_01"
+        },
+        {
+            "name": "oe_test_ipvs_DEL_01"
+        },
+        {
+            "name": "oe_test_ipvs_MOD_01"
+        },
+        {
+            "name": "oe_test_ipvs_SAVE_01"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_off_httpd_01"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_on_firewalld_01"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_DR_01"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_DR_02"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_DR_03"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_DR_04"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_DR_05"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_DR_06"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_DR_07"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_DR_08"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_TUN_01"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_TUN_02"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_TUN_03"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_TUN_04"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_TUN_05"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_TUN_06"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_TUN_07"
+        },
+        {
+            "name": "oe_test_ipvs_SCEN_TUN_08"
+        },
+        {
+            "name": "oe_test_ipvs_WRONG_COMMAND_01"
+        }
+    ]
+}
