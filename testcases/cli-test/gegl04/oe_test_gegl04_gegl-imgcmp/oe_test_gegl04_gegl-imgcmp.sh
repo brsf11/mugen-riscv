@@ -16,9 +16,6 @@
 # @Desc      :   Test opensm command
 # ##################################
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-function config_params() {
-    LOG_INFO "This test case has no config params to load!"
-}
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
@@ -28,7 +25,7 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    gegl-imgcmp common/1.jpg common/2.jpg | grep differ
+    gegl-imgcmp ../common/1.jpg ../common/2.jpg | grep differ
     CHECK_RESULT $?
     LOG_INFO "End of the test."
 }
@@ -40,3 +37,4 @@ function post_test() {
 }
 
 main "$@"
+
