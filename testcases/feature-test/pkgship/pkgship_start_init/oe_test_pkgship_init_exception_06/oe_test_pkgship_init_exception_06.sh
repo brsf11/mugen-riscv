@@ -25,14 +25,14 @@ function pre_test() {
     cp -p ../../common_lib/openEuler.yaml ${SYS_CONF_PATH}/conf.yaml
     chown pkgshipuser:pkgshipuser ${SYS_CONF_PATH}/conf.yaml
     ACT_SERVICE
-   
+
+    para=('https://hhhhhh' 'file:///etc/pkgship/repo/openEuler-20.09/src' 'https://repo.openeuler.org/openEuler-20.03-LTS/source/')
+
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-
-    para=('https://hhhhhh' 'file:///etc/pkgship/repo/openEuler-20.09/src' 'https://repo.openeuler.org/openEuler-20.03-LTS/source/')
 
     for i in $(seq 0 $((${#para[@]} - 1))); do
         MODIFY_CONF bin_db_file ${para[$i]}
