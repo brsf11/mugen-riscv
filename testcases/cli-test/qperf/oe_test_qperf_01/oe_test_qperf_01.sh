@@ -20,7 +20,8 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL qperf
-    SSH_CMD "dnf install qperf -y && systemctl stop firewalld && nohup qperf &" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    DNF_INSTALL qperf 2
+    SSH_CMD "systemctl stop firewalld && nohup qperf &" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     LOG_INFO "End to prepare the test environment."
 }
 function run_test() {
@@ -67,7 +68,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    SSH_CMD "dnf remove qperf -y && systemctl start firewalld" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    SSH_CMD "systemctl start firewalld" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     LOG_INFO "End to restore the test environment."
 }
 main "$@"
