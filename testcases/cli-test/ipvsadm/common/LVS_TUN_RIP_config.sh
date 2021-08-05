@@ -6,8 +6,7 @@ VIP=$(echo $RIP | cut -d '.' -f 1-3).100
 case "$1" in
 start)
     echo "reparing for Real Server"
-    dnf -y install httpd
-    dnf -y install net-tools
+    dnf -y install httpd net-tools 
     systemctl start httpd
     systemctl stop firewalld
     ifconfig tunl0 $VIP netmask 255.255.255.255 broadcast $VIP up
@@ -40,8 +39,7 @@ stop)
     sysctl -w net.ipv4.conf.tunl0.rp_filter=1
     sleep 2
     rm -rf /var/www/html/index.html /tmp/LVS_TUN_RIP_config.sh
-    dnf -y remove httpd
-    dnf -y remove net-tools
+    dnf -y remove httpd remove net-tools
     systemctl start firewalld
     systemctl stop httpd
     ;;
