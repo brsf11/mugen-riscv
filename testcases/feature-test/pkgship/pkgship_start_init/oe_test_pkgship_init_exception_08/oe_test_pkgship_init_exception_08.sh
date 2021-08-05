@@ -33,6 +33,7 @@ function run_test() {
     LOG_INFO "Start to run test."
 
     mv ${SYS_CONF_PATH}/repo/openEuler-20.09/bin/repodata/openEuler-20.09-bin-filelists.sqlite.bz2 ${SYS_CONF_PATH}/repo/openEuler-20.09/bin/repodata/openEuler-20.09-bin-filelists.sqlite.bz2.bak
+    CHECK_RESULT $? 0 0 "Move bin filelist failed."
     pkgship init | grep "initialize failed"
     CHECK_RESULT $? 0 0 "Initialize pkgship unexpectly."
 
