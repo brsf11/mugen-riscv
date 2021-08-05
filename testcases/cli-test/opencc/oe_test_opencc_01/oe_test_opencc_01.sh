@@ -12,7 +12,7 @@
 #@Author    	:   guochenyang
 #@Contact   	:   377012421@qq.com
 #@Date      	:   2020-10-10 09:30:43
-#@License   	:   Mulan PSL v2Mulan PSL v2
+#@License   	:   Mulan PSL v2
 #@Desc      	:   verification opencc‘s command
 #####################################
 
