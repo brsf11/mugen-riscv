@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+  <!--property>
+    <name>dfs.replication</name>
+    <value>1</value>
+  </property-->
+  <!-- Immediately exit safemode as soon as one DataNode checks in. 
+       On a multi-node cluster, these configurations must be removed.  -->
+  <property>
+    <name>dfs.safemode.extension</name>
+    <value>0</value>
+  </property>
+  <property>
+     <name>dfs.safemode.min.datanodes</name>
+     <value>1</value>
+  </property>
+  <property>
+     <name>hadoop.tmp.dir</name>
+     <value>/var/lib/hadoop-hdfs/${user.name}</value>
+  </property>
+  <property>
+     <name>dfs.namenode.name.dir</name>
+     <value>file:///var/lib/hadoop-hdfs/${user.name}/dfs/namenode</value>
+  </property>
+  <property>
+     <name>dfs.namenode.checkpoint.dir</name>
+     <value>file:///var/lib/hadoop-hdfs/${user.name}/dfs/secondarynamenode</value>
+  </property>
+  <property>
+     <name>dfs.datanode.data.dir</name>
+     <value>file:///var/lib/hadoop-hdfs/${user.name}/dfs/datanode</value>
+  </property>
+  <!--property>
+      <name>dfs.http.address</name>
+      <value>0.0.0.0:50070</value>
+  </property>
+  <property>
+      <name>dfs.datanode.address</name>
+      <value>0.0.0.0:50010</value>
+  </property>
+  <property>
+      <name>dfs.datanode.http.address</name>
+      <value>0.0.0.0:50075</value>
+  </property>
+  <property>
+      <name>dfs.datanode.ipc.address</name>
+      <value>0.0.0.0:50020</value>
+  </property-->
+
+  <property>
+    <name>dfs.nameservices</name>
+    <value>ns</value>
+  </property>
+  <property>
+    <name>dfs.ha.namenodes.ns</name>
+    <value>HadoopX,HadoopX1</value>
+  </property>
+  <property>
+    <name>dfs.namenode.rpc-address.ns.HadoopX</name>
+    <value>HadoopX:9000</value>
+  </property>
+  <property>
+    <name>dfs.namenode.http-address.ns.HadoopX</name>
+    <value>HadoopX:50070</value>
+  </property>
+  <property>
+    <name>dfs.namenode.rpc-address.ns.HadoopX1</name>
+    <value>HadoopX1:9000</value>
+  </property>
+  <property>
+    <name>dfs.namenode.http-address.ns.HadoopX1</name>
+    <value>HadoopX1:50070</value>
+  </property>
+  <property>
+	  <name>dfs.namenode.shared.edits.dir</name>
+    <value>qjournal://HadoopX:8485;HadoopX1:8485;HadoopX2:8485/ns</value>
+  </property>
+  <property>
+    <name>dfs.journalnode.edits.dir</name>
+    <value>/opt/hadoop/tmp/journal</value>
+  </property>
+  <property>
+    <name>dfs.ha.automatic-failover.enabled</name>
+    <value>true</value>
+  </property>
+  <property>
+	  <name>dfs.client.failover.proxy.provider.ns</name>
+    <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+  </property>
+  <property>
+    <name>dfs.ha.fencing.methods</name>
+    <value>
+      sshfence
+      shell(/bin/true)
+    </value>
+  </property>
+  <property>
+    <name>dfs.ha.fencing.ssh.connect-timeout</name>
+    <value>30000</value>
+  </property>
+  <property>
+    <name>dfs.webhdfs.enabled</name>
+    <value>true</value>
+  </property>
+</configuration>
