@@ -61,7 +61,7 @@ function run_test() {
     rm -rf a.out
     ocamlcp.byte -compat-32 example.cmo
     CHECK_RESULT $?
-    ./a.out | grep 6 && rm -rf a.out
+    ./a.out | grep 6
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -69,7 +69,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf a.c a.o ./example* ./hello* result ocamlprof.dump
+    rm -rf a.c a.o a.out ./example* ./hello* result ocamlprof.dump
     LOG_INFO "End to restore the test environment."
 }
 
