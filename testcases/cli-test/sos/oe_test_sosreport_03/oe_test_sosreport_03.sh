@@ -83,7 +83,7 @@ EOF
 function post_test() {
 	LOG_INFO "Start to restore the test environment."
 	rm -rf $(ls | grep -v ".sh") /var/tmp/sos*
-    DNF_REMOVE
+	DNF_REMOVE
 	LOG_INFO "Finish restoring the test environment."
 }
 

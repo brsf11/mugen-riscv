@@ -27,7 +27,7 @@ function pre_test() {
 
 function run_test() {
 	LOG_INFO "Start to run test."
-	sosreport -s "/tmp" >runlog  2>&1
+	sosreport -s "/tmp" >runlog 2>&1
 	CHECK_RESULT $? 1
 	grep "Could not obtain installed package list" runlog
 	CHECK_RESULT $?
@@ -67,7 +67,7 @@ function run_test() {
 function post_test() {
 	LOG_INFO "Start to restore the test environment."
 	rm -rf $(ls | grep -v ".sh") /var/tmp/sos*
-    DNF_REMOVE
+	DNF_REMOVE
 	LOG_INFO "Finish restoring the test environment."
 }
 
