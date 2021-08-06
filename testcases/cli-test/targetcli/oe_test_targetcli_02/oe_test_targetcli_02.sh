@@ -17,11 +17,11 @@
 # @Desc      :   verify the uasge of targetcli command
 # ############################################
 
-source "../common/common_targetcli.sh"
+source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    deploy_env
+    DNF_INSTALL targetcli
     LOG_INFO "Finish preparing the test environment."
 }
 
@@ -88,7 +88,8 @@ EOF
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    clear_env
+    rm -rf $(ls | grep -v ".sh")
+    DNF_REMOVE
     LOG_INFO "Finish restoring the test environment."
 }
 
