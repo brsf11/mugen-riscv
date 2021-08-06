@@ -1,0 +1,38 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/hadoop-3.1",
+    "machine num": 3,
+    "cases": [
+        {
+            "name": "oe_test_service_hadoop-datanode-3.1"
+        },
+        {
+            "name": "oe_test_service_hadoop-journalnode-3.1"
+        },
+        {
+            "name": "oe_test_service_hadoop-namenode-3.1"
+        },
+        {
+            "name": "oe_test_service_hadoop-nodemanager-3.1"
+        },
+        {
+            "name": "oe_test_service_hadoop-proxyserver-3.1"
+        },
+        {
+            "name": "oe_test_service_hadoop-resourcemanager-3.1"
+        },
+        {
+            "name": "oe_test_service_hadoop-secondarynamenode-3.1"
+        },
+        {
+            "name": "oe_test_service_hadoop-timelineserver-3.1"
+        },
+        {
+            "name": "oe_test_service_hadoop-historyserver-3.1",
+            "machine num": 3
+        },
+        {
+            "name": "oe_test_service_hadoop-zkfc-3.1",
+            "machine num": 3
+        }
+    ]
+}
