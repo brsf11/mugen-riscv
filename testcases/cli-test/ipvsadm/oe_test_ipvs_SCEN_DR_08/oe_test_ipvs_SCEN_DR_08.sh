@@ -60,7 +60,7 @@ function post_test() {
     DNF_REMOVE
     SSH_CMD "bash -x /tmp/LVS_DR_RIP_config.sh stop" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     SSH_CMD "bash -x /tmp/LVS_DR_RIP_config.sh stop" ${NODE3_IPV4} ${NODE3_PASSWORD} ${NODE3_USER}
-    SSH_CMD "cd /tmp && rm -rf GET_CURL_RESULT.sh result_curl.txt" ${NODE4_IPV4} ${NODE4_PASSWORD} ${NODE4_USER}
+    SSH_CMD "rm -rf /tmp/GET_CURL_RESULT.sh /tmp/result_curl.txt" ${NODE4_IPV4} ${NODE4_PASSWORD} ${NODE4_USER}
     LOG_INFO "End to restore the test environment."
 }
 main "$@"
