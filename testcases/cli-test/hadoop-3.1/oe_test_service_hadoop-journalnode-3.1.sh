@@ -46,6 +46,9 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
+    sed -i "/export JAVA_HOME=\/usr\/lib\/jvm\/jre/d" /usr/libexec/hadoop-layout.sh
+    sed -i "/SuccessExitStatus=143/d" /usr/lib/systemd/system/hadoop-journalnode.service
+    systemctl daemon-reload
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

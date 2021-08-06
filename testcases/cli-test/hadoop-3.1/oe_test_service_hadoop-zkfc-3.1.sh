@@ -117,6 +117,9 @@ function post_test() {
     systemctl stop zookeeper
     hadoop-daemon.sh stop journalnode
     kill -9 $(pgrep -u journalnode)
+    sed -i "/export JAVA_HOME=\/usr\/lib\/jvm\/jre/d" /usr/libexec/hadoop-layout.sh
+    sed -i "/SuccessExitStatus=143/d" /usr/lib/systemd/system/hadoop-zkfc.service
+    systemctl daemon-reload
     DNF_REMOVE
     sed -i "/${name_host}/d" /etc/hosts
     hostname | grep -i ${host_name} || hostnamectl set-hostname ${host_name}
@@ -126,21 +129,27 @@ function post_test() {
     systemctl stop zookeeper
     hadoop-daemon.sh stop journalnode
     kill -9 $(pgrep -u journalnode)
+    sed -i '/export JAVA_HOME=\/usr\/lib\/jvm\/jre/d' /usr/libexec/hadoop-layout.sh
+    sed -i '/SuccessExitStatus=143/d' /usr/lib/systemd/system/hadoop-zkfc.service
+    systemctl daemon-reload
     dnf -y remove hadoop-3.1-hdfs hadoop-3.1-mapreduce hadoop-3.1-yarn java-1.8.0-openjdk apache-zookeeper
     sed -i '/${name_host}/d' /etc/hosts
     hostname | grep -i ${host_name} || hostnamectl set-hostname ${host_name}
     which firewalld && systemctl start firewalld
-    rm -rf /tmp/hsperfdata* /tmp/hadoop* /opt/hadoop /var/lib/hadoop-hdfs
+    rm -rf /tmp/hsperfdata* /tmp/hadoop* /opt/hadoop /var/lib/hadoop-hdfs /tmp/common
     " "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
     SSH_CMD "
     systemctl stop zookeeper
     hadoop-daemon.sh stop journalnode   
     kill -9 $(pgrep -u journalnode) 
+    sed -i '/export JAVA_HOME=\/usr\/lib\/jvm\/jre/d' /usr/libexec/hadoop-layout.sh
+    sed -i '/SuccessExitStatus=143/d' /usr/lib/systemd/system/hadoop-zkfc.service
+    systemctl daemon-reload
     dnf -y remove hadoop-3.1-hdfs hadoop-3.1-mapreduce hadoop-3.1-yarn java-1.8.0-openjdk apache-zookeeper
     sed -i '/${name_host}/d' /etc/hosts
     hostname | grep -i ${host_name} || hostnamectl set-hostname ${host_name}
     which firewalld && systemctl start firewalld
-    rm -rf /tmp/hsperfdata* /tmp/hadoop* /opt/hadoop /var/lib/hadoop-hdfs
+    rm -rf /tmp/hsperfdata* /tmp/hadoop* /opt/hadoop /var/lib/hadoop-hdfs /tmp/common
     " "${NODE3_IPV4}" "${NODE3_PASSWORD}" "${NODE3_USER}"
     LOG_INFO "Finish environment cleanup!"
 }

@@ -25,6 +25,7 @@ function pre_test() {
     echo "export JAVA_HOME=/usr/lib/jvm/jre" >>/usr/libexec/hadoop-layout.sh
     sed -i "/Group=hadoop/a SuccessExitStatus=143" /usr/lib/systemd/system/hadoop-proxyserver.service
     systemctl daemon-reload
+    cp -raf /etc/hadoop/yarn-site.xml /tmp
     sed -i "/<value>mapreduce_shuffle<\/value>/a<\/property>\n<property>\n<name>yarn.web-proxy.address<\/name>\n<value>${NODE1_IPV4}<\/value>" /etc/hadoop/yarn-site.xml
     expect <<EOF
         spawn sudo -u hdfs hdfs namenode -format
@@ -47,6 +48,10 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
+    sed -i "/export JAVA_HOME=\/usr\/lib\/jvm\/jre/d" /usr/libexec/hadoop-layout.sh
+    sed -i "/SuccessExitStatus=143/d" /usr/lib/systemd/system/hadoop-proxyserver.service
+    systemctl daemon-reload
+    mv /tmp/yarn-site.xml /etc/hadoop/yarn-site.xml
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
