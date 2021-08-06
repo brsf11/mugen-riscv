@@ -17,11 +17,11 @@
 # @Desc      :   verify the uasge of sosreport command
 # ############################################
 
-source "../common/common_sos.sh"
+source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
 	LOG_INFO "Start to prepare the test environment."
-	deploy_env
+	DNF_INSTALL "sos tar"
 	LOG_INFO "Finish preparing the test environment."
 }
 
@@ -66,7 +66,8 @@ function run_test() {
 
 function post_test() {
 	LOG_INFO "Start to restore the test environment."
-	clear_env
+	rm -rf $(ls | grep -v ".sh") /var/tmp/sos*
+    DNF_REMOVE
 	LOG_INFO "Finish restoring the test environment."
 }
 
