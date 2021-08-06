@@ -1,0 +1,17 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/targetcli",
+    "cases": [
+        {
+            "name": "oe_test_targetcli_01"
+        },
+        {
+            "name": "oe_test_targetcli_02"
+        },
+        {
+            "name": "oe_test_targetcli_03"
+        },
+        {
+            "name": "oe_test_targetcli_04"
+        }
+    ]
+}
