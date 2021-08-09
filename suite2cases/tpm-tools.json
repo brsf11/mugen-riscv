@@ -1,0 +1,17 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/tpm-tools",
+    "cases": [
+        {
+            "name": "oe_test_tpm-tools_01"
+        },
+        {
+            "name": "oe_test_tpm-tools_02"
+        },
+        {
+            "name": "oe_test_tpm-tools_03"
+        },
+        {
+            "name": "oe_test_tpm-tools_04"
+        }
+    ]
+}
