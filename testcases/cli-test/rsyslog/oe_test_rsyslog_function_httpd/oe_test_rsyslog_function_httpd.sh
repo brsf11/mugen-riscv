@@ -54,18 +54,17 @@ function run_test() {
     if $programname == 'apache-error' then @@${NODE2_IPV4}
     if $programname == 'apache-error' then ~
 EOF
-    CHECK_RESULT $?
     systemctl restart rsyslog
     CHECK_RESULT $?
-    SSH_CMD "en  
+    SSH_CMD "
     echo  '\$ModLoad imtcp\n\$InputTCPServerRun 514\n*.* /var/log/test' > /etc/rsyslog.d/server.conf
     systemctl restart rsyslog
     " ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     CHECK_RESULT $?
-    SLEEP_WAIT 5
-    SSH_CMD "grep \"apache-access\" /var/log/test" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    SLEEP_WAIT 20
+    SSH_CMD "grep "apache-access" /var/log/test" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     CHECK_RESULT $?
-    SSH_CMD "grep \"apache-error\" /var/log/test" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    SSH_CMD "grep "apache-error" /var/log/test" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -73,10 +72,9 @@ EOF
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    SSH_CMD "rm -rf /etc/rsyslog.d/server.conf && systemctl restart rsyslog && systemctl start iptables" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    SSH_CMD "rm -rf /etc/rsyslog.d/server.conf && systemctl restart rsyslog" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     rm -rf /etc/rsyslog.d/client.conf
     systemctl restart rsyslog
-    systemctl start iptables
     LOG_INFO "End to restore the test environment."
 }
 

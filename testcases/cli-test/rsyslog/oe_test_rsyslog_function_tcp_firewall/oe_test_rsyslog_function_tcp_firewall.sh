@@ -13,7 +13,7 @@
 # @Contact   :   wangshan@163.com
 # @Date      :   2020-08-03
 # @License   :   Mulan PSL v2
-# @Desc      :   TCP forwarding, using custom template transports
+# @Desc      :   Open the firewall, support TCP protocol
 # ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
@@ -21,9 +21,9 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "net-tools"
-    sed -i '/Framing Error in received TCP message from peer/d' /var/log/messages
-    systemctl stop iptables
-    SSH_CMD "systemctl stop iptables" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    sed -i '/22/i\-A INPUT -p tcp -m state --state NEW -m tcp --dport 514 -j ACCEPT' /etc/sysconfig/iptables
+    systemctl restart iptables
+    SSH_CMD "systemctl start iptables" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -37,19 +37,15 @@ EOF
     CHECK_RESULT $?
     netstat -anpt | grep 514 | grep rsyslogd
     CHECK_RESULT $?
-    cat >client.conf <<EOF
-    \$EscapeControlCharactersOnReceive off 
-    \$template test-template,"%timestamp:::date-rfc3339%  %HOSTNAME% %msgid% %msg%\n"
-    local7.*  @@${NODE1_IPV4};test-template
-EOF
-    SSH_SCP client.conf ${NODE2_USER}@${NODE2_IPV4}:/etc/rsyslog.d/client.conf "${NODE2_PASSWORD}"
+    time=$(date +%s%N | cut -c 9-13)
     SSH_CMD "
+    echo  'local6.* @@${NODE1_IPV4}' > /etc/rsyslog.d/client.conf
     systemctl restart rsyslog
-    logger -p local7.err "tcptesttemplate"
+    logger -t tcp -p local6.err "tcptest$time"
     " ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     CHECK_RESULT $?
     SLEEP_WAIT 20
-    grep "Framing Error in received TCP message from peer" /var/log/messages
+    grep "tcptest$time" /var/log/messages
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -57,8 +53,11 @@ EOF
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
+    sed -i "/-A INPUT -p tcp -m state --state NEW -m tcp --dport 514 -j ACCEPT/d" /etc/sysconfig/iptables
+    CHECK_RESULT $?
+    systemctl restart iptables
     SSH_CMD "rm -rf /etc/rsyslog.d/client.conf && systemctl restart rsyslog" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
-    rm -rf /etc/rsyslog.d/server.conf test.conf
+    rm -rf /etc/rsyslog.d/server.conf
     systemctl restart rsyslog
     LOG_INFO "End to restore the test environment."
 }

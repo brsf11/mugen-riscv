@@ -13,43 +13,38 @@
 # @Contact   :   wangshan@163.com
 # @Date      :   2020-08-03
 # @License   :   Mulan PSL v2
-# @Desc      :   TCP forwarding, using custom template transports
+# @Desc      :   Close the firewall, support relp protocol
 # ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    DNF_INSTALL "net-tools"
-    sed -i '/Framing Error in received TCP message from peer/d' /var/log/messages
+    DNF_INSTALL "net-tools rsyslog-relp"
     systemctl stop iptables
-    SSH_CMD "systemctl stop iptables" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    SSH_CMD "dnf -y install rsyslog-relp && systemctl stop iptables" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
     cat >/etc/rsyslog.d/server.conf <<EOF
-    \$ModLoad imtcp
-    \$InputTCPServerRun 514
+    \$ModLoad imrelp 
+    \$InputRELPServerRun 20514
 EOF
     systemctl restart rsyslog
     CHECK_RESULT $?
-    netstat -anpt | grep 514 | grep rsyslogd
+    netstat -anpt | grep 20514 | grep rsyslogd
     CHECK_RESULT $?
-    cat >client.conf <<EOF
-    \$EscapeControlCharactersOnReceive off 
-    \$template test-template,"%timestamp:::date-rfc3339%  %HOSTNAME% %msgid% %msg%\n"
-    local7.*  @@${NODE1_IPV4};test-template
-EOF
-    SSH_SCP client.conf ${NODE2_USER}@${NODE2_IPV4}:/etc/rsyslog.d/client.conf "${NODE2_PASSWORD}"
+    time=$(date +%s%N | cut -c 9-13)
     SSH_CMD "
+    echo '\$ModLoad omrelp\nlocal6.* :omrelp:${NODE1_IPV4}:20514' > /etc/rsyslog.d/client.conf
     systemctl restart rsyslog
-    logger -p local7.err "tcptesttemplate"
+    logger -t relp -p local6.err "relptest$time"
     " ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     CHECK_RESULT $?
     SLEEP_WAIT 20
-    grep "Framing Error in received TCP message from peer" /var/log/messages
+    grep "relptest$time" /var/log/messages
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -57,8 +52,8 @@ EOF
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    SSH_CMD "rm -rf /etc/rsyslog.d/client.conf && systemctl restart rsyslog" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
-    rm -rf /etc/rsyslog.d/server.conf test.conf
+    SSH_CMD "dnf -y remove rsyslog-relp && rm -rf /etc/rsyslog.d/client.conf && systemctl restart rsyslog" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    rm -rf /etc/rsyslog.d/server.conf
     systemctl restart rsyslog
     LOG_INFO "End to restore the test environment."
 }

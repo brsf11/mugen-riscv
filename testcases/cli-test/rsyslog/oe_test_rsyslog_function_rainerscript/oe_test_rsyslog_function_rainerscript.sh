@@ -28,7 +28,7 @@ EOF
     time=$(date +%s%N | cut -c 9-13)
     logger -t local5 -p local5.error "NAMElocal5error1$time"
     CHECK_RESULT $?
-    SLEEP_WAIT 5
+    SLEEP_WAIT 3
     grep "NAMElocal5error1$time" /var/log/test
     CHECK_RESULT $?
     LOG_INFO "End to run test."
