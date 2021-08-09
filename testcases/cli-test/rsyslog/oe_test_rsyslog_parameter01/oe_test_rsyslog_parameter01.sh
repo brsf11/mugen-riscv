@@ -48,6 +48,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     rm -rf file1 file2
+    systemctl start rsyslog
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

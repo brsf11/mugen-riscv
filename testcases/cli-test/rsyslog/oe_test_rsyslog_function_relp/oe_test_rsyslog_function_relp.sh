@@ -21,8 +21,9 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "net-tools rsyslog-relp"
+    DNF_INSTALL "net-tools rsyslog-relp" 2
     systemctl stop iptables
-    SSH_CMD "dnf -y install rsyslog-relp && systemctl stop iptables" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    SSH_CMD "systemctl stop iptables" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -52,7 +53,8 @@ EOF
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    SSH_CMD "dnf -y remove rsyslog-relp && rm -rf /etc/rsyslog.d/client.conf && systemctl restart rsyslog" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    SSH_CMD "rm -rf /etc/rsyslog.d/client.conf && systemctl restart rsyslog && systemctl start iptables" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    systemctl start iptables
     rm -rf /etc/rsyslog.d/server.conf
     systemctl restart rsyslog
     LOG_INFO "End to restore the test environment."
