@@ -14,32 +14,41 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test authz.service restart
+# @Desc      :   Test dhcpd.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL authz
-    service=authz.service
-    log_time=$(date '+%Y-%m-%d %T')
+    cp /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.bak
+    echo 'ddns-update-style none;
+ignore client-updates;
+subnet 192.168.0.0 netmask 255.255.255.0 {
+range 192.168.0.200 192.168.0.230;
+    option domain-name-servers 192.168.0.1;
+    option domain-name "test.local";
+    option routers 192.168.0.1;
+    option subnet-mask 255.255.255.0;
+    default-lease-time 43200;
+    max-lease-time 86400;
+}' >>/etc/dhcp/dhcpd.conf
+    ip addr add 192.168.0.1 dev "${NODE1_NIC}"
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_restart ${service}
-    test_enabled ${service}
-    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v "accept unix /run/isulad/plugins/authz-broker.sock"
-    CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
-    test_reload ${service}
+    test_execution dhcpd.service
+    test_reload dhcpd.service
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    DNF_REMOVE
+    systemctl stop dhcpd.service
+    mv -f /etc/dhcp/dhcpd.bak /etc/dhcp/dhcpd.conf
+    ip addr del 192.168.0.1 dev "${NODE1_NIC}"
     LOG_INFO "Finish environment cleanup!"
 }
 

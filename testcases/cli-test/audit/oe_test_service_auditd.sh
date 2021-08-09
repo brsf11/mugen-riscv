@@ -43,14 +43,17 @@ function run_test() {
     SLEEP_WAIT 5
     systemctl status "${service}" | grep "Active: active"
     CHECK_RESULT $? 0 0 "${service} start failed"
-    systemctl is-enabled "${service}" | grep "enabled"
-    CHECK_RESULT $? 0 0 "${service} is not enabled"
-    symlink_file=$(systemctl disable "${service}" 2>&1 | awk '{print $2}' | awk '{print substr($0,1,length($0)-1)}')
-    find ${symlink_file}
-    CHECK_RESULT $? 0 1 "${service} disable failed"
-    systemctl enable "${service}"
-    find ${symlink_file}
-    CHECK_RESULT $? 0 0 "${service} enable failed"
+    if systemctl is-enabled "${service}" | grep "enabled"; then
+        symlink_file=$(systemctl disable "${service}" 2>&1 | awk '{print $2}' | awk '{print substr($0,1,length($0)-1)}')
+        find ${symlink_file}
+        CHECK_RESULT $? 0 1 "${service} disable failed"
+        systemctl enable "${service}"
+        find ${symlink_file}
+        CHECK_RESULT $? 0 0 "${service} enable failed"
+    else
+        LOG_ERROR "${service} is not enabled"
+        ((exec_result++))
+    fi
     journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error"
     CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
     test_reload ${service}

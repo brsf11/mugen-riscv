@@ -14,21 +14,21 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test named-pkcs11.service restart
+# @Desc      :   Test cockpit.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL bind-pkcs11
+    DNF_INSTALL cockpit
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution named-pkcs11.service
-    test_reload named-pkcs11.service
+    test_execution cockpit.service
+    test_reload cockpit.service
     LOG_INFO "Finish test!"
 }
 

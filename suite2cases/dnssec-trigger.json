@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/dnssec-trigger",
+    "cases": [
+        {
+            "name": "oe_test_service_dnssec-triggerd-keygen"
+        },
+        {
+            "name": "oe_test_service_dnssec-triggerd"
+        }
+    ]
+}

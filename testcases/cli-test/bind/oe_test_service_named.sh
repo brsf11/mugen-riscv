@@ -23,12 +23,12 @@ function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL bind
     service=named.service
+    log_time=$(date '+%Y-%m-%d %T')
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    log_time=$(date '+%Y-%m-%d %T')
     test_restart ${service}
     test_enabled ${service}
     journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING" | grep -v "Open /etc/dns_port.conf fail, return."

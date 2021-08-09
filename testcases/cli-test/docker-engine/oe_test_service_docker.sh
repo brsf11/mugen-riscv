@@ -14,15 +14,15 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test authz.service restart
+# @Desc      :   Test docker.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL authz
-    service=authz.service
+    DNF_INSTALL docker-engine
+    service=docker.service
     log_time=$(date '+%Y-%m-%d %T')
     LOG_INFO "End of environmental preparation!"
 }
@@ -31,14 +31,21 @@ function run_test() {
     LOG_INFO "Start testing..."
     test_restart ${service}
     test_enabled ${service}
-    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v "accept unix /run/isulad/plugins/authz-broker.sock"
+    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v "level=warning" | grep -v "level=info"
     CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
-    test_reload ${service}
+    systemctl start docker.service
+    sed -i 's\dockerd\dockerd --log-level=info\g' /usr/lib/systemd/system/docker.service
+    systemctl daemon-reload
+    systemctl reload docker.service
+    CHECK_RESULT $? 0 0 "docker.service reload failed"
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
+    sed -i 's\dockerd --log-level=info\dockerd\g' /usr/lib/systemd/system/docker.service
+    systemctl daemon-reload
+    systemctl reload docker.service
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
