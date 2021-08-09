@@ -25,8 +25,7 @@ function pre_test() {
     wget https://github.com/PeterHuewe/tpm-emulator/archive/v0.7.5.zip
     unzip v0.7.5.zip
     test -d tpm-emulator-0.7.5 && cd tpm-emulator-0.7.5
-    mode=$(uname -m)
-    if [ "$mode"x == "aarch64"x ]; then
+    if [ "${NODE1_FRAME}"x == "aarch64"x ]; then
         sed -i "s/\$(shell uname -m)/arm64/g" tpmd_dev/linux/Makefile
     else
         sed -i "s/\$(shell uname -m)/x86/g" tpmd_dev/linux/Makefile
