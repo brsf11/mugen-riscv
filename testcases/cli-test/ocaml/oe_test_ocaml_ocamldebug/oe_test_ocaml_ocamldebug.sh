@@ -22,6 +22,7 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
     cp ../example.ml ./
+    mkdir ocamltest
     ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
     LOG_INFO "End to prepare the test environment."
 }
@@ -35,7 +36,6 @@ function run_test() {
 EOF
     grep -i "Loading program... 6" log
     CHECK_RESULT $?
-    mkdir ocamltest
     cp a.out ocamltest/ && rm -rf a.ou
     ocamldebug -cd ./ocamltest a.out >log <<EOF
     run
