@@ -53,6 +53,7 @@ END
 EOF
     systemctl restart rsyslog
     CHECK_RESULT $?
+    SLEEP_WAIT 5
     expect <<-END
     spawn psql -U rsyslog -d Syslog
     expect "Syslog"

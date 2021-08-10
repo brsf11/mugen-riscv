@@ -27,7 +27,7 @@ function run_test() {
         CHECK_RESULT $?
         time=$(date +%s%N | cut -c 9-13)
         logger -t $priority -p local5.$priority "test$priority$time"
-        SLEEP_WAIT 5
+        SLEEP_WAIT 3
         grep test$priority$time /var/log/test
         CHECK_RESULT $?
     done
