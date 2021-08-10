@@ -11,9 +11,9 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-10-23
+#@Date          :   2020-10-19
 #@License       :   Mulan PSL v2
-#@Desc          :   pcp testing(pmhostname,pmlock,pmlogger_check)
+#@Desc          :   pcp testing(pmstore,install-sh)
 #####################################
 
 source "common/common_pcp.sh"
@@ -21,39 +21,41 @@ source "common/common_pcp.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
+    metric_name=disk.dev.write
+    echo "Happy everyday" >file
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    /usr/libexec/pcp/bin/pmhostname $host_name | grep "$host_name\|localhost"
+    pmstore --version 2>&1 | grep "$pcp_version"
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlock -v mu.txt
+    pmstore -h $host_name $metric_name 1 | grep 'No permission'
     CHECK_RESULT $?
-    test -r mu.txt -o -w mu.txt -o -x mu.txt
+    pmstore -L $metric_name 1 | grep 'No permission'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -c /etc/pcp/pmlogger/control.d/local
+    pmstore -K del,60 $metric_name 1 | grep 'No permission'
     CHECK_RESULT $?
-    test -n $(pgrep -f /usr/libexec/pcp/bin/pmlogger)
+    pmstore -n /var/lib/pcp/pmns/root $metric_name 1 | grep 'No permission'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -l /var/log/pcp/pmlogger/pmlogger_check.log
+    pmstore -F $metric_name 1 | grep 'No permission'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -C
+    pmstore -f $metric_name 1 | grep 'No permission'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -NT | grep "get mutex lock"
+    /usr/libexec/pcp/bin/install-sh -o root -g root -d /tmp/pcp
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -NV | grep "compressing PCP archives for host local:"
+    test -d /tmp/pcp
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -s
+    /usr/libexec/pcp/bin/install-sh -o root -g root file /tmp/pcp/file
     CHECK_RESULT $?
-    test -z $(pgrep -f /usr/libexec/pcp/bin/pmlogger)
+    test -f /tmp/pcp/file
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -f mu.txt
+    rm -rf /tmp/pcp file
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }

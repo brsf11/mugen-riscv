@@ -11,9 +11,9 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-10-23
+#@Date          :   2020-10-19
 #@License       :   Mulan PSL v2
-#@Desc          :   pcp testing(pmhostname,pmlock,pmlogger_check)
+#@Desc          :   pcp testing(pmloglabel)
 #####################################
 
 source "common/common_pcp.sh"
@@ -21,39 +21,33 @@ source "common/common_pcp.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
+    archive_data=$(pcp -h "$host_name" | grep 'primary logger:' | awk -F: '{print $NF}')
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
-    LOG_INFO "Start to run test."
-    /usr/libexec/pcp/bin/pmhostname $host_name | grep "$host_name\|localhost"
+    LOG_INFO "Start to run test." 
+    pmloglabel -h $host_name $archive_data
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlock -v mu.txt
+    pmloglabel -l $archive_data | grep 'Log Label'
     CHECK_RESULT $?
-    test -r mu.txt -o -w mu.txt -o -x mu.txt
+    pmloglabel -L $archive_data | grep 'Archive timezone'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -c /etc/pcp/pmlogger/control.d/local
+    pmloglabel -p 299999 $archive_data
     CHECK_RESULT $?
-    test -n $(pgrep -f /usr/libexec/pcp/bin/pmlogger)
+    pmloglabel -s $archive_data
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -l /var/log/pcp/pmlogger/pmlogger_check.log
+    pmloglabel -v $archive_data | grep 'Checking label'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -C
+    pmloglabel -V 2 $archive_data
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -NT | grep "get mutex lock"
-    CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -NV | grep "compressing PCP archives for host local:"
-    CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -s
-    CHECK_RESULT $?
-    test -z $(pgrep -f /usr/libexec/pcp/bin/pmlogger)
+    pmloglabel -Z Africa/Sao_Tome $archive_data
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -f mu.txt
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }

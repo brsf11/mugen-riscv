@@ -11,9 +11,9 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-10-23
+#@Date          :   2020-10-19
 #@License       :   Mulan PSL v2
-#@Desc          :   pcp testing(pmhostname,pmlock,pmlogger_check)
+#@Desc          :   pcp testing(pmstat)
 #####################################
 
 source "common/common_pcp.sh"
@@ -21,39 +21,39 @@ source "common/common_pcp.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
+    archive_data=$(pcp -h "$host_name" | grep 'primary logger:' | awk -F: '{print $NF}')
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    /usr/libexec/pcp/bin/pmhostname $host_name | grep "$host_name\|localhost"
+    pmstat -a $archive_data -A 5min -s 10 | grep 'loadavg'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlock -v mu.txt
+    pmstat -h $host_name -s 10 -t 2 | grep 'memory'
     CHECK_RESULT $?
-    test -r mu.txt -o -w mu.txt -o -x mu.txt
+    pmstat -n /var/lib/pcp/pmns/root -s 3 | grep 'swap'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -c /etc/pcp/pmlogger/control.d/local
+    pmstat -a $archive_data -O @08 -s 10 | grep 'io'
     CHECK_RESULT $?
-    test -n $(pgrep -f /usr/libexec/pcp/bin/pmlogger)
+    pmstat -a $archive_data -S @08 -T @18 -s 10 | grep 'system'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -l /var/log/pcp/pmlogger/pmlogger_check.log
+    pmstat -Z Africa/Sao_Tome -s 3 | grep 'TZ=Africa/Sao_Tome'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -C
+    pmstat -a $archive_data -z -s 3 | grep 'local timezone'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -NT | grep "get mutex lock"
+    pmstat -L -s 3 | grep 'cpu'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -NV | grep "compressing PCP archives for host local:"
+    pmstat -l -s 3 | grep 'swpd'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -s
+    pmstat -a $archive_data -P -s 3 | grep 'free'
     CHECK_RESULT $?
-    test -z $(pgrep -f /usr/libexec/pcp/bin/pmlogger)
+    pmstat -x -s 3 | grep 'buff'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -f mu.txt
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }

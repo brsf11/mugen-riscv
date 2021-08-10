@@ -11,9 +11,9 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-10-23
+#@Date          :   2020-10-19
 #@License       :   Mulan PSL v2
-#@Desc          :   pcp testing(pmhostname,pmlock,pmlogger_check)
+#@Desc          :   pcp testing(pmprobe)
 #####################################
 
 source "common/common_pcp.sh"
@@ -21,39 +21,36 @@ source "common/common_pcp.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
+    archive_data=$(pcp -h "$host_name" | grep 'primary logger:' | awk -F: '{print $NF}')
+    metric_name=disk.dev.write
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
-    LOG_INFO "Start to run test."
-    /usr/libexec/pcp/bin/pmhostname $host_name | grep "$host_name\|localhost"
+    LOG_INFO "Start to run test." 
+    pmprobe --version 2>&1 | grep "$pcp_version"
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlock -v mu.txt
+    pmprobe -a $archive_data $metric_name | grep "$metric_name"
     CHECK_RESULT $?
-    test -r mu.txt -o -w mu.txt -o -x mu.txt
+    pmprobe -h $host_name $metric_name | grep "$metric_name"
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -c /etc/pcp/pmlogger/control.d/local
+    pmprobe --container=busybox pmcd.pid | grep 'pmcd.pid'
     CHECK_RESULT $?
-    test -n $(pgrep -f /usr/libexec/pcp/bin/pmlogger)
+    pmprobe --derived=/var/lib/pcp/config/pmieconf/dm $metric_name | grep "$metric_name"
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -l /var/log/pcp/pmlogger/pmlogger_check.log
+    pmprobe -L $metric_name | grep "$metric_name"
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -C
+    pmprobe -K del,60 $metric_name | grep "$metric_name"
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -NT | grep "get mutex lock"
+    pmprobe -n /var/lib/pcp/pmns/root $metric_name | grep "$metric_name"
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -NV | grep "compressing PCP archives for host local:"
-    CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pmlogger_check -s
-    CHECK_RESULT $?
-    test -z $(pgrep -f /usr/libexec/pcp/bin/pmlogger)
+    pmprobe -a $archive_data -O @08 $metric_name | grep "$metric_name"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -f mu.txt
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }

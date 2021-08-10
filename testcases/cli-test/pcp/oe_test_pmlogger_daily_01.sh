@@ -51,8 +51,8 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    kill -9 $(pgrep -f pmlogger_daily)
     DNF_REMOVE
+    kill -9 $(pgrep -f /usr/libexec/pcp/bin/pmlogger)
     LOG_INFO "End to restore the test environment."
 }
 
