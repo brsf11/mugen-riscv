@@ -30,6 +30,7 @@ for i in range(1,5):
             if (i != j) and (i != k) and (j != k):
                 print (i,j,k)
 EOF
+    python3_version=$(python3 --version)
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -37,7 +38,7 @@ function run_test() {
     LOG_INFO "Start to run test."
     pmpython --help 2>&1 | grep 'usage'
     CHECK_RESULT $?
-    pmpython --version 2>&1 | grep "$pcp_version"
+    pmpython --version 2>&1 | grep "$python3_version"
     CHECK_RESULT $?
     pmpython my.py | grep 'without'
     CHECK_RESULT $?
@@ -47,7 +48,7 @@ function run_test() {
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pcp-python --help 2>&1 | grep 'usage'
     CHECK_RESULT $?
-    /usr/libexec/pcp/bin/pcp-python --version 2>&1 | grep "$pcp_version"
+    /usr/libexec/pcp/bin/pcp-python --version 2>&1 | grep "$python3_version"
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pcp-python my.py | grep 'without'
     CHECK_RESULT $?

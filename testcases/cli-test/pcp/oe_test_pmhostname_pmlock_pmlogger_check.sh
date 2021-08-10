@@ -34,7 +34,7 @@ function run_test() {
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pmlogger_check -c /etc/pcp/pmlogger/control.d/local
     CHECK_RESULT $?
-    test -n $(pgrep -f pmlogger_check)
+    test -n $(pgrep -f /usr/libexec/pcp/bin/pmlogger)
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pmlogger_check -l /var/log/pcp/pmlogger/pmlogger_check.log
     CHECK_RESULT $?
@@ -46,7 +46,7 @@ function run_test() {
     CHECK_RESULT $?
     /usr/libexec/pcp/bin/pmlogger_check -s
     CHECK_RESULT $?
-    test -z $(pgrep -f pmlogger_check)
+    test -z $(pgrep -f /usr/libexec/pcp/bin/pmlogger)
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
