@@ -14,31 +14,30 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test authz.service restart
+# @Desc      :   Test conntrackd.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL authz
-    service=authz.service
-    log_time=$(date '+%Y-%m-%d %T')
+    DNF_INSTALL conntrack-tools
+    sed -i "s\Interface eth2\Interface ${NODE1_NIC}\g" /etc/conntrackd/conntrackd.conf
+    sed -i "s\IPv4_interface 192.168.100.100\IPv4_interface ${NODE1_IPV4}\g"  /etc/conntrackd/conntrackd.conf
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_restart ${service}
-    test_enabled ${service}
-    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v "accept unix /run/isulad/plugins/authz-broker.sock"
-    CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
-    test_reload ${service}
+    test_execution conntrackd.service
+    test_reload conntrackd.service
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
+    sed -i "s\Interface ${NODE1_NIC}\Interface eth2\g" /etc/conntrackd/conntrackd.conf
+    sed -i "s\IPv4_interface ${NODE1_IPV4}\IPv4_interface 192.168.100.100\g"  /etc/conntrackd/conntrackd.conf
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

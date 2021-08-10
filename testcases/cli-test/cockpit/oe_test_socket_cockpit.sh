@@ -7,34 +7,33 @@
 # THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more detaitest -f.
+# See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   huangrong
-# @Contact   :   1820463064@qq.com
-# @Date      :   2020/10/23
+# @Author    :   zengcongwei
+# @Contact   :   735811396@qq.com
+# @Date      :   2020/12/29
 # @License   :   Mulan PSL v2
-# @Desc      :   Test authz.service restart
+# @Desc      :   Test cockpit.socket restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL authz
-    service=authz.service
-    log_time=$(date '+%Y-%m-%d %T')
+    DNF_INSTALL cockpit
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
-    LOG_INFO "Start testing..."
-    test_restart ${service}
-    test_enabled ${service}
-    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v "accept unix /run/isulad/plugins/authz-broker.sock"
-    CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
-    test_reload ${service}
-    LOG_INFO "Finish test!"
+    LOG_INFO "Start to run test."
+    test_execution cockpit.socket
+    systemctl start cockpit.socket
+    systemctl reload cockpit.socket 2>&1 | grep "Job type reload is not applicable for unit cockpit.socket"
+    CHECK_RESULT $?
+    systemctl status cockpit.socket | grep "Active: active"
+    CHECK_RESULT $?
+    LOG_INFO "End of the test."
 }
 
 function post_test() {

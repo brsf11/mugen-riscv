@@ -14,32 +14,29 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test authz.service restart
+# @Desc      :   Test crond.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
-function pre_test() {
-    LOG_INFO "Start environmental preparation."
-    DNF_INSTALL authz
-    service=authz.service
-    log_time=$(date '+%Y-%m-%d %T')
-    LOG_INFO "End of environmental preparation!"
-}
-
 function run_test() {
     LOG_INFO "Start testing..."
-    test_restart ${service}
-    test_enabled ${service}
-    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v "accept unix /run/isulad/plugins/authz-broker.sock"
-    CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
-    test_reload ${service}
+    test_execution crond.service
+    systemctl start crond.service
+    sed -i 's\ExecStart=/usr/sbin/crond -n\ExecStart=/usr/sbin/crond -n -c\g' /usr/lib/systemd/system/crond.service
+    systemctl daemon-reload
+    systemctl reload crond.service
+    CHECK_RESULT $? 0 0 "crond.service reload failed"
+    systemctl status crond.service | grep "Active: active"
+    CHECK_RESULT $? 0 0 "crond.service reload causes the service status to change"
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    DNF_REMOVE
+    sed -i 's\ExecStart=/usr/sbin/crond -n -c\ExecStart=/usr/sbin/crond -n\g' /usr/lib/systemd/system/crond.service
+    systemctl daemon-reload
+    systemctl reload crond.service
     LOG_INFO "Finish environment cleanup!"
 }
 
