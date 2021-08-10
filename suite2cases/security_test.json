@@ -1,0 +1,45 @@
+{
+    "path": "$OET_PATH/testcases/security_test",
+    "add disk":[10],
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_scanning_system"
+        },
+        {
+            "name": "oe_test_disable_unwanted"
+        },
+        {
+            "name": "oe_test_update_check"
+        },
+        {
+            "name": "oe_test_add_new_certificate"
+        },
+        {
+            "name": "oe_test_check_change_system"
+        },
+        {
+            "name": "oe_test_manage_trusted_certificate"
+        },
+        {
+            "name": "oe_test_use_luks",
+	    "add disk": [10]
+        },
+        {
+            "name": "oe_test_aide_check_update"
+        },
+        {
+            "name": "oe_test_ensure_security_compliance"
+        },
+        {
+            "name": "oe_test_encrypt_data"
+        },
+        {
+            "name": "oe_test_check_passwd_shadow"
+        },
+        {
+            "name": "oe_test_scanning_remote_system",
+	    "machine num": 2
+        }
+    ]
+}
