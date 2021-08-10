@@ -19,10 +19,15 @@
 
 source "../common/common_lib.sh"
 
-function run_test() {
-    LOG_INFO "Start testing..."
+function pre_test() {
+    LOG_INFO "Start environmental preparation."
     service=dracut-initqueue.service
     status='inactive (dead)'
+    LOG_INFO "End of environmental preparation!"
+}
+
+function run_test() {
+    LOG_INFO "Start testing..."
     systemctl status "${service}" | grep "Active" | grep -v "${status}"
     CHECK_RESULT $? 0 1 "There is an error for the status of ${service}"
     state=$(systemctl is-enabled "${service}")
