@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/dovecot",
+    "cases": [
+        {
+            "name": "oe_test_service_dovecot-init"
+        },
+        {
+            "name": "oe_test_service_dovecot"
+        },
+        {
+            "name": "oe_test_socket_dovecot"
+        }
+    ]
+}
