@@ -28,7 +28,7 @@ FAIL=0
 
 function usage() {
     printf "Usage:  \n
-    This is a lisener to achieve and post latest statistic of results
+    This is a listener to achieve and post latest statistic of results
     \n
     -t:		configuration the number of intervala seconds of posting messages\n
     -p:		configuration the URL of the server for posting messages\n
