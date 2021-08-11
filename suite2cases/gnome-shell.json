@@ -1,0 +1,14 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/gnome-shell",
+    "cases": [
+        {
+            "name": "oe_test_gnome-shell-extension-tool_act"
+        },
+        {
+            "name": "oe_test_gnome-shell-extension-tool_info"
+        },
+        {
+            "name": "oe_test_gnome-shell_info"
+        }
+    ]
+}
