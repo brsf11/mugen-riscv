@@ -13,7 +13,7 @@
 #@Contact   	:   244349477@qq.com
 #@Date      	:   2021-08-02
 #@License   	:   Mulan PSL v2
-#@Desc      	:   Take the test gnome-shell-perf-tool
+#@Desc      	:   Take the test gnome-shell
 #####################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
@@ -21,7 +21,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the database config."
 
-    DNF_INSTALL gnome-shell
+    DNF_INSTALL "gnome-shell elinks lynx"
 
     LOG_INFO "End to prepare the database config."
 }
@@ -29,11 +29,32 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start to run test."
 
+    # test gnome-shell
+    gnome-shell --list-modes | grep -i "user"
+    CHECK_RESULT $? 0 0 "Check gnome-shell --list-mode failed."
+    gnome-shell --version | grep -i "GNOME Shell"
+    CHECK_RESULT $? 0 0 "Check gnome-shell --version failed."
+    gnome-shell -h | grep -i "option"
+    CHECK_RESULT $? 0 0 "Check gnome-shell -h failed."
+    gnome-shell --help-all | grep -i "option"
+    CHECK_RESULT $? 0 0 "Check gnome-shell --help-all failed."
+
+    # test gnome-shell-perf-tool
     gnome-shell-perf-tool --version | grep -i "GNOME Shell"
     CHECK_RESULT $? 0 0 "Check gnome-shell-perf-tool --version failed."
-
     gnome-shell-perf-tool -h | grep -i "option"
     CHECK_RESULT $? 0 0 "Check gnome-shell-perf-tool -h failed."
+
+    # test gnome-shell-extension-tool
+    gnome-shell-extension-tool -c  <<EOF
+    test
+    test
+    test@test.com
+    \\n
+EOF
+    CHECK_RESULT $? 0 0 "Create extension failed."
+    gnome-shell-extension-tool -h | grep -i "option"
+    CHECK_RESULT $? 0 0 "Check gnome-shell-extension-tool -h failed."
 
     LOG_INFO "End to run test."
 }
@@ -41,6 +62,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
 
+    rm -rf /root/.local/share/gnome-shell/extensions/test@test.com
     DNF_REMOVE
 
     LOG_INFO "End to restore the test environment."
