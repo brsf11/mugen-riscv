@@ -11,9 +11,9 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/11/2
+# @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamlmklib, ocamlmklib.opt and ocamlmklib.byte in ocaml package
+# @Desc      :   The usage of ocamlmktop.opt under ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,38 +21,57 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../example.ml ./
-    ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
+    cp ../example.ml ../file.ml ../a.c ./
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamlmklib.opt -v -ldopt example.o example.ml | grep "dllib"
+    ocamlmktop.opt -annot example.ml
+    rm -rf a.out
+    ocamlmktop.opt -compat-32 example.cmo
     CHECK_RESULT $?
-    ocamlmklib.opt -vnum example.o | grep "$ocaml_version"
+    grep -ai "compat-32" a.out && rm -rf a.out
     CHECK_RESULT $?
-    ocamlmklib.opt -l example.cmo
+    ocamlmktop.opt -dllib /usr/lib64/libbfd-2.34.so a.c
     CHECK_RESULT $?
-    grep -a "StdlibA" a.cma
+    grep -a "/usr/lib64/libbfd" a.out
     CHECK_RESULT $?
-    ocamlmklib.opt -verbose example.ml | grep "/usr/bin/ocaml"
+    ocamlmktop.opt -dllpath ../ a.c
     CHECK_RESULT $?
-    ocamlmklib.opt -version example.o | grep "$ocaml_version"
+    test -f a.o && rm -rf a.o
     CHECK_RESULT $?
-    ocamlmklib.opt -oc example example.o
+    ocamlmktop.opt -dtypes example.ml
     CHECK_RESULT $?
-    grep -ai "gcc" dllexample.so
+    grep -A 3 "type" example.annot
     CHECK_RESULT $?
-    ocamlmklib.opt -rpath /tmp example.o
+    ocamlmktop.opt -for-pack P -c example.ml
     CHECK_RESULT $?
-    strings dlla.so | grep "/tmp" && rm -rf dlla.so
+    grep -ai "examplep" example.cmo
     CHECK_RESULT $?
-    ocamlmklib.opt -R /tmp example.o
+    ocamlmktop.opt -g a.c
     CHECK_RESULT $?
-    strings dlla.so | grep "/tmp"
+    objdump -x a.o | grep debug
     CHECK_RESULT $?
-    ocamlmklib.opt -help 2>&1 | grep "ocamlmklib"
+    cp ../hello_stubs.c ./
+    ocamlmktop.opt -i hello_stubs.c
+    CHECK_RESULT $?
+    objdump -x hello_stubs.o | grep "caml_print_hello"
+    CHECK_RESULT $?
+    ocamlmktop.opt -I +/usr/lib64/ocaml hello_stubs.c
+    CHECK_RESULT $?
+    grep -ai "hello world" hello_stubs.o
+    CHECK_RESULT $?
+    rm -rf a.out
+    cp example.ml exampletest
+    ocamlmktop.opt -impl exampletest
+    CHECK_RESULT $?
+    grep -ai "exampletest" exampletest.cmi
+    CHECK_RESULT $?
+    cp /usr/lib64/ocaml/lazy.mli lazytest
+    ocamlmktop.opt -intf lazytest
+    CHECK_RESULT $?
+    grep -ai "lazytest" lazytest.cmi
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -60,7 +79,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf a.a a.cmxa dlla.so ./example* liba.a a.cma a.out dllexample.so help libexample.a
+    rm -rf ./a* ./example* ./hello* ./lazytest* file.ml
     LOG_INFO "End to restore the test environment."
 }
 

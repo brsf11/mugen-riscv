@@ -11,9 +11,9 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/11/2
+# @Date      :   2020/11/9
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamlmklib, ocamlmklib.opt and ocamlmklib.byte in ocaml package
+# @Desc      :   The usage of ocamlop under ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,46 +21,51 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../example.ml ./
-    ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
+    cp ../example.ml ../not.ml ./
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamlmklib.opt -v -ldopt example.o example.ml | grep "dllib"
+    ocamlopt -inline-prim-cost 3 example.ml
     CHECK_RESULT $?
-    ocamlmklib.opt -vnum example.o | grep "$ocaml_version"
+    grep -a "prim" a.out
     CHECK_RESULT $?
-    ocamlmklib.opt -l example.cmo
+    ocamlopt -inline-indirect-cost 4 example.ml
     CHECK_RESULT $?
-    grep -a "StdlibA" a.cma
+    grep -a "directory.camlStdlib" a.out
     CHECK_RESULT $?
-    ocamlmklib.opt -verbose example.ml | grep "/usr/bin/ocaml"
+    ocamlopt -inline-toplevel 100 example.ml
     CHECK_RESULT $?
-    ocamlmklib.opt -version example.o | grep "$ocaml_version"
+    grep -a "level.camlStdlib" a.out
     CHECK_RESULT $?
-    ocamlmklib.opt -oc example example.o
+    ocamlopt -S -inline-call-cost 1 not.ml -o not.opt
     CHECK_RESULT $?
-    grep -ai "gcc" dllexample.so
+    grep "camlNot" not.s
     CHECK_RESULT $?
-    ocamlmklib.opt -rpath /tmp example.o
+    ocamlopt -inline-max-depth 1 example.ml
     CHECK_RESULT $?
-    strings dlla.so | grep "/tmp" && rm -rf dlla.so
+    grep -a "max " a.out
     CHECK_RESULT $?
-    ocamlmklib.opt -R /tmp example.o
+    ocamlopt -linscan example.ml
     CHECK_RESULT $?
-    strings dlla.so | grep "/tmp"
+    strings a.out | grep "scan_line"
     CHECK_RESULT $?
-    ocamlmklib.opt -help 2>&1 | grep "ocamlmklib"
+    ocamlopt -no-float-const-prop example.ml
     CHECK_RESULT $?
+    strings a.out | grep "const_prop"
+    CHECK_RESULT $? 1
+    ocamlopt -nodynlink example.ml
+    CHECK_RESULT $?
+    strings a.out | grep "r9wE"
+    CHECK_RESULT $? 1
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf a.a a.cmxa dlla.so ./example* liba.a a.cma a.out dllexample.so help libexample.a
+    rm -rf a.out ./example* ./not*
     LOG_INFO "End to restore the test environment."
 }
 
