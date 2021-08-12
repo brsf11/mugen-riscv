@@ -42,7 +42,7 @@ function run_test() {
     while ! sudo tc qdisc del dev ${NODE2_NIC} root netem delay 2s; do sleep 1; done
     CHECK_RESULT $?
     SLEEP_WAIT 30
-    CHECK_RESULT $(grep -a "servertest$time" /var/log/messages | wc -l) 100
+    CHECK_RESULT $(grep -ac "servertest$time" /var/log/messages) 100
     LOG_INFO "End to run test."
 }
 

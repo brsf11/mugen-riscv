@@ -32,17 +32,17 @@ EOF
     systemctl stop iptables && echo 'local6.* @@${NODE1_IPV4}' > /etc/rsyslog.d/client.conf
     systemctl restart rsyslog
     " ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    time=$(date +%s%N | cut -c 9-13)
+    string=$(head -c 1536 /dev/urandom | od -A n -t x | tr -d ' ' | sed ':a;N;s/\n/ /g;ta')
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    time=$(date +%s%N | cut -c 9-13)
-    string=$(head -c 1536 /dev/urandom | od -A n -t x | tr -d ' ' | sed ':a;N;s/\n/ /g;ta')
     SSH_CMD "logger -t tcp -p local6.err '$time$string'" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     CHECK_RESULT $?
     SLEEP_WAIT 20
-    cat /var/log/messages | grep "tcp\[" | grep "$time" >test.txt
+    grep "tcp\[" /var/log/messages | grep "$time" >test.txt
     size=$(ls -l "test.txt" | awk '{print $5}')
     [ $size -gt 0 ] && [ $size -lt 3072 ]
     CHECK_RESULT $?
