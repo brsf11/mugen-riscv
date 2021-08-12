@@ -12,6 +12,7 @@
 # #############################################
 # @Author    :   huyahui
 # @Contact   :   huyahui8@163.com
+# @Modify    :   yang_lijin@qq.com
 # @Date      :   2020/04/22
 # @License   :   Mulan PSL v2
 # @Desc      :   Encrypt data on unencrypted devices
@@ -26,31 +27,20 @@ function config_params() {
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    echo "n
-
-p
-
-
-+100M
-w" | fdisk "${TEST_DISK}"
+    echo -e "n\n\np\n\n\n+100M\nw" | fdisk "${TEST_DISK}"
     ls /mnt/test_encrypted && rm -rf /mnt/test_encrypted
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    cryptsetup-reencrypt --new --reduce-device-size 8M "${TEST_DISK}"1 <<EOF
-
-
-EOF
-    cryptsetup open "${TEST_DISK}"1 test_encrypted <<EOF
-
-EOF
-    CHECK_RESULT $?
+    echo -e "\n\n" | cryptsetup-reencrypt --new --reduce-device-size 8M "${TEST_DISK}"1
+    echo -e "\n" | cryptsetup open "${TEST_DISK}"1 test_encrypted
+    CHECK_RESULT $? 0 0 "exec 'cryptsetup-reencrypt & cryptsetup' failed"
     mkdir /mnt/test_encrypted
     mkfs.ext4 /dev/mapper/test_encrypted -F
     mount /dev/mapper/test_encrypted /mnt/test_encrypted
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "mount failed"
     LOG_INFO "Finish testcase execution."
 }
 
@@ -60,9 +50,7 @@ function post_test() {
     cryptsetup close test_encrypted
     rm -rf /mnt/test_encrypted
     mkfs.ext4 ${TEST_DISK}1 -F
-    echo "d
-
-w" | fdisk "${TEST_DISK}"
+    echo -e "d\n\nw" | fdisk "${TEST_DISK}"
     DNF_REMOVE
     mkfs.ext4 ${TEST_DISK} -F
     LOG_INFO "Finish environment cleanup!"

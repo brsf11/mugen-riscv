@@ -24,7 +24,6 @@ function run_test() {
     pem_file_path=$(find / -name *.pem | tail -1)
     cp "${pem_file_path}" /usr/share/pki/ca-trust-source/anchors/
     CHECK_RESULT $? 0 0 "cp failed"
-    pem_file=${pem_file_path##*/}
     update-ca-trust
     CHECK_RESULT $? 0 0 "exec 'update-ca-trust' failed"
     LOG_INFO "Finish testcase execution."
@@ -32,6 +31,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
+    pem_file=${pem_file_path##*/}
     rm -rf /usr/share/pki/ca-trust-source/anchors/"${pem_file}"
     update-ca-trust
     LOG_INFO "Finish environment cleanup!"

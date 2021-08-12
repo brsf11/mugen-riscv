@@ -28,12 +28,12 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start executing testcase."
     aide --init | grep "Number of entries"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "exec 'aide --init' failed"
     mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz -f
     aide --check | grep "Total number of entries"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "exec 'aide --check' failed"
     aide --update | grep "New AIDE database written to /var/lib/aide/aide.db.new.gz"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "exec 'aide --update' failed"
     LOG_INFO "Finish testcase execution."
 }
 

@@ -12,7 +12,8 @@
 # #############################################
 # @Author    :   huyahui
 # @Contact   :   huyahui8@163.com
-# @Date      :   2020/04/28
+# @Modify    :   yang_lijin@qq.com
+# @Date      :   2021/08/12
 # @License   :   Mulan PSL v2
 # @Desc      :   Encrypting existing data on a block device using LUKS with a detached header
 # #############################################
@@ -31,29 +32,11 @@ function pre_test() {
 }
 
 function run_test() {
-    echo "n
-
-p
-
-
-+100M
-n
-
-p
-
-
-+100M
-w" | fdisk "${TEST_DISK}"
-
     LOG_INFO "Start executing testcase."
-    cryptsetup-reencrypt --new --header "${TEST_DISK}"1 "${TEST_DISK}"2 <<EOF
-
-
-EOF
+    echo -e "n\n\np\n\n\n+100M\nn\n\np\n\n\n+100M\nw" | fdisk "${TEST_DISK}"
+    echo -e "\n\n" | cryptsetup-reencrypt --new --header "${TEST_DISK}"1 "${TEST_DISK}"2
     CHECK_RESULT $? 0 0 "exec 'cryptsetup-reencrypt --new' failed"
-    cryptsetup open --header "${TEST_DISK}"1 "${TEST_DISK}"2 test_encrypted <<EOF
-
-EOF
+    echo -e "\n\n" | cryptsetup open --header "${TEST_DISK}"1 "${TEST_DISK}"2 test_encrypted
     CHECK_RESULT $? 0 0 "exec 'cryptsetup open --header' failed"
     mkdir /mnt/test_encrypted
     mkfs.ext4 /dev/mapper/test_encrypted
@@ -68,11 +51,7 @@ function post_test() {
     cryptsetup close test_encrypted
     rm -rf /mnt/test_encrypted
     mkfs.ext4 ${TEST_DISK}1 -F
-    echo "d
-
-d
-
-w" | fdisk "${TEST_DISK}"
+    echo -e "d\n\nd\n\nw" | fdisk "${TEST_DISK}"
     DNF_REMOVE
     mkfs.ext4 ${TEST_DISK} -F
     LOG_INFO "Finish environment cleanup!"

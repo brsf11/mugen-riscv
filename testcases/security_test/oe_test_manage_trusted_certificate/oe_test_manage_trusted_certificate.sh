@@ -28,22 +28,14 @@ function run_test() {
     CHECK_RESULT $? 0 0 "exec 'trust list' failed"
     old_kit=$(ls /etc/pki/ca-trust/source/*kit | wc -l)
     trust anchor /etc/pki/tls/certs/ca-bundle.trust.crt
-    CHECK_RESULT $? 1
     new_kit=$(ls /etc/pki/ca-trust/source/*kit | wc -l)
     test $new_kit -gt $old_kit
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "exec 'trust anchor /etc/pki/tls/certs/ca-bundle.trust.crt' failed"
     trust anchor --remove /etc/pki/tls/certs/ca-bundle.trust.crt
-    CHECK_RESULT $? 1
     new_kit2=$(ls /etc/pki/ca-trust/source/*kit | wc -l)
     test $new_kit2 -lt $new_kit
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "exec 'trust anchor --remove /etc/pki/tls/certs/ca-bundle.trust.crt' failed"
     LOG_INFO "Finish testcase execution."
-}
-
-function post_test() {
-    LOG_INFO "start environment cleanup."
-    unset val
-    LOG_INFO "Finish environment cleanup!"
 }
 
 main "$@"
