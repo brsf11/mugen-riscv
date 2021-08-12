@@ -11,12 +11,12 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-10-14
+#@Date          :   2020-10-29
 #@License       :   Mulan PSL v2
-#@Desc          :   pcp testing(pmdate)
+#@Desc          :   (pcp-export-pcp2xml) pcp2xml - pcp-to-xml metrics exporter
 #####################################
 
-source "common/common_pcp.sh"
+source "common/common_pcp2xml.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
@@ -26,23 +26,34 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    pmdate -5y %y%m%d-%H:%M:%S | grep "$(date '+%m')"
+    SLEEP_WAIT 60
+    pcp2xml -a $archive_data $metric_name -F OUTFILE
     CHECK_RESULT $?
-    pmdate +3m %y%m%d-%H:%M:%S | grep "$(date '+%d')"
+    grep 'instance-name' OUTFILE
     CHECK_RESULT $?
-    pmdate -5d %y%m%d-%H:%M:%S | grep "$(date '+%H')"
+    nohup pcp2xml --daemonize $metric_name &
+    kill -9 $(pgrep -f daemonize)
     CHECK_RESULT $?
-    pmdate +3H %y%m%d-%H:%M:%S | grep "$(date '+%M')"
+    pcp2xml -H -s 10 -t 2 $metric_name | grep 'instance-name'
     CHECK_RESULT $?
-    pmdate -5M %y%m%d-%H:%M:%S | grep "$(date '+%S')"
+    pcp2xml -G -s 10 -t 2 $metric_name | grep 'metrics'
     CHECK_RESULT $?
-    pmdate +3S %y%m%d-%H:%M:%S | grep "$(date '+%y')"
+    pcp2xml -a $archive_data -S @00 -T @23 -s 10 -t 2 $metric_name | grep 'archived metrics'
+    CHECK_RESULT $?
+    pcp2xml -a $archive_data -O @00 -s 10 -t 2 $metric_name | grep 'archived metrics'
+    CHECK_RESULT $?
+    pcp2xml -Z Africa/Lagos -s 10 -t 2 $metric_name | grep 'UTC+1'
+    CHECK_RESULT $?
+    pcp2xml -z -s 10 -t 2 $metric_name | grep 'UTC+8'
+    CHECK_RESULT $?
+    pcp2xml -r -s 10 -t 2 $metric_name | grep 'metrics'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
+    rm -f OUTFILE
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }

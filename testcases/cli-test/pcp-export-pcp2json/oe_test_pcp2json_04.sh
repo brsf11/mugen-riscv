@@ -11,12 +11,12 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-10-14
+#@Date          :   2020-10-29
 #@License       :   Mulan PSL v2
-#@Desc          :   pcp testing(pmdate)
+#@Desc          :   (pcp-export-pcp2json) pcp2json - pcp-to-json metrics exporter
 #####################################
 
-source "common/common_pcp.sh"
+source "common/common_pcp2json.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
@@ -26,17 +26,23 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    pmdate -5y %y%m%d-%H:%M:%S | grep "$(date '+%m')"
+    pcp2json -v -s 10 -t 2 $metric_name | grep 'metrics'
     CHECK_RESULT $?
-    pmdate +3m %y%m%d-%H:%M:%S | grep "$(date '+%d')"
+    pcp2json -f STR -s 10 -t 2 $metric_name | grep 'metrics'
     CHECK_RESULT $?
-    pmdate -5d %y%m%d-%H:%M:%S | grep "$(date '+%H')"
+    pcp2json -P 3 -s 10 -t 2 $metric_name | grep 'metrics'
     CHECK_RESULT $?
-    pmdate +3H %y%m%d-%H:%M:%S | grep "$(date '+%M')"
+    pcp2json -0 3 -s 10 -t 2 $metric_name | grep 'metrics'
     CHECK_RESULT $?
-    pmdate -5M %y%m%d-%H:%M:%S | grep "$(date '+%S')"
+    pcp2json -q 100 -s 10 -t 2 kernel.all.load | grep 'metrics'
     CHECK_RESULT $?
-    pmdate +3S %y%m%d-%H:%M:%S | grep "$(date '+%y')"
+    pcp2json -Q 100 -s 10 -t 2 kernel.all.load | grep 'metrics'
+    CHECK_RESULT $?
+    pcp2json -b MB -s 10 -t 2 $metric_name | grep 'metrics'
+    CHECK_RESULT $?
+    pcp2json -B MB -s 10 -t 2 $metric_name | grep 'metrics'
+    CHECK_RESULT $?
+    pcp2json -y s -s 10 -t 2 $metric_name | grep 'metrics'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

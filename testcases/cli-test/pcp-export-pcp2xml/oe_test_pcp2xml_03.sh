@@ -11,12 +11,12 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-10-14
+#@Date          :   2020-10-29
 #@License       :   Mulan PSL v2
-#@Desc          :   pcp testing(pmdate)
+#@Desc          :   (pcp-export-pcp2xml) pcp2xml - pcp-to-xml metrics exporter
 #####################################
 
-source "common/common_pcp.sh"
+source "common/common_pcp2xml.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
@@ -26,17 +26,23 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    pmdate -5y %y%m%d-%H:%M:%S | grep "$(date '+%m')"
+    pcp2xml -R -s 10 -t 2 $metric_name | grep 'metrics'
     CHECK_RESULT $?
-    pmdate +3m %y%m%d-%H:%M:%S | grep "$(date '+%d')"
+    pcp2xml -I -s 10 -t 2 $metric_name | grep 'metrics'
     CHECK_RESULT $?
-    pmdate -5d %y%m%d-%H:%M:%S | grep "$(date '+%H')"
+    pcp2xml -i '"1 minute","5 minute"' -s 10 -t 2 kernel.all.load | grep 'metrics'
     CHECK_RESULT $?
-    pmdate +3H %y%m%d-%H:%M:%S | grep "$(date '+%M')"
+    pcp2xml -j -s 10 -t 2 $metric_name | grep 'metrics'
     CHECK_RESULT $?
-    pmdate -5M %y%m%d-%H:%M:%S | grep "$(date '+%S')"
+    pcp2xml -J 3 -s 10 -t 2 $metric_name | grep 'metrics'
     CHECK_RESULT $?
-    pmdate +3S %y%m%d-%H:%M:%S | grep "$(date '+%y')"
+    pcp2xml -8 1 -s 10 -t 2 $metric_name | grep 'metrics'
+    CHECK_RESULT $?
+    pcp2xml -9 1 -s 10 -t 2 $metric_name | grep 'metrics'
+    CHECK_RESULT $?
+    pcp2xml -n -s 10 -t 2 $metric_name | grep 'metrics'
+    CHECK_RESULT $?
+    pcp2xml -N $metric_name -s 10 -t 2 $metric_name | grep 'metrics'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
