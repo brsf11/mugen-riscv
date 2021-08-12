@@ -14,14 +14,14 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test dnf-makecache.service restart
+# @Desc      :   Test dracut-initqueue.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    service=dnf-makecache.service
+    service=dracut-initqueue.service
     status='inactive (dead)'
     LOG_INFO "End of environmental preparation!"
 }
@@ -31,7 +31,7 @@ function run_test() {
     systemctl status "${service}" | grep "Active" | grep -v "${status}"
     CHECK_RESULT $? 0 1 "There is an error for the status of ${service}"
     test_enabled "${service}"
-    journalctl -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING" | grep -v "Failed determining last makecache time"
+    journalctl -u "${service}" | grep -i "fail\|error" | grep -v "ignorelockingfailure"
     CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
     LOG_INFO "Finish test!"
 }
