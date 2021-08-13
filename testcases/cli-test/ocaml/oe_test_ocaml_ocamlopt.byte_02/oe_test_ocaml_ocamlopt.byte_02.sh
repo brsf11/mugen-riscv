@@ -13,7 +13,7 @@
 # @Contact   :   liujingjing25812@163.com
 # @Date      :   2020/11/9
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamlop under ocaml package
+# @Desc      :   The usage of ocamlopt.byte under ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,54 +21,51 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../a.c ../example.ml ../hello.ml ./
+    cp ../example.ml ../not.ml ./
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    cp /usr/lib64/ocaml/lazy.mli lazytest
-    ocamlopt -intf lazytest
+    ocamlopt.byte -inline-prim-cost 3 example.ml
     CHECK_RESULT $?
-    grep -ai "lazytest" lazytest.cmi
+    grep -a "prim" a.out
     CHECK_RESULT $?
-    cp /usr/lib64/ocaml/lazy.mli lazy.mli
-    ocamlopt -intf-suffix mli lazy.mli
+    ocamlopt.byte -inline-indirect-cost 4 example.ml
     CHECK_RESULT $?
-    grep -ai "lazy" lazy.cmi
+    grep -a "directory.camlStdlib" a.out
     CHECK_RESULT $?
-    ocamlopt -keep-locs -alias-deps -app-funct -labels -linkall -keep-docs -safe-string -open Printf -principal -rectypes -strict-sequence -strict-formats -unboxed-types -unsafe -unsafe-string -w +a-4-6-7-9-27-29-32..42-44-45-48-50-60 -warn-error -a+31 example.ml
+    ocamlopt.byte -inline-toplevel 100 example.ml
     CHECK_RESULT $?
-    ./a.out | grep 6 && rm -rf a.out
+    grep -a "level.camlStdlib" a.out
     CHECK_RESULT $?
-    ocamlopt -no-keep-locs -no-alias-deps -no-app-funct -nolabels -noassert -noautolink -no-keep-docs -no-principal -no-rectypes -no-strict-sequence -no-strict-formats -no-unboxed-types example.ml
+    ocamlopt.byte -S -inline-call-cost 1 not.ml -o not.opt
     CHECK_RESULT $?
-    grep -a "none" example.cmi
+    grep "camlNot" not.s
     CHECK_RESULT $?
-    ocamlopt -output-obj example.ml -o exampleobj.o
+    ocamlopt.byte -inline-max-depth 1 example.ml
     CHECK_RESULT $?
-    objdump -x exampleobj.o | grep "obj"
+    grep -a "max " a.out
     CHECK_RESULT $?
-    ocamlopt -output-complete-obj example.ml -o examplecom.o
+    ocamlopt.byte -linscan example.ml
     CHECK_RESULT $?
-    objdump -x examplecom.o | grep "obj_counter"
+    strings a.out | grep "scan_line"
     CHECK_RESULT $?
-    ocamlopt -warn-help hello.ml | grep "warning"
+    ocamlopt.byte -no-float-const-prop example.ml
     CHECK_RESULT $?
-    ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
-    ocamlopt -vnum example.ml | grep $ocaml_version
+    strings a.out | grep "const_prop"
+    CHECK_RESULT $? 1
+    ocamlopt.byte -nodynlink example.ml
     CHECK_RESULT $?
-    ocamlopt -version example.ml | grep $ocaml_version
-    CHECK_RESULT $?
-    ocamlopt -verbose a.c 2>&1 | grep "gcc"
-    CHECK_RESULT $?
+    strings a.out | grep "r9wE"
+    CHECK_RESULT $? 1
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ./a* ./example* ./hello* ./lazy* ./lazytest*
+    rm -rf a.out ./example* ./not*
     LOG_INFO "End to restore the test environment."
 }
 
