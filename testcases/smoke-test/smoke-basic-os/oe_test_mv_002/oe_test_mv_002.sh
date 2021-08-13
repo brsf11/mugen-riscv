@@ -21,33 +21,33 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test(){
     LOG_INFO "Start environment preparation"
-    ls /opt/name1 && rm -rf /opt/name1
-    ls /opt/name2 && rm -rf /opt/name2
+    ls /tmp/name1 && rm -rf /tmp/name1
+    ls /tmp/name2 && rm -rf /tmp/name2
     LOG_INFO "End of enviornment preparation"
 
 }
 function do_test() {
     LOG_INFO "Start test"
-    mkdir /opt/name1
-    ls /opt/name1
-    CHECK_RESULT $? 0 0 "bulid work_file fail"
-    mv /opt/name1 /opt/name2
-    ls /opt/name2
-    CHECK_RESULT $? 0 0 "modify filename failed"
+    mkdir /tmp/name1
+    ls /tmp/name1
+    CHECK_RESULT $?
+    mv /tmp/name1 /tmp/name2
+    ls /tmp/name2
+    CHECK_RESULT $?
 
-    mv /opt/name2 /opt/name3
-    ls /opt/name3
-    CHECK_RESULT $? 0 0 "modify filename failed"
+    mv /tmp/name2 /tmp/name3
+    ls /tmp/name3
+    CHECK_RESULT $?
 
-    mv /opt/name3 /opt/name1
-    ls /opt/name1
-    CHECK_RESULT $? 0 0 ""
+    mv /tmp/name3 /tmp/name1
+    ls /tmp/name1
+    CHECK_RESULT $?
     LOG_INFO "Finish test"
 }
 
 function post_test(){
     LOG_INFO "start environment cleanup."
-    rm -rf /opt/name1
+    rm -rf /tmp/name1
     LOG_INFO "Finish environment cleanup!"
 }
 
