@@ -51,6 +51,9 @@
         },
         {
             "name": "oe_test_freeradius_freeradius-utils_rlm_ippool_toolAndSmbencrypt"
+        },
+        {
+            "name": "oe_test_service_radiusd"
         }
     ]
 }

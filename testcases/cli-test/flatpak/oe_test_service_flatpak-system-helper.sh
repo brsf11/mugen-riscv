@@ -14,22 +14,28 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test bluetooth-mesh.service restart
+# @Desc      :   Test flatpak-system-helper.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    hciconfig
+    DNF_INSTALL flatpak
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution bluetooth-mesh.service
-    test_reload bluetooth-mesh.service
+    test_execution flatpak-system-helper.service
+    test_reload flatpak-system-helper.service
     LOG_INFO "Finish test!"
+}
+
+function post_test() {
+    LOG_INFO "start environment cleanup."
+    DNF_REMOVE
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main "$@"
