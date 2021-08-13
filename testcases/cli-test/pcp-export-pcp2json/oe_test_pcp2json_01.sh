@@ -11,12 +11,12 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-10-14
+#@Date          :   2020-10-29
 #@License       :   Mulan PSL v2
-#@Desc          :   pcp testing(pmdate)
+#@Desc          :   (pcp-export-pcp2json) pcp2json - pcp-to-json metrics exporter
 #####################################
 
-source "common/common_pcp.sh"
+source "common/common_pcp2json.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
@@ -26,17 +26,23 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    pmdate -5y %y%m%d-%H:%M:%S | grep "$(date '+%m')"
+    pcp2json --version 2>&1 | grep 'version'
     CHECK_RESULT $?
-    pmdate +3m %y%m%d-%H:%M:%S | grep "$(date '+%d')"
+    pcp2json -a $archive_data -A 10min -s 10 $metric_name | grep 'archived metrics'
     CHECK_RESULT $?
-    pmdate -5d %y%m%d-%H:%M:%S | grep "$(date '+%H')"
+    pcp2json --archive-folio=/var/log/pcp/pmlogger/$(hostname)/Latest -s 10 $metric_name | grep 'archived metrics'
     CHECK_RESULT $?
-    pmdate +3H %y%m%d-%H:%M:%S | grep "$(date '+%M')"
+    pcp2json --container=busybox -s 10 -t 2 vfs.inodes.count | grep '@metrics'
     CHECK_RESULT $?
-    pmdate -5M %y%m%d-%H:%M:%S | grep "$(date '+%S')"
+    pcp2json -h $host_name -s 10 -t 2 $metric_name | grep '@interval'
     CHECK_RESULT $?
-    pmdate +3S %y%m%d-%H:%M:%S | grep "$(date '+%y')"
+    pcp2json -L -s 10 -t 2 $metric_name | grep '@timestamp'
+    CHECK_RESULT $?
+    pcp2json -K del,60 -s 10 -t 2 $metric_name | grep '@host'
+    CHECK_RESULT $?
+    pcp2json -c /etc/pcp/pmrep/pmrep.conf -s 10 -t 2 $metric_name | grep '@instances'
+    CHECK_RESULT $?
+    pcp2json -C $metric_name | grep 'Waiting for'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

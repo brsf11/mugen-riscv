@@ -1,0 +1,20 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/pcp-export-pcp2json",
+    "cases": [
+        {
+            "name": "oe_test_pcp2json_01"
+        },
+        {
+            "name": "oe_test_pcp2json_02"
+        },
+        {
+            "name": "oe_test_pcp2json_03"
+        },
+        {
+            "name": "oe_test_pcp2json_04"
+        },
+        {
+            "name": "oe_test_pcp2json_05"
+        }
+    ]
+}
