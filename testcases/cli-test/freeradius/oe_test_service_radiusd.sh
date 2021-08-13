@@ -14,22 +14,31 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test bluetooth-mesh.service restart
+# @Desc      :   Test radiusd.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
-function pre_test() {
-    LOG_INFO "Start environmental preparation."
-    hciconfig
-    LOG_INFO "End of environmental preparation!"
-}
-
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution bluetooth-mesh.service
-    test_reload bluetooth-mesh.service
+    DNF_INSTALL freeradius
+    test_execution radiusd.service
+    systemctl start radiusd.service
+    sed -i 's\ExecStart=/usr/sbin/radiusd\ExecStart=/usr/sbin/radiusd -P\g' /usr/lib/systemd/system/radiusd.service
+    systemctl daemon-reload
+    systemctl reload radiusd.service
+    CHECK_RESULT $? 0 0 "radiusd.service reload failed"
+    systemctl status radiusd.service | grep "Active: active"
+    CHECK_RESULT $? 0 0 "radiusd.service reload causes the service status to change"
     LOG_INFO "Finish test!"
 }
 
+function post_test() {
+    LOG_INFO "start environment cleanup."
+    sed -i 's\ExecStart=/usr/sbin/radiusd -P\ExecStart=/usr/sbin/radiusd\g' /usr/lib/systemd/system/radiusd.service
+    systemctl daemon-reload
+    systemctl reload radiusd.service
+    DNF_REMOVE
+    LOG_INFO "Finish environment cleanup!"
+}
 main "$@"
