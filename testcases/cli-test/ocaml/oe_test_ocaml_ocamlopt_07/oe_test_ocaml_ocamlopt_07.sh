@@ -11,9 +11,9 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/11/2
+# @Date      :   2020/11/9
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamlmklib, ocamlmklib.opt and ocamlmklib.byte in ocaml package
+# @Desc      :   The usage of ocamlop under ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,38 +21,46 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../example.ml ./
-    ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
+    cp ../example.ml ../a.c ./
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamlmklib.opt -v -ldopt example.o example.ml | grep "dllib"
+    ocamlopt -config a.c | grep -E "version|ocamlc" -A 55
     CHECK_RESULT $?
-    ocamlmklib.opt -vnum example.o | grep "$ocaml_version"
+    ocamlopt -annot example.ml
+    rm -rf a.out
+    ocamlopt -dtypes example.ml
     CHECK_RESULT $?
-    ocamlmklib.opt -l example.cmo
+    grep -A 3 "type" example.annot
     CHECK_RESULT $?
-    grep -a "StdlibA" a.cma
+    ocamlopt -for-pack P -c example.ml
     CHECK_RESULT $?
-    ocamlmklib.opt -verbose example.ml | grep "/usr/bin/ocaml"
+    grep -a "camlP__Example" example.o
     CHECK_RESULT $?
-    ocamlmklib.opt -version example.o | grep "$ocaml_version"
+    ocamlopt -g a.c
     CHECK_RESULT $?
-    ocamlmklib.opt -oc example example.o
+    objdump -x a.o | grep debug
     CHECK_RESULT $?
-    grep -ai "gcc" dllexample.so
+    ocamlopt -nostdlib a.c
     CHECK_RESULT $?
-    ocamlmklib.opt -rpath /tmp example.o
+    objdump -x a.o | grep stdlib
+    CHECK_RESULT $? 1
+    cp ../hello_stubs.c ./
+    ocamlopt -i hello_stubs.c
     CHECK_RESULT $?
-    strings dlla.so | grep "/tmp" && rm -rf dlla.so
+    objdump -x hello_stubs.o | grep "caml_print_hello"
     CHECK_RESULT $?
-    ocamlmklib.opt -R /tmp example.o
+    ocamlopt -I +/usr/lib64/ocaml hello_stubs.c
     CHECK_RESULT $?
-    strings dlla.so | grep "/tmp"
+    grep -ai "hello world" hello_stubs.o
     CHECK_RESULT $?
-    ocamlmklib.opt -help 2>&1 | grep "ocamlmklib"
+    rm -rf a.out
+    cp example.ml exampletest
+    ocamlopt -impl exampletest
+    CHECK_RESULT $?
+    grep -ai "exampletest" exampletest.cmi
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -60,7 +68,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf a.a a.cmxa dlla.so ./example* liba.a a.cma a.out dllexample.so help libexample.a
+    rm -rf ./a* ./example* ./hello*
     LOG_INFO "End to restore the test environment."
 }
 

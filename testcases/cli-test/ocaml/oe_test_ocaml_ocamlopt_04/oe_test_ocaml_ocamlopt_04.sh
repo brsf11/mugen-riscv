@@ -11,9 +11,9 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/11/2
+# @Date      :   2020/11/9
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamlmklib, ocamlmklib.opt and ocamlmklib.byte in ocaml package
+# @Desc      :   The usage of ocamlop under ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,38 +21,28 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../example.ml ./
-    ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamlmklib.opt -v -ldopt example.o example.ml | grep "dllib"
+    ocamlopt -depend -all /usr/lib64/ocaml/filename.ml | grep -E ".o|.cmi|.cmo|.cmx"
     CHECK_RESULT $?
-    ocamlmklib.opt -vnum example.o | grep "$ocaml_version"
+    ocamlopt -depend -all /usr/lib64/ocaml/filename.ml | grep -c "filename" | grep 4
     CHECK_RESULT $?
-    ocamlmklib.opt -l example.cmo
+    ocamlopt -depend -all -one-line /usr/lib64/ocaml/filename.ml | grep -c "filename" | grep 2
     CHECK_RESULT $?
-    grep -a "StdlibA" a.cma
+    ocamlopt -depend -allow-approx /usr/lib64/ocaml/filename.ml | grep -E ".cmo|.cmi|.cmx"
     CHECK_RESULT $?
-    ocamlmklib.opt -verbose example.ml | grep "/usr/bin/ocaml"
+    ocamlopt -depend -as-map /usr/lib64/ocaml/filename.ml | grep -E "\.o"
+    CHECK_RESULT $? 1
+    ocamlopt -depend -debug-map /usr/lib64/ocaml/filename.ml | grep -c "cmi" | grep 2
     CHECK_RESULT $?
-    ocamlmklib.opt -version example.o | grep "$ocaml_version"
+    ocamlopt -depend -I /usr/lib64/ocaml /usr/lib64/ocaml/filename.ml | grep -E "string|printf|buffer|random|lazy|filename"
     CHECK_RESULT $?
-    ocamlmklib.opt -oc example example.o
-    CHECK_RESULT $?
-    grep -ai "gcc" dllexample.so
-    CHECK_RESULT $?
-    ocamlmklib.opt -rpath /tmp example.o
-    CHECK_RESULT $?
-    strings dlla.so | grep "/tmp" && rm -rf dlla.so
-    CHECK_RESULT $?
-    ocamlmklib.opt -R /tmp example.o
-    CHECK_RESULT $?
-    strings dlla.so | grep "/tmp"
-    CHECK_RESULT $?
-    ocamlmklib.opt -help 2>&1 | grep "ocamlmklib"
+    ocamlopt -depend -impl /usr/lib64/ocaml/filename.ml | grep -E "\.ml"
+    CHECK_RESULT $? 1
+    ocamlopt -depend -intf /usr/lib64/ocaml/filename.mli /usr/lib64/ocaml/filename.ml | grep -c "cmi" | grep 3
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -60,7 +50,6 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf a.a a.cmxa dlla.so ./example* liba.a a.cma a.out dllexample.so help libexample.a
     LOG_INFO "End to restore the test environment."
 }
 

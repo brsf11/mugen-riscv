@@ -11,9 +11,9 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/11/2
+# @Date      :   2020/10/21
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamlmklib, ocamlmklib.opt and ocamlmklib.byte in ocaml package
+# @Desc      :   The usage of ocamllex, ocamlobjinfo and other commands in ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,38 +21,44 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../example.ml ./
     ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamlmklib.opt -v -ldopt example.o example.ml | grep "dllib"
+    ocamlobjinfo -no-approx example.cmi | grep -iE "file|unit|interfaces"
     CHECK_RESULT $?
-    ocamlmklib.opt -vnum example.o | grep "$ocaml_version"
+    ocamlobjinfo -no-code example.cmi | grep -iE "file|unit|interfaces|57c"
     CHECK_RESULT $?
-    ocamlmklib.opt -l example.cmo
+    ocamlobjinfo -null-crc example.cmi | grep -iE "file|unit|interfaces|000"
     CHECK_RESULT $?
-    grep -a "StdlibA" a.cma
+    echo "example.cmi" >tmp
+    ocamlobjinfo -args tmp | grep -iE "file|unit|interfaces|57c"
     CHECK_RESULT $?
-    ocamlmklib.opt -verbose example.ml | grep "/usr/bin/ocaml"
+    ocamlobjinfo -help | grep "ocamlobjinfo"
     CHECK_RESULT $?
-    ocamlmklib.opt -version example.o | grep "$ocaml_version"
+    ocamlobjinfo.opt -no-approx example.cmi | grep -iE "file|unit|interfaces"
     CHECK_RESULT $?
-    ocamlmklib.opt -oc example example.o
+    ocamlobjinfo.opt -no-code example.cmi | grep -iE "file|unit|interfaces|57c"
     CHECK_RESULT $?
-    grep -ai "gcc" dllexample.so
+    ocamlobjinfo.opt -null-crc example.cmi | grep -iE "file|unit|interfaces|000"
     CHECK_RESULT $?
-    ocamlmklib.opt -rpath /tmp example.o
+    echo "example.cmi" >tmp
+    ocamlobjinfo.opt -args tmp | grep -iE "file|unit|interfaces|57c"
     CHECK_RESULT $?
-    strings dlla.so | grep "/tmp" && rm -rf dlla.so
+    ocamlobjinfo.opt -help | grep "ocamlobjinfo"
     CHECK_RESULT $?
-    ocamlmklib.opt -R /tmp example.o
+    ocamlobjinfo.byte -no-approx example.cmi | grep -iE "file|unit|interfaces"
     CHECK_RESULT $?
-    strings dlla.so | grep "/tmp"
+    ocamlobjinfo.byte -no-code example.cmi | grep -iE "file|unit|interfaces|57c"
     CHECK_RESULT $?
-    ocamlmklib.opt -help 2>&1 | grep "ocamlmklib"
+    ocamlobjinfo.byte -null-crc example.cmi | grep -iE "file|unit|interfaces|000"
+    CHECK_RESULT $?
+    echo "example.cmi" >tmp
+    ocamlobjinfo.byte -args tmp | grep -iE "file|unit|interfaces|57c"
+    CHECK_RESULT $?
+    ocamlobjinfo.byte -help | grep "ocamlobjinfo"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -60,7 +66,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf a.a a.cmxa dlla.so ./example* liba.a a.cma a.out dllexample.so help libexample.a
+    rm -rf $(ls | grep -vE ".sh")
     LOG_INFO "End to restore the test environment."
 }
 
