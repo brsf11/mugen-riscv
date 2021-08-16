@@ -1,11 +1,11 @@
 {
     "path": "${OET_PATH}/testcases/cli-test/keepalived-issue",
-    "machine num": 2,
+    "machine num": 3,
     "add network interface": 4,
     "cases": [
         {
             "name": "oe_test_tworoute_keepalived",
-            "machine num": 2,
+            "machine num": 3,
             "add network interface": 4
         },
         {

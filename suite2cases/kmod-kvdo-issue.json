@@ -1,18 +1,20 @@
 {
     "path": "${OET_PATH}/testcases/cli-test/kmod-kvdo-issue",
     "disk size": 130,
+    "machine num": 2,
     "cases": [
         {
             "name": "oe_test_kvdo_fenqu",
-	        "disk size": 10
+            "machine num": 2,
+            "disk size": 10
         },
         {
             "name": "oe_test_kvdo_vdo_cpu",
-	        "disk size": 10
+            "disk size": 10
         },
         {
             "name": "oe_test_kvdo_vdo_iocopy",
-	        "disk size": 130
+            "disk size": 130
         }
     ]
 }
