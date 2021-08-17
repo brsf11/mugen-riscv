@@ -1,5 +1,5 @@
 {
-    "path": "\"${OET_PATH}\"/testcases/cli-test/security_test",
+    "path": "\"${OET_PATH}\"/testcases/cli-test/security-test",
     "machine num": 2,
     "cases": [
         {
