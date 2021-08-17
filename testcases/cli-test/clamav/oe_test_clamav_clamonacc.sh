@@ -80,7 +80,7 @@ function run_test() {
     # create a new console to execute cmd to be watched
     SSH_CMD "echo 'test force file' >/opt/test_forcefile" ${NODE1_IPV4} ${NODE1_PASSWORD} ${NODE1_USER}
     SLEEP_WAIT 2
-    cat nohup.out | grep -q "/opt/test_forcefile" 
+    grep -q "/opt/test_forcefile" nohup.out
     CHECK_RESULT $? 0 0 "Execute clamonacc -F failed."
 
     LOG_INFO "End to run test."
