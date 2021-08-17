@@ -40,7 +40,7 @@
         {
             "name": "oe_test_audit_fetch_file_in_order"
         },
-        {
+        {            
             "name": "oe_test_audit_count_time"
         },
         {
@@ -58,7 +58,7 @@
         {
             "name": "oe_test_audit_max_log_file_ignore"
         },
-        {
+        {   
             "name": "oe_test_audit_max_log_file_syslog"
         },
         {
@@ -71,7 +71,8 @@
             "name": "oe_test_audit_available_disk_space"
         },
         {
-            "name": "oe_test_service_auditd"
+            "name": "oe_test_inject_time_fault"
         }
     ]
 }
+
