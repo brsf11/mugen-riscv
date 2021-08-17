@@ -71,7 +71,7 @@ function run_listener() {
 
 		if ! is_mugen_running; then
 			check_results
-			curl -d "{'succeed': $SUCCEED, 'fail': $FAIL}" -H 'Content-Type: application/json' -X POST "${SERVER_URL}"
+			curl -d "{''job_name': $JOB_NAME，succeed': $SUCCEED, 'fail': $FAIL}" -H 'Content-Type: application/json' -X POST "${SERVER_URL}"
 			break
 		fi
 	done
