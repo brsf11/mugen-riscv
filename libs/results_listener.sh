@@ -44,13 +44,9 @@ function rsync_logs() {
 function check_results() {
 	if [[ -d ${SCRIPT_PATH}/../results/succeed ]]; then
 		SUCCEED=$(ls -l "${SCRIPT_PATH}/../results/succeed" | grep '^-' | wc -l)
-	else
-		SUCCEED=0
 	fi
 	if [[ -d ${SCRIPT_PATH}/../results/failed ]]; then
 		FAIL=$(ls -l "${SCRIPT_PATH}/../results/failed" | grep '^-' | wc -l)
-	else
-		FAIL=0
 	fi
 }
 
@@ -58,12 +54,9 @@ function run_listener() {
 	while :; do
 		if [[ -d ${SCRIPT_PATH}/../results ]]; then
 			check_results
-		else
-			SUCCEED=0
-			FAIL=0
 		fi
 
-		curl -d "{'job_name': $JOB_NAME, 'succeed': $SUCCEED, 'fail': $FAIL}" -H 'Content-Type: application/json' -X POST "${SERVER_URL}"
+		curl -d "{'name': $JOB_NAME, 'succeed': $SUCCEED, 'fail': $FAIL}" -H 'Content-Type: application/json' -X POST "${SERVER_URL}/api/testask/monitor"
 
 		rsync_logs
 
@@ -71,7 +64,7 @@ function run_listener() {
 
 		if ! is_mugen_running; then
 			check_results
-			curl -d "{''job_name': $JOB_NAME，succeed': $SUCCEED, 'fail': $FAIL}" -H 'Content-Type: application/json' -X POST "${SERVER_URL}"
+			curl -d "{'name': $JOB_NAME，succeed': $SUCCEED, 'fail': $FAIL}" -H 'Content-Type: application/json' -X POST "${SERVER_URL}/api/testask/monitor"
 			break
 		fi
 	done
