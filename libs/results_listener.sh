@@ -76,3 +76,11 @@ function run_listener() {
 		fi
 	done
 }
+
+for ((i = 1; i <= 300; i++)); do
+	if is_mugen_running; then
+		run_listener
+		break
+	fi
+	sleep 1s
+done
