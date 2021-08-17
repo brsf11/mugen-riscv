@@ -1,0 +1,20 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/hbase",
+    "cases": [
+        {
+            "name": "oe_test_service_hbase-master"
+        },
+        {
+            "name": "oe_test_service_hbase-regionserver"
+        },
+        {
+            "name": "oe_test_service_hbase-rest"
+        },
+        {
+            "name": "oe_test_service_hbase-thrift"
+        },
+        {
+            "name": "oe_test_service_hbase-zookeeper"
+        }
+    ]
+}

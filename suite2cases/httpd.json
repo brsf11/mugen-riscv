@@ -1,0 +1,17 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/httpd",
+    "cases": [
+        {
+            "name": "oe_test_service_htcacheclean"
+        },
+        {
+            "name": "oe_test_service_httpd-init"
+        },
+        {
+            "name": "oe_test_service_httpd"
+        },
+        {
+            "name": "oe_test_socket_httpd"
+        }
+    ]
+}
