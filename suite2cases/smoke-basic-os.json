@@ -161,6 +161,9 @@
         },
         {
             "name": "oe_test_yumgroup_001"
+        },
+        {
+            "name": "oe_test_uname"
         }
     ]
 }
