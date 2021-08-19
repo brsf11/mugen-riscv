@@ -21,9 +21,9 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    ls -l /etc/passwd | grep '\-rw\-r\-\-r\-\- 1 root root'
+    ls -l /etc/passwd | grep '\-rw\-r\-\-r\-\-'
     CHECK_RESULT $? 0 0 "check permission of /etc/passwd failed"
-    ls -l /etc/shadow | grep '\-\-\-\-\-\-\-\-\-\- 1 root root'
+    ls -l /etc/shadow | grep '\-\-\-\-\-\-\-\-\-\-'
     CHECK_RESULT $? 0 0 "check permission of /etc/shadow failed"
     useradd example
     passwd example <<EOF

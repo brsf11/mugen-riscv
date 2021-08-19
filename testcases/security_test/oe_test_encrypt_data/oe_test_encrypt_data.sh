@@ -27,6 +27,7 @@ function config_params() {
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
+    DNF_INSTALL cryptsetup-reencrypt
     echo -e "n\n\np\n\n\n+100M\nw" | fdisk "${TEST_DISK}"
     ls /mnt/test_encrypted && rm -rf /mnt/test_encrypted
     LOG_INFO "End of environmental preparation!"
