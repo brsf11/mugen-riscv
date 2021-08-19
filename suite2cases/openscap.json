@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/openscap",
+    "cases": [
+        {
+            "name": "oe_test_openscap_01"
+        }
+    ]
+}

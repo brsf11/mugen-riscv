@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/uwsgi",
+    "cases": [
+        {
+            "name": "oe_test_uwsgi"
+        }
+    ]
+}

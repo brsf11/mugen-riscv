@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="HelloWorld" default="compile" basedir="." >
+<property name="projectdir" location="${basedir}/testProject" />
+<property name="src.java.dir" location="${projectdir}/app" />
+<property name="src.test.dir" location="${projectdir}/test" />
+<property name="target.dir" location="${projectdir}/classes" />
+
+	<path id="app.classpath">
+        	<pathelement path="${target.dir}"/>
+       		<fileset dir="${ant.home}/lib" includes="*.jar" />
+	</path>
+	
+	<target name="junit">
+		<available property="junit.present" classname="junit.framework.TestCase" />
+	</target>
+	
+	<target name="init" depends="junit">
+		<mkdir dir="${projectdir}"/>
+		<mkdir dir="${target.dir}"/>
+		<mkdir dir="${src.java.dir}"/>
+		<copy todir="${src.java.dir}">
+			<fileset dir="${basedir}">
+				<include name="HelloWorld.java" />
+			</fileset>
+        </copy>
+		<mkdir dir="${src.test.dir}"/>
+		<copy todir="${src.test.dir}">
+			<fileset dir="${basedir}">
+				<include name="HelloWorldTest.java" />
+			</fileset>
+		</copy>
+
+	</target>
+
+	
+	<target name="compile" depends="init">
+		<javac srcdir="${src.java.dir}" destdir="${target.dir}" classpathref="app.classpath"  includeantruntime="false"/>
+		<javac srcdir="${src.test.dir}" destdir="${target.dir}" classpathref="app.classpath" includeantruntime="false"/>
+	</target>
+
+
+	<target name="run" depends="compile">
+		<java classname="HelloWorld" classpath="${target.dir}"/>
+	</target>
+	
+	<target name="test" depends = "compile">
+		<junit printsummary="yes" >
+			<formatter type="plain"/>
+			<classpath path="${target.dir}"/>
+			<test name = "HelloWorldTest"/>
+		</junit>
+
+	</target>
+
+
+	
+</project>
+

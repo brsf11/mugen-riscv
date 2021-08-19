@@ -8,7 +8,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
@@ -22,6 +21,8 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
     DNF_INSTALL maven
+    mkdir libs
+    cp -rf "$(rpm -ql junit | grep junit.jar)" "$(rpm -ql easymock | grep easymock.jar)" "$(rpm -ql hamcrest | grep core.jar)" libs
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -35,6 +36,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
+    rm -rf /root/.m2
     LOG_INFO "End to restore the test environment."
 }
 

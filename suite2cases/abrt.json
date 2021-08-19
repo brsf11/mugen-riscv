@@ -1,0 +1,26 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/abrt",
+    "cases": [
+        {
+            "name": "oe_test_service_abrtd"
+        },
+        {
+            "name": "oe_test_service_abrt-journal-core"
+        },
+        {
+            "name": "oe_test_service_abrt-oops"
+        },
+        {
+            "name": "oe_test_service_abrt-pstoreoops"
+        },
+        {
+            "name": "oe_test_service_abrt-upload-watch"
+        },
+        {
+            "name": "oe_test_service_abrt-vmcore"
+        },
+        {
+            "name": "oe_test_service_abrt-xorg"
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/git",
+    "cases": [
+        {
+            "name": "oe_test_socket_git"
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/jq-issue",
+    "cases": [
+        {
+            "name": "oe_test_jq_errorjson"
+        },
+        {
+            "name": "oe_test_jq_inputline_4095"
+        },
+        {
+            "name": "oe_test_jq_inputline_file"
+        },
+        {
+            "name": "oe_test_jq_teshu"
+        },
+        {
+            "name": "oe_test_jq_try_cache"
+        }
+    ]
+}

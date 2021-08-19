@@ -171,7 +171,7 @@ function DNF_INSTALL() {
 }
 
 function DNF_REMOVE() {
-    node=${1-0}
+    node=${1-1}
     pkg_list=${2-""}
     mode=${3-0}
 
@@ -219,14 +219,22 @@ function IS_FREE_PORT() {
 
 function REMOTE_REBOOT() {
     node=${1-2}
-    waittime=${2-None}
-    python3 ${OET_PATH}/libs/locallibs/remote_reboot.py "reboot" --node $node --waittime $waittime
+    waittime=${2-""}
+    if [ "$waittime"x != ""x ]; then
+        python3 ${OET_PATH}/libs/locallibs/remote_reboot.py "reboot" --node $node --waittime $waittime
+    else
+        python3 ${OET_PATH}/libs/locallibs/remote_reboot.py "reboot" --node $node
+    fi
 }
 
 function REMOTE_REBOOT_WAIT() {
     node=${1-2}
-    waittime=${2-None}
-    python3 ${OET_PATH}/libs/locallibs/remote_reboot.py "wait" --node $node --waittime $waittime
+    waittime=${2-""}
+    if [ "$waittime"x != ""x ]; then
+        python3 ${OET_PATH}/libs/locallibs/remote_reboot.py "wait" --node $node --waittime $waittime
+    else
+        python3 ${OET_PATH}/libs/locallibs/remote_reboot.py "wait" --node $node
+    fi
 }
 
 function SLEEP_WAIT() {

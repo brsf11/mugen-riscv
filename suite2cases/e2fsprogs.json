@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/e2fsprogs",
+    "cases": [
+        {
+            "name": "oe_test_service_e2scrub_all"
+        },
+        {
+            "name": "oe_test_service_e2scrub_reap"
+        }
+    ]
+}

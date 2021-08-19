@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/alsa-utils",
+    "cases": [
+        {
+            "name": "oe_test_service_alsa-restore"
+        },
+        {
+            "name": "oe_test_service_alsa-state"
+        }
+    ]
+}

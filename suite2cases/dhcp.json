@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/dhcp",
+    "cases": [
+        {
+            "name": "oe_test_service_dhcpd6"
+        },
+        {
+            "name": "oe_test_service_dhcpd"
+        },
+        {
+            "name": "oe_test_service_dhcrelay"
+        }
+    ]
+}

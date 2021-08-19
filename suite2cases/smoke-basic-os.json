@@ -1,5 +1,5 @@
 {
-    "path": "\"${OET_PATH}\"/testcases/smoke-test/smoke-basic-os",
+    "path": "${OET_PATH}/testcases/smoke-test/smoke-basic-os",
     "machine num": 2,
     "cases": [
         {
@@ -35,6 +35,9 @@
         },
         {
             "name": "oe_test_dd_001"
+        },
+	{
+            "name": "oe_test_df"
         },
         {
             "name": "oe_test_file_001"
@@ -158,6 +161,9 @@
         },
         {
             "name": "oe_test_user_003"
+        },
+        {
+            "name": "oe_test_rm_001"
         },
         {
             "name": "oe_test_yumgroup_001"

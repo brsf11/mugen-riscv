@@ -1,0 +1,14 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/kernel",
+    "cases": [
+        {
+            "name": "oe_test_kernel_cmd_01"
+        },
+        {
+            "name": "oe_test_kernel_cmd_02"
+        },
+        {
+            "name": "oe_test_kernel_cmd_03"
+        }
+    ]
+}

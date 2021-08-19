@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/fwupd",
+    "cases": [
+        {
+            "name": "oe_test_service_fwupd-offline-update"
+        },
+        {
+            "name": "oe_test_service_fwupd"
+        }
+    ]
+}

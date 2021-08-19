@@ -1,0 +1,8 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/gnome-shell",
+    "cases": [
+        {
+            "name": "oe_test_gnome-shell"
+        }
+    ]
+}

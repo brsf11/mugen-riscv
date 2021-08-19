@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/dbus",
+    "cases": [
+        {
+            "name": "oe_test_service_dbus"
+        },
+        {
+            "name": "oe_test_socket_dbus"
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 {
-    "path": "\"${OET_PATH}\"/testcases/cli-test/junit5",
+    "path": "${OET_PATH}/testcases/cli-test/junit5",
     "cases": [
         {
             "name": "oe_test_junit5_abnormal_removejar"

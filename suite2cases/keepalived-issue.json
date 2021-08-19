@@ -1,0 +1,19 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/keepalived-issue",
+    "machine num": 3,
+    "add network interface": 4,
+    "cases": [
+        {
+            "name": "oe_test_tworoute_keepalived",
+            "machine num": 3,
+            "add network interface": 4
+        },
+        {
+            "name": "oe_test_vrrp_bond_vlan_keepalived",
+            "add network interface": 2
+        },
+        {
+            "name": "oe_test_vrrp_garp_keepalived"
+        }
+    ]
+}

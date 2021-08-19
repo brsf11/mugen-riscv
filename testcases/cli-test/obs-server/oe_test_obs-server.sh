@@ -46,7 +46,7 @@ function run_test() {
     obsscheduler_id=$(pgrep -f bs_sched)
     [ -n "$obsscheduler_id" ]
     CHECK_RESULT $?
-    SLEEP_WAIT 35 "obsscheduler stop"
+    SLEEP_WAIT 35 "obsscheduler stop" 2
     CHECK_RESULT $?
     obsscheduler_id=$(pgrep -f bs_sched)
     [ -z "$obsscheduler_id" ]

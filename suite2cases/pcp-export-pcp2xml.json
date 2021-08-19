@@ -1,0 +1,17 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/pcp-export-pcp2xml",
+    "cases": [
+        {
+            "name": "oe_test_pcp2xml_01"
+        },
+        {
+            "name": "oe_test_pcp2xml_02"
+        },
+        {
+            "name": "oe_test_pcp2xml_03"
+        },
+        {
+            "name": "oe_test_pcp2xml_04"
+        }
+    ]
+}

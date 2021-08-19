@@ -17,6 +17,15 @@
 # #############################################
 source "${OET_PATH}/libs/locallibs/common_lib.sh"
 
+function pre_test() {
+    LOG_INFO "Start environmental preparation."
+    SSH_CMD "
+    mkdir /root/.ssh 
+    chmod 700 /root/.ssh 
+    " "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
+    LOG_INFO "End of environmental preparation!"
+}
+
 function run_test() {
     LOG_INFO "Start to run test."
     expect <<EOF

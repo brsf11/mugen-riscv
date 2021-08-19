@@ -1,0 +1,17 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/sos",
+    "cases": [
+        {
+            "name": "oe_test_sosreport_01"
+        },
+        {
+            "name": "oe_test_sosreport_02"
+        },
+        {
+            "name": "oe_test_sosreport_03"
+        },
+        {
+            "name": "oe_test_sosreport_04"
+        }
+    ]
+}

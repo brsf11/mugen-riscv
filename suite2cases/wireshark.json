@@ -1,0 +1,41 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/wireshark",
+    "cases": [
+        {
+            "name": "oe_test_capinfos"
+        },
+        {
+            "name": "oe_test_captype"
+        },
+        {
+            "name": "oe_test_dumpcap_01"
+        },
+        {
+            "name": "oe_test_dumpcap_02"
+        },
+        {
+            "name": "oe_test_editcap_01"
+        },
+        {
+            "name": "oe_test_editcap_02"
+        },
+        {
+            "name": "oe_test_mergecap"
+        },
+        {
+            "name": "oe_test_randpkt-reordercap"
+        },
+        {
+            "name": "oe_test_text2pcap"
+        },
+        {
+            "name": "oe_test_tshark_01"
+        },
+        {
+            "name": "oe_test_tshark_02"
+        },
+        {
+            "name": "oe_test_tshark_03"
+        }
+    ]
+}
