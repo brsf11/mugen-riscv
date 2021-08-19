@@ -54,6 +54,7 @@ function post_test() {
     test -f /etc/cron.deny-bak && mv /etc/cron.deny-bak /etc/cron.deny -f
     userdel -rf testuser1
     userdel -rf testuser2
+    rm -rf /run/faillock/testuser1
     LOG_INFO "Finish environment cleanup!"
 }
 
