@@ -23,7 +23,7 @@
         },
         {
             "name": "oe_test_use_luks",
-	    "add disk": [10]
+            "add disk": [10]
         },
         {
             "name": "oe_test_aide_check_update"
@@ -32,14 +32,15 @@
             "name": "oe_test_ensure_security_compliance"
         },
         {
-            "name": "oe_test_encrypt_data"
+            "name": "oe_test_encrypt_data",
+	    "add disk": [10]
         },
         {
             "name": "oe_test_check_passwd_shadow"
         },
         {
             "name": "oe_test_scanning_remote_system",
-	    "machine num": 2
+            "machine num": 2
         },
         {
             "name": "oe_test_security_test_FUN293"
