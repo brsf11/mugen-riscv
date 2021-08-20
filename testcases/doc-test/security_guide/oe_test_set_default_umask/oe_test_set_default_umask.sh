@@ -32,11 +32,11 @@ function run_test() {
     LOG_INFO "Start executing testcase."
     grep -i "umask 022" /etc/bashrc
     CHECK_RESULT $? 0 0 "umask error"
-    mkdir /home/test1
-    ls -l /home | grep "test1" | grep "drwxr\-xr\-x"
+    mkdir test1
+    ls -l . | grep "test1" | grep "drwxr\-xr\-x"
     CHECK_RESULT $? 0 0 "dir permission verification failed"
-    touch /home/test2
-    ls -l /home/test2 | grep "\-rw\-r\-\-r\-\-"
+    touch test2
+    ls -l test2 | grep "\-rw\-r\-\-r\-\-"
     CHECK_RESULT $? 0 0 "file permission verification failed"
     su - test -c "mkdir test3"
     su - test -c "ls -l | grep "test3" | grep 'drwxr\-xr\-x'"

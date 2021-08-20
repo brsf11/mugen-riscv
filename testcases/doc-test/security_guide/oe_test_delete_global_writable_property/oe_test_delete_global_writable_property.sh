@@ -26,7 +26,7 @@ function run_test() {
 	ls -ld $line | grep 'drwxrwxrwt'
     	CHECK_RESULT $? 0 0 "check $line failed"
     done<temp
-    find / -type f \( -perm -o+w \) 2>/dev/null | grep -vE 'proc|cgroup'
+    find / -type f \( -perm -o+w \) 2>/dev/null | grep -vE 'proc|cgroup|selinux'
     CHECK_RESULT $? 0 1 "check global writable file failed"
     LOG_INFO "Finish testcase execution."
 }
