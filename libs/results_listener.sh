@@ -56,7 +56,7 @@ function run_listener() {
 			check_results
 		fi
 
-		curl -d "{'name': $JOB_NAME, 'succeed': $SUCCEED, 'fail': $FAIL}" -H 'Content-Type: application/json' -X POST "${SERVER_URL}/api/testask/monitor"
+		curl -d '{"name": $JOB_NAME, "succeed": $SUCCEED, "fail": $FAIL}' -H 'Content-Type: application/json' -X POST "${SERVER_IP}:${SERVER_PORT}/api/testask/monitor"
 
 		rsync_logs
 
@@ -64,7 +64,7 @@ function run_listener() {
 
 		if ! is_mugen_running; then
 			check_results
-			curl -d "{'name': $JOB_NAME，succeed': $SUCCEED, 'fail': $FAIL}" -H 'Content-Type: application/json' -X POST "${SERVER_URL}/api/testask/monitor"
+			curl -d '{"name": $JOB_NAME, "succeed": $SUCCEED, "fail": $FAIL}' -H 'Content-Type: application/json' -X POST "${SERVER_IP}:${SERVER_PORT}/api/testask/monitor"
 			break
 		fi
 	done
