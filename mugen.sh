@@ -175,7 +175,7 @@ function statistic_result() {
 
     LOG_INFO "A total of ${CASE_NUM} use cases were executed, with ${SUCCESS_NUM} successes and ${FAIL_NUM} failures."
 
-    [ ${FAIL_NUM} -eq 0 ] && return 0 || return 1
+    exit ${FAIL_NUM}
 }
 
 while getopts "c:af:r:dx" option; do
@@ -236,7 +236,7 @@ while getopts "c:af:r:dx" option; do
         echo "$@" | grep -q -e '^ *-x *$' && {
             LOG_ERROR "The -x parameter must be used in combination with -a, -f, and -r."
             exit 1
-        } || exit 0
+        }
         ;;
     *)
         usage
