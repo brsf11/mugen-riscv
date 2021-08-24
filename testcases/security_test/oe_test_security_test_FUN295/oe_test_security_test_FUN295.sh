@@ -23,6 +23,7 @@ function pre_test()
     LOG_INFO "Start to prepare the test environment."
 
     useradd test
+    touch 1.txt
 
     LOG_INFO "End to prepare the test environment."
 }
@@ -35,8 +36,12 @@ function run_test()
     CHECK_RESULT $? 0 0 "add root failed"
     useradd test 2>&1 | grep -e "useradd: user 'test' already exists"
     CHECK_RESULT $? 0 0 "add user failed"
-    cat /etc/passwd | awk -F ":" '{a[$3]++}END{for(i in a){if(a[i]!=1){print i,a[i]}}}'
-    CHECK_RESULT $? 0 0 "awk failed"
+    cat /etc/passwd | awk -F ":" '{a[$3]++}END{for(i in a){if(a[i]!=1){print i,a[i]}}}' > 1.txt
+    a=$(wc -l 1.txt | awk '{print $1}')
+    if [ a -ne 0 ];
+    then 
+        CHECK_RESULT 1 0 0 "failed"
+    fi
 
     LOG_INFO "End to run test."
 }
