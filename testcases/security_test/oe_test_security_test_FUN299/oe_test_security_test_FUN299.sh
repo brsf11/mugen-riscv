@@ -29,17 +29,18 @@ function pre_test()
 function run_test()
 {
     LOG_INFO "Start to run test."
-    echo 123 | passwd test 
-    CHECK_RESULT $? 1 0 "set passwd failed"
     expect <<EOF1
-	log_file testlog
-	spawn passwd test
-	expect "*assword:" { send "Administrator12#$\\r" }
-        expect "*assword:" { send "Administrator12#$\\r" }
-        expect eof
+    log_file testlog
+    spawn passwd test
+    expect "*assword:" { send "123\\r" }
+    expect "*assword:" { send "Administrator12#$\\r" }
+    expect "*assword:" { send "Administrator12#$\\r" }
+    expect eof
 EOF1
     grep -e "passwd: all authentication tokens updated successfully" testlog
     CHECK_RESULT $? 0 0 "grep failed" 
+    grep -e "BAD PASSWORD" testlog
+    CHECK_RESULT $? 0 0 "grep bad failed" 
     LOG_INFO "End to run test."
 }
 
