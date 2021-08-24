@@ -142,6 +142,8 @@ def write_conf(ip, password, port=22, user="root"):
         f.write(json.dumps(ENV_DATA, indent=4))
         mugen_log.logging("info", "配置文件加载完成...")
 
+    sys.exit(0)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="manual to this script")

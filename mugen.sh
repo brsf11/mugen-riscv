@@ -39,7 +39,7 @@ function usage() {
 
 function deploy_conf() {
     python3 ${OET_PATH}/libs/locallibs/write_conf.py "$@"
-    test $? -ne 0 && exit 1
+    test $? -ne 0 && exit 1 || exit 0
 }
 
 function load_conf() {
@@ -236,7 +236,7 @@ while getopts "c:af:r:dx" option; do
         echo "$@" | grep -q -e '^ *-x *$' && {
             LOG_ERROR "The -x parameter must be used in combination with -a, -f, and -r."
             exit 1
-        }
+        } || exit 0
         ;;
     *)
         usage
