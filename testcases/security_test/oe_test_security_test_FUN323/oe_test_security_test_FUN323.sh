@@ -33,7 +33,7 @@ function run_test()
     
     su - tester1 -c pwd
     CHECK_RESULT $? 0 0 "change failed"
-    cat /var/log/secure | grep -e "session opened for user tester1"
+    grep -e "session opened for user tester1" /var/log/secure
     CHECK_RESULT $? 0 0 "grep failed"
     
     LOG_INFO "End to run test."
