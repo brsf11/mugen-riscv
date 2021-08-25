@@ -36,7 +36,7 @@ function run_test()
     CHECK_RESULT $? 0 0 "add root failed"
     useradd test 2>&1 | grep -e "useradd: user 'test' already exists"
     CHECK_RESULT $? 0 0 "add user failed"
-    CHECK_RESULT cat /etc/passwd | awk -F ":" '{a[$3]++}END{for(i in a){if(a[i]!=1){print i,a[i]}}}' 0 0 "XXXX"
+    CHECK_RESULT `cat /etc/passwd | awk -F ":" '{a[$3]++}END{for(i in a){if(a[i]!=1){print i,a[i]}}}' | wc -l` 0 0 "XXXX" 0 0 "print failed"
 
     LOG_INFO "End to run test."
 }
