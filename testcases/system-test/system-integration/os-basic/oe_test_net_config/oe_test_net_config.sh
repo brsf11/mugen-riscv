@@ -27,7 +27,7 @@ function config_params() {
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    SSH_CMD "dnf install -y net-tools" "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
+    DNF_INSTALL net-tools 2
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -45,7 +45,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    SSH_CMD "yum remove -y net-tools" "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
+    DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
 

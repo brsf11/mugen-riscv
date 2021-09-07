@@ -18,23 +18,16 @@
 # ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-function pre_test() {
-    LOG_INFO "Start environment preparation."
-    DNF_INSTALL kexec-tools
-    LOG_INFO "Environmental preparation is over."
-}
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    rpm -q kexec-tools
-    CHECK_RESULT $?
     grub2-mkconfig -o /boot/grub2/grub.cfg
     CHECK_RESULT $?
     systemctl enable kdump.service
     systemctl start kdump.service
     systemctl status kdump.service | grep active
     CHECK_RESULT $?
-    systemctl stop kdump.serviceactive
+    systemctl stop kdump.service
     systemctl disable kdump.service
     systemctl is-enabled kdump.service | grep disable
     CHECK_RESULT $?

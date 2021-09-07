@@ -18,6 +18,13 @@
 # ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
+
+function pre_test() {
+    LOG_INFO "Start environment preparation."
+    DNF_INSTALL libcgroup
+    LOG_INFO "Environmental preparation is over."
+}
+
 function run_test() {
     LOG_INFO "Start executing testcase."
     echo "#!/bin/bash
@@ -41,6 +48,8 @@ function post_test() {
     LOG_INFO "start environment cleanup."
     kill -9 ${pid}
     rm -rf testcgroup.sh
+    cgdelete memory:example
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup."
 }
 

@@ -33,7 +33,7 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ifconfig
+    ifconfig | grep $NODE1_NIC
     CHECK_RESULT $?
     ifconfig "${eth_name}" down
     CHECK_RESULT $?

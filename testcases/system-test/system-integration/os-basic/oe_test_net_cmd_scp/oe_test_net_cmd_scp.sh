@@ -18,24 +18,19 @@
 # #############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-function pre_test() {
-    LOG_INFO "Start to prepare the test environment."
-    ls test_122 && rm -rf test_122
-    LOG_INFO "End to prepare the test environment."
-}
 
 function run_test() {
     LOG_INFO "Start to run test."
     testfile=$(mktemp)
     SSH_SCP "${testfile}" "root@${NODE2_IPV4}:/tmp" "${NODE2_PASSWORD}"
     CHECK_RESULT $?
-    SSH_CMD "ls ${testfile}" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    SSH_CMD "ls /tmp/${testfile}" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     CHECK_RESULT $?
 
     testdir=$(mktemp -d)
     SSH_SCP "${testdir}" "root@${NODE2_IPV4}:/tmp" "${NODE2_PASSWORD}"
     CHECK_RESULT $?
-    SSH_CMD "ls ${testdir}" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    SSH_CMD "ls /tmp/${testdir}" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -43,7 +38,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     rm -rf ${testdir} ${testfile}
-    SSH_CMD "rm -rf /tmp/test_122;rm -rf /tmp/${testfile}" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    SSH_CMD "rm -rf /tmp/${testfile} /tmp/${testdir}" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     LOG_INFO "End to restore the test environment."
 }
 

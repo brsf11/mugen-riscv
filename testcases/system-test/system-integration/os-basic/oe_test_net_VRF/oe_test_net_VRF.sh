@@ -23,6 +23,7 @@ function config_params() {
     get_free_eth 2
     test_eth1=${LOCAL_ETH[0]}
     test_eth2=${LOCAL_ETH[1]}
+    ip_set=$(Randomly_generate_ip)
     LOG_INFO "End to config params of the case."
 }
 
@@ -37,9 +38,13 @@ function run_test() {
     ip link set dev ${test_eth1} master blue
     ip link set dev ${test_eth1} up
     CHECK_RESULT $?
-    ip addr add dev ${test_eth1} 192.0.2.1/24
+    ip addr add dev ${test_eth1} ${ip_set}/24
+    CHECK_RESULT $?
+    ping -c 3 ${ip_set}
+    CHECK_RESULT $?
     ip addr show | grep blue
     CHECK_RESULT $?
+    ip addr delete dev ${test_eth1} ${ip_set}/24
 
     ip link add dev red type vrf table 1002
     CHECK_RESULT $?
@@ -48,7 +53,11 @@ function run_test() {
     ip link set dev ${test_eth2} master red
     ip link set dev ${test_eth2} up
     CHECK_RESULT $?
-    ip addr add dev ${test_eth2} 192.0.2.1/24
+    ip addr add dev ${test_eth2} ${ip_set}/24
+    CHECK_RESULT $?
+    ping -c 3 ${ip_set}
+    CHECK_RESULT $?
+
     ip addr show | grep " red"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
@@ -58,7 +67,6 @@ function post_test() {
     LOG_INFO "Start to restore the test environment."
     ip link del blue
     ip link del red
-    nmcli con delete ${test_eth1} ${test_eth2}
     LOG_INFO "End to restore the test environment."
 }
 

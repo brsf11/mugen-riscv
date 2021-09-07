@@ -20,11 +20,10 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    DNF_INSTALL "nmap iptables"
+    DNF_INSTALL "nmap"
     iptables -F
-    SSH_CMD "yum install -y nmap iptables" "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
-    SSH_CMD "iptables -F" "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
-    SSH_CMD "systemctl stop firewalld" "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
+    DNF_INSTALL nmap 2
+    SSH_CMD "iptables -F;systemctl stop firewalld" "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -43,7 +42,7 @@ function post_test() {
     LOG_INFO "Start to restore the test environment."
     rm -rf ncat_log
     DNF_REMOVE
-    SSH_CMD "yum remove -y nmap;rm -rf ~/ncat_log" "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
+    SSH_CMD "rm -rf ~/ncat_log;systemctl start firewalld" "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
     LOG_INFO "End to restore the test environment."
 }
 

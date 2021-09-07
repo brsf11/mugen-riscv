@@ -19,12 +19,6 @@
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function pre_test() {
-    LOG_INFO "Start environment preparation."
-    modprobe -r raid0
-    LOG_INFO "Environmental preparation is over."
-}
-
 function run_test() {
     LOG_INFO "Start executing testcase."
     modprobe raid0
@@ -35,12 +29,6 @@ function run_test() {
     lsmod | grep raid0
     CHECK_RESULT $? 1
     LOG_INFO "End of testcase execution."
-}
-
-function post_test() {
-    LOG_INFO "start environment cleanup."
-    modprobe raid0
-    LOG_INFO "Finish environment cleanup."
 }
 
 main $@

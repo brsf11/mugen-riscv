@@ -37,10 +37,11 @@ function run_test() {
     CHECK_RESULT $?
     ifconfig ${test_eth} promisc
     CHECK_RESULT $?
-    ifconfig | grep -i "PROMISC"
+    ifconfig ${test_eth} | grep -i "PROMISC"
     CHECK_RESULT $?
     ifconfig ${test_eth} -promisc
-    ifconfig | grep -i "PROMISC"
+    CHECK_RESULT $?
+    ifconfig ${test_eth} | grep -i "PROMISC"
     CHECK_RESULT $? 1
     LOG_INFO "End to run test."
 }
