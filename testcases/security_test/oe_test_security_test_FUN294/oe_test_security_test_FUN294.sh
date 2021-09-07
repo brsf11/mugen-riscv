@@ -34,7 +34,7 @@ function run_test()
     CHECK_RESULT $? 0 0 "set failed"
     su test -c "passwd root" 2>&1 | grep "Only root can specify a user name"
     CHECK_RESULT $? 0 0 "change failed"
-    su test -c "(echo "huawei666";echo "JevonsNG";echo "JevonsNG" )|passwd"
+    su test -c "(echo "huawei666";echo "Jevons99$$";echo "Jevons99$$" | passwd)"
     CHECK_RESULT $? 0 0 "change num failed"
 
     LOG_INFO "End to run test."

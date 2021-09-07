@@ -35,6 +35,7 @@ function run_test()
     expect <<EOF
     log_file testlog
     spawn ssh test@localhost
+    expect "*yes/no*" { send "yes\\r" }
     expect "*assword:" { send "huawei777\\r" }
     expect "*assword:" { send "huawei666\\r" }
     expect eof

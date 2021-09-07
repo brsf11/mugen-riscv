@@ -13,7 +13,7 @@
 #@Contact   	:   1557927445@qq.com
 #@Date      	:   2021-05-19 09:39:43
 #@License   	:   Mulan PSL v2
-#@Desc      	:   uniqueness of uid
+#@Desc      	:   least length of passwd
 #####################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
@@ -21,32 +21,34 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test()
 {
     LOG_INFO "Start to prepare the test environment."
-
+    sed 's/password    required      pam_deny.so/password    required      pam_deny.so minlen=8 enforce_for_root try_first_pass local_users_only retry=3/g' /etc/pam.d/system-auth
     useradd test
-    touch 1.txt
-
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test()
 {
     LOG_INFO "Start to run test."
-
-    useradd root 2>&1 | grep -e "useradd: user 'root' already exists"
-    CHECK_RESULT $? 0 0 "add root failed"
-    useradd test 2>&1 | grep -e "useradd: user 'test' already exists"
-    CHECK_RESULT $? 0 0 "add user failed"
-    CHECK_RESULT $(cat /etc/passwd | awk -F ":" '{a[$3]++}END{for(i in a){if(a[i]!=1){print i,a[i]}}} | wc -l) 0 0 "print failed"
-
+    expect <<EOF1
+    log_file testlog
+    spawn passwd test
+    expect "*assword:" { send "123\\r" }
+    expect "*assword:" { send "Administrator12#$\\r" }
+    expect "*assword:" { send "Administrator12#$\\r" }
+    expect eof
+EOF1
+    grep -e "passwd: all authentication tokens updated successfully" testlog
+    CHECK_RESULT $? 0 0 "grep failed" 
+    grep -e "BAD PASSWORD" testlog
+    CHECK_RESULT $? 0 0 "grep bad failed" 
     LOG_INFO "End to run test."
 }
 
 function post_test()
 {
     LOG_INFO "Start to restore the test environment."
-
+    sed 's/password    required      pam_deny.so minlen=8 enforce_for_root try_first_pass local_users_only retry=3/password    required      pam_deny.so/g' /etc/pam.d/system-auth
     userdel -rf test
-    
     LOG_INFO "End to restore the test environment."
 }
 

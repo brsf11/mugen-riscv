@@ -29,9 +29,9 @@ function pre_test() {
 function run_test()
 {
     LOG_INFO "Start to run test."
-    who | grep -e "root     tty1"
+    who | grep -e "root*"
     CHECK_RESULT $? 0 0 "root who failed"
-    su - user -c "who" | grep -e "root     tty1"
+    su - user -c "who" | grep -e "root*"
     CHECK_RESULT $? 0 0 "user who failed"
     
     LOG_INFO "End to run test."

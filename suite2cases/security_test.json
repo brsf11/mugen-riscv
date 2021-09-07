@@ -57,6 +57,9 @@
         {
             "name": "oe_test_security_test_FUN297"
         },
+	{
+            "name": "oe_test_security_test_FUN299"
+        },
         {
             "name": "oe_test_security_test_FUN305"
         },
@@ -90,15 +93,6 @@
         },
         {
             "name": "oe_test_security_test_FUN325"
-        },
-        {
-            "name": "oe_test_security_test_FUN327"
-        },
-        {
-            "name": "oe_test_security_test_FUN328"
-        },
-        {
-            "name": "oe_test_security_test_FUN329"
         },
         {
             "name": "oe_test_security_test_FUN332"
