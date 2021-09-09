@@ -63,7 +63,7 @@ function run_test() {
     CHECK_RESULT $?
     ocamlc -version example.ml | grep $ocaml_version
     CHECK_RESULT $?
-    ocamlc -v a.c | grep -E "version|Standard library directory"
+    ocamlc -v | grep -E "version|Standard library directory"
     CHECK_RESULT $?
     ocamlc -verbose a.c 2>&1 | grep "gcc"
     CHECK_RESULT $?
