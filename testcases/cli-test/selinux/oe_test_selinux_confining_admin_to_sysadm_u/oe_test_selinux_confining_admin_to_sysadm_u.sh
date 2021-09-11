@@ -35,6 +35,7 @@ function run_test() {
     getsebool ssh_sysadm_login | grep "ssh_sysadm_login --> on"
     CHECK_RESULT $? 0 0 "set ssh_sysadm_login on failed"
     semanage login -l | grep "example              sysadm_u             s0"
+    CHECK_RESULT $? 0 0 "Check example sysadm_u failed"
     expect <<EOF1
         log_file testlog
         spawn ssh example@localhost

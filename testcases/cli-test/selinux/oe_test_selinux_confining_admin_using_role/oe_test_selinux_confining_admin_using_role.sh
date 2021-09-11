@@ -33,6 +33,7 @@ function run_test() {
     LOG_INFO "Start executing testcase."
     echo "example ALL=(ALL) TYPE=sysadm_t ROLE=sysadm_r ALL" > /etc/sudoers.d/example
     semanage login -l | grep example | grep staff_u
+    CHECK_RESULT $? 0 0 "Check example staff_u failed"
     expect <<EOF1
         log_file testlog
         spawn ssh example@localhost
