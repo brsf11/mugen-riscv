@@ -1,5 +1,6 @@
 {
     "path": "${OET_PATH}/testcases/cli-test/libreswan",
+    "machine num": 2,
     "cases": [
         {
             "name": "oe_test_libreswan_ipsec_01"
@@ -9,6 +10,49 @@
         },
         {
             "name": "oe_test_libreswan_ipsec_03"
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_addconn",
+	    "machine num": 2
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_algparse"
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_auto_1",
+	    "machine num": 2
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_auto_2",
+	    "machine num": 2
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_check"
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_pluto"
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_setup"
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_showhostkey_nss",
+	    "machine num": 2
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_systemctl"
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_whack_1"
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_whack_2"
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_whack_3"
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_whack_4"
         }
     ]
 }
