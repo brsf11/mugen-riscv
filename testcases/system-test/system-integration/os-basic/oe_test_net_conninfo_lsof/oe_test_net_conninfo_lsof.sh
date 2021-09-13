@@ -12,26 +12,33 @@
 # #############################################
 # @Author    :   doraemon2020
 # @Contact   :   xcl_job@163.com
-# @Date      :   2020-07-01
+# @Date      :   2020-04-09
 # @License   :   Mulan PSL v2
-# @Desc      :   Net Public function
-# #############################################
+# @Desc      :   View network connection information-lsof
+# ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-
-function get_free_eth() {
-    local num_eth=$1
-    NODE1_NICS=$(python3 ${OET_PATH}/libs/locallibs/get_test_device.py --node 1 --device nic)
-    LOCAL_ETH=(${NODE1_NICS[@]/$(ip route | grep ${NODE1_IPV4} | awk '{print$3}')/})
-    [ ${#LOCAL_ETH[@]} -ge ${num_eth} ] || exit 1
+function pre_test() {
+    LOG_INFO "Start to prepare the test environment."
+    DNF_INSTALL lsof
+    LOG_INFO "End to prepare the test environment."
 }
 
-function Randomly_generate_ip() {
-    while [ True ]; do
-        random_ip=${NODE1_IPV4[0]%.*}.$(shuf -e $(seq 1 254) | head -n 1)
-        ping -c 3 ${random_ip} &>/dev/nul || {
-            printf "%s" "$random_ip"
-            break
-        }
-    done
+function run_test() {
+    LOG_INFO "Start to run test."
+    lsof -i udp | grep "UDP"
+    CHECK_RESULT $?
+    lsof -i:22 | grep sshd
+    CHECK_RESULT $?
+    lsof -i tcp | grep TCP
+    CHECK_RESULT $?
+    LOG_INFO "End to run test."
 }
+
+function post_test() {
+    LOG_INFO "Start to restore the test environment."
+    DNF_REMOVE
+    LOG_INFO "End to restore the test environment."
+}
+
+main "$@"

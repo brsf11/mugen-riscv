@@ -10,28 +10,28 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   doraemon2020
-# @Contact   :   xcl_job@163.com
-# @Date      :   2020-07-01
+# @Author    :   Classicriver_jia
+# @Contact   :   classicriver_jia@foxmail.com
+# @Date      :   2020-04-09
 # @License   :   Mulan PSL v2
-# @Desc      :   Net Public function
+# @Desc      :   Common network command test-ping
 # #############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-
-function get_free_eth() {
-    local num_eth=$1
-    NODE1_NICS=$(python3 ${OET_PATH}/libs/locallibs/get_test_device.py --node 1 --device nic)
-    LOCAL_ETH=(${NODE1_NICS[@]/$(ip route | grep ${NODE1_IPV4} | awk '{print$3}')/})
-    [ ${#LOCAL_ETH[@]} -ge ${num_eth} ] || exit 1
+function run_test() {
+    LOG_INFO "Start to run test."
+    echo "${NODE1_IPV4} www.mytest.com" >> /etc/hosts
+    ping -c 3 www.mytest.com
+    CHECK_RESULT $?
+    ping -h 2>&1 | grep "Usage"
+    CHECK_RESULT $?
+    LOG_INFO "End to run test."
 }
 
-function Randomly_generate_ip() {
-    while [ True ]; do
-        random_ip=${NODE1_IPV4[0]%.*}.$(shuf -e $(seq 1 254) | head -n 1)
-        ping -c 3 ${random_ip} &>/dev/nul || {
-            printf "%s" "$random_ip"
-            break
-        }
-    done
+function post_test() {
+    LOG_INFO "Start to restore the test environment."
+    sed -i '/mytest/d' /etc/hosts
+    LOG_INFO "End to restore the test environment."
 }
+
+main "$@"
