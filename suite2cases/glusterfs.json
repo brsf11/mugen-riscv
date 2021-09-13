@@ -1,0 +1,20 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/glusterfs",
+    "cases": [
+        {
+            "name": "oe_test_service_glusterd"
+        },
+        {
+            "name": "oe_test_service_glustereventsd"
+        },
+        {
+            "name": "oe_test_service_glusterfsd"
+        },
+        {
+            "name": "oe_test_service_glusterfssharedstorage"
+        },
+        {
+            "name": "oe_test_service_gluster-ta-volume"
+        }
+    ]
+}
