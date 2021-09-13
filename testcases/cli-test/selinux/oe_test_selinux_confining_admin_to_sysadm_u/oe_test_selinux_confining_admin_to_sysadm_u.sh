@@ -71,7 +71,7 @@ function run_test() {
         }
         expect eof
 EOF1
-    grep "sysadm_u:sysadm_r:sysadm_t:s0" testlog | wc -l | grep '2'
+    grep -c "sysadm_u:sysadm_r:sysadm_t:s0" testlog | grep '2'
     CHECK_RESULT $? 0 0 "Check id -Z failed" 
     LOG_INFO "Finish testcase execution."
 }
