@@ -54,7 +54,6 @@ function run_test() {
     CHECK_RESULT $?
     grep -ai "hello world" hello_stubs.o
     CHECK_RESULT $?
-    rm -rf a.out
     cp example.ml exampletest
     ocamlopt.opt -impl exampletest
     CHECK_RESULT $?
