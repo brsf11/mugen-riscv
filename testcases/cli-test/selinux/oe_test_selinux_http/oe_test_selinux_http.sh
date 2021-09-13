@@ -49,7 +49,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    mv /etc/httpd/conf/httpd.conf-bak /etc/httpd/conf/httpd.conf
+    mv -f /etc/httpd/conf/httpd.conf-bak /etc/httpd/conf/httpd.conf
     semanage fcontext -d -e /var/www /var/test_www
     semanage port --delete -t ssh_port_t -p tcp 3131
     systemctl restart httpd
