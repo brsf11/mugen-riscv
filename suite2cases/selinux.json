@@ -1,0 +1,26 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/selinux",
+    "cases": [
+        {
+            "name": "oe_test_selinux_listuser"
+        },
+	{
+	    "name": "oe_test_selinux_adduser"
+	},
+	{
+	    "name": "oe_test_selinux_confining_regular_user"
+	},
+	{
+	    "name": "oe_test_selinux_confining_admin_using_role"
+	},
+	{
+	    "name": "oe_test_selinux_confining_admin_to_sysadm_u"
+	},
+	{
+	    "name": "oe_test_selinux_http"
+	},
+	{
+	    "name": "oe_test_selinux_sharing_nfs_cifs_using_booleans"
+	}
+    ]
+}
