@@ -29,7 +29,7 @@ function sshcmd() {
     cmd=${cmd//\$/\\\$}
 
     test "$remoteip"x = ""x && LOG_ERROR "Missing ip."
-    test "$(echo ${remoteip} | awk -F"." '{if ($1!=0 && $NF!=0) split ($0,IPNUM,".")} END { for (k in IPNUM) if (IPNUM[k]==0) print IPNUM[k]; else if (IPNUM[k]!=0 && IPNUM[k]!~/[a-z|A-Z]/ && length(IPNUM[k])<=3 && IPNUM[k]<255 && IPNUM[k]!~/^0/) print IPNUM[k]}' | wc -l)" -ne 4 && LOG_ERROR "the remote ip is Incorrect." && exit 1
+    test "$(echo ${remoteip} | awk -F"." '{if ($1!=0 && $NF!=0) split ($0,IPNUM,".")} END { for (k in IPNUM) if (IPNUM[k]==0) print IPNUM[k]; else if (IPNUM[k]!=0 && IPNUM[k]!~/[a-z|A-Z]/ && length(IPNUM[k])<=3 && IPNUM[k]<=255 && IPNUM[k]!~/^0/) print IPNUM[k]}' | wc -l)" -ne 4 && LOG_ERROR "the remote ip is Incorrect." && exit 1
     if ping -c 1 ${remoteip} | grep "100% packet loss"; then
         LOG_ERROR "connection to $remoteip failed."
         exit 101

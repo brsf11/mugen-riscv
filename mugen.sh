@@ -59,10 +59,11 @@ function exec_case() {
     local cmd=$1
     local log_path=$2
     local case_name=$3
+    local test_suite=$4
 
     exec 6>&1
     exec 7>&2
-    exec >"$log_path"/"$(date +%Y-%m-%d-%T)".log 2>&1
+    exec >>"$log_path"/"$(date +%Y-%m-%d-%T)".log 2>&1
 
     SLEEP_WAIT $TIMEOUT "$cmd"
     ret_code=$?
@@ -77,13 +78,13 @@ function exec_case() {
     if [ $ret_code -eq 0 ]; then
         LOG_INFO "The case exit by code $ret_code."
         ((SUCCESS_NUM++))
-        mkdir -p ${OET_PATH}/results/succeed
-        touch ${OET_PATH}/results/succeed/${case_name}
+        mkdir -p ${OET_PATH}/results/${test_suite}/succeed
+        touch ${OET_PATH}/results/${test_suite}/succeed/${case_name}
     else
         LOG_ERROR "The case exit by code $ret_code."
         ((FAIL_NUM++))
-        mkdir -p ${OET_PATH}/results/failed
-        touch ${OET_PATH}/results/failed/${case_name}
+        mkdir -p ${OET_PATH}/results/${test_suite}/failed
+        touch ${OET_PATH}/results/${test_suite}/failed/${case_name}
     fi
 }
 
@@ -98,6 +99,11 @@ function run_test_case() {
     fi
 
     ((CASE_NUM++))
+
+    result_files=$(find ${OET_PATH}/results/${test_suite} -name "$test_case") >/dev/nul 2>&1
+    for result_file in $result_files; do
+        test -f $result_file && rm -rf $result_file
+    done
 
     suite_path=$(python3 ${OET_PATH}/libs/locallibs/suite_case.py --suite $test_suite --key path)
     test $? -ne 0 && return 1
@@ -122,6 +128,11 @@ function run_test_case() {
 
     LOG_INFO "start to run testcase:$test_case."
 
+    if [ -z "${case_path[*]}" ]; then
+        echo -e "Can't find the test script:$test_case, Please confirm whether the code is submitted." >>"$log_path"/"$(date +%Y-%m-%d-%T)".log 2>&1
+        exec_case "exit 255" "$log_path" "$test_case" "$test_suite"
+    fi
+
     pushd "$case_path" >/dev/null || return 1
 
     local time_out
@@ -133,12 +144,12 @@ function run_test_case() {
 
     if [[ "$script_type"x == "sh"x ]] || [[ "$script_type"x == "bash"x ]]; then
         if [ "$COMMAND_X"x == "yes"x ]; then
-            exec_case "bash -x ${test_case}.sh" "$log_path" "$test_case"
+            exec_case "bash -x ${test_case}.sh" "$log_path" "$test_case" "$test_suite"
         else
-            exec_case "bash ${test_case}.sh" "$log_path" "$test_case"
+            exec_case "bash ${test_case}.sh" "$log_path" "$test_case" "$test_suite"
         fi
     elif [ "$script_type"x == "py"x ]; then
-        exec_case "python3 ${test_case}.py" "$log_path" "$test_case"
+        exec_case "python3 ${test_case}.py" "$log_path" "$test_case" "$test_suite"
     fi
 
     popd >/dev/nul || return 1
