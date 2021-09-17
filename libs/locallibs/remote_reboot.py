@@ -67,6 +67,7 @@ def reboot_wait(node=2, wait_time=None):
                 os.environ.get("NODE" + str(node) + "_PASSWORD"),
                 os.environ.get("NODE" + str(node) + "_SSH_PORT"),
                 os.environ.get("NODE" + str(node) + "_USER"),
+                log_level="warn",
             )
             if conn:
                 if ssh_cmd.pssh_cmd(conn, "ls")[1]:

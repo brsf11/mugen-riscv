@@ -27,7 +27,14 @@ sys.path.append(SCRIPT_PATH)
 import mugen_log
 
 
-def pssh_conn(ip, password, port=22, user="root", timeout=None):
+def pssh_conn(
+    ip,
+    password,
+    port=22,
+    user="root",
+    timeout=None,
+    log_level="error",
+):
     """和远端建立连接
 
     Args:
@@ -51,8 +58,8 @@ def pssh_conn(ip, password, port=22, user="root", timeout=None):
         TypeError,
         AttributeError,
     ) as e:
-        mugen_log.logging("error", "Failed to connect the remote machine:%s." % ip)
-        mugen_log.logging("error", e)
+        mugen_log.logging(log_level, "Failed to connect the remote machine:%s." % ip)
+        mugen_log.logging(log_level, e)
         return 519
 
     return conn

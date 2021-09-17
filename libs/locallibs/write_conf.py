@@ -41,6 +41,10 @@ def write_conf(ip, password, port=22, user="root"):
         port (int, optional): 测试环境ssh端口号. Defaults to 22.
         user (str, optional): 测试环境用户名. Defaults to "root".
     """
+    if None in (ip, password):
+        mugen_log.logging("error", "必要参数ip or password存在缺失.")
+        sys.exit(1)
+
     if not os.path.exists("/etc/mugen"):
         OET_PATH = os.environ.get("OET_PATH")
         if OET_PATH is None:
