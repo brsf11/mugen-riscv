@@ -43,10 +43,10 @@ function rsync_logs() {
 
 function check_results() {
 	if [[ -d ${SCRIPT_PATH}/../results/succeed ]]; then
-		SUCCEED=$(ls -l "${SCRIPT_PATH}/../results/succeed" | grep '^-' | wc -l)
+		SUCCEED=$(ls -l "${SCRIPT_PATH}/../results/${TESTSUITE}/succeed" | grep '^-' | wc -l)
 	fi
 	if [[ -d ${SCRIPT_PATH}/../results/failed ]]; then
-		FAIL=$(ls -l "${SCRIPT_PATH}/../results/failed" | grep '^-' | wc -l)
+		FAIL=$(ls -l "${SCRIPT_PATH}/../results/${TESTSUITE}/failed" | grep '^-' | wc -l)
 	fi
 }
 
