@@ -42,17 +42,17 @@ function rsync_logs() {
 }
 
 function check_results() {
-	if [[ -d ${SCRIPT_PATH}/../results/succeed ]]; then
+	if [[ -d ${SCRIPT_PATH}/../results/${TESTSUITE}/succeed ]]; then
 		SUCCEED=$(ls -l "${SCRIPT_PATH}/../results/${TESTSUITE}/succeed" | grep '^-' | wc -l)
 	fi
-	if [[ -d ${SCRIPT_PATH}/../results/failed ]]; then
+	if [[ -d ${SCRIPT_PATH}/../results/${TESTSUITE}/failed ]]; then
 		FAIL=$(ls -l "${SCRIPT_PATH}/../results/${TESTSUITE}/failed" | grep '^-' | wc -l)
 	fi
 }
 
 function run_listener() {
 	while :; do
-		if [[ -d ${SCRIPT_PATH}/../results ]]; then
+		if [[ -d ${SCRIPT_PATH}/../results/${TESTSUITE} ]]; then
 			check_results
 		fi
 
