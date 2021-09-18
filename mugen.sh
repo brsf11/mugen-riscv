@@ -33,8 +33,34 @@ SUCCESS_NUM=0
 FAIL_NUM=0
 
 function usage() {
-    echo TODO
-    #TODO
+    printf "Usage:  \n
+    -c: configuration environment of test framework\n
+    -a: execute all use cases\n
+    -f：designated test suite\n
+    -r：designated test case\n
+    -x：the shell script is executed in debug mode\n
+    \n
+    Example: 
+        run all cases:
+          normal mode:
+            bash mugen.sh -a
+          debug mode:
+            bash mugen.sh -a -x
+
+        run test suite:
+          normal mode:
+            bash mugen.sh -f test_suite
+          debug mode:
+            bash mugen.sh -f test_suite -x
+
+        run test case:
+          normal mode:
+            bash mugen.sh -f test_suite -r test_case
+          debug mode:
+            bash mugen.sh -f test_suite -r test_case -x
+        \n
+	configure env of test framework:
+	    bash mugen.sh -c --ip \$ip --password \$passwd --user \$user --port \$port\n"
 }
 
 function deploy_conf() {
@@ -72,6 +98,12 @@ function exec_case() {
     exec 2>&7 7>&-
 
     test "$ret_code"x == "143"x && {
+        cmd_pid=$(pgrep "$cmd")
+        if [ -n "$cmd_pid" ]; then
+            for pid in ${cmd_pid}; do
+                pstree -p $pid | grep -o '([0-9]*)' | tr -d '()' | xargs kill -9
+            done
+        fi
         LOG_WARN "The case execution timeout."
     }
 

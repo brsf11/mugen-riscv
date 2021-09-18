@@ -16,5 +16,5 @@
 # @Desc    :
 #####################################
 
-yum install expect -y
+yum install expect psmisc -y
 pip3 install paramiko==2.7.2 || yum install python3-paramiko -y
