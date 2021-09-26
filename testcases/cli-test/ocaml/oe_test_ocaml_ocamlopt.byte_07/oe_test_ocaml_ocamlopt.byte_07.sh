@@ -11,9 +11,9 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/11/4
+# @Date      :   2020/11/9
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamlmktop.byte under ocaml package
+# @Desc      :   The usage of ocamlopt.byte under ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,34 +21,43 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../a.c ../example.ml ../hello.ml ./
+    cp ../example.ml ../a.c ./
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamlmktop.byte -output-obj example.ml -o exampleobj.o
+    ocamlopt.byte -config a.c | grep -E "version|ocamlc" -A 55
     CHECK_RESULT $?
-    objdump -x exampleobj.o | grep "obj"
+    ocamlopt.byte -dtypes example.ml
     CHECK_RESULT $?
-    ocamlmktop.byte -output-complete-obj example.ml -o examplecom.o
+    grep -A 3 "type" example.annot
     CHECK_RESULT $?
-    objdump -x examplecom.o | grep "obj_counter"
+    ocamlopt.byte -for-pack P -c example.ml
     CHECK_RESULT $?
-    ocamlmktop.byte -make-runtime -opaque a.c
+    grep -a "camlP__Example" example.o
     CHECK_RESULT $?
-    objdump -x a.o | grep "start address"
+    ocamlopt.byte -g a.c
     CHECK_RESULT $?
-    ocamlmktop.byte -warn-help hello.ml | grep "warning"
+    objdump -x a.o | grep debug
     CHECK_RESULT $?
-    ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
-    ocamlmktop.byte -vnum example.ml | grep $ocaml_version
+    ocamlopt.byte -nostdlib a.c
     CHECK_RESULT $?
-    ocamlmktop.byte -version example.ml | grep $ocaml_version
+    objdump -x a.o | grep stdlib
+    CHECK_RESULT $? 1
+    cp ../hello_stubs.c ./
+    ocamlopt.byte -i hello_stubs.c
     CHECK_RESULT $?
-    ocamlmktop.byte -v | grep -E "version|Standard library directory"
+    objdump -x hello_stubs.o | grep "caml_print_hello"
     CHECK_RESULT $?
-    ocamlmktop.byte -verbose a.c 2>&1 | grep "gcc"
+    ocamlopt.byte -I +/usr/lib64/ocaml hello_stubs.c
+    CHECK_RESULT $?
+    grep -ai "hello world" hello_stubs.o
+    CHECK_RESULT $?
+    cp example.ml exampletest
+    ocamlopt.byte -impl exampletest
+    CHECK_RESULT $?
+    grep -ai "exampletest" exampletest.cmi
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

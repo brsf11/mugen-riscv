@@ -11,9 +11,9 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/11/4
+# @Date      :   2020/11/9
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamlmktop.byte under ocaml package
+# @Desc      :   The usage of ocamlopt.byte under ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,34 +21,31 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../a.c ../example.ml ../hello.ml ./
+    cp ../example.ml ./
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamlmktop.byte -output-obj example.ml -o exampleobj.o
+    ocamlopt.byte -O2 -remove-unused-arguments example.ml
     CHECK_RESULT $?
-    objdump -x exampleobj.o | grep "obj"
+    grep -a unused a.out
+    CHECK_RESULT $? 1
+    ocamlopt.byte -O3 -dflambda-invariants example.ml
     CHECK_RESULT $?
-    ocamlmktop.byte -output-complete-obj example.ml -o examplecom.o
+    grep -a invariant a.out
     CHECK_RESULT $?
-    objdump -x examplecom.o | grep "obj_counter"
+    ocamlopt.byte -davail example.ml
     CHECK_RESULT $?
-    ocamlmktop.byte -make-runtime -opaque a.c
+    grep -az vail a.out
     CHECK_RESULT $?
-    objdump -x a.o | grep "start address"
+    ocamlopt.byte -dtimings example.ml | grep "0.0"
     CHECK_RESULT $?
-    ocamlmktop.byte -warn-help hello.ml | grep "warning"
+    ocamlopt.byte -dprofile example.ml | grep "0."
     CHECK_RESULT $?
-    ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
-    ocamlmktop.byte -vnum example.ml | grep $ocaml_version
+    ocamlopt.byte -no-unbox-specialised-args example.ml
     CHECK_RESULT $?
-    ocamlmktop.byte -version example.ml | grep $ocaml_version
-    CHECK_RESULT $?
-    ocamlmktop.byte -v | grep -E "version|Standard library directory"
-    CHECK_RESULT $?
-    ocamlmktop.byte -verbose a.c 2>&1 | grep "gcc"
+    grep -a unboxed.caml a.out
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -56,7 +53,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ./a* ./example* ./hello*
+    rm -rf ./example.* a.out
     LOG_INFO "End to restore the test environment."
 }
 

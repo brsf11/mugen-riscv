@@ -11,9 +11,9 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/11/4
+# @Date      :   2020/11/9
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamlmktop.byte under ocaml package
+# @Desc      :   The usage of ocamlopt.opt under ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,42 +21,51 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../a.c ../example.ml ../hello.ml ./
+    cp ../example.ml ../not.ml ./
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamlmktop.byte -output-obj example.ml -o exampleobj.o
+    ocamlopt.opt -inline-prim-cost 3 example.ml
     CHECK_RESULT $?
-    objdump -x exampleobj.o | grep "obj"
+    grep -a "prim" a.out
     CHECK_RESULT $?
-    ocamlmktop.byte -output-complete-obj example.ml -o examplecom.o
+    ocamlopt.opt -inline-indirect-cost 4 example.ml
     CHECK_RESULT $?
-    objdump -x examplecom.o | grep "obj_counter"
+    grep -a "directory.camlStdlib" a.out
     CHECK_RESULT $?
-    ocamlmktop.byte -make-runtime -opaque a.c
+    ocamlopt.opt -inline-toplevel 100 example.ml
     CHECK_RESULT $?
-    objdump -x a.o | grep "start address"
+    grep -a "level.camlStdlib" a.out
     CHECK_RESULT $?
-    ocamlmktop.byte -warn-help hello.ml | grep "warning"
+    ocamlopt.opt -S -inline-call-cost 1 not.ml -o not.opt
     CHECK_RESULT $?
-    ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
-    ocamlmktop.byte -vnum example.ml | grep $ocaml_version
+    grep "camlNot" not.s
     CHECK_RESULT $?
-    ocamlmktop.byte -version example.ml | grep $ocaml_version
+    ocamlopt.opt -inline-max-depth 1 example.ml
     CHECK_RESULT $?
-    ocamlmktop.byte -v | grep -E "version|Standard library directory"
+    grep -a "max " a.out
     CHECK_RESULT $?
-    ocamlmktop.byte -verbose a.c 2>&1 | grep "gcc"
+    ocamlopt.opt -linscan example.ml
     CHECK_RESULT $?
+    strings a.out | grep "scan_line"
+    CHECK_RESULT $?
+    ocamlopt.opt -no-float-const-prop example.ml
+    CHECK_RESULT $?
+    strings a.out | grep "const_prop"
+    CHECK_RESULT $? 1
+    ocamlopt.opt -nodynlink example.ml
+    CHECK_RESULT $?
+    strings a.out | grep "r9wE"
+    CHECK_RESULT $? 1
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ./a* ./example* ./hello*
+    rm -rf a.out ./example* ./not*
     LOG_INFO "End to restore the test environment."
 }
 

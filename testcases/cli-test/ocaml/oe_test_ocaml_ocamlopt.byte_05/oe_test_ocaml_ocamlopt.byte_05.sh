@@ -11,9 +11,9 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/11/4
+# @Date      :   2020/11/9
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamlmktop.byte under ocaml package
+# @Desc      :   The usage of ocamlopt.byte under ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,34 +21,27 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../a.c ../example.ml ../hello.ml ./
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamlmktop.byte -output-obj example.ml -o exampleobj.o
+    ocamlopt.byte -depend -map /usr/lib64/ocaml/filename.ml /usr/lib64/ocaml/filename.mli | grep -c "cmi" | grep 1
     CHECK_RESULT $?
-    objdump -x exampleobj.o | grep "obj"
+    ocamlopt.byte -depend -modules /usr/lib64/ocaml/filename.ml | grep "Buffer Lazy Printf Random String Sys"
     CHECK_RESULT $?
-    ocamlmktop.byte -output-complete-obj example.ml -o examplecom.o
+    ocamlopt.byte -depend -native /usr/lib64/ocaml/filename.ml | grep -E ".cmo"
+    CHECK_RESULT $? 1
+    ocamlopt.byte -depend -bytecode /usr/lib64/ocaml/filename.ml | grep -E ".cmx"
+    CHECK_RESULT $? 1
+    ocamlopt.byte -depend -open Printf /usr/lib64/ocaml/filename.ml | grep -E ".cmi|.cmo|.cmx"
     CHECK_RESULT $?
-    objdump -x examplecom.o | grep "obj_counter"
+    ocamlopt.byte -depend -shared /usr/lib64/ocaml/filename.ml | grep "cmxs"
     CHECK_RESULT $?
-    ocamlmktop.byte -make-runtime -opaque a.c
-    CHECK_RESULT $?
-    objdump -x a.o | grep "start address"
-    CHECK_RESULT $?
-    ocamlmktop.byte -warn-help hello.ml | grep "warning"
+    ocamlopt.byte -depend -sort /usr/lib64/ocaml/filename.ml /usr/lib64/ocaml/filename.mli | grep "/usr/lib64/ocaml/filename.mli /usr/lib64/ocaml/filename.ml"
     CHECK_RESULT $?
     ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
-    ocamlmktop.byte -vnum example.ml | grep $ocaml_version
-    CHECK_RESULT $?
-    ocamlmktop.byte -version example.ml | grep $ocaml_version
-    CHECK_RESULT $?
-    ocamlmktop.byte -v | grep -E "version|Standard library directory"
-    CHECK_RESULT $?
-    ocamlmktop.byte -verbose a.c 2>&1 | grep "gcc"
+    ocamlopt.byte -depend -version example.ml | grep -E "ocamldep|$ocaml_version"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -56,7 +49,6 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ./a* ./example* ./hello*
     LOG_INFO "End to restore the test environment."
 }
 

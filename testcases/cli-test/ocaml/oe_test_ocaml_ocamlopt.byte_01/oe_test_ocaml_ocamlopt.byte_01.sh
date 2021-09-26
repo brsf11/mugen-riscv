@@ -11,9 +11,9 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/11/4
+# @Date      :   2020/11/9
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamlmktop.byte under ocaml package
+# @Desc      :   The usage of ocamlopt.byte under ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,34 +21,35 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../a.c ../example.ml ../hello.ml ./
+    cp ../example.ml ../not.ml ./
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamlmktop.byte -output-obj example.ml -o exampleobj.o
+    ocamlopt.byte -afl-instrument -afl-inst-ratio 63 example.ml
     CHECK_RESULT $?
-    objdump -x exampleobj.o | grep "obj"
+    strings a.out | grep -E "afl|63"
     CHECK_RESULT $?
-    ocamlmktop.byte -output-complete-obj example.ml -o examplecom.o
+    ocamlopt.byte -S -inline 0 -nodynlink not.ml -o not.opt
     CHECK_RESULT $?
-    objdump -x examplecom.o | grep "obj_counter"
+    grep "L110" not.s
     CHECK_RESULT $?
-    ocamlmktop.byte -make-runtime -opaque a.c
+    ocamlopt.byte -inline-branch-factor 0.10 -inline-lifting-benefit 1300 -inline-alloc-cost 1 -inline-branch-cost 5 -inlining-report example.ml
     CHECK_RESULT $?
-    objdump -x a.o | grep "start address"
+    grep -aE "inline" a.out
     CHECK_RESULT $?
-    ocamlmktop.byte -warn-help hello.ml | grep "warning"
+    ./a.out | grep 6
     CHECK_RESULT $?
-    ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
-    ocamlmktop.byte -vnum example.ml | grep $ocaml_version
+    ocamlopt.byte -clambda-checks example.ml
     CHECK_RESULT $?
-    ocamlmktop.byte -version example.ml | grep $ocaml_version
+    grep -aE "check.caml" a.out
     CHECK_RESULT $?
-    ocamlmktop.byte -v | grep -E "version|Standard library directory"
+    ocamlopt.byte -Oclassic example.ml
     CHECK_RESULT $?
-    ocamlmktop.byte -verbose a.c 2>&1 | grep "gcc"
+    grep -aE "ops.caml_classify" a.out
+    CHECK_RESULT $?
+    ocamlopt.byte -v | grep -E "version|Standard library directory"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -56,7 +57,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ./a* ./example* ./hello*
+    rm -rf a.out ./example* ./not*
     LOG_INFO "End to restore the test environment."
 }
 

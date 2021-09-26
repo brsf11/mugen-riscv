@@ -46,7 +46,7 @@ function run_test() {
     CHECK_RESULT $?
     ocamlmktop.opt -version example.ml | grep $ocaml_version
     CHECK_RESULT $?
-    ocamlmktop.opt -v a.c | grep -E "version|Standard library directory"
+    ocamlmktop.opt -v | grep -E "version|Standard library directory"
     CHECK_RESULT $?
     ocamlmktop.opt -verbose a.c 2>&1 | grep "gcc"
     CHECK_RESULT $?

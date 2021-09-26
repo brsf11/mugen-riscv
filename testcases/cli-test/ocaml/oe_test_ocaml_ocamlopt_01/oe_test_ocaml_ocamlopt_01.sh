@@ -49,7 +49,7 @@ function run_test() {
     CHECK_RESULT $?
     grep -aE "ops.caml_classify" a.out
     CHECK_RESULT $?
-    ocamlopt -v a.c | grep -E "version|Standard library directory"
+    ocamlopt -v | grep -E "version|Standard library directory"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

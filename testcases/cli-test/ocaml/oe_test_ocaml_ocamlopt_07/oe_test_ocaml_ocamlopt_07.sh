@@ -29,8 +29,6 @@ function run_test() {
     LOG_INFO "Start to run test."
     ocamlopt -config a.c | grep -E "version|ocamlc" -A 55
     CHECK_RESULT $?
-    ocamlopt -annot example.ml
-    rm -rf a.out
     ocamlopt -dtypes example.ml
     CHECK_RESULT $?
     grep -A 3 "type" example.annot
@@ -56,7 +54,6 @@ function run_test() {
     CHECK_RESULT $?
     grep -ai "hello world" hello_stubs.o
     CHECK_RESULT $?
-    rm -rf a.out
     cp example.ml exampletest
     ocamlopt -impl exampletest
     CHECK_RESULT $?
