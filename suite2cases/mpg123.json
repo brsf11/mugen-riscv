@@ -1,0 +1,8 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/mpg123",
+    "cases": [
+        {
+            "name": "oe_test_mpg123"
+        }
+    ]
+}
