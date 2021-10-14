@@ -89,6 +89,9 @@
         },
         {
             "name": "oe_test_ipvs_WRONG_COMMAND_01"
+        },
+        {
+            "name": "oe_test_service_ipvsadm"
         }
     ]
 }

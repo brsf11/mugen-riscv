@@ -1,0 +1,17 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/iprutils",
+    "cases": [
+        {
+            "name": "oe_test_service_iprdump"
+        },
+        {
+            "name": "oe_test_service_iprinit"
+        },
+        {
+            "name": "oe_test_service_iprupdate"
+        },
+        {
+            "name": "oe_test_target_iprutils"
+        }
+    ]
+}
