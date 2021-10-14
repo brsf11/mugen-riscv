@@ -300,6 +300,33 @@
         },
         {
             "name": "oe_test_ocaml_ocamloptp.byte_05"
+        },
+	{
+            "name": "oe_test_ocaml_ocamloptp.opt_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.opt_02"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.opt_03"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.opt_04"
+        },
+        {
+            "name": "oe_test_ocaml_ocamloptp.opt_05"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlprof_01"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlprof.byte"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlprof.opt"
+        },
+        {
+            "name": "oe_test_ocaml_ocamlyacc"
         }
     ]
 }

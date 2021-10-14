@@ -13,7 +13,7 @@
 # @Contact   :   liujingjing25812@163.com
 # @Date      :   2020/11/6
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamloptp under ocaml package
+# @Desc      :   The usage of ocamloptp.opt under ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,37 +21,41 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../a.c ../file.ml ../example.ml ./
+    cp ../a.c ../example.ml ../hello.ml ./
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamloptp -a -o a.o a.c
+    cp /usr/lib64/ocaml/lazy.mli lazytest
+    ocamloptp.opt -intf lazytest
     CHECK_RESULT $?
-    grep -aE "Caml|a.o" a.o
+    grep -ai "lazytest" lazytest.cmi
     CHECK_RESULT $?
-    ocamloptp -annot example.ml
+    cp /usr/lib64/ocaml/lazy.mli lazy.mli
+    ocamloptp.opt -intf-suffix mli lazy.mli
     CHECK_RESULT $?
-    ./a.out | grep "6"
+    grep -ai "lazy" lazy.cmi
     CHECK_RESULT $?
-    ocamloptp -bin-annot example.ml
+    ocamloptp.opt -keep-locs -alias-deps -app-funct -labels -linkall -keep-docs -safe-string -open Printf -principal -rectypes -strict-sequence -strict-formats -unboxed-types -unsafe -unsafe-string -w +a-4-6-7-9-27-29-32..42-44-45-48-50-60 -warn-error -a+31 example.ml
     CHECK_RESULT $?
-    ocamlcmt -info example.cmt | grep "module name" -A 15
+    ./a.out | grep 6 && rm -rf a.out
     CHECK_RESULT $?
-    ocamloptp -c a.c
+    ocamloptp.opt -no-keep-locs -no-alias-deps -no-app-funct -nolabels -noassert -noautolink -no-keep-docs -no-principal -no-rectypes -no-strict-sequence -no-strict-formats -no-unboxed-types example.ml
     CHECK_RESULT $?
-    grep -ai "editor" a.o
+    grep -a "none" example.cmi
     CHECK_RESULT $?
-    ocamloptp -color auto a.c
+    ocamloptp.opt -output-obj example.ml -o exampleobj.o
     CHECK_RESULT $?
-    grep -a "rela.eh_frame" a.o
+    objdump -x exampleobj.o | grep "obj"
     CHECK_RESULT $?
-    ocamloptp -absname file.ml >result 2>&1
-    CHECK_RESULT $? 0 1
-    grep "/tmp" result
+    ocamloptp.opt -output-complete-obj example.ml -o examplecom.o
     CHECK_RESULT $?
-    ocamloptp -config a.c | grep -E "version|ocamlc" -A 55
+    objdump -x examplecom.o | grep "obj_counter"
+    CHECK_RESULT $?
+    ocamloptp.opt -warn-help hello.ml | grep "warning"
+    CHECK_RESULT $?
+    ocamloptp.opt -verbose a.c 2>&1 | grep "gcc"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -59,7 +63,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ./a* ./example* ./hello* file.ml result ocamlprof.dump
+    rm -rf ./a* ./example* ./hello* ./lazy* ./lazytest* ocamlprof.dump
     LOG_INFO "End to restore the test environment."
 }
 

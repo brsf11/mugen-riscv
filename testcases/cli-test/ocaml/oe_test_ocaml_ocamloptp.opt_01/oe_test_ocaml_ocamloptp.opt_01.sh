@@ -13,7 +13,7 @@
 # @Contact   :   liujingjing25812@163.com
 # @Date      :   2020/11/6
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamloptp under ocaml package
+# @Desc      :   The usage of ocamloptp.opt under ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,37 +21,37 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../a.c ../file.ml ../example.ml ./
+    cp ../example.ml ./
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamloptp -a -o a.o a.c
+    ocamloptp.opt -P afilmt example.ml
     CHECK_RESULT $?
-    grep -aE "Caml|a.o" a.o
+    grep -a "/tmp/ocamlpp" a.out
     CHECK_RESULT $?
-    ocamloptp -annot example.ml
+    ocamloptp.opt --help | grep "ocamloptp"
     CHECK_RESULT $?
-    ./a.out | grep "6"
+    ocamloptp.opt -O2 -remove-unused-arguments example.ml
     CHECK_RESULT $?
-    ocamloptp -bin-annot example.ml
+    grep -a unused a.out
+    CHECK_RESULT $? 1
+    ocamloptp.opt -O3 -dflambda-invariants example.ml
     CHECK_RESULT $?
-    ocamlcmt -info example.cmt | grep "module name" -A 15
+    grep -a invariant a.out
     CHECK_RESULT $?
-    ocamloptp -c a.c
+    ocamloptp.opt -davail example.ml
     CHECK_RESULT $?
-    grep -ai "editor" a.o
+    grep -az vail a.out
     CHECK_RESULT $?
-    ocamloptp -color auto a.c
+    ocamloptp.opt -dtimings example.ml | grep "0.0"
     CHECK_RESULT $?
-    grep -a "rela.eh_frame" a.o
+    ocamloptp.opt -dprofile example.ml | grep "0."
     CHECK_RESULT $?
-    ocamloptp -absname file.ml >result 2>&1
-    CHECK_RESULT $? 0 1
-    grep "/tmp" result
+    ocamloptp.opt -no-unbox-specialised-args example.ml
     CHECK_RESULT $?
-    ocamloptp -config a.c | grep -E "version|ocamlc" -A 55
+    grep -a unboxed.caml a.out
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -59,7 +59,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ./a* ./example* ./hello* file.ml result ocamlprof.dump
+    rm -rf ./example* a.out ocamlprof.dump
     LOG_INFO "End to restore the test environment."
 }
 

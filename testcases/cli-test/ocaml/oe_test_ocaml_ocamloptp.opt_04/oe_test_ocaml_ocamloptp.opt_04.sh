@@ -13,7 +13,7 @@
 # @Contact   :   liujingjing25812@163.com
 # @Date      :   2020/11/6
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamloptp under ocaml package
+# @Desc      :   The usage of ocamloptp.opt under ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,37 +21,39 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../a.c ../file.ml ../example.ml ./
+    cp ../example.ml ../a.c ./
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamloptp -a -o a.o a.c
+    ocamloptp.opt -dtypes example.ml
     CHECK_RESULT $?
-    grep -aE "Caml|a.o" a.o
+    grep -A 3 "type" example.annot
     CHECK_RESULT $?
-    ocamloptp -annot example.ml
+    ocamloptp.opt -for-pack P -c example.ml
     CHECK_RESULT $?
-    ./a.out | grep "6"
+    grep -ai "camlP__Example" example.o
     CHECK_RESULT $?
-    ocamloptp -bin-annot example.ml
+    ocamloptp.opt -g a.c
     CHECK_RESULT $?
-    ocamlcmt -info example.cmt | grep "module name" -A 15
+    objdump -x a.o | grep debug
     CHECK_RESULT $?
-    ocamloptp -c a.c
+    cp ../hello_stubs.c ./
+    ocamloptp.opt -i hello_stubs.c
     CHECK_RESULT $?
-    grep -ai "editor" a.o
+    objdump -x hello_stubs.o | grep "caml_print_hello"
     CHECK_RESULT $?
-    ocamloptp -color auto a.c
+    ocamloptp.opt -I +/usr/lib64/ocaml hello_stubs.c
     CHECK_RESULT $?
-    grep -a "rela.eh_frame" a.o
+    grep -ai "hello world" hello_stubs.o
     CHECK_RESULT $?
-    ocamloptp -absname file.ml >result 2>&1
-    CHECK_RESULT $? 0 1
-    grep "/tmp" result
+    ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
+    ocamloptp.opt -vnum example.ml | grep $ocaml_version
     CHECK_RESULT $?
-    ocamloptp -config a.c | grep -E "version|ocamlc" -A 55
+    ocamloptp.opt -version example.ml | grep $ocaml_version
+    CHECK_RESULT $?
+    ocamloptp.opt -v a.c | grep -E "version|Standard library directory"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -59,7 +61,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ./a* ./example* ./hello* file.ml result ocamlprof.dump
+    rm -rf ./a* ./example* ./hello* ocamlprof.dump
     LOG_INFO "End to restore the test environment."
 }
 
