@@ -23,13 +23,16 @@ function mysql_pre() {
     useradd -g mysql mysql
     dir="/data/mysql"
     test -d ${dir} || mkdir -p ${dir}
+    CHECK_RESULT $?
     rm -rf ${dir}/*
     mkdir -p ${dir}/data ${dir}/tmp ${dir}/run ${dir}/log
     chown -R mysql:mysql /data
     cd - || exit
     rm -rf /var/lib/mysql/*
     DNF_INSTALL mysql
+    CHECK_RESULT $?
     rpm -qa | grep mysql
+    CHECK_RESULT $?
     touch /etc/my.cnf
     echo "[mysqld_safe]
 log-error=/data/mysql/log/mysql.log
@@ -53,6 +56,7 @@ user=mysql" >/etc/my.cnf
     export PATH=${PATH}:/usr/local/mysql/bin
     mysqld --defaults-file=/etc/my.cnf --initialize >log 2>&1
     grep -iE "fail|error" log
+    CHECK_RESULT $? 1
     mysql_passwd=$(grep root log | awk '{print $NF}')
     chmod 777 /usr/local/mysql/support-files/mysql.server
     cp -rf /usr/local/mysql/support-files/mysql.server /etc/init.d/mysql
@@ -61,7 +65,10 @@ user=mysql" >/etc/my.cnf
     [ -n ${mysql_passwd} ] || exit 1
 
     su - mysql -c "service mysql start" | grep "SUCCESS"
+    CHECK_RESULT $?
     systemctl start mysql
+    CHECK_RESULT $?
     systemctl status mysql | grep -wE 'running|active'
+    CHECK_RESULT $?
     rm -rf log
 }

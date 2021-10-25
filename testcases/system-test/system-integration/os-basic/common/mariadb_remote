@@ -19,7 +19,7 @@
 
 set timeout 10
 log_file testlog
-spawn mysql -h local_ip -u root -plocal_password
+spawn mysql -h ${NODE1_IPV4} -u root -p${NODE1_PASSWORD}
 expect {
         "Maria*" { send "create database test;\r"
         expect "Maria*" { send "use test;\r"}

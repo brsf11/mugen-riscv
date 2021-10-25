@@ -10,29 +10,27 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   doraemon2020
-# @Contact   :   xcl_job@163.com
-# @Date      :   2020-07-01
+# @Author    :   Classicriver_jia
+# @Contact   :   classicriver_jia@foxmail.com
+# @Date      :   2020-4-9
 # @License   :   Mulan PSL v2
-# @Desc      :   Net Public function
+# @Desc      :   Supports logging of scheduled task processes
 # #############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-
-function get_free_eth() {
-    local num_eth=$1
-    echo ${NODE1_NIC[@]}
-    NODE1_NIC=$(python3 ${OET_PATH}/libs/locallibs/get_test_device.py --node 1 --device nic)
-    LOCAL_ETH=(${NODE1_NIC[@]/$(ip route | grep ${NODE1_IPV4} | awk '{print$3}')/})
-    [ ${#LOCAL_ETH[@]} -ge ${num_eth} ] || exit 1
+function run_test() {
+    LOG_INFO "Start to run test."
+    journalctl --unit cron.service -all >systemlog5
+    logsize=$(ls -l systemlog5 | awk '{print $5}')
+    [ "$logsize" -gt 0 ]
+    CHECK_RESULT $?
+    LOG_INFO "End to run test."
 }
 
-function Randomly_generate_ip() {
-    while [ True ]; do
-        random_ip=${NODE1_IPV4[0]%.*}.$(shuf -e $(seq 1 254) | head -n 1)
-        ping -c 3 ${random_ip} &>/dev/nul || {
-            printf "%s" "$random_ip"
-            break
-        }
-    done
+function post_test() {
+    LOG_INFO "Start to restore the test environment."
+    rm -rf systemlog5
+    LOG_INFO "End to restore the test environment."
 }
+
+main $@
