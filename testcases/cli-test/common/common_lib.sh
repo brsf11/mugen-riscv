@@ -42,6 +42,7 @@ function test_restart() {
     CHECK_RESULT $? 0 0 "${service} stop failed"
     systemctl start "${service}"
     CHECK_RESULT $? 0 0 "${service} start failed"
+    SLEEP_WAIT 5
     systemctl status "${service}" | grep "Active: active"
     CHECK_RESULT $? 0 0 "${service} start failed"
 }
