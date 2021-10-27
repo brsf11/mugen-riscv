@@ -1,0 +1,8 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/galera",
+    "cases": [
+        {
+            "name": "oe_test_galera_garbd"
+        }
+    ]
+}
