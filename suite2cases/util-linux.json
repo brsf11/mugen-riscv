@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/util-linux",
+    "cases": [
+        {
+            "name": "oe_test_service_fstrim"
+        },
+        {
+            "name": "oe_test_service_uuidd"
+        },
+        {
+            "name": "oe_test_socket_uuidd"
+        }
+    ]
+}
