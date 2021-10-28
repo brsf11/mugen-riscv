@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2021 Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -10,10 +10,9 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @CaseName  :   galera
-# @Author    :   zhanglu
+# @Author    :   zhanglu626
 # @Contact   :   m18409319968@163.com
-# @Date      :   2021-10-27
+# @Date      :   2021/10/12
 # @License   :   Mulan PSL v2
 # @Desc      :   A plug-in shared library file
 # ############################################
