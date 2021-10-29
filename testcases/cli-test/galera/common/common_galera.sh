@@ -1,19 +1,18 @@
 #!/usr/bin/bash
 
-# Copyright (c) [2021] Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
 # THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more details.
+# See the Mulan PSL v2 for more detaitest -f.
 
 # #############################################
-# @CaseName  :   galera_pre
-# @Author    :   zhanglu
-# @Contact   :   zhanglu_job@163.com
-# @Date      :   2021.9.23
+# @Author    :   zhanglu626
+# @Contact   :   m18409319968@163.com
+# @Date      :   2021/10/23
 # @License   :   Mulan PSL v2
 # @Desc      :   galera prepare
 # ############################################
@@ -23,8 +22,8 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function galera_pre() {
     systemctl stop firewalld
     systemctl disable firewalld
-    sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
-    DNF_INSTALL galera
+    setenforce 0
+    DNF_INSTALL "galera openssl"
     mkdir galera_zl
     touch galera_zl/log1 galera_zl/log2 galera_zl/log3
     openssl genrsa 2048 > galera_zl/ca-key.pem

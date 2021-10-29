@@ -7,12 +7,12 @@
 # THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more details.
+# See the Mulan PSL v2 for more detaitest -f.
 
 # #############################################
 # @Author    :   zhanglu626
 # @Contact   :   m18409319968@163.com
-# @Date      :   2021/10/12
+# @Date      :   2021/10/23
 # @License   :   Mulan PSL v2
 # @Desc      :   A plug-in shared library file
 # ############################################
@@ -33,7 +33,6 @@ function run_test() {
     kill -9 $(pgrep -f 'garbd')
     garbd -h 2>&1 | grep 'Usage: garbd'
     CHECK_RESULT $?
-    SLEEP_WAIT 3
     garbd -d -g garbd_name -a "gcomm://0.0.0.0"
     test -n $(pgrep -f garbd)
     CHECK_RESULT $?
