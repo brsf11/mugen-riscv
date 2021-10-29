@@ -22,77 +22,74 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
     DNF_INSTALL rust
-    cp ../common/hello.rs hello.rs
-    cp ../common/lib.rs lib.rs
+    cp ../common/* ./
     LOG_INFO "End to prepare the test environment!"
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    rustc --print crate-name hello.rs |grep "hello"
+    rustc --print crate-name hello.rs | grep "hello"
     CHECK_RESULT $? 0 0 "Failed to output the hello file"
-    rustc --print file-names hello.rs |grep "hello"
+    rustc --print file-names hello.rs | grep "hello"
     CHECK_RESULT $? 0 0 "Failed to output the hello file"
-    rustc --print sysroot hello.rs |grep "/usr"
+    rustc --print sysroot hello.rs | grep "/usr"
     CHECK_RESULT $? 0 0 "Failed to output the sysroot information"
-    rustc --print target-libdir hello.rs |grep "/usr/lib/rustlib"
+    rustc --print target-libdir hello.rs | grep "/usr/lib/rustlib"
     CHECK_RESULT $? 0 0 "Failed to output the target libdir"
-    rustc --print cfg hello.rs |grep -E "debug|target|unix"
+    rustc --print cfg hello.rs | grep -E "debug|target|unix"
     CHECK_RESULT $? 0 0 "Failed to output the cfg information"
-    rustc --print target-list hello.rs |grep -E "*"
+    rustc --print target-list hello.rs | grep -E ".*"
     CHECK_RESULT $? 0 0 "Failed to output the target list"
-    rustc --print target-cpus hello.rs |grep -i "cpu"
+    rustc --print target-cpus hello.rs | grep -i "cpu"
     CHECK_RESULT $? 0 0 "Failed to output the target cpus"
-    rustc --print target-features hello.rs |grep "features"
+    rustc --print target-features hello.rs | grep "features"
     CHECK_RESULT $? 0 0 "Failed to output the target features"
-    rustc --print relocation-models hello.rs |grep "Available relocation models"
+    rustc --print relocation-models hello.rs | grep "Available relocation models"
     CHECK_RESULT $? 0 0 "Failed to output the relocation models"
-    rustc --print code-models hello.rs |grep "Available code models"
+    rustc --print code-models hello.rs | grep "Available code models"
     CHECK_RESULT $? 0 0 "Failed to output the code models"
-    rustc --print tls-models hello.rs |grep "Available TLS models"
+    rustc --print tls-models hello.rs | grep "Available TLS models"
     CHECK_RESULT $? 0 0 "Failed to output the stls models"
-    rustc --print native-static-libs hello.rs --crate-name priname
+    rustc --print native-static-libs hello.rs --crate-name hello_print
     CHECK_RESULT $?
-    ls |grep "priname"
+    test -f "hello_print"
     CHECK_RESULT $? 0 0 "Failed to output the priname file"
     rustc -g hello.rs -o hello_g
     CHECK_RESULT $?
-    ls |grep "hello_g"
+    test -f "hello_g"
     CHECK_RESULT $? 0 0 "Failed to output the hello_g file"
     rustc -O hello.rs -o hello_O
     CHECK_RESULT $?
-    ls |grep "hello_O"
+    test -f "hello_O"
     CHECK_RESULT $? 0 0 "Failed to output the hello_O file"
-    rustc -o demo hello.rs
+    rustc -o hello_o hello.rs
     CHECK_RESULT $?
-    ls |grep "demo"
+    test -f "hello_o"
     CHECK_RESULT $? 0 0 "Failed to output the demo file"
-    rustc --out-dir ./ hello.rs --crate-name dirname
+    rustc --out-dir ./ hello.rs --crate-name hello_dir
     CHECK_RESULT $?
-    ls |grep "dirname"
+    test -f "hello_dir"
     CHECK_RESULT $? 0 0 "Failed to output the dirname file"
-    rustc --explain E0426 |grep -i "Erroneous code example"
+    rustc --explain E0426 | grep -i "Erroneous code example"
     CHECK_RESULT $?
-    rustc --test hello.rs --crate-name testname
+    rustc --test hello.rs --crate-name hello_test
     CHECK_RESULT $?
-    ./testname |grep "running"
+    ./hello_test | grep "running"
     CHECK_RESULT $? 0 0 "Test tool build failed"
-    rustc lib.rs --crate-type=lib -W missing-docs >Wlog 2>&1
-    CHECK_RESULT $?
-    grep "warning" Wlog
+    rustc lib.rs --crate-type=lib -W missing-docs 2>&1 | grep "warning"
     CHECK_RESULT $? 0 0 "Failed to set Linter option Warn"
     rustc lib.rs --crate-type=lib -A missing-docs -o hello_A
     CHECK_RESULT $?
-    ls |grep "hello_A"
+    test -f "hello_A"
     CHECK_RESULT $? 0 0 "Failed to set Linter option Allow"
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    rm -rf $(ls | grep -v ".sh")
+    rm -rf ./*.rs ./*.rlib hello*
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
 
-main $@
+main "$@"

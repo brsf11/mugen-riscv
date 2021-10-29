@@ -18,6 +18,12 @@
         },
         {
             "name": "oe_test_cargo_02"
+        },
+        {
+            "name": "oe_test_clippy"
+        },
+        {
+            "name": "oe_test_rustfmt"
         }
     ] 
 }

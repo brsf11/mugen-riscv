@@ -21,66 +21,55 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
-    DNF_INSTALL optipng 
+    DNF_INSTALL optipng
+    for i in {0..7}; do
+        cp ../common/ini.png test"$i".png
+    done
     LOG_INFO "End to prepare the test environment!"
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    cp ../common/ini.png test9.png
+    optipng -f 2 test1.png -log test1.log
     CHECK_RESULT $?
-    optipng -f 2 test9.png -log test9.log
-    CHECK_RESULT $?
-    grep -i "f = 2" test9.log
+    grep -i "f = 2" test1.log
     CHECK_RESULT $? 0 0 "Filter failure"
-    cp ../common/ini.png test10.png
+    optipng -i 1 test2.png -log test2a.log
     CHECK_RESULT $?
-    optipng -i 1 test10.png -log test10a.log
-    CHECK_RESULT $?
-    grep -i "output" test10a.log
+    grep -i "output" test2a.log
     CHECK_RESULT $? 0 0 "Interlaced scan failed"
-    optipng -i 0 test10.png -log test10b.log
+    optipng -i 0 test2.png -log test2b.log
     CHECK_RESULT $?
-    grep -iE "output|interlaced" test10a.log
+    grep -iE "output|interlaced" test2a.log
     CHECK_RESULT $? 0 0 "Non-interlaced scan failed"
-    cp ../common/ini.png test11.png
+    optipng -zc 6 -zm 4 -zs 1 -zw 4k test3.png -log test3.log
     CHECK_RESULT $?
-    optipng -zc 6 -zm 4 -zs 1 -zw 4k test11.png -log test11.log
-    CHECK_RESULT $?
-    grep -iE "output|zc = 6|zm = 4|zs = 1" test11.log
+    grep -iE "output|zc = 6|zm = 4|zs = 1" test3.log
     CHECK_RESULT $? 0 0 "Failed to set zlib"
-    cp ../common/ini.png test12.png
+    optipng -full test4.png -log test4.log
     CHECK_RESULT $?
-    optipng -full test12.png -log test12.log
-    CHECK_RESULT $?
-    grep -iE "output|IDAT size" test12.log
+    grep -iE "output|IDAT size" test4.log
     CHECK_RESULT $? 0 0 "Report printing failed"
-    cp ../common/ini.png test13.png
+    optipng -nb -nc -np -nx test5.png -log test5.log
     CHECK_RESULT $?
-    optipng -nb -nc -np -nx test13.png -log test13.log
-    CHECK_RESULT $?
-    grep -i "output" test13.log
+    grep -i "output" test5.log
     CHECK_RESULT $? 0 0 "Failed to set nb or nc or np or nx"
-    cp ../common/ini.png test14.png
+    optipng -nz test6.png -log test6.log
     CHECK_RESULT $?
-    optipng -nz test14.png -log test14.log
-    CHECK_RESULT $?
-    grep -i "trying" test14.log
+    grep -i "trying" test6.log
     CHECK_RESULT $? 1 0 "Failed to set nz"
-    cp ../common/ini.png test15.png
+    optipng -strip all test7.png -log test7.log
     CHECK_RESULT $?
-    optipng -strip all test15.png -log test15.log
-    CHECK_RESULT $?
-    grep -iE "output|Stripping metadata" test15.log
+    grep -iE "output|Stripping metadata" test7.log
     CHECK_RESULT $? 0 0 "Failed to delete metadata"
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    rm -rf $(ls | grep -v ".sh")
+    rm -rf ./test*
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
 
-main $@
+main "$@"
