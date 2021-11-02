@@ -1,0 +1,29 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/rust",
+    "cases": [
+        {
+            "name": "oe_test_rustc_01"
+        },
+        {
+            "name": "oe_test_rustc_02"
+        },
+        {
+            "name": "oe_test_rustc_03"
+        },
+        {
+            "name": "oe_test_rustdoc"
+        },
+        {
+            "name": "oe_test_cargo_01"
+        },
+        {
+            "name": "oe_test_cargo_02"
+        },
+        {
+            "name": "oe_test_clippy"
+        },
+        {
+            "name": "oe_test_rustfmt"
+        }
+    ] 
+}
