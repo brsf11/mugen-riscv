@@ -28,13 +28,13 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    rustc -h | grep -i "usage"
+    rustc -h | grep "Options"
     CHECK_RESULT $? 0 0 "Help information printing failed"
     rustc --cfg hello hello.rs && test -f "hello"
     ./hello | grep "world!"
     CHECK_RESULT $? 0 0 "Failed to print world！"
     rustc -L . hello.rs --crate-name hello1
-    test -f "hello1"    
+    test -f "hello1"
     CHECK_RESULT $? 0 0 "Failed to output the hello1 file"
     rustc --crate-type bin pub.rs
     CHECK_RESULT $?

@@ -40,14 +40,14 @@ function run_test() {
     cargo test | grep -E "running|test result"
     CHECK_RESULT $? 0 0 "Failed to execute tests"
     cargo bench | grep -E "running|test result"
-    CHECK_RESULT $?0 0 "Failed to execute the benchmark"
+    CHECK_RESULT $? 0 0 "Failed to execute the benchmark"
     cargo check
     CHECK_RESULT $? 0 0 "Failure check kit"
     cargo doc && test -d target/doc
     CHECK_RESULT $? 0 0 "Failed to build the package document"
     cargo clean && test -d target
     CHECK_RESULT $? 1 0 "Failed to delete a file"
-    mkdir INI && cd INI || exit
+    mkdir INI && cd INI || exit 1
     cargo init && test -d src
     CHECK_RESULT $? 0 0 "Failed to create a new package"
     cargo update && test -f Cargo.lock

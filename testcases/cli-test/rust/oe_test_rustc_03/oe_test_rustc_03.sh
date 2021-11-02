@@ -36,7 +36,7 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Failed to set Linter level warning"
     rustc -C opt-level=2 hello.rs -o hello_C && test -f "hello_C"
     CHECK_RESULT $? 0 0 "Failed to output the hello_C file"
-    rustc -V | grep "rustc"
+    rustc -V | grep -E "[0-9]"
     CHECK_RESULT $? 0 0 "Failed to output the version information"
     rustc -v hello.rs -o hello_v && test -f "hello_v"
     CHECK_RESULT $? 0 0 "Failed to output the hello_v file"

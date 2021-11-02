@@ -28,15 +28,14 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    rustdoc -h | grep -i "Options"
+    rustdoc -h | grep "Options"
     CHECK_RESULT $? 0 0 "Help information printing failed"
-    rustdoc -V | grep "rustdoc"
+    rustdoc -V | grep -E "[0-9]"
     CHECK_RESULT $? 0 0 "Failed to output the version information"
-    rustdoc -v -V | grep -iE "binary|release|version"
+    rustdoc -v -V | grep -E "release|version|[0-9]"
     CHECK_RESULT $?
     rustdoc test.rs -o doc --crate-name mycrate
     CHECK_RESULT $?
-    ls doc/*mycrate*
     test -d doc/mycrate
     CHECK_RESULT $? 0 0 "Failed to specify the output path"
     rustdoc test.rs -L doc/

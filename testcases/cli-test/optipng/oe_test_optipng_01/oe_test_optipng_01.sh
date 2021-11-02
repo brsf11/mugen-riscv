@@ -32,7 +32,7 @@ function run_test() {
     LOG_INFO "Start to run test."
     optipng -help | grep "Synopsis"
     CHECK_RESULT $? 0 0 "Help information printing failed"
-    optipng -v | grep -E "version"
+    optipng -v | grep -E "[0-9]"
     CHECK_RESULT $? 0 0 "Version information printing failed"
     optipng test0.png -log test0.log
     CHECK_RESULT $?
@@ -40,7 +40,7 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Failed to output the log file"
     optipng -o1 test1.png -log test1.log
     CHECK_RESULT $?
-    grep -i "output" test1.log
+    grep "Output" test1.log
     CHECK_RESULT $? 0 0 "Failed to set the level"
     optipng -backup test2.png
     CHECK_RESULT $?
@@ -48,23 +48,23 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Failed to back up files"
     optipng -clobber test2.png.bak -log test2a.log
     CHECK_RESULT $?
-    grep -i "output" test2a.log
+    grep "Output" test2a.log
     CHECK_RESULT $? 0 0 "Overwrite file failed"
     optipng test3.png
     CHECK_RESULT $?
     optipng -force test3.png -log test3.log
     CHECK_RESULT $?
-    grep -i "output" test3.log
+    grep "Output" test3.log
     CHECK_RESULT $? 0 0 "Force run failure"
     optipng -preserve test4.png -log test4.log
     CHECK_RESULT $?
-    grep -i "output" test4.log
+    grep "Output" test4.log
     CHECK_RESULT $? 0 0 "Failure to retain properties"
     optipng -quiet test5.png
     CHECK_RESULT $? 0 0 "Silent run failure"
     optipng -simulate test6.png -log test6.log
     CHECK_RESULT $?
-    grep -i "simulation mode" test6.log
+    grep "simulation mode" test6.log
     CHECK_RESULT $? 0 0 "Simulation run failure"
     optipng test7.png -out test7.gif
     CHECK_RESULT $?

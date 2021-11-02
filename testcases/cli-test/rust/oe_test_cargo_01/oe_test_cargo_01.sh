@@ -29,17 +29,17 @@ function run_test() {
     LOG_INFO "Start executing testcase!"
     cargo -h | grep "USAGE"
     CHECK_RESULT $? 0 0 "Help information printing failed"
-    cargo -V | grep "cargo"
+    cargo -V | grep -E "[0-9]"
     CHECK_RESULT $? 0 0 "Failed to output the version information"
     cargo --list | grep "Installed Commands"
     CHECK_RESULT $? 0 0 "Failed to list commands"
-    cargo --explain E0004 | grep -i "Erroneous code example"
+    cargo --explain E0004 | grep "Erroneous code example"
     CHECK_RESULT $? 0 0 "Failed to interpret code command"
-    cargo -vV | grep "release"
+    cargo -vV | grep -E "release|[0-9]"
     CHECK_RESULT $? 0 0 "Failed to list details"
     cargo new hello -q
     CHECK_RESULT $? 0 0 "Silent output failure"
-    cd hello || exit
+    cd hello || exit 1
     cargo run --color always
     CHECK_RESULT $? 0 0 "Color setting failed"
     cargo run --offline | grep "Hello, world!"

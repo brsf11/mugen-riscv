@@ -30,9 +30,9 @@ function run_test() {
     LOG_INFO "Start executing testcase!"
     cargo-clippy -h | grep "Usage"
     CHECK_RESULT $? 0 0 "Help information printing failed"
-    cargo-clippy -V | grep "clippy"
+    cargo-clippy -V | grep -E "[0-9]"
     CHECK_RESULT $? 0 0 "Failed to output the version information"
-    cargo new hello_world && cd hello_world || exit
+    cargo new hello_world && cd hello_world || exit 1
     cargo check 2>&1 | grep "Finished"
     CHECK_RESULT $? 0 0 "Failure check"
     cargo-clippy -W 2>&1 | grep "Finished"
@@ -45,7 +45,7 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Failed setup Forbit"
     clippy-driver -h | grep "Usage"
     CHECK_RESULT $? 0 0 "Help information printing failed"
-    clippy-driver -V | grep "clippy"
+    clippy-driver -V | grep -E "[0-9]"
     CHECK_RESULT $? 0 0 "Failed to output the version information"
     cd ../ && clippy-driver --rustc test.rs
     ./test || grep "Hello, world!"

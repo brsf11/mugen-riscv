@@ -40,7 +40,7 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Failed to output the cfg information"
     rustc --print target-list hello.rs | grep -E ".*"
     CHECK_RESULT $? 0 0 "Failed to output the target list"
-    rustc --print target-cpus hello.rs | grep -i "cpu"
+    rustc --print target-cpus hello.rs | grep "Target CPU"
     CHECK_RESULT $? 0 0 "Failed to output the target cpus"
     rustc --print target-features hello.rs | grep "features"
     CHECK_RESULT $? 0 0 "Failed to output the target features"
@@ -70,7 +70,7 @@ function run_test() {
     CHECK_RESULT $?
     test -f "hello_dir"
     CHECK_RESULT $? 0 0 "Failed to output the dirname file"
-    rustc --explain E0426 | grep -i "Erroneous code example"
+    rustc --explain E0426 | grep "Erroneous code example"
     CHECK_RESULT $?
     rustc --test hello.rs --crate-name hello_test
     CHECK_RESULT $?

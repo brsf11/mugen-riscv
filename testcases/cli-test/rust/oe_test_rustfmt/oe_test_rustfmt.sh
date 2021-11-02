@@ -30,8 +30,6 @@ function run_test() {
     LOG_INFO "Start executing testcase!"
     cargo-fmt -h | grep "USAGE"
     CHECK_RESULT $? 0 0 "cargo-fmt Help information printing failed"
-    cargo-fmt --version | grep "rustfmt"
-    CHECK_RESULT $? 0 0 "Failed to output the version information of cargo-fmt"
     rustfmt --check hello.rs | grep "Diff in"
     CHECK_RESULT $? 0 0 "Check the failure"
     rustfmt --backup test.rs && test -f test.bk
@@ -44,12 +42,12 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Default configuration failed"
     rustfmt --color auto hello.rs
     CHECK_RESULT $? 0 0 "Color setting failed"
-    rustfmt -V | grep "rustfmt"
+    rustfmt -V | grep -E "[0-9]"
     CHECK_RESULT $? 0 0 "Failed to output the version information of rustfmt"
     # RLS packages have only basic commands
     rls -h | grep "help"
     CHECK_RESULT $? 0 0 "Help information printing failed"
-    rls -V | grep "rls"
+    rls -V | grep -E "[0-9]"
     CHECK_RESULT $? 0 0 "Failed to output the version information"
     LOG_INFO "End to run test."
 }
