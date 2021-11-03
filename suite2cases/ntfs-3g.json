@@ -49,6 +49,59 @@
         {
             "name": "oe_test_ntfs-3g_ntfsresize",
             "add disk": [5,5]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfscluster",
+            "add disk": [5,5]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfsmove",
+            "add disk": [5,5]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfssecaudit",
+            "add disk": [5,5]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfstruncate",
+            "add disk": [5,5]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfsundelete_01",
+            "add disk": [5,5]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfsundelete_02",
+            "add disk": [5,5]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfs-3g_01",
+            "add disk": [5,5]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfs-3g_02",
+            "add disk": [5,5]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfs-3g_03",
+            "add disk": [5,5]
+        },
+        {
+            "name": "oe_test_ntfs-3g_lowntfs-3g_01",
+            "add disk": [5,5]
+        },
+        {
+            "name": "oe_test_ntfs-3g_lowntfs-3g_02",
+            "add disk": [5,5]
+        },
+        {
+            "name": "oe_test_ntfs-3g_lowntfs-3g_03",
+            "add disk": [5,5]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfsfallocate",
+            "add disk": [5,5]
         }
+
     ]
 }
