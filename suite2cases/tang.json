@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/tang",
+    "cases": [
+        {
+            "name": "oe_test_service_tangd-keygen"
+        },
+        {
+            "name": "oe_test_service_tangd-update"
+        },
+        {
+            "name": "oe_test_socket_tangd"
+        }
+    ]
+}
