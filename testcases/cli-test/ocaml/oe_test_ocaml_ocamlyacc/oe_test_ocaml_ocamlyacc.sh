@@ -11,9 +11,9 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/11/6
+# @Date      :   2020/10/21
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamloptp under ocaml package
+# @Desc      :   The usage of ocamlcmt, ocamldebug and other commands in ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,37 +21,35 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../a.c ../file.ml ../example.ml ./
+    cp ../example.ml ./
+    ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamloptp -a -o a.o a.c
+    ocamlc -g example.ml
+    ocamlrun a.out | grep "6"
     CHECK_RESULT $?
-    grep -aE "Caml|a.o" a.o
+    ocamlrund a.out 2>&1 | grep "runtime"
     CHECK_RESULT $?
-    ocamloptp -annot example.ml
+    ocamlruni -v a.out | grep "6"
     CHECK_RESULT $?
-    ./a.out | grep "6"
+    ocamlyacc test.mly
     CHECK_RESULT $?
-    ocamloptp -bin-annot example.ml
+    grep "parser" test.ml
     CHECK_RESULT $?
-    ocamlcmt -info example.cmt | grep "module name" -A 15
+    grep "token" test.mli
     CHECK_RESULT $?
-    ocamloptp -c a.c
+    ocamlyacc -b pre test.mly
     CHECK_RESULT $?
-    grep -ai "editor" a.o
+    test -f pre.ml -a -f pre.mli
     CHECK_RESULT $?
-    ocamloptp -color auto a.c
+    ocamlyacc -v test.mly
     CHECK_RESULT $?
-    grep -a "rela.eh_frame" a.o
+    grep "state" test.output
     CHECK_RESULT $?
-    ocamloptp -absname file.ml >result 2>&1
-    CHECK_RESULT $? 0 1
-    grep "/tmp" result
-    CHECK_RESULT $?
-    ocamloptp -config a.c | grep -E "version|ocamlc" -A 55
+    ocamlyacc -version test.mly | grep "$ocaml_version"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -59,7 +57,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ./a* ./example* ./hello* file.ml result ocamlprof.dump
+    rm -rf example* test.ml test.mli test.output pre* a.out runlog
     LOG_INFO "End to restore the test environment."
 }
 

@@ -11,9 +11,9 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2020/11/6
+# @Date      :   2020/10/21
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of ocamloptp under ocaml package
+# @Desc      :   The usage of ocamlcmt, ocamldebug and other commands in ocaml package
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
@@ -21,37 +21,29 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ocaml
-    cp ../a.c ../file.ml ../example.ml ./
+    cp ../example.ml ./
+    ocaml_version=$(rpm -qa ocaml | awk -F '-' '{print $2}')
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamloptp -a -o a.o a.c
+    ocamlcp -P a example.ml
+    echo "example" >example.dump
+    ocamlprof -f s example.dump | grep "example"
     CHECK_RESULT $?
-    grep -aE "Caml|a.o" a.o
+    ocamlprof -instrument -impl example.ml 2>&1 | grep "OCAML__prof_Profiling"
     CHECK_RESULT $?
-    ocamloptp -annot example.ml
+    ocamlprof -intf /usr/lib64/ocaml/filename.mli | grep "string"
     CHECK_RESULT $?
-    ./a.out | grep "6"
+    ocamlprof -vnum ocamlprof.dump | grep "$ocaml_version"
     CHECK_RESULT $?
-    ocamloptp -bin-annot example.ml
+    ocamlprof -version ocamlprof.dump | grep "$ocaml_version"
     CHECK_RESULT $?
-    ocamlcmt -info example.cmt | grep "module name" -A 15
+    echo "example.dump" >tmpprof
+    ocamlprof -args tmpprof | grep "example"
     CHECK_RESULT $?
-    ocamloptp -c a.c
-    CHECK_RESULT $?
-    grep -ai "editor" a.o
-    CHECK_RESULT $?
-    ocamloptp -color auto a.c
-    CHECK_RESULT $?
-    grep -a "rela.eh_frame" a.o
-    CHECK_RESULT $?
-    ocamloptp -absname file.ml >result 2>&1
-    CHECK_RESULT $? 0 1
-    grep "/tmp" result
-    CHECK_RESULT $?
-    ocamloptp -config a.c | grep -E "version|ocamlc" -A 55
+    ocamlprof -help | grep "ocamlprof"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -59,7 +51,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ./a* ./example* ./hello* file.ml result ocamlprof.dump
+    rm -rf ./example* a.out ocamlprof.dump example.dump tmpprof
     LOG_INFO "End to restore the test environment."
 }
 
