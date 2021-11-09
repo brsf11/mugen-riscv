@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/tomcat",
+    "cases": [
+        {
+            "name": "oe_test_service_tomcat-jsvc"
+        },
+        {
+            "name": "oe_test_service_tomcat"
+        }
+    ]
+}
