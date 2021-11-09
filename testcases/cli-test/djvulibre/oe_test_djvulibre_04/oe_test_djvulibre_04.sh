@@ -34,59 +34,59 @@ END
 function run_test() {
     LOG_INFO "Start to run test."
     test -f test.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check test.djvu not exist."
     djvudump >result 2>&1
     grep "Usage: djvudump" result && rm -rf result
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvudump failed."
     djvuextract --help >result 2>&1
     grep "Usage:" result && rm -rf result
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvuextract --help failed."
     djvumake --help >result 2>&1
     grep "Usage: djvumake" result && rm -rf result
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvumake --help failed."
     djvups --help >result 2>&1
     grep "Usage: djvups" result && rm -rf result
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups --help failed."
     djvups -color=yes test.djvu djvups1.ps
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups -color=yes failed."
     test -f djvups1.ps
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups1.ps not exist."
     djvups -color=no test.djvu djvups2.ps
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups -color=no failed."
     test -f djvups2.ps
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups2.ps not exist."
     djvups -verbose test.djvu djvups.ps
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups -verbose failed."
     test -f djvups.ps
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups.ps not exist."
     djvups -format=ps test.djvu djvups3
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups -format=ps failed."
     test -f djvups3
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups3.ps not exist."
     djvups -level=2 test.djvu djvups4
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups -level=2 failed."
     test -f djvups4
-    CHECK_RESULT $?
-    djvups -orient=portrait test.djvu djvups4.djvu
-    CHECK_RESULT $?
-    test -f djvups4.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups4.ps not exist."
+    djvups -orient=portrait test.djvu djvups42.djvu
+    CHECK_RESULT $? 0 0 "Check djvups -orient=portrait failed."
+    test -f djvups42.djvu
+    CHECK_RESULT $? 0 0 "Check djvups42.ps not exist."
     djvups -mode=color test.djvu djvups5.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups -mode=color failed."
     test -f djvups5.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups5.ps not exist."
     djvups -zoom=25 test.djvu djvups6.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups -zoom=25 failed."
     test -f djvups6.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups6.ps not exist."
     djvups -bookletfold=18+200 test.djvu djvups7.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups -bookletfold=18+200 failed."
     test -f djvups7.djvu
-    CHECK_RESULT $?
-    djvups -booklet=no test.djvu djvups3.djvu
-    CHECK_RESULT $?
-    test -f djvups3.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check djvups7.ps not exist."
+    djvups -booklet=no test.djvu djvups31.djvu
+    CHECK_RESULT $? 0 0 "Check djvups -booklet=no failed."
+    test -f djvups31.djvu
+    CHECK_RESULT $? 0 0 "Check djvups31.ps not exist."
     LOG_INFO "End to run test."
 }
 

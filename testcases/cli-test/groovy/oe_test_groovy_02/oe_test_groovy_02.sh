@@ -27,48 +27,48 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    groovyc -d /home/ test.groovy
-    CHECK_RESULT $?
-    test -f /home/test.class && rm -rf /home/test.class
-    CHECK_RESULT $?
+    groovyc -d /tmp/ test.groovy
+    CHECK_RESULT $? 0 0 "Check groovyc -d failed."
+    test -f /tmp/test.class && rm -rf /tmp/test.class
+    CHECK_RESULT $? 0 0 "Check groovyc -d failed."
     groovyc test.groovy
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovyc failed."
     test -f test.class && rm -rf test.class
     groovyc -e test.groovy
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovyc -e failed."
     test -f test.class && rm -rf test.class
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovyc -e failed."
     groovyc -cp lib/dep.jar test.groovy
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovyc -cp failed."
     test -f test.class && rm -rf test.class
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovyc -cp failed."
     groovyc --encoding utf-8 test.groovy
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovyc --encoding failed."
     test -f test.class && rm -rf test.class
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovyc --encoding failed."
     groovyc --indy test.groovy
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovyc --indy failed."
     test -f test.class
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check test.class not exist."
     groovy test | grep "15"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovy failed."
     test -f test.class && rm -rf test.class
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovy failed."
     groovydoc --help | grep "usage: groovydoc"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovydoc --help failed."
     groovydoc --version | grep "GroovyDoc"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovydoc --version failed."
     groovydoc test.groovy
     CHECK_RESULT "$(ls ./ | wc -w)" 14
-    groovydoc -d /home ./test.groovy
-    CHECK_RESULT $?
-    CHECK_RESULT "$(ls /home/ | wc -w)" 12
+    groovydoc -d /tmp ./test.groovy
+    CHECK_RESULT $? 0 0 "Check groovydoc -d failed."
+    CHECK_RESULT "$(ls /tmp/ | wc -w)" 15
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -rf $(ls | grep -v '\.sh') /home/*
+    rm -rf $(ls | grep -v '\.sh') /tmp/*
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }

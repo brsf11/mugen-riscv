@@ -29,43 +29,43 @@ function run_test() {
     LOG_INFO "Start to run test."
     cjb2 --help >result 2>&1
     grep "Usage: cjb2" result && rm -rf result
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cjb2 --help failed."
     convert test3.jpg test.pbm
     cjb2 -lossy test.pbm cjb2_1.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cjb2 -lossy failed."
     test -f cjb2_1.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cjb2_1.djvu not exist."
     cjb2 -clean test.pbm cjb2_2.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cjb2 -clean failed."
     test -f cjb2_2.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cjb2_2.djvu not exist."
     cjb2 -verbose test.pbm cjb2_3.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cjb2 -verbose failed."
     test -f cjb2_3.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cjb2_3.djvu not exist."
     cpaldjvu --help >result 2>&1
     grep "Usage: cpaldjvu" result && rm -rf result
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cpaldjvu --help failed."
     convert test1.jpg test.ppm
     cpaldjvu -colors 256 test.ppm cpal_1.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cpaldjvu -colors failed."
     test -f cpal_1.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cpal_1 not exist."
     cpaldjvu -dpi 100 test.ppm cpal_2.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cpaldjvu -dpi failed."
     test -f cpal_2.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cpal_2 not exist."
     cpaldjvu -verbose test.ppm cpal_3.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cpaldjvu -verbose failed."
     test -f cpal_3.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cpal_3 not exist."
     cpaldjvu -bgwhite test.ppm cpal_4.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cpaldjvu -bgwhite failed."
     test -f cpal_4.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check cpal_4 not exist."
     csepdjvu --help >result 2>&1
     grep "Usage: csepdjvu" result && rm -rf result
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check csepdjvu --help failed."
     LOG_INFO "End to run test."
 }
 

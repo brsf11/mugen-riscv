@@ -27,26 +27,26 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start to run test."
     grape help | grep "usage: grape"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check grape help failed."
     grape --help | grep "usage: grape"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check grape --help failed."
     grape -v | grep "Version:"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check grape -v failed."
     grape list | grep -E "Grape module versions cached|Grape modules cached"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check grape list failed."
     groovyConsole --help | grep "usage: groovyConsole"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovyConsole --help failed."
     groovy --help | grep "usage: groovy"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovy --help failed."
     groovy -v | grep "Groovy Version"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovy -v failed."
     groovy -e "println 'hello'" | grep "hello"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovy -e failed."
     groovy -e "new File('.').eachFileRecurse {println it}" | grep "oe_test_groovy_01.sh"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovy -e failed."
     groovyc --help | grep "usage: groovyc"
-    CHECK_RESULT $?
-    groovyc -version
+    CHECK_RESULT $? 0 0 "Check groovyc --help failed."
+    groovyc -version 0 0 "Check groovyc --version failed."
     CHECK_RESULT $?
     expect <<-END
     spawn groovysh
@@ -60,7 +60,7 @@ function run_test() {
     expect eof
 END
     pwd
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check groovysh failed."
     LOG_INFO "End to run test."
 }
 

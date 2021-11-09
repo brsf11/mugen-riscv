@@ -28,52 +28,55 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start to run test."
     any2djvu --help | grep "Usage:"
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check any2djvu --help failed."
     expect <<-END
     spawn any2djvu http://barak.pearlmutter.net/papers mesh-preprint.ps.gz
     expect "]:"
     send "yes\n"
     expect eof
 END
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check any2djvu failed."
     test -f mesh-preprint.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check mesh-preprint.djvu not exist."
     expect <<-END
     spawn any2djvu test.pdf
     expect "]:"
     send "yes\n"
     expect eof
 END
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check any2djvu test.pdf failed."
     test -f test.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check test.djvu not exist."
     bzz --help >result 2>&1
     grep -E "DjVuLibre|Usage" result && rm -rf result
     CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check bzz --help failed."
     bzz -e test.djvu bzz
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check bzz -e failed."
     bzz -d test.djvu bzz.djvu
     bzz -d bzz.djvu bzz1
     CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check bzz -d failed."
     c44 --help >result 2>&1
     grep -E "DjVuLibre|Usage: c44" result && rm -rf result
+    CHECK_RESULT $? 0 0 "Check c44 --help failed."
     c44 -crcbdelay 10 test1.jpg
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check c44 -crcbdelay failed."
     test -f test1.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check test1.djvu not exist."
     c44 -crcbfull test2.jpg
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check c44 -crcbfull failed."
     test -f test2.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check test2.djvu not exist."
     convert test3.jpg test.pbm
     c44 -crcbhalf test.pbm test4.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check c44 -crcbhalf failed."
     test -f test4.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check test4.djvu not exist."
     c44 -crcbnone test3.jpg test5.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check c44 -crcbnone failed."
     test -f test5.djvu
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 "Check test5.djvu not exist."
     LOG_INFO "End to run test."
 }
 
