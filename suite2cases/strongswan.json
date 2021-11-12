@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/strongswan",
+    "cases": [
+        {
+            "name": "oe_test_service_strongswan"
+        },
+        {
+            "name": "oe_test_service_strongswan-swanctl"
+        }
+    ]
+}
