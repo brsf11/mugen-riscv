@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/sblim-sfcb",
+    "cases": [
+        {
+            "name": "oe_test_service_sblim-sfcb"
+        }
+    ]
+}
