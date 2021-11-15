@@ -1,0 +1,8 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/libcap",
+    "cases": [
+        {
+            "name": "oe_test_libcap"
+        }
+    ]
+}
