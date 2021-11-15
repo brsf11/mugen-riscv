@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/spice-vdagent",
+    "cases": [
+        {
+            "name": "oe_test_service_spice-vdagentd"
+        },
+        {
+            "name": "oe_test_socket_spice-vdagentd"
+        }
+    ]
+}
