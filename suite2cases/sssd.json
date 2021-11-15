@@ -1,0 +1,56 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/sssd",
+    "cases": [
+        {
+            "name": "oe_test_service_sssd-autofs"
+        },
+        {
+            "name": "oe_test_service_sssd-ifp"
+        },
+        {
+            "name": "oe_test_service_sssd-kcm"
+        },
+        {
+            "name": "oe_test_service_sssd-nss"
+        },
+        {
+            "name": "oe_test_service_sssd-pac"
+        },
+        {
+            "name": "oe_test_service_sssd-pam"
+        },
+        {
+            "name": "oe_test_service_sssd"
+        },
+        {
+            "name": "oe_test_service_sssd-ssh"
+        },
+        {
+            "name": "oe_test_service_sssd-sudo"
+        },
+        {
+            "name": "oe_test_socket_sssd-autofs"
+        },
+        {
+            "name": "oe_test_socket_sssd-kcm"
+        },
+        {
+            "name": "oe_test_socket_sssd-nss"
+        },
+        {
+            "name": "oe_test_socket_sssd-pac"
+        },
+        {
+            "name": "oe_test_socket_sssd-pam-priv"
+        },
+        {
+            "name": "oe_test_socket_sssd-pam"
+        },
+        {
+            "name": "oe_test_socket_sssd-ssh"
+        },
+        {
+            "name": "oe_test_socket_sssd-sudo"
+        }
+    ]
+}
