@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/rasdaemon",
+    "cases": [
+        {
+            "name": "oe_test_service_rasdaemon"
+        },
+        {
+            "name": "oe_test_service_ras-mc-ctl"
+        }
+    ]
+}
