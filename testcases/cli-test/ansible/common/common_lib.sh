@@ -38,6 +38,7 @@ END
     expect eof
 END
 }
+
 function Post_Test() {
     rm -rf /etc/ansible/hosts
     DNF_REMOVE

@@ -14,7 +14,6 @@
 #@License   	:   Mulan PSL v2
 #@Desc          :   verification fastdfs's commnd
 #####################################
-source ${OET_PATH}/libs/locallibs/common_lib.sh
 source ../common/common_lib.sh
 
 function pre_test() {
