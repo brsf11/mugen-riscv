@@ -35,6 +35,9 @@
         },
         {
             "name": "oe_test_rabbitmq-server"
-        }
+        },
+	{
+	    "name": "oe_test_service_rabbitmq-server"
+	}
     ]
 }
