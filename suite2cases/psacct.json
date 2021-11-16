@@ -3,6 +3,9 @@
   "cases": [
       {
           "name": "oe_test_psacct"
+      },
+      {
+          "name": "oe_test_service_psacct"
       }
   ]
 }

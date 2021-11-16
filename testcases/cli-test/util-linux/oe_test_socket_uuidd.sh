@@ -28,11 +28,7 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start to run test."
     test_execution uuidd.socket
-    systemctl start uuidd.socket
-    systemctl reload uuidd.socket 2>&1 | grep "Job type reload is not applicable for unit uuidd.socket"
-    CHECK_RESULT $?
-    systemctl status uuidd.socket | grep "Active: active"
-    CHECK_RESULT $?
+    test_reload uuidd.socket
     LOG_INFO "End of the test."
 }
 
