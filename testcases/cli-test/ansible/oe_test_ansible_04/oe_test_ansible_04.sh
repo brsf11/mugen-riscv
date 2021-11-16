@@ -19,7 +19,7 @@ source ../common/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     Pre_Test
-    echo "${NODE2_PASSWORD}" >/opt/pass
+    echo "${NODE2_PASSWORD}" >/tmp/pass
     LOG_INFO "End to prepare the test environment."
 }
 function run_test() {
@@ -45,7 +45,7 @@ END
 END
     CHECK_RESULT $? 0 0 "Check ansible-console --ask-vault-pass failed."
     expect <<-END
-    spawn ansible-console --vault-password-file=/opt/pass ${NODE2_IPV4}
+    spawn ansible-console --vault-password-file=/tmp/pass ${NODE2_IPV4}
     expect "$"
     send "exit\n"
     expect eof
@@ -69,7 +69,7 @@ END
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     Post_Test
-    rm -rf /opt/pass
+    rm -rf /tmp/pass
     LOG_INFO "End to restore the test environment."
 }
 main "$@"
