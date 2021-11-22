@@ -17,7 +17,6 @@
 # @Desc      :   common function library for service restart of the base images
 # #############################################
 
-source "$OET_PATH/libs/locallibs/common_lib.sh"
 source "../common/common_lib.sh"
 
 function conf_common() {

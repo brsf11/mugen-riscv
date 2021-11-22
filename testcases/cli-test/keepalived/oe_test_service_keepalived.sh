@@ -41,9 +41,6 @@ vrrp_instance VI_1 {
         auth_type PASS
         auth_pass 1111
     }
-    virtual_ipaddress {
-        192.168.122.1.1
-    }
 }" >>/etc/keepalived/keepalived.conf
     LOG_INFO "End of environmental preparation!"
 }
