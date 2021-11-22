@@ -1,0 +1,20 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/kubernetes",
+    "cases": [
+        {
+            "name": "oe_test_service_kube-controller-manager"
+        },
+        {
+            "name": "oe_test_service_kube-scheduler"
+        },
+        {
+            "name": "oe_test_service_kubelet"
+        },
+        {
+            "name": "oe_test_service_kube-proxy"
+        },
+        {
+            "name": "oe_test_service_kube-apiserver"
+        }
+    ]
+}

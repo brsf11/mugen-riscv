@@ -9,6 +9,9 @@
         },
         {
             "name": "oe_test_kernel_cmd_03"
+        },
+        {
+            "name": "oe_test_service_cpupower"
         }
     ]
 }
