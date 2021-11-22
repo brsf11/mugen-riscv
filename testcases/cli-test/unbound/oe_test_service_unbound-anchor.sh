@@ -19,6 +19,12 @@
 
 source "../common/common_lib.sh"
 
+function pre_test() {
+    LOG_INFO "Start environmental preparation."
+    systemctl start unbound-anchor.service
+    LOG_INFO "End of environmental preparation!"
+}
+
 function run_test() {
     LOG_INFO "Start testing..."
     test_oneshot unbound-anchor.service 'inactive (dead)'

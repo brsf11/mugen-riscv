@@ -22,13 +22,12 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL sysstat
-    systemctl start sysstat.service
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_oneshot sysstat.service 'active (exited)'
+    test_execution sysstat.service
     test_reload sysstat.service
     LOG_INFO "Finish test!"
 }

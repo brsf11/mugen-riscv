@@ -22,13 +22,12 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL vdo
-    systemctl start vdo.service
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_oneshot vdo.service 'active (exited)'
+    test_execution vdo.service
     test_reload vdo.service
     LOG_INFO "Finish test!"
 }

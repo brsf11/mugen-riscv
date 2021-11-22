@@ -31,7 +31,8 @@ function run_test() {
     LOG_INFO "Start testing..."
     test_restart ${service}
     test_enabled ${service}
-    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING" | grep -v "Open /etc/dns_port.conf fail, return."
+    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING" | 
+grep -v "Open /etc/dns_port.conf fail, return." | grep -v "Unable to fetch DNSKEY set '.': failure"
     CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
     systemctl start named-chroot.service
     sed -i 's\ExecStart=/usr/sbin/named\ExecStart=/usr/sbin/named -4\g' /usr/lib/systemd/system/"${service}"
