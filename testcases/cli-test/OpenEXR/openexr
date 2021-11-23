@@ -1,0 +1,26 @@
+rpm -ql OpenEXR | grep bin
+exrenvmap -o bind_29_1.exr test
+exrenvmap -h
+exrenvmap -v bind_29_1.exr test
+exrenvmap -v -l bind_29_1.exr test1
+exrheader bind_29_1.exr
+exrheader -h
+exrmakepreview -h
+exrmakepreview -v bind_29_1.exr test2
+exrmakepreview -v -w 100 -e 0 bind_29_1.exr test2
+exrmaketiled -h
+exrmaketiled -o bind_29_1.exr test3
+exrmaketiled -t 64 64 bind_29_1.exr test3
+exrmaketiled -t 64 64 -f c -v bind_29_1.exr test3
+exrmultipart -h
+exrmultipart -combine -i bind_29_1.exr -o test.exr
+exrmultipart -separate -i bind_29_1.exr -o test4
+exrmultipart -combine -i bind_29_1.exr -o test.exr -override 1
+exrmultiview -h
+exrmultiview -v example bind_29_1.exr liujingjing test.exr test5
+exrstdattr -h
+exrstdattr bind_29_1.exr test6
+exrstdattr -aperture 10 bind_29_1.exr test6
+exrstdattr -focus 10 bind_29_1.exr test6
+
+

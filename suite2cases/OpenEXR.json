@@ -1,0 +1,26 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/OpenEXR",
+    "cases": [
+        {
+            "name": "oe_test_OpenEXR_cmd"
+        },
+        {
+            "name": "oe_test_OpenEXR_exrenvmap_exrmakepreview"
+        },
+        {
+            "name": "oe_test_OpenEXR_exrenvmap"
+        },
+        {
+            "name": "oe_test_OpenEXR_exrmaketiled"
+        },
+        {
+            "name": "oe_test_OpenEXR_exrstdattr_01"
+        },
+        {
+            "name": "oe_test_OpenEXR_exrstdattr_02"
+        },
+        {
+            "name": "oe_test_OpenEXR_exrstdattr_03"
+        }
+    ]
+}
