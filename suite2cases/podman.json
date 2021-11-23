@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/podman",
+    "cases": [
+        {
+            "name": "oe_test_service_io.podman"
+        },
+        {
+            "name": "oe_test_socket_io.podman"
+        }
+    ]
+}

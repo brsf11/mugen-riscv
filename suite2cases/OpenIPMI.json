@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/OpenIPMI",
+    "cases": [
+        {
+            "name": "oe_test_service_ipmi"
+        }
+    ]
+}
