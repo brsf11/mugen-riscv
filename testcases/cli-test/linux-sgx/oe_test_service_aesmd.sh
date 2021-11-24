@@ -35,9 +35,6 @@ function run_test() {
     test "$(uname -i)" == x86_64 && (
         test_execution aesmd.service
         systemctl reload aesmd.service
-        CHECK_RESULT $? 0 0 "Job type reload is not applicable for unit aesmd.service"
-        systemctl status aesmd.service | grep "Active: active"
-        CHECK_RESULT $?
     )
     LOG_INFO "Finish test!"
 }
