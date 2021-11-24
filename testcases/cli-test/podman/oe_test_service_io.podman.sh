@@ -12,33 +12,32 @@
 # #############################################
 # @Author    :   huangrong
 # @Contact   :   1820463064@qq.com
-# @Date      :   2020/10/23
+# @Date      :   2021/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test rngd.service restart
+# @Desc      :   Test io.podman.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    service=rngd.service
-    log_time=$(date '+%Y-%m-%d %T')
+    DNF_INSTALL podman
+    echo "[registries.search]
+registries = ['docker.io']" >/etc/containers/registries.conf
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
-    LOG_INFO "Start testing..."
-    test_restart "${service}"
-    test_enabled "${service}"
-    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v "Hardware RNG Device"
-    CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
-    test_reload "${service}" 
-    LOG_INFO "Finish test!"
+    LOG_INFO "Start to run test."
+    test_oneshot io.podman.service 'inactive (dead)'
+    test_reload io.podman.service
+    LOG_INFO "End of the test."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    systemctl stop "${service}"
+    systemctl stop io.podman.service
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
 

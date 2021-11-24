@@ -21,6 +21,9 @@
         },
         {
             "name": "oe_test_php-fpm"
+        },
+        {
+            "name": "oe_test_service_php-fpm"
         }
     ]
 }

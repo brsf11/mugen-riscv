@@ -9,6 +9,21 @@
         },
         {
             "name": "oe_test_open-iscsi_iscsistart_iscsiuio"
+        },
+        {
+            "name": "oe_test_service_iscsid"
+        },
+        {
+            "name": "oe_test_service_iscsi"
+        },
+        {
+            "name": "oe_test_service_iscsiuio"
+        },
+        {
+            "name": "oe_test_socket_iscsid"
+        },
+        {
+            "name": "oe_test_socket_iscsiuio"
         }
     ]
 }
