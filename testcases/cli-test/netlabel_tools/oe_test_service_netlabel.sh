@@ -14,28 +14,27 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test iscsi.service restart
+# @Desc      :   Test netlabel.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL open-iscsi
+    DNF_INSTALL netlabel_tools
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution iscsi.service
-    test_reload iscsi.service 
+    test_execution netlabel.service
+    test_reload netlabel.service
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    systemctl stop iscsi.service
-    systemctl stop iscsid.service
+    systemctl stop netlabel.service
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

@@ -14,28 +14,35 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test iscsi.service restart
+# @Desc      :   Test snmptrapd.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL open-iscsi
+    DNF_INSTALL net-snmp
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution iscsi.service
-    test_reload iscsi.service 
+    test_execution snmptrapd.service
+    sed -i 's\ExecStart=/usr/sbin/snmptrapd\ExecStart=/usr/sbin/snmptrapd -H\g' /usr/lib/systemd/system/snmptrapd.service
+    systemctl daemon-reload
+    systemctl reload snmptrapd.service
+    CHECK_RESULT $? 0 0 "snmptrapd.service reload failed"
+    systemctl status snmptrapd.service | grep "Active: active"
+    CHECK_RESULT $? 0 0 "snmptrapd.service reload causes the service status to change"
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    systemctl stop iscsi.service
-    systemctl stop iscsid.service
+    sed -i 's\ExecStart=/usr/sbin/snmptrapd -H\ExecStart=/usr/sbin/snmptrapd\g' /usr/lib/systemd/system/snmptrapd.service
+    systemctl daemon-reload
+    systemctl reload snmptrapd.service
+    systemctl stop snmptrapd.service
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

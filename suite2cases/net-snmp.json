@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/net-snmp",
+    "cases": [
+        {
+            "name": "oe_test_service_snmpd"
+        },
+        {
+            "name": "oe_test_service_snmptrapd"
+        }
+    ]
+}

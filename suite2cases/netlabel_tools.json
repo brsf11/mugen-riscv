@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/netlabel_tools",
+    "cases": [
+        {
+            "name": "oe_test_service_netlabel"
+        }
+    ]
+}
