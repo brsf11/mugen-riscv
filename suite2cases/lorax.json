@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/lorax",
+    "cases": [
+        {
+            "name": "oe_test_service_lorax-composer"
+        },
+        {
+            "name": "oe_test_socket_lorax-composer"
+        }
+    ]
+}
