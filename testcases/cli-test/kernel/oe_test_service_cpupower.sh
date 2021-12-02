@@ -21,7 +21,7 @@ source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    if grep SP2 /etc/openEuler-release; then
+    if grep -v SP1 /etc/openEuler-release; then
         sed -i 's/ondemand/powersave/g' /etc/sysconfig/cpupower
     fi
     LOG_INFO "End of environmental preparation!"
@@ -29,7 +29,7 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start testing..."
-     if ! hostnamectl | grep Virtualization; then
+    if ! hostnamectl | grep Virtualization; then
         test_execution cpupower.service
         test_reload cpupower.service
     fi
@@ -39,7 +39,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the tet environment."
-    if grep SP2 /etc/openEuler-release; then
+    if grep -v SP1 /etc/openEuler-release; then
         sed -i 's/powersave/ondemand/g' /etc/sysconfig/cpupower
     fi
     LOG_INFO "Finish to restore the tet environment."
