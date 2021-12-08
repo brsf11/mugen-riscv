@@ -1,0 +1,18 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/ipmitool",
+    "machine type": "physical",
+    "cases": [
+        {
+            "name": "oe_test_service_bmc-snmp-proxy",
+            "machine type": "physical"
+        },
+        {
+            "name": "oe_test_service_exchange-bmc-os-info",
+            "machine type": "physical"
+        },
+        {
+            "name": "oe_test_service_ipmievd",
+            "machine type": "physical"
+        }
+    ]
+}
