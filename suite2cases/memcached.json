@@ -6,6 +6,9 @@
         },
         {
             "name": "oe_test_memcached_02"
+        },
+        {
+            "name": "oe_test_service_memcached"
         }
     ]
 }

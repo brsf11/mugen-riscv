@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/mcstrans",
+    "cases": [
+        {
+            "name": "oe_test_service_mcstransd"
+        },
+        {
+            "name": "oe_test_service_mcstrans"
+        }
+    ]
+}
