@@ -41,6 +41,12 @@ function run_test() {
     echo "$server_dir *(rw,sync,no_root_squash)" >>/etc/exports
     systemctl restart nfs-server
     CHECK_RESULT $?
+    systemctl status nfs-server | grep 'Active: active'
+    CHECK_RESULT $?
+    systemctl restart rpcbind
+    CHECK_RESULT $?
+    systemctl status rpcbind | grep 'Active: active'
+    CHECK_RESULT $?
     showmount -e localhost | grep -w "$server_dir"
     CHECK_RESULT $?
     mount -t nfs4 localhost:$server_dir $client_dir
