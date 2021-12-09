@@ -39,7 +39,10 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Check ipsec pluto --dump failed."
     ipsec showhostkey --list
     CHECK_RESULT $? 0 0 "Check ipsec pluto --list failed."
-    ipsec showhostkey --left --ckaid $ckaid --nssdir /var/lib/ipsec/nss >/dev/null
+    ipsec showhostkey --left --ckaid $ckaid --nssdir /var/lib/ipsec/nss <<EOF
+test
+test
+EOF
     CHECK_RESULT $? 0 0 "Check ipsec pluto --left failed."
     ipsec showhostkey --ipseckey --ckaid $ckaid >/dev/null
     CHECK_RESULT $? 0 0 "Check ipsec pluto --ipseckey failed."
