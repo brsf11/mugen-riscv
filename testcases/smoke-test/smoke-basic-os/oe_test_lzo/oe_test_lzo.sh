@@ -18,7 +18,7 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-origin_file="/etc/openEuler-release"
+origin_file="/etc/os-release"
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
