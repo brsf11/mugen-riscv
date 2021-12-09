@@ -1,0 +1,18 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/freeipmi",
+    "machine type": "physical",
+    "cases": [
+        {
+            "name": "oe_test_service_bmc-watchdog",
+            "machine type": "physical"
+        },
+        {
+            "name": "oe_test_service_ipmidetectd",
+            "machine type": "physical"
+        },
+        {
+            "name": "oe_test_service_ipmiseld",
+            "machine type": "physical"
+        }
+    ]
+}

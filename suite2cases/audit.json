@@ -72,6 +72,9 @@
         },
         {
             "name": "oe_test_inject_time_fault"
+        },
+        {
+            "name": "oe_test_service_auditd"
         }
     ]
 }
