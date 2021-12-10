@@ -1,0 +1,20 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/samba",
+    "cases": [
+        {
+            "name": "oe_test_service_ctdb"
+        },
+        {
+            "name": "oe_test_service_nmb"
+        },
+        {
+            "name": "oe_test_service_samba"
+        },
+        {
+            "name": "oe_test_service_smb"
+        },
+        {
+            "name": "oe_test_service_winbind"
+        }
+    ]
+}
