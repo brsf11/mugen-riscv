@@ -262,7 +262,7 @@ while getopts "c:af:r:dx" option; do
         ;;
     r)
         test_case=$OPTARG
-        echo $test_case | grep -q -e '-a\|-f\|-x\|-d' && {
+        echo $test_case | grep -q -e ' -a\| -f\| -x\| -d' && {
             usage
             exit 1
         }
@@ -276,7 +276,7 @@ while getopts "c:af:r:dx" option; do
         statistic_result
         ;;
     x)
-        echo "$@" | grep -q -e '^ *-x *$' && {
+        echo "$@" | grep -q -e '^ [a-Z0-9-_]-x *$' && {
             LOG_ERROR "The -x parameter must be used in combination with -a, -f, and -r."
             exit 1
         }
