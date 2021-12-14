@@ -1,0 +1,35 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/plymouth",
+    "cases": [
+        {
+            "name": "oe_test_service_plymouth-halt"
+        },
+        {
+            "name": "oe_test_service_plymouth-kexec"
+        },
+        {
+            "name": "oe_test_service_plymouth-poweroff"
+        },
+        {
+            "name": "oe_test_service_plymouth-quit"
+        },
+        {
+            "name": "oe_test_service_plymouth-quit-wait"
+        },
+        {
+            "name": "oe_test_service_plymouth-read-write"
+        },
+        {
+            "name": "oe_test_service_plymouth-reboot"
+        },
+        {
+            "name": "oe_test_service_plymouth-start"
+        },
+        {
+            "name": "oe_test_service_plymouth-switch-root"
+        },
+        {
+            "name": "oe_test_service_systemd-ask-password-plymouth"
+        }
+    ]
+}
