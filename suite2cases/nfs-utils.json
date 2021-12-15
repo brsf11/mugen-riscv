@@ -1,0 +1,53 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/nfs-utils",
+    "cases": [
+        {
+            "name": "oe_test_service_auth-rpcgss-module"
+        },
+        {
+            "name": "oe_test_service_nfs-blkmap"
+        },
+        {
+            "name": "oe_test_service_nfsdcld"
+        },
+        {
+            "name": "oe_test_service_nfs-idmapd"
+        },
+        {
+            "name": "oe_test_service_nfs-idmap"
+        },
+        {
+            "name": "oe_test_service_nfs-lock"
+        },
+        {
+            "name": "oe_test_service_nfs-mountd"
+        },
+        {
+            "name": "oe_test_service_nfs-secure"
+        },
+        {
+            "name": "oe_test_service_nfs-server"
+        },
+        {
+            "name": "oe_test_service_nfs"
+        },
+        {
+            "name": "oe_test_service_nfs-utils"
+        },
+        {
+            "name": "oe_test_service_rpc-gssd"
+        },
+        {
+            "name": "oe_test_service_rpc-statd-notify"
+        },
+        {
+            "name": "oe_test_service_rpc-statd"
+        },
+        {
+            "name": "oe_test_target_nfs-client"
+        },
+        {
+            "name": "oe_test_target_rpc_pipefs"
+        }
+    ]
+}

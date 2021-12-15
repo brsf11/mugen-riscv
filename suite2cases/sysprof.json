@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/sysprof",
+    "cases": [
+        {
+            "name": "oe_test_service_sysprof2"
+        },
+        {
+            "name": "oe_test_service_sysprof3"
+        }
+    ]
+}
