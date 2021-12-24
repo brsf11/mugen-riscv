@@ -141,7 +141,7 @@ function run_test_case() {
         exit 1
     fi
 
-    result_files=$(find ${OET_PATH}/results/${test_suite} -name "$test_case" >/dev/nul 2>&1)
+    result_files=$(find ${OET_PATH}/results/${test_suite} -name "$test_case" >/dev/null 2>&1)
     for result_file in $result_files; do
         test -f $result_file && rm -rf $result_file
     done
@@ -180,7 +180,7 @@ function run_test_case() {
     pushd "$case_path" >/dev/null || return 1
 
     local time_out
-    time_out=$(grep -w --fixed-strings EXECUTE_T ${test_case}.* 2>/dev/nul | awk -F '=' '{print $NF}' | tr -d '"')
+    time_out=$(grep -w --fixed-strings EXECUTE_T ${test_case}.* 2>/dev/null | awk -F '=' '{print $NF}' | tr -d '"')
     test -n "$time_out" && local TIMEOUT=$time_out
 
     local script_type
@@ -196,7 +196,7 @@ function run_test_case() {
         exec_case "python3 ${test_case}.py" "$log_path" "$test_case" "$test_suite"
     fi
 
-    popd >/dev/nul || return 1
+    popd >/dev/null || return 1
 
     LOG_INFO "End to run testcase:$test_case."
 }
