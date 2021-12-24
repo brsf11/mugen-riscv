@@ -1,30 +1,25 @@
 {
     "path": "$OET_PATH/testcases/testsuite",
+    "machine num": 1,
+    "machine type": "kvm",
+    "add network interface": 1,
+    "add disk": [
+        50
+    ],
     "cases": [
         {
             "name": "oe_test_casename_01",
-            "machine": {
-                "type": "kvm",
-                "num": 1
-            },
-            "nic": {
-                "num": 1
-            },
-            "disk": {
-                "unit": "MiB",
-                "size": 51200,
-                "+size": [
-                    10240,
-                    512
-                ]
-            }
+            "machine num": 1,
+            "machine type": "kvm",
+            "add network interface": 1,
+            "add disk": [
+                50
+            ]
         },
         {
             "name": "oe_test_casename_02",
-            "machine": {
-                "type": "physical",
-                "num": 1
-            }
+            "machine type": "physical",
+            "machine num": 1
         }
     ]
 }
