@@ -1,5 +1,5 @@
 {
-    "path": "$OET_PATH/testcases/cli-test/mysql",
+    "path": "$OET_PATH/testcases/cli-test/mysql5",
     "cases": [
         {
             "name": "oe_test_service_mysqld"
