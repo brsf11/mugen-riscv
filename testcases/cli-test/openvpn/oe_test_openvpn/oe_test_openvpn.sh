@@ -36,6 +36,7 @@ function run_test() {
     touch tt.vpn
     CHECK_RESULT $?
     nohup openvpn --local 127.0.0.1 --config tt.vpn --dev tun1 --ifconfig 10.4.0.1 10.4.0.2 --verb 9 >/dev/null 2>&1 &
+    SLEEP_WAIT 5
     pgrep -f 'openvpn --local'
     CHECK_RESULT $?
     ping -c 3 10.4.0.1 >/dev/null
@@ -79,7 +80,9 @@ function run_test() {
     P_SSH_CMD --node 2 --cmd "test -f key"
     CHECK_RESULT $?
 
+    
     nohup openvpn --remote ${NODE2_IPV4} --dev tun1 --ifconfig 10.4.0.1 10.4.0.2 --verb 5 --secret key >/dev/null 2>&1 &
+    SLEEP_WAIT 5
     pgrep -f 'openvpn --remote'
     CHECK_RESULT $?
     P_SSH_CMD --node 2 --cmd "nohup openvpn --remote ${NODE1_IPV4} --dev tun1 --ifconfig 10.4.0.2 10.4.0.1 --verb 5 --secret key >/dev/null 2>&1 &"
@@ -126,6 +129,7 @@ EOF
     test -f client.key -a -f ca.crt -a -f client.crt
     CHECK_RESULT $?
     nohup openvpn --remote ${NODE2_IPV4} --dev tun1 --ifconfig 10.4.0.1 10.4.0.2 --tls-client --ca ca.crt --cert client.crt --key client.key --reneg-sec 60 --verb 5 >/dev/null 2>&1 &
+    SLEEP_WAIT 5
     pgrep -f 'openvpn --remote'
     CHECK_RESULT $?
     ping -c 3 10.4.0.1 >/dev/null
@@ -192,4 +196,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"

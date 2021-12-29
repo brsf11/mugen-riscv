@@ -46,4 +46,4 @@ function run_test() {
     LOG_INFO "End of the test."
 }
 
-main $@
+main "$@"

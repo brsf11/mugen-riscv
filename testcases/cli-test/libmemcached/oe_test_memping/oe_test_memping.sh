@@ -36,6 +36,7 @@ function run_test() {
     memcached -d -u root -m 512 -p 11211
     CHECK_RESULT $?
     netstat -an | grep 11211
+    SLEEP_WAIT 5
     CHECK_RESULT $?
     pgrep -f 'memcached -d -u'
     CHECK_RESULT $?
@@ -54,4 +55,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"
