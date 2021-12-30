@@ -1,0 +1,20 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/acl",
+    "cases": [
+        {
+            "name": "oe_test_acl_add_write_permissions"
+        },
+        {
+            "name": "oe_test_acl_change_mask"
+        },
+        {
+            "name": "oe_test_acl_check_create"
+        },
+        {
+            "name": "oe_test_acl_defaulr_rule"
+        },
+        {
+            "name": "oe_test_acl_only_root_permission"
+        }
+    ]
+}
