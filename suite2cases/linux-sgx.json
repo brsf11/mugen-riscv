@@ -1,0 +1,15 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/linux-sgx",
+    "machine type": "physical",
+    "cases": [
+        {
+            "name": "oe_test_service_remount-dev-exec",
+            "machine type": "physical"
+        },
+        {
+            "name": "oe_test_service_aesmd",
+            "machine type": "physical"
+        }
+    ]
+}
+

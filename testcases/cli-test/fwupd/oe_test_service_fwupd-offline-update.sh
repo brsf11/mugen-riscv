@@ -22,6 +22,7 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL fwupd
+    touch /var/lib/fwupd/pending.db
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -33,6 +34,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
+    rm -rf /var/lib/fwupd/pending.db
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

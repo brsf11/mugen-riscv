@@ -23,6 +23,8 @@ function pre_test() {
     LOG_INFO "Start environmental preparation."
     service=dnf-makecache.service
     status='inactive (dead)'
+    log_time=$(date '+%Y-%m-%d %T')
+    systemctl start "${service}"
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -31,7 +33,7 @@ function run_test() {
     systemctl status "${service}" | grep "Active" | grep -v "${status}"
     CHECK_RESULT $? 0 1 "There is an error for the status of ${service}"
     test_enabled "${service}"
-    journalctl -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING" | grep -v "Failed determining last makecache time"
+    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING" | grep -v "Failed determining last makecache time"
     CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
     LOG_INFO "Finish test!"
 }

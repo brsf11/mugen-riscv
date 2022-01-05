@@ -53,6 +53,9 @@
         },
         {
             "name": "oe_test_libreswan_ipsec_whack_4"
+        },
+	{
+            "name": "oe_test_service_ipsec"
         }
     ]
 }

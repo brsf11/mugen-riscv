@@ -17,7 +17,7 @@
 # @Desc      :   Test autofs.service restart
 # #############################################
 
-source "../common/common_lib.sh"
+source "../common/common_autofs.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."

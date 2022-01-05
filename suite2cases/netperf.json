@@ -1,0 +1,18 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/netperf",
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_netperf_basic_command",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_netperf_diff_connect_model",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_netperf_remote_command",
+            "machine num": 2
+        }
+    ]
+}

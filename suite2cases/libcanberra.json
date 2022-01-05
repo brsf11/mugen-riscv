@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/libcanberra",
+    "cases": [
+        {
+            "name": "oe_test_service_canberra-system-bootup"
+        },
+        {
+            "name": "oe_test_service_canberra-system-shutdown-reboot"
+        },
+        {
+            "name": "oe_test_service_canberra-system-shutdown"
+        }
+    ]
+}

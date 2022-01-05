@@ -31,7 +31,7 @@ function run_test() {
     CHECK_RESULT $?
     curl -o index.html localhost
     CHECK_RESULT $?
-    grep -q "openEuler" index.html
+    grep -q "Test Page" index.html
     CHECK_RESULT $?
     LOG_INFO "Finish test!"
 }

@@ -170,8 +170,8 @@ function INSTALL_ENV() {
 }
 
 function REVERT_ENV() {
+    ACT_SERVICE stop
     rm -f ${YUM_PATH}/pkgship_yum.repo
-
     for i in $(ps -ef |  egrep "pkgship|uwsgi|elasticsearch|redis" | grep -Ev "bash|grep" | awk '{print $2}'); do
         kill -9 $i 
     done
@@ -353,6 +353,19 @@ function GET_SINGLEDEP() {
     fi
 }
  
+function GET_INSTALLDEP() {
+    pkgname=$1
+    filename=$2
+    dbname=${3-""}
+    level=${4-""}
+    QUERY_INSTALLDEP "$pkgname" "$dbname" "$level" >installdep.txt
+    start_line=$(sed -n '/^Source/=' installdep.txt)
+    end_line=$(wc -l installdep.txt | awk '{print $1}')
+    sed -i "${start_line},${end_line}d" installdep.txt
+    grep "openeuler-lts" installdep.txt | grep -v "$pkgname" | awk '{print $1}' | sort | uniq | grep -Ev "openeuler-lts|=" >${filename}
+    rm -f installdep.txt
+}
+
 function GET_DNF_REPOQUERY() {
     pkg=$1
     repo=${2-"openEuler-Binary"}
@@ -388,12 +401,58 @@ function COMPARE_DNF() {
     printf 0
 }
 
-CHECK_YUM
-CHECK_LOCAL_REPO
+function CHECK_COMPARE() {
+    testlog=$1
+    dbname=$2
+    grep -q "\[INFO\] The data comparison is successful, and the generated file" $testlog
+    CHECK_RESULT $? 0 0 "Execute compare build command failed."
+    compare_dir=$(tail -n 1 $testlog | cut -d '(' -f 2 | cut -d ')' -f 1)
+    ls ${compare_dir} | grep -q "compare.csv"
+    CHECK_RESULT $? 0 0 "Check file number failed."
+    first_row=$(wc -l ${compare_dir}/${dbname}.csv | awk '{print $1}')
+    cmp_row=$(wc -l ${compare_dir}/compare.csv | awk '{print $1}')
+    if [[ $cmp_row -lt $first_row ]]; then
+        CHECK_RESULT 1 0 0 "Check compare file failed."
+    fi
+    printf ${compare_dir}
+}
+
+function COMPARE_BUILD_PKG() {
+    type=$1
+    compare_dir=$2
+    dbname=$3
+    pkgname=$4
+
+    # check file info
+    if [[ $type -eq "install" ]]; then
+        QUERY_INSTALLDEP $pkgname $dbname 1 >expect
+    else
+        QUERY_BUILDDEP $pkgname $dbname 1 >expect
+    fi
+    cat expect | grep $dbname | grep -v $dbname | awk '{print $1}' | sort | uniq >expect_cmp
+    cat ${compare_dir}/${dbname}.csv | grep "^$pkgname->" | cut -d ',' -f 1 >actual
+    CHECK_RESULT $? 0 0 "Get data in ${dbname} failed."
+    cat actual | while read line
+    do
+        grep -q "$line" ${compare_dir}/compare.csv
+        [[ $? == 1 ]] && {
+            CHECK_RESULT 1 0 0 "Check package $dbname in compare.csv failed."
+            return 1
+        }
+    done
+
+    sed -i "s/$pkgname->//g" actual
+    cat actual | sort | uniq >actual_cmp
+    code=$(COMPARE_DNF actual_cmp expect_cmp)
+    CHECK_RESULT $code 0 0 "Check package $pkgname in $dbname failed."
+}
 
 path=$(pwd)
-if [[ $path =~ "install" ]]; then
+if [[ $path =~ "install_service" ]]; then
     return 0
 else 
     INSTALL_ENV
 fi
+
+CHECK_YUM
+CHECK_LOCAL_REPO

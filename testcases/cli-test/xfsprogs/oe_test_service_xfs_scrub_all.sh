@@ -14,10 +14,16 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test xfs restart
+# @Desc      :   Test xfs_scrub_all.service restart
 # #############################################
 
 source "../common/common_lib.sh"
+
+function pre_test() {
+    LOG_INFO "Start environmental preparation."
+    systemctl start xfs_scrub_all.service
+    LOG_INFO "End of environmental preparation!"
+}
 
 function run_test() {
     LOG_INFO "Start testing..."

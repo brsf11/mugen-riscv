@@ -3,6 +3,9 @@
     "cases": [
         {
             "name": "oe_test_galera_garbd"
+        },
+        {
+            "name": "oe_test_service_garbd"
         }
     ]
 }

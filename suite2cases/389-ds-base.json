@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/389-ds-base",
+    "cases": [
+        {
+            "name": "oe_test_service_dirsrv-snmp"
+        },
+        {
+            "name": "oe_test_target_dirsrv"
+        }
+    ]
+}

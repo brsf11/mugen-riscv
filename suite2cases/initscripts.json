@@ -1,0 +1,20 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/initscripts",
+    "cases": [
+        {
+            "name": "oe_test_service_import-state"
+        },
+        {
+            "name": "oe_test_service_loadmodules"
+        },
+        {
+            "name": "oe_test_service_network"
+        },
+        {
+            "name": "oe_test_service_netconsole"
+        },
+        {
+            "name": "oe_test_service_readonly-root"
+        }
+    ]
+}

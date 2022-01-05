@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/qemu",
+    "cases": [
+        {
+            "name": "oe_test_service_qemu-guest-agent"
+        },
+        {
+            "name": "oe_test_service_qemu-pr-helper"
+        },
+        {
+            "name": "oe_test_socket_qemu-pr-helper"
+        }
+    ]
+}

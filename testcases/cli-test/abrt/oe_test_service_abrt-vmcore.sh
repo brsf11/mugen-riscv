@@ -22,17 +22,23 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL abrt-addon-vmcore
+    systemctl start abrtd.service
+    touch /var/crash/test
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_oneshot abrt-vmcore.service 'inactive (dead)'
+    test_execution abrt-vmcore.service
+    test_reload abrt-vmcore.service
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
+    systemctl stop abrt-vmcore.service
+    systemctl stop abrtd.service
+    rm -rf /var/crash/test
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

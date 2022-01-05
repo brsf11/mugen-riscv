@@ -22,7 +22,7 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL tomcat
-    sed -i 's/redirectPort="8443"/redirectPort="8443"  secretRequired=""/g' /etc/tomcat/server.xml
+    sed -i 's/protocol="AJP\/1.3"/protocol="AJP\/1.3" secretRequired=""/g' /etc/tomcat/server.xml
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -35,7 +35,8 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    sed -i 's/redirectPort="8443"  secretRequired=""/redirectPort="8443"/g' /etc/tomcat/server.xml
+    systemctl stop tomcat.service
+    sed -i 's/protocol="AJP\/1.3" secretRequired=""/protocol="AJP\/1.3"/g' /etc/tomcat/server.xml
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

@@ -29,6 +29,9 @@
         },
 	{
             "name": "oe_test_nftables_replace_counters"
+	},
+	{
+            "name": "oe_test_service_nftables"
 	}
     ]
 }

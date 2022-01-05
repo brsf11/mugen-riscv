@@ -3,6 +3,84 @@
     "cases": [
         {
             "name": "oe_test_obs-server"
+        },
+        {
+            "name": "oe_test_service_obsstoragesetup"
+        },
+        {
+            "name": "oe_test_target_obs-api-support"
+        },
+        {
+            "name": "oe_test_service_obsdeltastore"
+        },
+        {
+            "name": "oe_test_service_obsservice"
+        },
+        {
+            "name": "oe_test_service_obsapisetup"
+        },
+        {
+            "name": "oe_test_service_obssigner"
+        },
+        {
+            "name": "oe_test_service_obs-clockwork"
+        },
+        {
+            "name": "oe_test_service_obsdodup"
+        },
+        {
+            "name": "oe_test_service_obs-sphinx"
+        },
+        {
+            "name": "oe_test_service_obs-delayedjob-queue-consistency_check"
+        },
+        {
+            "name": "oe_test_service_obsgetbinariesproxy"
+        },
+        {
+            "name": "oe_test_service_obs-delayedjob-queue-issuetracking"
+        },
+        {
+            "name": "oe_test_service_obs-delayedjob-queue-mailers"
+        },
+        {
+            "name": "oe_test_service_obs-delayedjob-queue-project_log_rotate"
+        },
+        {
+            "name": "oe_test_service_obs-delayedjob-queue-releasetracking"
+        },
+        {
+            "name": "oe_test_service_obs-delayedjob-queue-staging"
+        },
+        {
+            "name": "oe_test_service_obsservicedispatch"
+        },
+        {
+            "name": "oe_test_service_obsscheduler"
+        },
+        {
+            "name": "oe_test_service_obsrepserver"
+        },
+        {
+            "name": "oe_test_service_obsworker"
+        },
+        {
+            "name": "oe_test_service_obswarden"
+        },
+        {
+            "name": "oe_test_service_obsnotifyforward"
+        },
+        {
+            "name": "oe_test_service_obspublisher"
+        },
+        {
+            "name": "oe_test_service_obssrcserver"
+        },
+        {
+            "name": "oe_test_service_obsdispatcher"
+        },
+        {
+            "name": "oe_test_service_obs-delayedjob-queue-default"
         }
     ]
 }

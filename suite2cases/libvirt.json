@@ -1,0 +1,149 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/libvirt",
+    "cases": [
+        {
+            "name": "oe_test_service_libvirtd"
+        },
+        {
+            "name": "oe_test_service_libvirt-guests"
+        },
+        {
+            "name": "oe_test_service_virtinterfaced"
+        },
+        {
+            "name": "oe_test_service_virtlockd"
+        },
+        {
+            "name": "oe_test_service_virtlogd"
+        },
+        {
+            "name": "oe_test_service_virtnetworkd"
+        },
+        {
+            "name": "oe_test_service_virtnodedevd"
+        },
+        {
+            "name": "oe_test_service_virtnwfilterd"
+        },
+        {
+            "name": "oe_test_service_virtproxyd"
+        },
+        {
+            "name": "oe_test_service_virtqemud"
+        },
+        {
+            "name": "oe_test_service_virtsecretd"
+        },
+        {
+            "name": "oe_test_service_virtstoraged"
+        },
+        {
+            "name": "oe_test_socket_libvirtd-admin"
+        },
+        {
+            "name": "oe_test_socket_libvirtd-ro"
+        },
+        {
+            "name": "oe_test_socket_libvirtd"
+        },
+        {
+            "name": "oe_test_socket_libvirtd-tcp"
+        },
+        {
+            "name": "oe_test_socket_libvirtd-tls"
+        },
+        {
+            "name": "oe_test_socket_virtinterfaced-admin"
+        },
+        {
+            "name": "oe_test_socket_virtinterfaced-ro"
+        },
+        {
+            "name": "oe_test_socket_virtinterfaced"
+        },
+        {
+            "name": "oe_test_socket_virtlockd-admin"
+        },
+        {
+            "name": "oe_test_socket_virtlockd"
+        },
+        {
+            "name": "oe_test_socket_virtlogd-admin"
+        },
+        {
+            "name": "oe_test_socket_virtlogd"
+        },
+        {
+            "name": "oe_test_socket_virtnetworkd-admin"
+        },
+        {
+            "name": "oe_test_socket_virtnetworkd-ro"
+        },
+        {
+            "name": "oe_test_socket_virtnetworkd"
+        },
+        {
+            "name": "oe_test_socket_virtnodedevd-admin"
+        },
+        {
+            "name": "oe_test_socket_virtnodedevd-ro"
+        },
+        {
+            "name": "oe_test_socket_virtnodedevd"
+        },
+        {
+            "name": "oe_test_socket_virtnwfilterd-admin"
+        },
+        {
+            "name": "oe_test_socket_virtnwfilterd-ro"
+        },
+        {
+            "name": "oe_test_socket_virtnwfilterd"
+        },
+        {
+            "name": "oe_test_socket_virtproxyd-admin"
+        },
+        {
+            "name": "oe_test_socket_virtproxyd-ro"
+        },
+        {
+            "name": "oe_test_socket_virtproxyd"
+        },
+        {
+            "name": "oe_test_socket_virtproxyd-tcp"
+        },
+        {
+            "name": "oe_test_socket_virtproxyd-tls"
+        },
+        {
+            "name": "oe_test_socket_virtqemud-admin"
+        },
+        {
+            "name": "oe_test_socket_virtqemud-ro"
+        },
+        {
+            "name": "oe_test_socket_virtqemud"
+        },
+        {
+            "name": "oe_test_socket_virtsecretd-admin"
+        },
+        {
+            "name": "oe_test_socket_virtsecretd-ro"
+        },
+        {
+            "name": "oe_test_socket_virtsecretd"
+        },
+        {
+            "name": "oe_test_socket_virtstoraged-admin"
+        },
+        {
+            "name": "oe_test_socket_virtstoraged-ro"
+        },
+        {
+            "name": "oe_test_socket_virtstoraged"
+        },
+        {
+            "name": "oe_test_target_virt-guest-shutdown"
+        }
+    ]
+}

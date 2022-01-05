@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/openvswitch",
+    "cases": [
+        {
+            "name": "oe_test_service_openvswitch"
+        },
+        {
+            "name": "oe_test_service_ovsdb-server"
+        },
+        {
+            "name": "oe_test_service_ovs-vswitchd"
+        }
+    ]
+}

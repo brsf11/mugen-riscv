@@ -22,6 +22,7 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL cockpit
+    systemctl start cockpit-motd.service
     LOG_INFO "End of environmental preparation!"
 }
 

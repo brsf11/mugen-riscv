@@ -27,12 +27,18 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_oneshot glusterfsd.service 'inactive (dead)'
+    test_execution glusterfsd.service
+    systemctl start glusterfsd.service
+    systemctl reload glusterfsd.service
+    CHECK_RESULT $? 0 0 "glusterfsd.service reload failed"
+    systemctl status glusterfsd.service | grep "Active: active"
+    CHECK_RESULT $? 0 0 "glusterfsd.service reload causes the service status to change"
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
+    systemctl stop glusterfsd.service
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

@@ -21,9 +21,15 @@ source "../common/common_lib.sh"
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_oneshot chrony-wait.service 'inactive (dead)'
+    test_execution chrony-wait.service
     test_reload chrony-wait.service
     LOG_INFO "Finish test!"
+}
+
+function post_test() {
+    LOG_INFO "start environment cleanup."
+    systemctl stop chrony-wait.service
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main "$@"

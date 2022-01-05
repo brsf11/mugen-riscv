@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/openslp",
+    "cases": [
+        {
+            "name": "oe_test_service_slpd"
+        }
+    ]
+}

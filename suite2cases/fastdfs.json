@@ -1,0 +1,17 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/fastdfs",
+    "cases": [
+        {
+            "name": "oe_test_fastdfs_01"
+        },
+        {
+            "name": "oe_test_fastdfs_02"
+        },
+        {
+            "name": "oe_test_fastdfs_03"
+        },
+        {
+            "name": "oe_test_fastdfs_04"
+        }
+    ]
+}

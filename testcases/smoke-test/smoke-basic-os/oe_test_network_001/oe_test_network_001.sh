@@ -27,6 +27,12 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start testing..."
+    systemctl restart NetworkManager
+    CHECK_RESULT $?
+
+    systemctl status NetworkManager | grep 'Active: active'
+    CHECK_RESULT $?
+
     nmcli connection show | grep "${NODE1_NIC}"
     CHECK_RESULT $?
     ip link | grep "${NODE1_NIC}"

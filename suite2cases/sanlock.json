@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/sanlock",
+    "cases": [
+        {
+            "name": "oe_test_service_sanlk-resetd"
+        },
+        {
+            "name": "oe_test_service_sanlock"
+        },
+        {
+            "name": "oe_test_service_wdmd"
+        }
+    ]
+}

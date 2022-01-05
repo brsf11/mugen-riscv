@@ -78,6 +78,9 @@
         },
         {
             "name": "oe_test_rsyslog_reliability_tcp"
+        },
+        {
+            "name": "oe_test_service_rsyslog"
         }
     ]
 }

@@ -116,6 +116,24 @@
         },
         {
             "name": "oe_test_pcp_pcp-import-sar2pcp"
+        },
+        {
+            "name": "oe_test_service_pmcd"
+        },
+        {
+            "name": "oe_test_service_pmie"
+        },
+        {
+            "name": "oe_test_service_pmlogger"
+        },
+        {
+            "name": "oe_test_service_pmmgr"
+        },
+        {
+            "name": "oe_test_service_pmproxy"
+        },
+        {
+            "name": "oe_test_service_pmwebd"
         }
     ]
 }

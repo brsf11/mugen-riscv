@@ -1,0 +1,18 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/ansible",
+    "machine num":2,
+    "cases": [
+        {
+            "name": "oe_test_ansible_01"
+        },
+        {
+            "name": "oe_test_ansible_02"
+        },
+        {
+            "name": "oe_test_ansible_03"
+        },
+        {
+            "name": "oe_test_ansible_04"
+        }
+    ]
+}

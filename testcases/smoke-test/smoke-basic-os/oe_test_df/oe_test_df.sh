@@ -20,7 +20,7 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function run_test() {
     LOG_INFO "Start testing..."
-    df | grep '/dev/mapper/openeuler-root'
+    df | grep '/boot/efi'
     CHECK_RESULT $? 0 0 "df display error"
     df | grep 'G'
     CHECK_RESULT $? 1 0 "df default display error"

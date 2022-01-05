@@ -3,6 +3,9 @@
     "cases": [
         {
             "name": "oe_test_security_tool"
+        },
+        {
+            "name": "oe_test_service_openEuler-security"
         }
     ]
 }
