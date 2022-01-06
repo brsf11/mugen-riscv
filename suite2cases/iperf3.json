@@ -3,13 +3,19 @@
     "machine num": 2,
     "cases": [
         {
-            "name": "oe_test_iperf3_command_client"
+            "name": "oe_test_iperf3_command_client",
+	    "machine num": 2
         },
         {
-            "name": "oe_test_iperf3_command_clientAndShared"
+            "name": "oe_test_iperf3_command_clientAndShared",
+	    "machine num": 2
         },
         {
-            "name": "oe_test_iperf3_command_serverAndBase"
-        }
+            "name": "oe_test_iperf3_command_serverAndBase",
+	    "machine num": 2
+        },
+	{
+	    "name": "oe_test_iperf3_client"
+	}
     ]
 }

@@ -15,6 +15,15 @@
         },
         {
             "name": "oe_test_acl_only_root_permission"
-        }
+        },
+        {
+            "name": "oe_test_acl_chacl"
+        },
+	{
+	    "name": "oe_test_acl_getfacl"
+	},
+	{
+	    "name": "oe_test_acl_setfacl"
+	}
     ]
 }
