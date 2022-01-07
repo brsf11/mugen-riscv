@@ -1,8 +1,24 @@
 {
     "path": "$OET_PATH/testcases/cli-test/clevis",
+    "machine num": 2,
+    "add disk": [10],
     "cases": [
         {
             "name": "oe_test_service_clevis-luks-askpass"
+        },
+        {
+            "name": "oe_test_high_nbde",
+            "machine num": 2,
+            "add disk": [10]
+        },
+        {
+            "name": "oe_test_install_clevis"
+        },
+        {
+            "name": "oe_test_tang_encrypt"
+        },
+        {
+            "name": "oe_test_tang_nbde"
         }
     ]
 }
