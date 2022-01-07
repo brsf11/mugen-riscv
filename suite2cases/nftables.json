@@ -16,7 +16,7 @@
         },
         {
             "name": "oe_test_nftables_variable_map",
-	    "machine num": 2
+            "machine num": 2
         },
         {
             "name": "oe_test_nftables_chains"
@@ -27,11 +27,11 @@
         {
             "name": "oe_test_nftables_backup_rules"
         },
-	{
+        {
             "name": "oe_test_nftables_replace_counters"
-	},
-	{
+        },
+        {
             "name": "oe_test_service_nftables"
-	}
+        }
     ]
 }

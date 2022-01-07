@@ -14,29 +14,28 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test etcd.service restart
+# @Desc      :   Test ldconfig.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
-    LOG_INFO "Start environmental preparation."
-    DNF_INSTALL etcd
-    LOG_INFO "End of environmental preparation!"
+    LOG_INFO "Start environment preparation."
+    service=ldconfig.service
+    LOG_INFO "Finish environment cleanup!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution etcd.service 
-    test_reload etcd.service 
+    test_execution "${service}"
+    test_reload "${service}"
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
-    LOG_INFO "start environment cleanup."
-    systemctl stop etcd.service
-    DNF_REMOVE
-    LOG_INFO "Finish environment cleanup!"
+    LOG_INFO "Start environment cleanup."
+    systemctl stop "${service}"
+    LOG_INFO "Finish environment preparation!"
 }
 
 main "$@"

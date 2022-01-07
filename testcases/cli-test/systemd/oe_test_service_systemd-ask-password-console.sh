@@ -14,29 +14,22 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test etcd.service restart
+# @Desc      :   Test systemd-ask-password-console.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
-function pre_test() {
-    LOG_INFO "Start environmental preparation."
-    DNF_INSTALL etcd
-    LOG_INFO "End of environmental preparation!"
-}
-
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution etcd.service 
-    test_reload etcd.service 
+    test_execution systemd-ask-password-console.service
+    test_reload systemd-ask-password-console.service
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
-    LOG_INFO "start environment cleanup."
-    systemctl stop etcd.service
-    DNF_REMOVE
-    LOG_INFO "Finish environment cleanup!"
+    LOG_INFO "Start environment preparation."
+    systemctl stop systemd-ask-password-console.service
+    LOG_INFO "Finish environment preparation!"
 }
 
 main "$@"

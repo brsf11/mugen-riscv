@@ -1,0 +1,65 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/systemd",
+    "cases": [
+        {
+            "name": "oe_test_service_console-getty"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.hostname1"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.import1"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.locale1"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.login1"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.machine1"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.portable1"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.timedate1"
+        },
+        {
+            "name": "oe_test_service_debug-shell"
+        },
+        {
+            "name": "oe_test_service_hwclock-save"
+        },
+        {
+            "name": "oe_test_service_initrd-cleanup"
+        },
+        {
+            "name": "oe_test_service_initrd-parse-etc"
+        },
+        {
+            "name": "oe_test_service_initrd-switch-root"
+        },
+        {
+            "name": "oe_test_service_initrd-udevadm-cleanup-db"
+        },
+        {
+            "name": "oe_test_service_kmod-static-nodes"
+        },
+        {
+            "name": "oe_test_service_ldconfig"
+        },
+        {
+            "name": "oe_test_service_quotaon"
+        },
+        {
+            "name": "oe_test_service_rc-local"
+        },
+        {
+            "name": "oe_test_service_rescue"
+        },
+        {
+            "name": "oe_test_service_systemd-ask-password-console"
+        }
+    ]
+}

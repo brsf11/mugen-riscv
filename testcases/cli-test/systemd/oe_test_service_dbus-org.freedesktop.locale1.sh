@@ -14,28 +14,21 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test etcd.service restart
+# @Desc      :   Test dbus-org.freedesktop.locale1.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
-function pre_test() {
-    LOG_INFO "Start environmental preparation."
-    DNF_INSTALL etcd
-    LOG_INFO "End of environmental preparation!"
-}
-
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution etcd.service 
-    test_reload etcd.service 
+    test_execution dbus-org.freedesktop.locale1.service
+    test_reload dbus-org.freedesktop.locale1.service
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
-    LOG_INFO "start environment cleanup."
-    systemctl stop etcd.service
-    DNF_REMOVE
+    LOG_INFO "Start environment cleanup."
+    systemctl stop dbus-org.freedesktop.locale1.service
     LOG_INFO "Finish environment cleanup!"
 }
 
