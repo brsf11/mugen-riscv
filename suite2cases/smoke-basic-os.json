@@ -15,6 +15,9 @@
             "name": "oe_test_cd_002"
         },
         {
+	    "name": "oe_test_chattr"
+	},
+        {
             "name": "oe_test_chmod_001"
         },
         {
