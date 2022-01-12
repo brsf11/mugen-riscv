@@ -22,17 +22,12 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environment preparation."
     DNF_INSTALL "hdparm util-linux"
+    disk=$(lsblk -a -o NAME,TYPE | grep -v NAME | head -1 | awk '{print $1}')
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    disk=$(lsblk -S -o NAME,TYPE | grep -v NAME | head -1 | awk '{print $1}')
-    if [ -z "${disk}" ]; then
-        LOG_INFO "no available disk found, skip $0"
-        return 1
-    fi
-
     hdparm -a /dev/"${disk}" | grep readahead
     CHECK_RESULT $?
     hdparm -r /dev/"${disk}" | grep readonly
