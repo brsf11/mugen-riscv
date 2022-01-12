@@ -14,30 +14,22 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test ldconfig.service restart
+# @Desc      :   Test systemd-localed.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
-function pre_test() {
-    LOG_INFO "Start environment preparation."
-    service=ldconfig.service
-    test -f /etc/.updated && mv /etc/.updated /etc/.updated_bak
-    LOG_INFO "Finish environment cleanup!"
-}
-
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution "${service}"
-    test_reload "${service}"
+    test_execution systemd-localed.service
+    test_reload systemd-localed.service
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
-    LOG_INFO "Start environment cleanup."
-    systemctl stop "${service}"
-    test -f /etc/.updated_bak && mv /etc/.updated_bak /etc/.updated
-    LOG_INFO "Finish environment preparation!"
+    LOG_INFO "start environment cleanup."
+    systemctl stop systemd-localed.service
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main "$@"
