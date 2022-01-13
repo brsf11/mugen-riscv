@@ -23,7 +23,7 @@ function pre_test() {
     LOG_INFO "Start environment preparation."
     service=ldconfig.service
     test -f /etc/.updated && mv /etc/.updated /etc/.updated_bak
-    LOG_INFO "Finish environment cleanup!"
+    LOG_INFO "Finish environment preparation!"
 }
 
 function run_test() {
@@ -37,7 +37,7 @@ function post_test() {
     LOG_INFO "Start environment cleanup."
     systemctl stop "${service}"
     test -f /etc/.updated_bak && mv /etc/.updated_bak /etc/.updated
-    LOG_INFO "Finish environment preparation!"
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main "$@"

@@ -27,9 +27,9 @@ function run_test() {
 }
 
 function post_test() {
-    LOG_INFO "Start environment preparation."
+    LOG_INFO "Start environment cleanup."
     systemctl stop systemd-ask-password-console.service
-    LOG_INFO "Finish environment preparation!"
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main "$@"
