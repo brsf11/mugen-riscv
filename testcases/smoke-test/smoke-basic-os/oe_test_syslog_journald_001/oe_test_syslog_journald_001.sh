@@ -19,16 +19,20 @@
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function run_test() {
-	LOG_INFO "Start to run test."
+function config_params() {
+	LOG_INFO "Start to config params of the case."
 	if ls /run/log/journal/*; then
 		path=run
 	else
 		path=var
 	fi
+	folder=$(ls /${path}/log/journal/ | head -n 1)
+	LOG_INFO "End to config params of the case."
+}
+function run_test() {
+	LOG_INFO "Start to run test."
 	grep Storage /etc/systemd/journald.conf | egrep "Storage=auto|Storage=persistent"
 	CHECK_RESULT $?
-	folder=$(ls /${path}/log/journal/)
 	cp -r /${path}/log/journal/"${folder}" /${path}/log/journal/"${folder}"bak
 	rm -rf /${path}/log/journal/"${folder}"
 	systemctl restart systemd-journald.service
@@ -47,8 +51,7 @@ function run_test() {
 
 function post_test() {
 	LOG_INFO "Start to restore the test environment."
-	rm -rf /${path}/log/journal/"${folder}"bak
-	rm -rf systemlog1
+	rm -rf /${path}/log/journal/"${folder}"bak systemlog1
 	LOG_INFO "End to restore the test environment."
 }
 
