@@ -16,13 +16,12 @@
 #@Desc      	:   Test cracklib command
 #####################################
 
-
 source "${OET_PATH}"/libs/locallibs/common_lib.sh
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
 
-    cat > "test-data" << EOF
+    cat >"test-data" <<EOF
 antzer
 G@ndalf
 neulinger
@@ -35,7 +34,7 @@ Pa\$sw0rd
 Pa\$sW0rd
 EOF
 
-    cat > "format-data" << EOF
+    cat >"format-data" <<EOF
 antzer
 g@ndalf
 lantzer
@@ -44,7 +43,7 @@ pa\$\$w0rd
 pa\$sw0rd
 pas\$w0rd
 EOF
-    echo -e "2948_Obaym-" > pw_dict.new
+    echo -e "2948_Obaym-" >pw_dict.new
 
     LOG_INFO "Finish preparing the test environment."
 }
@@ -72,16 +71,16 @@ function run_test() {
 
     ### test: cracklib-format
     LOG_INFO "Test: cracklib-format"
-    cracklib-format test-data > format-dict
+    cracklib-format test-data >format-dict
     CHECK_RESULT $? 0 0 "cracklib-foramt failed..."
-    diff format-data format-dict > /dev/null
+    diff format-data format-dict >/dev/null
     CHECK_RESULT $? 0 0 "cracklib-foramt result error..."
 
     ### test: mkdict
     LOG_INFO "Test: mkdict"
-    cracklib-format test-data > mkdict
+    cracklib-format test-data >mkdict
     CHECK_RESULT $? 0 0 "mkdict failed..."
-    diff format-data mkdict > /dev/null
+    diff format-data mkdict >/dev/null
     CHECK_RESULT $? 0 0 "mkdict result error..."
 
     ### test: cracklib-packer
@@ -100,14 +99,14 @@ function run_test() {
 
     ### test: cracklib-unpacker
     LOG_INFO "Test: cracklib-unpacker"
-    cracklib-unpacker words > unpacker-data
+    cracklib-unpacker words >unpacker-data
     CHECK_RESULT $? 0 0 "cracklib-unpacker failed..."
-    diff format-data unpacker-data > /dev/null
+    diff format-data unpacker-data >/dev/null
     CHECK_RESULT $? 0 0 "cracklib-unpacker result error..."
 
     ### test: create-cracklib-dict
     LOG_INFO "Test: create-cracklib-dict"
-    cracklib-unpacker /usr/share/cracklib/pw_dict > pw_dict.orig
+    cracklib-unpacker /usr/share/cracklib/pw_dict >pw_dict.orig
     CHECK_RESULT $? 0 0 "Failed to backup original data..."
 
     create-cracklib-dict pw_dict.new

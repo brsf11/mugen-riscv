@@ -20,6 +20,12 @@
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
+function pre_test() {
+    LOG_INFO "Start environmental preparation."
+    DNF_INSTALL "policycoreutils-python-utils"
+    LOG_INFO "End of environmental preparation!"
+}
+
 function run_test() {
     LOG_INFO "Start executing testcase."
     semanage boolean -l | grep 'nfs' | grep httpd | grep off
@@ -43,6 +49,7 @@ function post_test() {
     LOG_INFO "start environment cleanup."
     setsebool httpd_use_nfs off
     setsebool httpd_use_cifs off
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"

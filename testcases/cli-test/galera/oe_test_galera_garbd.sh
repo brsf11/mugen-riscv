@@ -17,7 +17,7 @@
 # @Desc      :   A plug-in shared library file
 # ############################################
 
-source "./common/common_galera.sh"
+source "../common/common_galera.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
@@ -80,4 +80,4 @@ function post_test() {
     LOG_INFO "Finish environment cleanup."
 }
 
-main $@
+main "$@"
