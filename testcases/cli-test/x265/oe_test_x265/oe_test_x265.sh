@@ -27,29 +27,25 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    x265 -h |grep "Options"
+    x265 -h | grep "Options"
     CHECK_RESULT $? 0 0 "Help information printing failed"
-    x265 -V 2>&1 |grep -E "[0-9]"
+    x265 -V 2>&1 | grep -E "[0-9]"
     CHECK_RESULT $? 0 0 "Version information printing failed"
-    x265 --input test.y4m -o file0
-    test -f file0
+    x265 --input test.y4m -o file0 && test -f file0
     CHECK_RESULT $? 0 0 "Check file0 failed"
-    x265 --input test.y4m -o file0 --log-level warning 2>&1 |grep "warning"
+    x265 --input test.y4m -o file0 --log-level warning 2>&1 | grep "warning"
     CHECK_RESULT $? 0 0 "Check warning failed"
-    x265 --input test.y4m -o file0 --fps 66 2>&1 |grep "fps 66000"
+    x265 --input test.y4m -o file0 --fps 66 2>&1 | grep "fps 66000"
     CHECK_RESULT $? 0 0 "Check fps 66000 failed"
-    x265 --input test.y4m -o file0 --frames 123 2>&1 |grep "frames 0 - 122"
+    x265 --input test.y4m -o file0 --frames 123 2>&1 | grep "frames 0 - 122"
     CHECK_RESULT $? 0 0 "Check frames 122 failed"
-    x265 --input test.y4m -o file0 --seek 5 2>&1 |grep "frames 5"
+    x265 --input test.y4m -o file0 --seek 5 2>&1 | grep "frames 5"
     CHECK_RESULT $? 0 0 "Check frames 5 failed"
-    x265 --input test.y4m -o file1 -D 10
-    test -f file1
+    x265 --input test.y4m -o file1 -D 10 && test -f file1
     CHECK_RESULT $? 0 0 "Check file1 failed"
-    x265 --input test.y4m -o file2 --no-progress
-    test -f file2
+    x265 --input test.y4m -o file2 --no-progress && test -f file2
     CHECK_RESULT $? 0 0 "Check file2 failed"
-    x265 --input test.y4m -o file3 --csv file3_csv
-    test -f file3_csv
+    x265 --input test.y4m -o file3 --csv file3_csv && test -f file3_csv
     CHECK_RESULT $? 0 0 "Check file3 failed"
     LOG_INFO "End to run test."
 }
@@ -62,4 +58,3 @@ function post_test() {
 }
 
 main "$@"
-

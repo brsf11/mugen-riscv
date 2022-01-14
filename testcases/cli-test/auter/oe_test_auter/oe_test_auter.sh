@@ -27,22 +27,22 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    auter -h |grep "Usage" 
+    auter -h | grep "Usage"
     CHECK_RESULT $? 0 0 "Help information printing failed"
-    auter -v |grep "[0-9]" 
+    auter -v | grep "[0-9]"
     CHECK_RESULT $? 0 0 "Version information printing failed"
-    auter --status |grep "enabled" 
+    auter --status | grep "enabled"
     CHECK_RESULT $? 0 0 "Failed to check the status"
-    auter --disable |grep "disabled" 
-    auter --status |grep "disabled" 
+    auter --disable | grep "disabled"
+    auter --status | grep "disabled"
     CHECK_RESULT $? 0 0 "Disable the failure"
-    auter --enable |grep "enabled" 
+    auter --enable | grep "enabled"
     CHECK_RESULT $? 0 0 "Enable the failure"
-    auter --prep |grep "downloaded" 
+    auter --prep | grep "downloaded"
     CHECK_RESULT $? 0 0 "Predownload failed"
-    auter --apply |grep "successfully" 
+    auter --apply | grep "successfully"
     CHECK_RESULT $? 0 0 "Application of failure"
-    auter --postreboot |grep "post-reboot" 
+    auter --postreboot | grep "post-reboot"
     CHECK_RESULT $? 0 0 "Postreboot of failure"
     LOG_INFO "End to run test."
 }
@@ -54,6 +54,3 @@ function post_test() {
 }
 
 main "$@"
-
-
-
