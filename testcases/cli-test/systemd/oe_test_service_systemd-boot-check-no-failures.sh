@@ -48,18 +48,18 @@ function run_test() {
     P_SSH_CMD --node 2 --cmd "test ! -f /etc/systemd/system/boot-complete.target.requires/${service}"
     CHECK_RESULT $? 0 0 "${service} disable failed"
     P_SSH_CMD --node 2 --cmd "systemctl reload ${service} 2>&1 | grep 'Job type reload is not applicable'"
+    CHECK_RESULT $? 0 0 "Job type reload is not applicable for unit ${service}"
     P_SSH_CMD --node 2 --cmd "systemctl status ${service} | grep 'Active: active'"
+    CHECK_RESULT $? 0 0 "Check ${service} status failed"
     P_SSH_CMD --node 2 --cmd "test 0 -eq \$(journalctl --since '${log_time}' -u ${service} | grep -v 'Health check: no failed units' |
         grep -v '${service}: Succeeded' | grep -v 'Check if Any System Units Failed' | grep -i -c 'fail\|error')"
-    CHECK_RESULT $? 0 0 "There is an error message for the log of systemd-boot-check-no-failures.servic"
+    CHECK_RESULT $? 0 0 "There is an error message for the log of ${service}"
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    SSH_CMD "
-    systemctl stop ${service}
-    " "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
+    P_SSH_CMD --node 2 --cmd "systemctl stop ${service}"
     LOG_INFO "Finish environment cleanup!"
 }
 
