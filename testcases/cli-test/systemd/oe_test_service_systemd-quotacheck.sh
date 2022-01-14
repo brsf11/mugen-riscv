@@ -14,21 +14,22 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test systemd-ask-password-wall.service restart
+# @Desc      :   Test systemd-quotacheck.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution systemd-ask-password-wall.service
-    test_reload systemd-ask-password-wall.service
+    test_execution systemd-quotacheck.service
+    test_reload systemd-quotacheck.service
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    systemctl stop systemd-ask-password-wall.service
+    systemctl stop systemd-quotacheck.service
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
 

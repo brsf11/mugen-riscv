@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2022. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -14,22 +14,16 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test systemd-ask-password-wall.service restart
+# @Desc      :   Test systemd-sysctl.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution systemd-ask-password-wall.service
-    test_reload systemd-ask-password-wall.service
+    test_execution systemd-sysctl.service
+    test_reload systemd-sysctl.service
     LOG_INFO "Finish test!"
-}
-
-function post_test() {
-    LOG_INFO "start environment cleanup."
-    systemctl stop systemd-ask-password-wall.service
-    LOG_INFO "Finish environment cleanup!"
 }
 
 main "$@"
