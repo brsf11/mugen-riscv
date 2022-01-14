@@ -22,7 +22,7 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environment preparation."
     DNF_INSTALL quota
-    LOG_INFO "Finish environment cleanup!"
+    LOG_INFO "Finish environment preparation!"
 }
 
 function run_test() {
@@ -33,7 +33,7 @@ function run_test() {
 }
 
 function post_test() {
-    LOG_INFO "Start environment preparation."
+    LOG_INFO "Start environment cleanup."
     systemctl stop quotaon.service
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"

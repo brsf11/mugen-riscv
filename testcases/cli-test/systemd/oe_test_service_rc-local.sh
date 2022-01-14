@@ -22,7 +22,7 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environment preparation."
     chmod +x /etc/rc.d/rc.local
-    LOG_INFO "Finish environment cleanup!"
+    LOG_INFO "Finish environment preparation!"
 }
 
 function run_test() {
@@ -37,7 +37,7 @@ function post_test() {
     systemctl stop rc-local.service
     chmod -x /etc/rc.d/rc.local
     rm -rf /var/lock/subsys/local
-    LOG_INFO "Start environment cleanup!"
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main "$@"

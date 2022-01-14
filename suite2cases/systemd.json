@@ -1,5 +1,6 @@
 {
     "path": "$OET_PATH/testcases/cli-test/systemd",
+    "machine num": 2,
     "cases": [
         {
             "name": "oe_test_service_console-getty"
@@ -60,6 +61,97 @@
         },
         {
             "name": "oe_test_service_systemd-ask-password-console"
+        },
+        {
+            "name": "oe_test_service_systemd-ask-password-wall"
+        },
+        {
+            "name": "oe_test_service_systemd-binfmt"
+        },
+        {
+            "name": "oe_test_service_systemd-bless-boot"
+        },
+        {
+            "name": "oe_test_service_systemd-boot-check-no-failures",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_service_systemd-boot-system-token"
+        },
+        {
+            "name": "oe_test_service_systemd-exit"
+        },
+        {
+            "name": "oe_test_service_systemd-firstboot"
+        },
+        {
+            "name": "oe_test_service_systemd-fsck-root"
+        },
+        {
+            "name": "oe_test_service_systemd-halt"
+        },
+        {
+            "name": "oe_test_service_systemd-hibernate"
+        },
+        {
+            "name": "oe_test_service_systemd-hostnamed"
+        },
+        {
+            "name": "oe_test_service_systemd-hwdb-update"
+        },
+        {
+            "name": "oe_test_service_systemd-hybrid-sleep"
+        },
+        {
+            "name": "oe_test_service_systemd-importd"
+        },
+        {
+            "name": "oe_test_service_systemd-initctl"
+        },
+        {
+            "name": "oe_test_service_systemd-journal-catalog-update"
+        },
+        {
+            "name": "oe_test_service_systemd-journald"
+        },
+        {
+            "name": "oe_test_service_systemd-journal-flush"
+        },
+        {
+            "name": "oe_test_service_systemd-journal-gatewayd"
+        },
+        {
+            "name": "oe_test_service_systemd-journal-remote"
+        },
+        {
+            "name": "oe_test_service_systemd-journal-upload"
+        },
+        {
+            "name": "oe_test_service_systemd-kexec"
+        },
+        {
+            "name": "oe_test_service_systemd-localed"
+        },
+        {
+            "name": "oe_test_service_systemd-logind"
+        },
+        {
+            "name": "oe_test_service_systemd-machined"
+        },
+        {
+            "name": "oe_test_service_systemd-machine-id-commit"
+        },
+        {
+            "name": "oe_test_service_systemd-modules-load"
+        },
+        {
+            "name": "oe_test_service_systemd-networkd"
+        },
+        {
+            "name": "oe_test_service_systemd-networkd-wait-online"
+        },
+        {
+            "name": "oe_test_service_systemd-network-generator"
         }
     ]
 }

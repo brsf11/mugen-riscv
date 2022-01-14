@@ -22,7 +22,8 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environment preparation."
     service=ldconfig.service
-    LOG_INFO "Finish environment cleanup!"
+    test -f /etc/.updated && mv /etc/.updated /etc/.updated_bak
+    LOG_INFO "Finish environment preparation!"
 }
 
 function run_test() {
@@ -35,7 +36,8 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start environment cleanup."
     systemctl stop "${service}"
-    LOG_INFO "Finish environment preparation!"
+    test -f /etc/.updated_bak && mv /etc/.updated_bak /etc/.updated
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main "$@"
