@@ -243,6 +243,96 @@
         },
         {
             "name": "oe_test_socket_syslog"
+        },
+        {
+            "name": "oe_test_socket_systemd-coredump"
+        },
+        {
+            "name": "oe_test_socket_systemd-initctl"
+        },
+        {
+            "name": "oe_test_socket_systemd-journald-audit"
+        },
+        {
+            "name": "oe_test_socket_systemd-journald-dev-log"
+        },
+        {
+            "name": "oe_test_socket_systemd-journald"
+        },
+        {
+            "name": "oe_test_socket_systemd-journal-gatewayd"
+        },
+        {
+            "name": "oe_test_socket_systemd-journal-remote"
+        },
+        {
+            "name": "oe_test_socket_systemd-networkd"
+        },
+        {
+            "name": "oe_test_socket_systemd-rfkill"
+        },
+        {
+            "name": "oe_test_socket_systemd-udevd-control"
+        },
+        {
+            "name": "oe_test_socket_systemd-udevd-kernel"
+        },
+        {
+            "name": "oe_test_target_basic"
+        },
+        {
+            "name": "oe_test_target_boot-complete"
+        },
+        {
+            "name": "oe_test_target_cryptsetup-pre"
+        },
+        {
+            "name": "oe_test_target_cryptsetup"
+        },
+        {
+            "name": "oe_test_target_ctrl-alt-del"
+        },
+        {
+            "name": "oe_test_target_default"
+        },
+        {
+            "name": "oe_test_target_exit"
+        },
+        {
+            "name": "oe_test_target_final"
+        },
+        {
+            "name": "oe_test_target_getty-pre"
+        },
+        {
+            "name": "oe_test_target_getty"
+        },
+        {
+            "name": "oe_test_target_graphical"
+        },
+        {
+            "name": "oe_test_target_halt"
+        },
+        {
+            "name": "oe_test_target_hibernate"
+        },
+        {
+            "name": "oe_test_target_hybrid-sleep"
+        },
+        {
+            "name": "oe_test_target_initrd-fs"
+        },
+        {
+            "name": "oe_test_target_initrd-root-device"
+        },
+        {
+            "name": "oe_test_target_initrd-root-fs"
+        },
+        {
+            "name": "oe_test_target_initrd"
+        },
+        {
+            "name": "oe_test_target_initrd-switch-root"
         }
     ]
 }

@@ -7,37 +7,24 @@
 # THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more detaitest -f.
+# See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   huangrong
-# @Contact   :   1820463064@qq.com
-# @Date      :   2020/10/23
+# @Author    :   zengcongwei
+# @Contact   :   735811396@qq.com
+# @Date      :   2020/12/29
 # @License   :   Mulan PSL v2
-# @Desc      :   Test systemd-udevd.service restart
+# @Desc      :   Test final.target restart
 # #############################################
 
 source "../common/common_lib.sh"
 
-function pre_test() {
-    LOG_INFO "Start environmental preparation."
-    systemctl stop systemd-udevd-control.socket
-    systemctl stop systemd-udevd-kernel.socket
-    LOG_INFO "End of environmental preparation!"
-}
-
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution systemd-udevd.service
-    test_reload systemd-udevd.service
+    LOG_INFO "A special target unit that is used during the shutdown logic and may be used to pull 
+    in late services after all normal services are already terminated and all mounts unmounted."
+    test_oneshot final.target 'inactive (dead)'
     LOG_INFO "Finish test!"
-}
-
-function post_test() {
-    LOG_INFO "Start environment cleanup."
-    systemctl start systemd-udevd-control.socket
-    systemctl start systemd-udevd-kernel.socket
-    LOG_INFO "Finish environment cleanup!"
 }
 
 main "$@"
