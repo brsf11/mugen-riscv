@@ -6,6 +6,67 @@
         },
         {
             "name": "oe_test_socket_io.podman"
-        }
+        },
+	{
+	    "name": "oe_test_podman_19"
+	},
+	{
+	    "name": "oe_test_podman_20"
+	},
+	{
+	    "name": "oe_test_podman_21"
+	},
+	{
+	    "name": "oe_test_podman_22"
+	},
+        {
+	    "name": "oe_test_podman_23"
+	},
+	{
+	    "name": "oe_test_podman_24"
+	},
+	{
+	    "name": "oe_test_podman_25"
+	},
+	{
+	    "name": "oe_test_podman_26"
+	},
+	{
+	    "name": "oe_test_podman_27"
+	},
+	{
+	    "name": "oe_test_podman_28"
+	},
+	{
+	    "name": "oe_test_podman_docker_19"
+	},
+        {
+	    "name": "oe_test_podman_docker_20"
+	},
+	{
+	    "name": "oe_test_podman_docker_21"
+	},
+	{
+	    "name": "oe_test_podman_docker_22"
+	},
+	{
+	    "name": "oe_test_podman_docker_23"
+	},
+	{
+	    "name": "oe_test_podman_docker_24"
+	},
+	{
+	    "name": "oe_test_podman_docker_25"
+	},
+	{
+	    "name": "oe_test_podman_docker_26"
+	},
+	{
+	    "name": "oe_test_podman_docker_27"
+	},
+	{
+	    "name": "oe_test_podman_docker_28"
+	}
+
     ]
 }
