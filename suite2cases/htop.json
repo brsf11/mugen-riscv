@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/htop",
+    "cases": [
+        {
+            "name": "oe_test_htop_01"
+        },
+        {
+            "name": "oe_test_htop_02"
+        }
+    ]
+}
