@@ -152,6 +152,97 @@
         },
         {
             "name": "oe_test_service_systemd-network-generator"
+        },
+        {
+            "name": "oe_test_service_systemd-portabled"
+        },
+        {
+            "name": "oe_test_service_systemd-poweroff"
+        },
+        {
+            "name": "oe_test_service_systemd-pstore"
+        },
+        {
+            "name": "oe_test_service_systemd-quotacheck"
+        },
+        {
+            "name": "oe_test_service_systemd-random-seed"
+        },
+        {
+            "name": "oe_test_service_systemd-reboot"
+        },
+        {
+            "name": "oe_test_service_systemd-remount-fs"
+        },
+        {
+            "name": "oe_test_service_systemd-resolved"
+        },
+        {
+            "name": "oe_test_service_systemd-rfkill"
+        },
+        {
+            "name": "oe_test_service_systemd-suspend"
+        },
+        {
+            "name": "oe_test_service_systemd-suspend-then-hibernate"
+        },
+        {
+            "name": "oe_test_service_systemd-sysctl"
+        },
+        {
+            "name": "oe_test_service_systemd-sysusers"
+        },
+        {
+            "name": "oe_test_service_systemd-timedated"
+        },
+        {
+            "name": "oe_test_service_systemd-timesyncd"
+        },
+        {
+            "name": "oe_test_service_systemd-time-wait-sync"
+        },
+        {
+            "name": "oe_test_service_systemd-tmpfiles-clean"
+        },
+        {
+            "name": "oe_test_service_systemd-tmpfiles-setup-dev"
+        },
+        {
+            "name": "oe_test_service_systemd-tmpfiles-setup"
+        },
+        {
+            "name": "oe_test_service_systemd-udevd"
+        },
+        {
+            "name": "oe_test_service_systemd-udev-settle"
+        },
+        {
+            "name": "oe_test_service_systemd-udev-trigger"
+        },
+        {
+            "name": "oe_test_service_systemd-update-done"
+        },
+        {
+            "name": "oe_test_service_systemd-update-utmp-runlevel"
+        },
+        {
+            "name": "oe_test_service_systemd-update-utmp"
+        },
+        {
+            "name": "oe_test_service_systemd-user-sessions"
+        },
+        {
+            "name": "oe_test_service_systemd-vconsole-setup"
+        },
+        {
+            "name": "oe_test_service_systemd-volatile-root"
+        },
+        {
+            "name": "oe_test_service_system-update-cleanup",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_socket_syslog"
         }
     ]
 }
