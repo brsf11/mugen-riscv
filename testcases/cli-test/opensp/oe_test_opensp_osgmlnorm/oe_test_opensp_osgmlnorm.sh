@@ -21,7 +21,8 @@ source "${OET_PATH}"/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "opensp"
-    cp -r normal.sgml normal2.sgml
+    cp -r ../common/normal.sgml ./normal.sgml
+    cp -r normal.xml normal2.xml
     printf "DOCUMENT normal.sgml\nDOCUMENT normal2.sgml" >catalogs
     LOG_INFO "Finish preparing the test environment."
 }
@@ -30,8 +31,7 @@ function run_test() {
     LOG_INFO "Start to run test."
     osgmlnorm -b utf-8 normal.sgml | grep "Hello world"
     CHECK_RESULT $?
-    osgmlnorm -f error_info.log normal.sgml | grep "Hello world"
-    test -f error_info.log
+    osgmlnorm -f error_info.log normal.sgml | grep "Hello world" && test -f error_info.log
     CHECK_RESULT $?
     test "$(osgmlnorm -v normal.sgml 2>&1 | grep -Eo "[0-9]\.[0-9]\.[0-9]")" == "$(rpm -qa opensp | awk -F "-" '{print$2}')"
     CHECK_RESULT $?
@@ -41,8 +41,7 @@ function run_test() {
     CHECK_RESULT $?
     osgmlnorm -C catalogs | grep "Hello world"
     CHECK_RESULT $?
-    mkdir testdir
-    cp -rf normal.sgml ./testdir/
+    mkdir testdir && cp -rf normal.sgml ./testdir/
     osgmlnorm -D ./testdir/ normal.sgml | grep "Hello world"
     CHECK_RESULT $?
     osgmlnorm -R -D ./testdir/ normal.sgml | grep "Hello world"
@@ -56,8 +55,8 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    DNF_REMOVE "opensp"
-    rm -rf testdir catalogs normal2.sgml ./*.log
+    DNF_REMOVE
+    rm -rf testdir catalogs normal*.sgml ./*.log
     LOG_INFO "Finish restoring the test environment."
 }
 

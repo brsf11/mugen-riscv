@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2022. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2020. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -21,7 +21,8 @@ source "${OET_PATH}"/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "opensp"
-    cp -r normal.sgml normal2.sgml
+    cp -r ../common/normal.sgml ./normal.sgml
+    cp -r normal.xml normal2.xml
     printf "DOCUMENT normal.sgml\nDOCUMENT normal2.sgml" >catalogs
     LOG_INFO "Finish preparing the test environment."
 }
@@ -30,8 +31,7 @@ function run_test() {
     LOG_INFO "Start to run test."
     ospam -b utf-8 normal.sgml | grep 'Hello'
     CHECK_RESULT $?
-    ospam -f error_info.log normal.sgml
-    test -f error_info.log
+    ospam -f error_info.log normal.sgml && test -f error_info.log
     CHECK_RESULT $?
     ospam -v normal.sgml >tmp.result 2>&1 &
     SLEEP_WAIT 1
@@ -43,8 +43,7 @@ function run_test() {
     CHECK_RESULT $?
     ospam -C catalogs | grep 'Hello'
     CHECK_RESULT $?
-    mkdir testdir
-    cp -rf normal.sgml ./testdir/
+    mkdir testdir && cp -rf normal.sgml ./testdir/
     ospam -D ./testdir/ normal.sgml | grep 'Hello'
     CHECK_RESULT $?
     ospam -R -D ./testdir/ normal.sgml | grep 'Hello'
@@ -58,8 +57,8 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    DNF_REMOVE "opensp"
-    rm -rf testdir catalogs normal2.sgml ./*.log
+    DNF_REMOVE
+    rm -rf testdir catalogs normal*.sgml ./*.log tmp.result
     LOG_INFO "Finish restoring the test environment."
 }
 
