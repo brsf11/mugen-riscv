@@ -22,7 +22,7 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "opensp"
     cp -r ../common/normal.sgml ./normal.sgml
-    cp -r normal.xml normal2.xml
+    cp -r normal.sgml normal2.sgml
     printf "DOCUMENT normal.sgml\nDOCUMENT normal2.sgml" >catalogs
     LOG_INFO "Finish preparing the test environment."
 }
