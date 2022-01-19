@@ -19,9 +19,15 @@
 
 source "../common/common_lib.sh"
 
+function pre_test() {
+    LOG_INFO "Start environmental preparation."
+    service=system-update-cleanup.service
+    log_time=$(date '+%Y-%m-%d %T')
+    LOG_INFO "End of environmental preparation!"
+}
+
 function run_test() {
     LOG_INFO "Start testing..."
-    log_time=$(date '+%Y-%m-%d %T')
     P_SSH_CMD --node 2 --cmd "touch /system-update;systemctl restart system-update-cleanup.service"
     REMOTE_REBOOT_WAIT 2 60
     P_SSH_CMD --node 2 --cmd "test ! -f /system-update"

@@ -41,7 +41,7 @@ function run_test() {
 }
 
 function post_test() {
-    LOG_INFO "start environment cleanup."
+    LOG_INFO "Start environment cleanup."
     sed -i "s\URL=http://${NODE1_IPV4}:19532\# URL=\g" /etc/systemd/journal-upload.conf
     sed -i "s\listen-http=-3\listen-https=-3\g" /usr/lib/systemd/system/systemd-journal-remote.service
     systemctl daemon-reload

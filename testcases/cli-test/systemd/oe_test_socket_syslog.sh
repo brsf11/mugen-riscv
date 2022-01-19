@@ -28,14 +28,14 @@ function pre_test() {
 }
 
 function run_test() {
-    LOG_INFO "Start to run test."
+    LOG_INFO "Start testing..."
     test_execution syslog.socket 
     test_reload syslog.socket 
-    LOG_INFO "End of the test."
+    LOG_INFO "Finish test!"
 }
 
 function post_test() {
-    LOG_INFO "start environment cleanup."
+    LOG_INFO "Start environment cleanup."
     systemctl stop syslog.socket 
     rm -rf /etc/systemd/system/syslog.service
     systemctl daemon-reload
