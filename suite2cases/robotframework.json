@@ -1,0 +1,29 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/robotframework",
+    "cases": [
+        {
+            "name": "oe_test_robotframework_libdoc"
+        },
+	{
+            "name": "oe_test_robotframework_rebot_01"
+        },
+	{
+            "name": "oe_test_robotframework_rebot_02"
+        },
+	{
+            "name": "oe_test_robotframework_rebot_03"
+        },
+	{
+            "name": "oe_test_robotframework_robot_01"
+        },
+	{
+            "name": "oe_test_robotframework_robot_02"
+        },
+	{
+            "name": "oe_test_robotframework_robot_03"
+        },
+	{
+            "name": "oe_test_robotframework_robot_04"
+        }
+    ]
+}
