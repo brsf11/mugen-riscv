@@ -333,6 +333,96 @@
         },
         {
             "name": "oe_test_target_initrd-switch-root"
+        },
+        {
+            "name": "oe_test_target_kexec"
+        },
+        {
+            "name": "oe_test_target_local-fs-pre"
+        },
+        {
+            "name": "oe_test_target_local-fs"
+        },
+        {
+            "name": "oe_test_target_machines"
+        },
+        {
+            "name": "oe_test_target_multi-user"
+        },
+        {
+            "name": "oe_test_target_network-online"
+        },
+        {
+            "name": "oe_test_target_network-pre"
+        },
+        {
+            "name": "oe_test_target_network"
+        },
+        {
+            "name": "oe_test_target_nss-lookup"
+        },
+        {
+            "name": "oe_test_target_nss-user-lookup"
+        },
+        {
+            "name": "oe_test_target_paths"
+        },
+        {
+            "name": "oe_test_target_poweroff"
+        },
+        {
+            "name": "oe_test_target_reboot"
+        },
+        {
+            "name": "oe_test_target_remote-cryptsetup"
+        },
+        {
+            "name": "oe_test_target_remote-fs-pre"
+        },
+        {
+            "name": "oe_test_target_remote-fs"
+        },
+        {
+            "name": "oe_test_target_rescue"
+        },
+        {
+            "name": "oe_test_target_rpcbind"
+        },
+        {
+            "name": "oe_test_target_runlevel0"
+        },
+        {
+            "name": "oe_test_target_runlevel1"
+        },
+        {
+            "name": "oe_test_target_runlevel2"
+        },
+        {
+            "name": "oe_test_target_runlevel3"
+        },
+        {
+            "name": "oe_test_target_runlevel4"
+        },
+        {
+            "name": "oe_test_target_runlevel5"
+        },
+        {
+            "name": "oe_test_target_runlevel6"
+        },
+        {
+            "name": "oe_test_target_shutdown"
+        },
+        {
+            "name": "oe_test_target_sigpwr"
+        },
+        {
+            "name": "oe_test_target_sleep"
+        },
+        {
+            "name": "oe_test_target_slices"
+        },
+        {
+            "name": "oe_test_target_sockets"
         }
     ]
 }
