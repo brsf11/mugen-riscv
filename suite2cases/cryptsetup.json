@@ -1,0 +1,16 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/cryptsetup",
+    "add disk": [10],
+    "cases": [
+        {
+            "name": "oe_test_encrypt_data"
+        },
+        {
+            "name": "oe_test_luks_encrypted"
+        },
+        {
+            "name": "oe_test_use_luks",
+            "add disk": [10]
+        }
+    ]
+}

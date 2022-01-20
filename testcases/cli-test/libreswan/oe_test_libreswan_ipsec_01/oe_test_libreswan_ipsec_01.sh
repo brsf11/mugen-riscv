@@ -32,6 +32,7 @@ function run_test() {
     ipsec --directory | grep "/usr/libexec/ipsec"
     CHECK_RESULT $?
     ipsec stop && ipsec start
+    SLEEP_WAIT 15
     systemctl status ipsec | grep "active (running)"
     CHECK_RESULT $?
     ipsec status | grep 0
