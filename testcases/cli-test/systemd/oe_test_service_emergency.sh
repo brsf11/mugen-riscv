@@ -14,21 +14,14 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test systemd-network-generator.service restart
+# @Desc      :   Test emergency.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
-function pre_test() {
-    LOG_INFO "Start environmental preparation."
-    service=systemd-network-generator.service
-    systemctl start "${service}"
-    LOG_INFO "End of environmental preparation!"
-}
-
 function run_test() {
     LOG_INFO "Start testing..."
-    test_oneshot "${service}" 'inactive (dead)'
+    test_oneshot emergency.service 'inactive (dead)'
     LOG_INFO "Finish test!"
 }
 
