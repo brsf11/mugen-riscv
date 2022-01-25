@@ -14,21 +14,20 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test systemd-network-generator.service restart
+# @Desc      :   Test first-boot-complete.target restart
 # #############################################
 
 source "../common/common_lib.sh"
 
-function pre_test() {
-    LOG_INFO "Start environmental preparation."
-    service=systemd-network-generator.service
-    systemctl start "${service}"
-    LOG_INFO "End of environmental preparation!"
-}
-
 function run_test() {
     LOG_INFO "Start testing..."
-    test_oneshot "${service}" 'inactive (dead)'
+    systemctl restart first-boot-complete.target 2>&1 | grep "it is configured to refuse manual start/stop"
+    CHECK_RESULT $? 0 0 "Check first-boot-complete.target failed"
+    systemctl stop first-boot-complete.target
+    CHECK_RESULT $? 0 0 "first-boot-complete.target stop failed"
+    systemctl start first-boot-complete.target 2>&1 | grep "it is configured to refuse manual start/stop"
+    CHECK_RESULT $? 0 0 "Check first-boot-complete.target failed"
+    test_enabled first-boot-complete.target
     LOG_INFO "Finish test!"
 }
 

@@ -7,29 +7,28 @@
 # THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more detaitest -f.
+# See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   huangrong
-# @Contact   :   1820463064@qq.com
-# @Date      :   2020/10/23
+# @Author    :   zengcongwei
+# @Contact   :   735811396@qq.com
+# @Date      :   2020/12/29
 # @License   :   Mulan PSL v2
-# @Desc      :   Test systemd-network-generator.service restart
+# @Desc      :   Test umount.target restart
 # #############################################
 
 source "../common/common_lib.sh"
 
-function pre_test() {
-    LOG_INFO "Start environmental preparation."
-    service=systemd-network-generator.service
-    systemctl start "${service}"
-    LOG_INFO "End of environmental preparation!"
-}
-
 function run_test() {
-    LOG_INFO "Start testing..."
-    test_oneshot "${service}" 'inactive (dead)'
-    LOG_INFO "Finish test!"
+    LOG_INFO "Start to run test."
+    systemctl restart umount.target 2>&1 | grep "it is configured to refuse manual start/stop"
+    CHECK_RESULT $? 0 0 "Check umount.target failed"
+    systemctl stop umount.target
+    CHECK_RESULT $? 0 0 "umount.target stop failed"
+    systemctl start umount.target 2>&1 | grep "it is configured to refuse manual start/stop"
+    CHECK_RESULT $? 0 0 "Check umount.target failed"
+    test_enabled umount.target
+    LOG_INFO "End of the test."
 }
 
 main "$@"

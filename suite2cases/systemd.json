@@ -423,6 +423,66 @@
         },
         {
             "name": "oe_test_target_sockets"
+        },
+	{
+            "name": "oe_test_target_suspend"
+        },
+        {
+            "name": "oe_test_target_suspend-then-hibernate"
+        },
+        {
+            "name": "oe_test_target_swap"
+        },
+        {
+            "name": "oe_test_target_sysinit"
+        },
+        {
+            "name": "oe_test_target_system-update-pre"
+        },
+        {
+            "name": "oe_test_target_system-update"
+        },
+        {
+            "name": "oe_test_target_timers"
+        },
+        {
+            "name": "oe_test_target_time-set"
+        },
+        {
+            "name": "oe_test_target_time-sync"
+        },
+        {
+            "name": "oe_test_target_umount"
+        },
+	{
+            "name": "oe_test_service_emergency"
+        },
+        {
+            "name": "oe_test_target_emergency"
+        },
+	{
+            "name": "oe_test_service_systemd-sysext"
+        },
+        {
+            "name": "oe_test_service_systemd-userdbd"
+        },
+        {
+            "name": "oe_test_socket_systemd-userdbd"
+        },
+        {
+            "name": "oe_test_target_first-boot-complete"
+        },
+        {
+            "name": "oe_test_target_remote-veritysetup"
+        },
+        {
+            "name": "oe_test_target_usb-gadget"
+        },
+        {
+            "name": "oe_test_target_veritysetup"
+        },
+        {
+            "name": "oe_test_target_veritysetup-pre"
         }
     ]
 }

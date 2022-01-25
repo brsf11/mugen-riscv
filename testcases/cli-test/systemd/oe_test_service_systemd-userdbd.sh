@@ -14,22 +14,22 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test systemd-network-generator.service restart
+# @Desc      :   Test systemd-userdbd.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
-function pre_test() {
-    LOG_INFO "Start environmental preparation."
-    service=systemd-network-generator.service
-    systemctl start "${service}"
-    LOG_INFO "End of environmental preparation!"
-}
-
 function run_test() {
     LOG_INFO "Start testing..."
-    test_oneshot "${service}" 'inactive (dead)'
+    test_execution systemd-userdbd.service
+    test_reload systemd-userdbd.service
     LOG_INFO "Finish test!"
+}
+
+function post_test() {
+    LOG_INFO "Start environment cleanup."
+    systemctl stop systemd-userdbd.service
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main "$@"

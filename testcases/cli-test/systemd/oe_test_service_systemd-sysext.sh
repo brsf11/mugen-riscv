@@ -14,22 +14,31 @@
 # @Contact   :   1820463064@qq.com
 # @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test systemd-network-generator.service restart
+# @Desc      :   Test systemd-sysext.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    service=systemd-network-generator.service
-    systemctl start "${service}"
+    mkdir -p /etc/extensions
+    touch /etc/extensions/test
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_oneshot "${service}" 'inactive (dead)'
+    test_execution systemd-sysext.service
+    test_reload systemd-sysext.service
     LOG_INFO "Finish test!"
 }
+
+function post_test() {
+    LOG_INFO "Start environment cleanup."
+    systemctl stop systemd-sysext.service
+    rm -rf /etc/extensions
+    LOG_INFO "Finish environment cleanup!"
+}
+
 
 main "$@"
