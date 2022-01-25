@@ -22,6 +22,9 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL lsyncd
+    cat >> /etc/lsyncd.conf << EOF
+    sync{default.rsyncssh, source="/var/www/html", host="localhost", targetdir="/tmp/htmlcopy/"}
+EOF
     expect <<EOF
     spawn ssh-keygen
     expect "Generating public/private rsa key pair. Enter file in which to save the key"

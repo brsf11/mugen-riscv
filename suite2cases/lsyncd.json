@@ -3,6 +3,18 @@
     "cases": [
         {
             "name": "oe_test_service_lsyncd"
+        },
+        {
+            "name": "oe_test_rsync_lsyncd"
+        },
+        {
+            "name": "oe_test_direct_lsyncd"
+        },
+        {
+            "name": "oe_test_rsyncssh_lsyncd"
+        },
+        {
+            "name": "oe_test_command_lsyncd"
         }
     ]
 }
