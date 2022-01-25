@@ -96,6 +96,33 @@
         },
         {
             "name": "oe_test_python-docutils_rst2odt_06"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2xetex_01"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2xetex_02"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2xetex_03"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2xetex_04"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2xetex_05"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2xetex_06"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2xetex_07"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2xetex_08"
+        },
+        {
+            "name": "oe_test_python-docutils_rst2xetex_09"
         }
     ]
 }
