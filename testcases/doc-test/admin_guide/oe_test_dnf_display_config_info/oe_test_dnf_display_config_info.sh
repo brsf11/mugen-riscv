@@ -10,18 +10,24 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   Classicriver
+# @Author    :   Classicriver_jia
 # @Contact   :   classicriver_jia@foxmail.com
-# @Date      :   2020.4.27
+# @Date      :   2020.4-9
 # @License   :   Mulan PSL v2
-# @Desc      :   disk select
-# ############################################
+# @Desc      :   Display current configuration information
+# #############################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-function check_free_disk() {
-    disks=$(TEST_DISK)
-    disk_list=($disks)
-    local_disk=${disk_list[0]}
-    local_disk1=${disk_list[1]}
-    local_disk2=${disk_list[2]}
-    local_disk3=${disk_list[3]}
+function run_test() {
+    LOG_INFO "Start executing testcase."
+    dnf config-manager --dump
+    CHECK_RESULT $?
+    num_id=$(dnf repolist | dnf repolist | grep "repo id" -A 5 | wc -l)
+    test "${num_id}" -gt 1
+    CHECK_RESULT $?
+    repoid=$(dnf repolist | grep "repo id" -A 1 | grep -v "repo id" | awk -F ' ' '{print$1}')
+    dnf config-manager --dump "${repoid}"
+    CHECK_RESULT $?
+    LOG_INFO "End of testcase execution."
 }
+
+main $@

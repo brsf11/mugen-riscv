@@ -10,33 +10,43 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   xuchunlin
-# @Contact   :   xcl_job@163.com
-# @Date      :   2020.04-28
+# @Author    :   Classicriver_jia
+# @Contact   :   classicriver_jia@foxmail.com
+# @Date      :   2020.4-9
 # @License   :   Mulan PSL v2
-# @Desc      :   View system information
-# ############################################
+# @Desc      :   Package operations
+# #############################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-function run_test() {
-    LOG_INFO "Start executing testcase!"
-    grep 'NAME="openEuler"' /etc/os-release
-    CHECK_RESULT $?
-    OS_VERSION=$(grep -w "VERSION" /etc/os-release | awk -F '"' '{print$2}')
-    CHECK_RESULT $?
-    grep 'ID="openEuler"' /etc/os-release
-    CHECK_RESULT $?
-    OS_VERSION_bak=${OS_VERSION} | awk '{print$1}'
-    CHECK_RESULT $?
-    grep VERSION_ID="${OS_VERSION_bak}" /etc/os-release
-    CHECK_RESULT $?
-    grep PRETTY_NAME="\"openEuler ${OS_VERSION}"\" /etc/os-release
-    CHECK_RESULT $?
-    #grep 'PRETTY_NAME="openEuler $OS_VERSION"' /etc/os-release
 
-    #CHECK_RESULT $?
-    grep 'ANSI_COLOR="0;31"' /etc/os-release
+function pre_test() {
+    LOG_INFO "Start executing testcase."
+    DNF_INSTALL httpd
+    LOG_INFO "End of testcase execution."
+}
+
+function run_test() {
+    LOG_INFO "Start executing testcase."
+    dnf search httpd | grep httpd
     CHECK_RESULT $?
-    LOG_INFO "End of testcase execution!"
+    dnf list all >/dev/null
+    CHECK_RESULT $?
+    dnf info httpd | grep httpd | grep -i Name
+    CHECK_RESULT $?
+    dnf download httpd
+    CHECK_RESULT $?
+    find httpd-*
+    CHECK_RESULT $?
+    dnf remove httpd -y
+    CHECK_RESULT $?
+    dnf download --resolve httpd
+    CHECK_RESULT $?
+    LOG_INFO "End of testcase execution."
+}
+
+function post_test() {
+    LOG_INFO "start environment cleanup."
+    rm -rf *.rpm httpd-*
+    LOG_INFO "Finish environment cleanup."
 }
 
 main $@
