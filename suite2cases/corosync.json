@@ -1,0 +1,17 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/corosync",
+    "machine num": 2,    
+    "cases": [
+        {
+            "name": "oe_test_service_spausedd"
+        },
+        {
+            "name": "oe_test_service_corosync",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_service_corosync-notifyd",
+            "machine num": 2
+        }
+    ]
+}

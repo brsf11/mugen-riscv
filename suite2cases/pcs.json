@@ -1,0 +1,16 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/pcs",
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_service_pcsd"
+        },
+        {
+            "name": "oe_test_service_pcsd-ruby"
+        },
+        {
+            "name": "oe_test_service_pcs_snmp_agent",
+            "machine num": 2
+        }
+    ]
+}

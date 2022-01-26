@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/sbd",
+    "cases": [
+        {
+            "name": "oe_test_service_sbd"
+        },
+        {
+            "name": "oe_test_service_sbd_remote"
+        }
+    ]
+}
