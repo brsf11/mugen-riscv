@@ -1,0 +1,56 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/pcp-system-tools",
+    "cases": [
+        {
+            "name": "oe_test_pmrep_01"
+        },
+        {
+            "name": "oe_test_pmrep_02"
+        },
+        {
+            "name": "oe_test_pmrep_03"
+        },
+        {
+            "name": "oe_test_pmrep_04"
+        },
+        {
+            "name": "oe_test_pmrep_05"
+        },
+        {
+            "name": "oe_test_pmrep_06"
+        },
+        {
+            "name": "oe_test_pcp-collectl"
+        },
+        {
+            "name": "oe_test_pcp_dmcache"
+        },
+        {
+            "name": "oe_test_dstat_01"
+        },
+        {
+            "name": "oe_test_dstat_02"
+        },
+        {
+            "name": "oe_test_dstat_03"
+        },
+        {
+            "name": "oe_test_pcp_free"
+        },
+        {
+            "name": "oe_test_pcp-pidstat_01"
+        },
+        {
+            "name": "oe_test_pcp-pidstat_02_pcp-ipcs"
+        },
+        {
+            "name": "oe_test_pcp-iostat"
+        },
+        {
+            "name": "oe_test_pcp-mpstat_pcp-numastat"
+        },
+        {
+            "name": "oe_test_pcp-uptime_pcp-verify"
+        }
+    ]
+}
