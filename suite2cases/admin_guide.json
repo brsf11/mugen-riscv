@@ -1,5 +1,5 @@
 {
-    "path":"$OET_PATH/testcases/admin_guide",
+    "path":"$OET_PATH/testcases/doc-test/admin_guide",
     "machine type":"kvm",
     "add network interface":2,
     "add disk":[2,2,2],
