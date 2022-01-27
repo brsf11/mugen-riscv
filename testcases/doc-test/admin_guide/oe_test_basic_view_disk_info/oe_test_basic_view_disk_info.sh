@@ -17,13 +17,13 @@
 # @Desc      :   View disk information
 # ############################################
 source ../common/disk_lib.sh
-function config_params() {
-    disk_name=$(check_free_disk 1)
+function pre_test() {
+    check_free_disk
     LOG_INFO "Loading data is complete!"
 }
 function run_test() {
-    LOG_INFO "Start executing testcase!"  
-    fdisk -l | grep ${disk_name}
+    LOG_INFO "Start executing testcase!"
+    fdisk -l | grep ${local_disk}
     CHECK_RESULT $?
 
     fdisk -v | grep "fdisk"

@@ -10,49 +10,41 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   xuchunlin
-# @Contact   :   xcl_job@163.com
-# @Date      :   2020.04-09
+# @Author    :   Classicriver_jia
+# @Contact   :   classicriver_jia@foxmail.com
+# @Date      :   2020.4-9
 # @License   :   Mulan PSL v2
-# @Desc      :   User password modification_current user
-# ############################################
+# @Desc      :   Management module and ssl
+# #############################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    useradd test26
-    passwd test26 <<EOF
-${NODE1_PASSWORD}
-${NODE1_PASSWORD}
-EOF
+    DNF_INSTALL "httpd"
+    systemctl enable httpd
+    systemctl start httpd
+    SLEEP_WAIT 6
+    sed -i "s/#LoadModule asis_module modules\/mod_asis.so/LoadModule asis_module modules\/mod_asis.so/g" /etc/httpd/conf.modules.d/00-optional.conf
     LOG_INFO "Environmental preparation is over."
 }
+
 function run_test() {
-    LOG_INFO "Start executing testcase!"
-    echo test >/home/tmp
-    su test26 -c "mkdir -p /tmp/tmp26"
+    LOG_INFO "Start executing testcase."
+    systemctl restart httpd
     CHECK_RESULT $?
-    expect -c"
-        spawn scp /home/tmp test26@${NODE1_IPV4}:/tmp/tmp26
-        expect {
-                \"*)?\"  {
-                        send \"yes\r\"
-                        exp_continue
-                }
-                \"*assword:*\"  {
-                        send \"${NODE1_PASSWORD}\r\"
-                        exp_continue
-                }
-}
-"
-    su test26 -c "ls /tmp/tmp26/tmp"
+    httpd -M | grep asis
     CHECK_RESULT $?
-    LOG_INFO "End of testcase execution!"
+    DNF_INSTALL mod_ssl
+    systemctl restart httpd
+    CHECK_RESULT $?
+    httpd -M | grep ssl
+    CHECK_RESULT $?
+    LOG_INFO "End of testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    userdel -r test26
-    rm -rf /tmp/tmp26 /home/tmp
+    sed -i "s/LoadModule asis_module modules\/mod_asis.so/#LoadModule asis_module modules\/mod_asis.so/g" /etc/httpd/conf.modules.d/00-optional.conf
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup."
 }
 

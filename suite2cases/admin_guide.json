@@ -3,9 +3,11 @@
     "machine type":"kvm",
     "add network interface":2,
     "add disk":[2,2,2],
+    "machine num":2
     "cases":[
         {
-            "name":"oe_test_lvm_pvcreate"
+            "name":"oe_test_lvm_pvcreate",
+	    "add disk":[2,2,2]
         },
         {
             "name":"oe_test_basic_mod_user_home_directory"
@@ -14,34 +16,45 @@
             "name":"oe_test_server_verify_service_status"
         },
         {
-            "name":"oe_test_nginx_check_configuration"
+            "name":"oe_test_nginx_check_configuration",
+	    "machine num":2
         },
         {
-            "name":"oe_test_postgresql_create_delete_roles"
+            "name":"oe_test_postgresql_create_delete_roles",
+	    "machine num":2
         },
         {
-            "name":"oe_test_vsftpd_transfer_deleted"
+            "name":"oe_test_vsftpd_transfer_deleted",
+	    "machine num":2,
+	    "add disk":[2,2,2],
+	    "add network interface":2
         },
         {
-            "name":"oe_test_lvm_pvdispay"
+            "name":"oe_test_lvm_pvdispay",
+	    "add disk":[2,2,2]
         },
         {
             "name":"oe_test_server_operate_service"
         },
         {
-            "name":"oe_test_mariadb_install_run_uninstall"
+            "name":"oe_test_mariadb_install_run_uninstall",
+	    "machine num":2
         },
         {
-            "name":"oe_test_ip_cmd_rule"
+            "name":"oe_test_ip_cmd_rule",
+	    "add network interface":2
         },
         {
-            "name":"oe_test_lvm_lvresize_add"
+            "name":"oe_test_lvm_lvresize_add",
+	    "add disk":[2,2,2]
         },
         {
-            "name":"oe_test_vsftpd_transfer_download"
+            "name":"oe_test_vsftpd_transfer_download",
+	    "machine num":2
         },
         {
-            "name":"oe_test_lvm_install"
+            "name":"oe_test_lvm_install",
+	    "add disk":[2,2,2]
         },
         {
             "name":"oe_test_httpd_check_configuration_status"
@@ -54,29 +67,34 @@
         },
         {
             "name":"oe_test_basic_mod_current_user_pwd",
-            "machine type":"kvm",
-            "add network interface":2
+            "machine num":2
         },
         {
-            "name":"oe_test_lvm_vgextend"
+            "name":"oe_test_lvm_vgextend",
+	    "add disk":[2,2,2]
         },
         {
-            "name":"oe_test_nmcli_mod_attribute"
+            "name":"oe_test_nmcli_mod_attribute",
+	    "add network interface":2
         },
         {
-            "name":"oe_test_mariadb_modify_delete_user"
+            "name":"oe_test_mariadb_modify_delete_user",
+	    "machine num":2
         },
         {
-            "name":"oe_test_ip_config_multiple_address"
+            "name":"oe_test_ip_config_multiple_address",
+	    "add network interface":2
         },
         {
             "name":"oe_test_dnf_create_local_repository"
         },
         {
-            "name":"oe_test_mariadb_create_view_user"
+            "name":"oe_test_mariadb_create_view_user",
+	    "machine num":2
         },
         {
-            "name":"oe_test_ip_config_mtu"
+            "name":"oe_test_ip_config_mtu",
+	    "add network interface":2
         },
         {
             "name":"oe_test_dnf_package_operate"
@@ -86,17 +104,18 @@
         },
         {
             "name":"oe_test_basic_config_Hostnamectl",
-            "machine type":"kvm",
-            "add network interface":2
+            "machine num":2
         },
         {
             "name":"oe_test_set_XLL_Forwarding"
         },
         {
-            "name":"oe_test_nmcli_config_dynamic_IP"
+            "name":"oe_test_nmcli_config_dynamic_IP",
+	    "add network interface":2
         },
         {
-            "name":"oe_test_mariadb_backup_restore_db"
+            "name":"oe_test_mariadb_backup_restore_db",
+	    "machine num":2
         },
         {
             "name":"oe_test_procmgmt_who"
@@ -111,55 +130,69 @@
             "name":"oe_test_basic_view_user_group_ids"
         },
         {
-            "name":"oe_test_lvm_lvresize_reduce"
+            "name":"oe_test_lvm_lvresize_reduce",
+	    "add disk":[2,2,2]
         },
         {
-            "name":"oe_test_lvm_shrink_roll_group"
+            "name":"oe_test_lvm_shrink_roll_group",
+	    "add disk":[2,2,2]
         },
         {
-            "name":"oe_test_lvm_auto_mount"
+            "name":"oe_test_lvm_auto_mount",
+	    "add disk":[2,2,2]
         },
         {
             "name":"oe_test_httpd_manage_module_ssl"
         },
         {
-            "name":"oe_test_lvm_lvremove_lvchange"
+            "name":"oe_test_lvm_lvremove_lvchange",
+	    "add disk":[2,2,2]
         },
         {
             "name":"oe_test_basic_system_info"
         },
         {
-            "name":"oe_test_mysql_modify_delete_user"
+            "name":"oe_test_mysql_modify_delete_user",
+	    "machine num":2
         },
         {
-            "name":"oe_test_lvm_lvcreate_lvdisplay"
+            "name":"oe_test_lvm_lvcreate_lvdisplay",
+	    "add disk":[2,2,2]
         },
         {
-            "name":"oe_test_postgresql_grant_delete_authorization"
+            "name":"oe_test_postgresql_grant_delete_authorization",
+	    "machine num":2
         },
         {
-            "name":"oe_test_ip_cmd_route"
+            "name":"oe_test_ip_cmd_route",
+	    "add network interface":2
         },
         {
-            "name":"oe_test_vsftpd_transfer_upload"
+            "name":"oe_test_vsftpd_transfer_upload",
+	    "machine num":2
         },
         {
-            "name":"oe_test_lvm_lvchange"
+            "name":"oe_test_lvm_lvchange",
+	    "add disk":[2,2,2]
         },
         {
-            "name":"oe_test_mysql_create_view_user"
+            "name":"oe_test_mysql_create_view_user",
+	    "machine num":2
         },
         {
             "name":"oe_test_procmgmt_run_programs_regularly"
         },
         {
-            "name":"oe_test_postgresql_create_delete_db"
+            "name":"oe_test_postgresql_create_delete_db",
+	    "machine num":2
         },
         {
-            "name":"oe_test_ip_config_static_address"
+            "name":"oe_test_ip_config_static_address",
+	    "add network interface":2
         },
         {
-            "name":"oe_test_nmcli_use_bonding"
+            "name":"oe_test_nmcli_use_bonding",
+	    "add network interface":2
         },
         {
             "name":"oe_test_basic_set_pwd_empty"
@@ -168,22 +201,26 @@
             "name":"oe_test_basic_expiration_time_setting"
         },
         {
-            "name":"oe_test_lvm_pvremvoe"
+            "name":"oe_test_lvm_pvremvoe",
+	    "add disk":[2,2,2]
         },
         {
-            "name":"oe_test_mysql_grant_delete_authorization"
+            "name":"oe_test_mysql_grant_delete_authorization",
+	    "machine num":2
         },
         {
             "name":"oe_test_basic_view_disk_info"
         },
         {
-            "name":"oe_test_lvm_lvextend"
+            "name":"oe_test_lvm_lvextend",
+	    "add disk":[2,2,2]
         },
         {
             "name":"oe_test_basic_query_cpu"
         },
         {
-            "name":"oe_test_postgresql_create_run_delete"
+            "name":"oe_test_postgresql_create_run_delete",
+	    "machine num":2
         },
         {
             "name":"oe_test_dnf_source_set"
@@ -192,65 +229,80 @@
             "name":"oe_test_basic_add_user"
         },
         {
-            "name":"oe_test_mysql_backup_restore_db"
+            "name":"oe_test_mysql_backup_restore_db",
+	    "machine num":2
         },
         {
-            "name":"oe_test_postgresql_change_roles"
+            "name":"oe_test_postgresql_change_roles",
+	    "machine num":2
         },
         {
-            "name":"oe_test_ip_config_static_route"
+            "name":"oe_test_ip_config_static_route",
+	    "add network interface":2
         },
         {
-            "name":"oe_test_vsftpd_start_stop"
+            "name":"oe_test_vsftpd_start_stop",
+	    "machine num":2
         },
         {
             "name":"oe_test_basic_query_MEM",
-            "machine type":"kvm"
+	    "machine type":"kvm"
         },
         {
-            "name":"oe_test_mariadb_grant_delete_authorization"
+            "name":"oe_test_mariadb_grant_delete_authorization",
+	    "machine num":2
         },
         {
-            "name":"oe_test_mysql_configuration"
+            "name":"oe_test_mysql_configuration",
+	    "machine num":2
         },
         {
             "name":"oe_test_basic_local_setting"
         },
         {
-            "name":"oe_test_httpd_verify_web"
+            "name":"oe_test_httpd_verify_web",
+	    "machine num":2
         },
         {
-            "name":"oe_test_lvm_Manual_mount"
+            "name":"oe_test_lvm_Manual_mount",
+	    "add disk":[2,2,2]
         },
         {
             "name":"oe_test_basic_Hwclcok_setting"
         },
         {
-            "name":"oe_test_lvm_pvchange"
+            "name":"oe_test_lvm_pvchange",
+	    "add disk":[2,2,2]
         },
         {
-            "name":"oe_test_nmcli_query_link"
+            "name":"oe_test_nmcli_query_link",
+	    "add network interface":2
         },
         {
-            "name":"oe_test_nginx_verify_web"
+            "name":"oe_test_nginx_verify_web",
+	    "machine num":2
         },
         {
-            "name":"oe_test_ip_cmd_addr"
+            "name":"oe_test_ip_cmd_addr",
+	    "add network interface":2
         },
         {
-            "name":"oe_test_lvm_lvreduce"
+            "name":"oe_test_lvm_lvreduce",
+	    "add disk":[2,2,2]
         },
         {
             "name":"oe_test_basic_del_user"
         },
         {
-            "name":"oe_test_nmcli_config_hostname"
+            "name":"oe_test_nmcli_config_hostname",
+	    "add network interface":2
         },
         {
             "name":"oe_test_procmgmt_ps_top_kill"
         },
         {
-            "name":"oe_test_lvm_vgchange_vgremove"
+            "name":"oe_test_lvm_vgchange_vgremove",
+	    "add disk":[2,2,2]
         },
         {
             "name":"oe_test_basic_related_account_info"
@@ -264,25 +316,30 @@
             "add network interface":2
         },
         {
-            "name":"oe_test_mariadb_create_view_select_delete_db"
+            "name":"oe_test_mariadb_create_view_select_delete_db",
+	    "machine num":2
         },
         {
-            "name":"oe_test_nmcli_config_static_IP"
+            "name":"oe_test_nmcli_config_static_IP",
+	    "add network interface":2
         },
         {
             "name":"oe_test_dnf_display_config_info"
         },
         {
-            "name":"oe_test_mysql_create_view_select_delete_db"
+            "name":"oe_test_mysql_create_view_select_delete_db",
+	    "machine num":2
         },
         {
-            "name":"oe_test_postgresql_backup_restore_db"
+            "name":"oe_test_postgresql_backup_restore_db",
+	    "machine num":2
         },
         {
             "name":"oe_test_httpd_transfer_start_stop_restart"
         },
         {
-            "name":"oe_test_lvm_vgcreate_vgdisplay"
+            "name":"oe_test_lvm_vgcreate_vgdisplay",
+	    "add disk":[2,2,2]
         },
         {
             "name":"oe_test_nginx_manage_status"

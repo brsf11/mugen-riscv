@@ -10,49 +10,39 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   xuchunlin
-# @Contact   :   xcl_job@163.com
-# @Date      :   2020.04-09
+# @Author    :   Classicriver_jia
+# @Contact   :   classicriver_jia@foxmail.com
+# @Date      :   2020.4-9
 # @License   :   Mulan PSL v2
-# @Desc      :   User password modification_current user
-# ############################################
+# @Desc      :   Verify that the web service is successfully built
+# #############################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    useradd test26
-    passwd test26 <<EOF
-${NODE1_PASSWORD}
-${NODE1_PASSWORD}
-EOF
+    DNF_INSTALL "httpd net-tools firewalld"
+    systemctl start httpd
+    systemctl start firewalld
     LOG_INFO "Environmental preparation is over."
 }
+
 function run_test() {
-    LOG_INFO "Start executing testcase!"
-    echo test >/home/tmp
-    su test26 -c "mkdir -p /tmp/tmp26"
+    LOG_INFO "Start executing testcase."
+    ifconfig
     CHECK_RESULT $?
-    expect -c"
-        spawn scp /home/tmp test26@${NODE1_IPV4}:/tmp/tmp26
-        expect {
-                \"*)?\"  {
-                        send \"yes\r\"
-                        exp_continue
-                }
-                \"*assword:*\"  {
-                        send \"${NODE1_PASSWORD}\r\"
-                        exp_continue
-                }
-}
-"
-    su test26 -c "ls /tmp/tmp26/tmp"
+    firewall-cmd --add-service=http --permanent | grep success
     CHECK_RESULT $?
-    LOG_INFO "End of testcase execution!"
+    firewall-cmd --reload | grep success
+    CHECK_RESULT $?
+    python3 -m http.server 8080 &
+    SSH_CMD "curl http://${NODE1_IPV4}" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    CHECK_RESULT $?
+    LOG_INFO "End of testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    userdel -r test26
-    rm -rf /tmp/tmp26 /home/tmp
+    kill -9 $(pgrep -f http.server)
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup."
 }
 

@@ -10,49 +10,45 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   xuchunlin
-# @Contact   :   xcl_job@163.com
-# @Date      :   2020.04-09
+# @Author    :   Classicriver_jia
+# @Contact   :   classicriver_jia@foxmail.com
+# @Date      :   2020.4-9
 # @License   :   Mulan PSL v2
-# @Desc      :   User password modification_current user
-# ############################################
+# @Desc      :   Httpd starts and stops and restarts the service
+# #############################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    useradd test26
-    passwd test26 <<EOF
-${NODE1_PASSWORD}
-${NODE1_PASSWORD}
-EOF
+    DNF_INSTALL httpd
     LOG_INFO "Environmental preparation is over."
 }
+
 function run_test() {
-    LOG_INFO "Start executing testcase!"
-    echo test >/home/tmp
-    su test26 -c "mkdir -p /tmp/tmp26"
+    LOG_INFO "Start executing testcase."
+    systemctl enable httpd
+    systemctl restart httpd
     CHECK_RESULT $?
-    expect -c"
-        spawn scp /home/tmp test26@${NODE1_IPV4}:/tmp/tmp26
-        expect {
-                \"*)?\"  {
-                        send \"yes\r\"
-                        exp_continue
-                }
-                \"*assword:*\"  {
-                        send \"${NODE1_PASSWORD}\r\"
-                        exp_continue
-                }
-}
-"
-    su test26 -c "ls /tmp/tmp26/tmp"
+    SLEEP_WAIT 7
+    systemctl start httpd
+    SLEEP_WAIT 7
+    systemctl status httpd | grep running
     CHECK_RESULT $?
-    LOG_INFO "End of testcase execution!"
+    systemctl reload httpd
+    CHECK_RESULT $?
+    apachectl graceful
+    CHECK_RESULT $?
+    systemctl stop httpd
+    systemctl status httpd | grep dead
+    CHECK_RESULT $?
+    systemctl disable httpd
+    systemctl is-enabled httpd | grep disable
+    CHECK_RESULT $?
+    LOG_INFO "End of testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    userdel -r test26
-    rm -rf /tmp/tmp26 /home/tmp
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup."
 }
 

@@ -10,18 +10,26 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   Classicriver
+# @Author    :   Classicriver_jia
 # @Contact   :   classicriver_jia@foxmail.com
-# @Date      :   2020.4.27
+# @Date      :   2020.4-9
 # @License   :   Mulan PSL v2
-# @Desc      :   disk select
-# ############################################
+# @Desc      :   Package group operations
+# #############################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-function check_free_disk() {
-    disks=$(TEST_DISK)
-    disk_list=($disks)
-    local_disk=${disk_list[0]}
-    local_disk1=${disk_list[1]}
-    local_disk2=${disk_list[2]}
-    local_disk3=${disk_list[3]}
+function run_test() {
+    LOG_INFO "Start executing testcase."
+    dnf group install -y "Development Tools" --nobest
+    CHECK_RESULT $?
+    dnf groups summary | grep "Available Groups"
+    CHECK_RESULT $?
+    dnf group list | grep "Available Environment Groups"
+    CHECK_RESULT $?
+    dnf group info "Development Tools" | grep "Group: Development Tools"
+    CHECK_RESULT $?
+    dnf group remove -y "Development Tools"
+    CHECK_RESULT $?
+    LOG_INFO "End of testcase execution."
 }
+
+main $@
