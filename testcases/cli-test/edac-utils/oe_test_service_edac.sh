@@ -10,51 +10,44 @@
 # See the Mulan PSL v2 for more detaitest -f.
 
 # #############################################
-# @Author    :   huangrong
-# @Contact   :   1820463064@qq.com
-# @Date      :   2021/04/28
+# @Author    :   wangdan
+# @Contact   :   1743994506@qq.com
+# @Date      :   2021/12/02
 # @License   :   Mulan PSL v2
-# @Desc      :   Test ovsdb-server.service restart
+# @Desc      :   Test edac.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL openvswitch
-    service=ovsdb-server.service
+    DNF_INSTALL edac-utils
+    service=edac.service
     log_time=$(date '+%Y-%m-%d %T')
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    service "${service}" restart
+    systemctl restart "${service}"
     CHECK_RESULT $? 0 0 "${service} restart failed"
-    service "${service}" stop
+    systemctl stop "${service}"
     CHECK_RESULT $? 0 0 "${service} stop failed"
-    service "${service}" start
+    systemctl start "${service}"
     CHECK_RESULT $? 0 0 "${service} start failed"
-    service "${service}" status | grep "Active: active (running)"
+    systemctl status "${service}" | grep "Active: active"
     CHECK_RESULT $? 0 0 "${service} start failed"
-    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING"
+    test_enabled "${service}"
+    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING" | grep -v -i "Error: No dimm labels for"
     CHECK_RESULT $? 1 0 "There is an error message for the log of ${service}"
-    service "${service}" start
-    sed -i 's\ExecStart=/usr/share/openvswitch/scripts/ovs-ctl\ExecStart=/usr/share/openvswitch/scripts/ovs-ctl --no-mlockall\g' /usr/lib/systemd/system/${service}
-    systemctl daemon-reload
-    service "${service}" reload
-    CHECK_RESULT $? 0 0 "${service} reload failed"
-    service "${service}" status | grep "Active: active"
-    CHECK_RESULT $? 0 0 "${service} reload causes the service status to change"
+    service "${service}" reload 2>&1 | grep "Job type reload is not applicable"
+    CHECK_RESULT $? 0 0 "Job type reload is not applicable for unit ${service}"
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    sed -i 's\ExecStart=/usr/share/openvswitch/scripts/ovs-ctl --no-mlockall\ExecStart=/usr/share/openvswitch/scripts/ovs-ctl\g' /usr/lib/systemd/system/${service}
-    systemctl daemon-reload
-    service "${service}" reload
-    service "${service}" stop
+    systemctl stop "${service}"
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
