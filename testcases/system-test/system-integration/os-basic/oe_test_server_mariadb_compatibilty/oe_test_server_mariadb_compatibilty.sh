@@ -67,10 +67,9 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     rm -rf /var/lib/mysql mariadb.sh testlog mariadb_remote
-    SSH_CMD "yum remove mariadb-server expect -y" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
-    SSH_CMD "rm -rf /opt/mariadb.sh;rm -rf /root/testlog " ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
-    systemctl stop mariadb
+    SSH_CMD "yum remove mariadb-server expect -y;rm -rf /opt/mariadb.sh;rm -rf /root/testlog" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
+
 main "$@"

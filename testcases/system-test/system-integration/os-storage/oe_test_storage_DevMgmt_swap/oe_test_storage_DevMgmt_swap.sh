@@ -19,7 +19,8 @@
 source ../common/storage_disk_lib.sh
 function config_params() {
     LOG_INFO "Start loading data!"
-    ADD_DISK="/dev/$(check_free_disk 1)"
+    check_free_disk
+    ADD_DISK="/dev/${local_disk}"
     LOG_INFO "Loading data is complete!"
 }
 
@@ -40,16 +41,16 @@ HGG
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    swapon /dev/mapper/openeuler-swap
-    swapoff -v /dev/mapper/openeuler-swap
+    swapon /dev/mapper/openeuler_openeuler-swap
+    swapoff -v /dev/mapper/openeuler_openeuler-swap
     CHECK_RESULT $?
-    lvresize -f /dev/openeuler/swap -L -100M
+    lvresize -f /dev/openeuler_openeuler/swap -L -100M
     CHECK_RESULT $?
     lsblk | grep openeuler-swap | awk '{print$4}' | grep G
     CHECK_RESULT $?
-    mkswap /dev/mapper/openeuler-swap
+    mkswap /dev/mapper/openeuler_openeuler-swap
     CHECK_RESULT $?
-    swapon -v /dev/mapper/openeuler-swap
+    swapon -v /dev/mapper/openeuler_openeuler-swap
     CHECK_RESULT $?
     CHECK_RESULT $(grep -c dm /proc/swaps) 1
 
@@ -123,8 +124,7 @@ function post_test() {
 d
 w
 HEE
-    lvextend -y -L+2G /dev/mapper/openeuler-swap
     LOG_INFO "Finish environment cleanup."
 }
 
-main $@
+main "$@"

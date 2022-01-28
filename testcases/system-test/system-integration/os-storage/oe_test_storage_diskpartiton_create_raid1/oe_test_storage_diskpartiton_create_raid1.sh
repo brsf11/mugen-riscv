@@ -19,11 +19,7 @@
 source ../common/storage_disk_lib.sh
 function config_params() {
     LOG_INFO "Start loading data!"
-    disk_list=($(check_free_disk 4))
-    DISK1="${disk_list[0]}"
-    DISK2="${disk_list[1]}"
-    DISK3="${disk_list[2]}"
-    DISK4="${disk_list[3]}"
+    check_free_disk
     LOG_INFO "Loading data is complete!"
 }
 
@@ -35,7 +31,7 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    mdadm --create --auto=yes /dev/md0 --level=1 --raid-device=4 /dev/${DISK1} /dev/${DISK2} /dev/${DISK3} /dev/${DISK4} <<EOF
+    mdadm --create --auto=yes /dev/md0 --level=1 --raid-device=4 /dev/${local_disk} /dev/${local_disk1} /dev/${local_disk2} /dev/${local_disk3} <<EOF
 y
 EOF
     CHECK_RESULT $?
@@ -45,7 +41,7 @@ EOF
     mdadm --stop /dev/md0
     CHECK_RESULT $?
 
-    mdadm --misc --zero-superblock /dev/${DISK1} /dev/${DISK2} /dev/${DISK3} /dev/${DISK4}
+    mdadm --misc --zero-superblock /dev/${local_disk} /dev/${local_disk1} /dev/${local_disk2} /dev/${local_disk3}
     lsblk | grep md0
     CHECK_RESULT $? 1
     LOG_INFO "End of testcase execution!"
@@ -53,16 +49,16 @@ EOF
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    mkfs.ext4 -F $DISK1
+    mkfs.ext4 -F ${local_disk}
     SLEEP_WAIT 2
-    mkfs.ext4 -F $DISK2
+    mkfs.ext4 -F ${local_disk1}
     SLEEP_WAIT 2
-    mkfs.ext4 -F $DISK3
+    mkfs.ext4 -F ${local_disk2}
     SLEEP_WAIT 2
-    mkfs.ext4 -F $DISK4
+    mkfs.ext4 -F ${local_disk3}
     SLEEP_WAIT 2
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup."
 }
 
-main $@
+main "$@"

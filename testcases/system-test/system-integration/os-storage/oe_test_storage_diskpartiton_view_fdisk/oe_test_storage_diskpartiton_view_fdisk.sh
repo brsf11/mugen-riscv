@@ -16,7 +16,6 @@
 # @License   :   Mulan PSL v2
 # @Desc      :   View partition-fdisk
 # ############################################
-
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start executing testcase!"
@@ -31,4 +30,4 @@ function run_test() {
     LOG_INFO "End of testcase execution!"
 }
 
-main $@
+main "$@"

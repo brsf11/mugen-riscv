@@ -16,17 +16,18 @@
 # @License   :   Mulan PSL v2
 # @Desc      :   Use parted shell to delete partition
 # ############################################
+
 source ../common/storage_disk_lib.sh
 function config_params() {
     LOG_INFO "Start loading data!"
-    local_disk=$(check_free_disk 1)
+    check_free_disk
     LOG_INFO "Loading data is complete!"
 }
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    echo -e "m\np\nn\np\n1\n\n+500M\np\nn\np\n2\n\n+500M\np\nn\np\n3\n\n+500M\np\nw\n" | fdisk /dev/${local_disk} >log1
-    grep -iE "${local_disk}1|${local_disk}2|${local_disk}3" | wc -l | grep 6 log1
+    echo "m\np\nn\np\n1\n\n+500M\np\nn\np\n2\n\n+500M\np\nn\np\n3\n\n+500M\np\nw\n" | fdisk /dev/${local_disk} >log1
+    grep -iE "${local_disk}1|${local_disk}2|${local_disk}3" log1
     LOG_INFO "Environmental preparation is over."
 }
 
@@ -47,4 +48,4 @@ function post_test() {
     LOG_INFO "Finish environment cleanup."
 }
 
-main $@
+main "$@"

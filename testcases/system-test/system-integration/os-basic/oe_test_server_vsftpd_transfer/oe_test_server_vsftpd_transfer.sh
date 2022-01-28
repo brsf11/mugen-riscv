@@ -23,14 +23,14 @@ function config_params() {
     SSH_CMD "lsblk > /tmp/diskfile" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     SSH_SCP "${NODE2_USER}@${NODE2_IPV4}:/tmp/diskfile" ./diskfile "${NODE2_PASSWORD}"
     disk_list=($(awk '{print$1" "$6}' diskfile | grep disk | awk '{print$1}'))
-    for disk in ${disk_list[@]}; do
+    for disk in "${disk_list[@]}"; do
         awk '{print$1}' diskfile | grep -w ${disk} -A 1 | grep -E "└─|├─" >/dev/nul || awk '{print$1" "$6" "$7}' diskfile | grep / | awk '{print$1" "$2}' | grep -w ${disk} | awk '{print$2}' | grep disk >/dev/nul
         if [ $? -eq 0 ]; then
             disk_list=(${disk_list[@]/${disk}/})
         fi
     done
     [ ${#disk_list[@]} -ge 1 ] || exit 1
-    remote_disk=$(shuf -e ${disk_list[@]} | head -n 1)
+    remote_disk=$(shuf -e "${disk_list[@]}" | head -n 1)
     LOG_INFO "Loading data is complete!"
 }
 function pre_test() {
@@ -82,12 +82,15 @@ EOF
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    SSH_CMD "umount /var/ftp/pub/;mv /etc/vsftpd/ftpusers.bak /etc/vsftpd/ftpusers;
-    mv /etc/vsftpd/user_list.bak /etc/vsftpd/user_list;
-    rm -rf /var/ftp/pub/upload_file1.txt;yum remove -y vsftpd;" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
-    rm -rf /root/ftptest/
+    SSH_CMD "
+    umount /var/ftp/pub/
+    mv /etc/vsftpd/ftpusers.bak /etc/vsftpd/ftpusers
+    mv /etc/vsftpd/user_list.bak /etc/vsftpd/user_list
+    rm -rf /var/ftp/pub/upload_file1.txt
+    yum remove -y vsftpd" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    rm -rf /root/ftptest/ /tmp/diskfile ./diskfile
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
 
-main $@
+main "$@"
