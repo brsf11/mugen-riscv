@@ -15,6 +15,30 @@
         },
         {
             "name": "oe_test_service_dnf-makecache"
+        },
+        {
+            "name": "oe_test_dnf_alias"
+        },
+        {
+            "name": "oe_test_dnf_all-repos"
+        },
+        {
+            "name": "oe_test_dnf_assumeno_autoremove"
+        },
+        {
+            "name": "oe_test_dnf_automatic"
+        },    
+        {
+            "name": "oe_test_dnf_check_diffenert-packages"
+        },   
+        {
+            "name": "oe_test_dnf_clean"
+        },      
+        {
+            "name": "oe_test_dnf_distro-sync_dnf-3"
+        },
+        {
+            "name": "oe_test_dnf_enabled_enablerepo"
         }
     ]
 }
