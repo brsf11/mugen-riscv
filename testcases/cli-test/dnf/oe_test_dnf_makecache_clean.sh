@@ -13,7 +13,7 @@
 #@Contact       :   735811396@qq.com
 #@Date          :   2020/5/12
 #@License       :   Mulan PSL v2
-#@Desc          :   Test "dnf clean" command
+#@Desc          :   Test "dnf makecache" & "dnf clean" command
 ###################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh

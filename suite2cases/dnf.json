@@ -2,6 +2,30 @@
     "path": "$OET_PATH/testcases/cli-test/dnf",
     "cases": [
         {
+            "name": "oe_test_dnf_alias"
+        },
+        {
+            "name": "oe_test_dnf_all-repos"
+        },
+        {
+            "name": "oe_test_dnf_assumeno_autoremove"
+        },
+        {
+            "name": "oe_test_dnf_automatic"
+        },    
+        {
+            "name": "oe_test_dnf_check_diffenert-packages"
+        }, 
+        {
+            "name": "oe_test_dnf_makecache_clean"
+        },      
+        {
+            "name": "oe_test_dnf_distro-sync_dnf-3"
+        },
+        {
+            "name": "oe_test_dnf_enabled_enablerepo"
+        },
+        {
             "name": "oe_test_service_dnf-automatic-download"
         },
         {
@@ -17,28 +41,31 @@
             "name": "oe_test_service_dnf-makecache"
         },
         {
-            "name": "oe_test_dnf_alias"
+            "name": "oe_test_dnf_enhancement_exclude"
         },
         {
-            "name": "oe_test_dnf_all-repos"
+            "name": "oe_test_dnf_help_history_info"
         },
         {
-            "name": "oe_test_dnf_assumeno_autoremove"
+            "name": "oe_test_dnf_list_mark"
         },
         {
-            "name": "oe_test_dnf_automatic"
-        },    
-        {
-            "name": "oe_test_dnf_check_diffenert-packages"
-        },   
-        {
-            "name": "oe_test_dnf_clean"
-        },      
-        {
-            "name": "oe_test_dnf_distro-sync_dnf-3"
+            "name": "oe_test_dnf_nobest_nodocs_nogpgcheck"
         },
         {
-            "name": "oe_test_dnf_enabled_enablerepo"
+            "name": "oe_test_dnf_priority"
+        },
+        {
+            "name": "oe_test_dnf_provides_randomwait"
+        },
+        {
+            "name": "oe_test_dnf_reinstall_repoinfo"
+        },
+        {
+            "name": "oe_test_dnf_repeat-install"
+        },
+        {
+            "name": "oe_test_dnf_repeat-upgrade-downgrade"
         }
     ]
 }
