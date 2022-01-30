@@ -10,19 +10,19 @@
 # See the Mulan PSL v2 for more detaitest -f.
 
 # #############################################
-# @Author    :   huangrong
-# @Contact   :   1820463064@qq.com
-# @Date      :   2021/04/28
+# @Author    :   wangdan
+# @Contact   :   1743994506@qq.com
+# @Date      :   2021/12/02
 # @License   :   Mulan PSL v2
-# @Desc      :   Test openvswitch.service restart
+# @Desc      :   Test ovn-northd.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL openvswitch
-    service=openvswitch.service
+    DNF_INSTALL openvswitch-ovn-central
+    service=ovn-northd.service
     log_time=$(date '+%Y-%m-%d %T')
     flag=false
     if [ $(getenforce | grep Enforcing) ]; then
@@ -38,28 +38,20 @@ function run_test() {
     CHECK_RESULT $? 0 0 "${service} restart failed"
     service "${service}" stop
     CHECK_RESULT $? 0 0 "${service} stop failed"
+    SLEEP_WAIT 10
     service "${service}" start
     CHECK_RESULT $? 0 0 "${service} start failed"
-    SLEEP_WAIT 3
-    service "${service}" status | grep "Active: active (exited)"
+    service "${service}" status | grep "Active: active"
     CHECK_RESULT $? 0 0 "${service} start failed"
     journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING"
     CHECK_RESULT $? 1 0 "There is an error message for the log of ${service}"
-    service "${service}" start
-    sed -i 's\ExecStart=/usr/share/openvswitch/scripts/ovs-ctl\ExecStart=/usr/share/openvswitch/scripts/ovs-ctl --no-mlockall\g' /usr/lib/systemd/system/${service}
-    systemctl daemon-reload
-    service "${service}" reload
+    service "${service}" reload 2>&1 | grep "Job type reload is not applicable for unit ${service}"
     CHECK_RESULT $? 0 0 "${service} reload failed"
-    service "${service}" status | grep "Active: active"
-    CHECK_RESULT $? 0 0 "${service} reload causes the service status to change"
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    sed -i 's\ExecStart=/usr/share/openvswitch/scripts/ovs-ctl --no-mlockall\ExecStart=/usr/share/openvswitch/scripts/ovs-ctl\g' /usr/lib/systemd/system/${service}
-    systemctl daemon-reload
-    service "${service}" reload
     service "${service}" stop
     DNF_REMOVE
     if [ ${flag} = 'true' ]; then
