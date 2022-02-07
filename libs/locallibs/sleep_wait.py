@@ -23,14 +23,14 @@ def sleep_wait(wait_time, cmd=None, mode=1):
     """等待命令执行时长
 
     Args:
-        wait_time ([int]): 待定时间
+        wait_time ([str]): 待定时间
         cmd ([str], optional): 执行的命令. Defaults to None.
         mode (int, optional): 命令执行等待模式. Defaults to 1.
     """
     if list(wait_time)[-1] == "m":
         wait_time = int(wait_time.replace("m", "")) * 60
     elif list(wait_time)[-1] == "h":
-        wait_time = int(wait_time.replace("m", "")) * 3600
+        wait_time = int(wait_time.replace("h", "")) * 3600
     elif re.search("[0-9]|s", list(wait_time)[-1]):
         wait_time = int(wait_time.replace("s", ""))
     else:
