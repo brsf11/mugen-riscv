@@ -20,18 +20,18 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    line1=$(cat /etc/yum.repos.d/*.repo | grep -nA4 "name=OS" | grep "enabled=" | awk -F "-" '{print $1}')
-    line2=$(cat /etc/yum.repos.d/*.repo | grep -nA4 "name=everything" | grep "enabled=" | awk -F "-" '{print $1}')
+    line1=$(grep -nA4 "name=OS" /etc/yum.repos.d/*.repo | grep "enabled=" | awk -F "-" '{print $1}')
+    line2=$(grep -nA4 "name=everything" /etc/yum.repos.d/*.repo | grep "enabled=" | awk -F "-" '{print $1}')
     LOG_INFO "Finish preparing the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    cat /etc/yum.repos.d/*.repo | grep -B3 "enabled=1"  | grep "name=OS"
+    grep -B3 "enabled=1" /etc/yum.repos.d/*.repo | grep "name=OS"
     CHECK_RESULT $?
     dnf repolist | grep OS
     CHECK_RESULT $?
-    cat /etc/yum.repos.d/*.repo | grep -B3 "enabled=1"  | grep "name=everything"
+    grep -B3 "enabled=1" /etc/yum.repos.d/*.repo | grep "name=everything"
     CHECK_RESULT $?
     dnf repolist | grep everything
     CHECK_RESULT $?
