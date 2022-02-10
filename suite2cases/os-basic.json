@@ -320,6 +320,37 @@
         },
         {
             "name":"oe_test_ethtool"
+        },
+        {
+            "name":"oe_test_basic_create_group"
+        },
+        {
+            "name":"oe_test_basic_modify_group"
+        },
+        {
+            "name":"oe_test_basic_modify_user"
+        },
+        {
+            "name":"oe_test_chrony_chronyc_cmd"
+        },
+        {
+            "name":"oe_test_chrony_chronyc_hardwaretime"
+        },
+        {
+            "name":"oe_test_chrony_chronyc_ntpstat"
+        },
+        {
+            "name":"oe_test_chrony_chronyd"
+        },
+        {
+            "name":"oe_test_chrony_Manuall"
+        },
+        {
+            "name":"oe_test_cmd_id"
+        },
+        {
+            "name":"oe_test_cmd_sudo"
         }
+
     ]
 }
