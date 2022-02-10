@@ -18,9 +18,10 @@
 # ############################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function check_free_disk() {
-    num_disk=$1
-    disks=$(python3 ${OET_PATH}/libs/locallibs/get_test_device.py --node 1 --device disk)
+    disks=$(TEST_DISK)
     disk_list=($disks)
-    [ ${#disk_list[@]} -ge ${num_disk} ] || exit 1
-    shuf -e ${disk_list[@]} | head -n ${num_disk}
+    local_disk=${disk_list[0]}
+    local_disk1=${disk_list[1]}
+    local_disk2=${disk_list[2]}
+    local_disk3=${disk_list[3]}
 }

@@ -21,7 +21,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start to run test."
     line=1
-    for ps_pid in $(ps -ef | grep ssh | grep -v "grep" | awk '{print$2}')
+    for ps_pid in $(ps -ef | pgrep ssh | grep -v "grep" | awk '{print$2}')
     do
         pgrep -l ssh | sed -n ${line}p | grep ${ps_pid}
         CHECK_RESULT $?

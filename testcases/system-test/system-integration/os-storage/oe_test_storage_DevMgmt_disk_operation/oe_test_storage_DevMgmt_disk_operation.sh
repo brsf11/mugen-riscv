@@ -19,11 +19,9 @@
 source ../common/storage_disk_lib.sh
 function config_params() {
     LOG_INFO "Start loading data!"
-    disk_list=($(check_free_disk 2))
-    local_disk_a=${disk_list[0]}
-    local_disk=${disk_list[1]}
-    DISK_A="/dev/${local_disk_a}"
-    ADD_DISK="/dev/${local_disk}"
+    check_free_disk
+    DISK_A="/dev/${local_disk}"
+    ADD_DISK="/dev/${local_disk1}"
     LOG_INFO "Loading data is complete!"
 }
 
@@ -66,12 +64,12 @@ EOF
     grep -iE 'error|fail' log
     CHECK_RESULT $? 1
     udevadm settle
-    CHECK_RESULT $(cat /proc/partitions | grep -iE "${local_disk_a}|${local_disk}1|${local_disk}2" | wc -l) 3
+    CHECK_RESULT $(cat /proc/partitions | grep -iE "${local_disk}|${local_disk1}1|${local_disk1}2" | wc -l) 3
 
     fdisk ${ADD_DISK} >log 2>&1 <<EOF
 type
 1
-8e
+30
 type
 1
 83
@@ -80,8 +78,6 @@ quit
 EOF
     grep -iE 'error|fail' log
     CHECK_RESULT $? 1
-    grep "'Linux' to 'Linux LVM'" -A 5 | grep "'Linux LVM' to 'Linux'" log
-    CHECK_RESULT $?
     parted ${ADD_DISK} >log 2>&1 <<EOF
 print
 resizepart 1 300M
@@ -90,7 +86,7 @@ quit
 EOF
     grep -iE 'error|fail' log
     CHECK_RESULT $? 1
-    test $(cat /proc/partitions | grep -i ${local_disk}1 | awk '{print$3}') -gt 204800
+    test $(cat /proc/partitions | grep -i ${local_disk1}1 | awk '{print$3}') -gt 204800
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution."
 }
@@ -107,4 +103,4 @@ EOF
     LOG_INFO "Finish environment cleanup."
 }
 
-main $@
+main "$@"

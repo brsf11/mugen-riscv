@@ -16,10 +16,11 @@
 # @License   :   Mulan PSL v2
 # @Desc      :   Use fdisk to set the partition type
 # ############################################
+
 source ../common/storage_disk_lib.sh
 function config_params() {
     LOG_INFO "Start loading data!"
-    local_disk=$(check_free_disk 1)
+    check_free_disk
     LOG_INFO "Loading data is complete!"
 }
 
@@ -32,7 +33,7 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    echo -e "print\ntype\n2\nL\n1\nw\n" | fdisk /dev/${local_disk} > log2
+    echo -e "print\ntype\n2\nL\n1\nw\n" | fdisk /dev/${local_disk} >log2
     CHECK_RESULT $?
 
     fdisk --list /dev/${local_disk} | grep ${local_disk}2 | awk -F " " '{print$7}' | grep -i fat
@@ -45,8 +46,8 @@ function post_test() {
     SLEEP_WAIT 2
     echo -e "m\np\nd\n1\nd\nw\n" | fdisk /dev/${local_disk}
     SLEEP_WAIT 2
-    rm -rf log*
+    rm -rf log1 log2
     LOG_INFO "Finish environment cleanup."
 }
 
-main $@
+main "$@"

@@ -19,9 +19,9 @@
 source ../common/storage_disk_lib.sh
 function config_params() {
     LOG_INFO "Start loading data!"
-    disk_list=($(check_free_disk 2))
-    DISK1=/dev/${disk_list[0]}
-    DISK2=/dev/${disk_list[1]}
+    check_free_disk
+    DISK1=/dev/${local_disk}
+    DISK2=/dev/${local_disk1}
     LOG_INFO "Loading data is complete!"
 }
 
@@ -39,4 +39,4 @@ function post_test() {
     LOG_INFO "Finish environment cleanup."
 }
 
-main $@
+main "$@"
