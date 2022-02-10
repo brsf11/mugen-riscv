@@ -38,7 +38,10 @@ EOF
     su - example <<EOF1
     expect << EOF
     spawn /bin/kill -9 $top_pid
-    expect eof
+    expect eof { 
+        catch wait result
+        exit [lindex \$result 3]
+        }
 EOF
 EOF1
     CHECK_RESULT $? 0 0 "Failed to kill process"
