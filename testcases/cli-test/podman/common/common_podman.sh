@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# Copyright (c) 2022 Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2022. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -30,8 +30,8 @@ registries = []
 }
 
 function clear_env() {
-    docker stop postgres
-    docker rm -all
-    docker rmi -f -all
+    podman stop postgres
+    podman rm -all
+    podman rmi -f -all
     DNF_REMOVE
 }
