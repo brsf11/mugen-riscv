@@ -260,6 +260,66 @@
         },
         {
             "name": "oe_test_ProcMgmt_at"
+        },
+        {
+            "name":"oe_test_disk_tuned_set",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name":"oe_test_disk_schedule_specific",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name":"oe_test_disk_schedule_udev",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name":"oe_test_disk_tuned_new",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name":"oe_test_disk_tuned_install"
+        },
+        {
+            "name":"oe_test_date"
+        },
+        {
+            "name":"oe_test_cmd_su_user"
+        },
+        {
+            "name":"oe_test_disk_tuned_modify",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name":"oe_test_disk_tuned_disable",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name":"oe_test_ethtool"
         }
     ]
 }
