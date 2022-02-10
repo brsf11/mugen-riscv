@@ -34,16 +34,16 @@ EOF
     top &
     top_pid=$!
     setcap cap_kill=eip /bin/kill
-    CHECK_RESULT $? 0 0 ""
+    CHECK_RESULT $? 0 0 "Failed to set cap"
     su - example <<EOF1
     expect << EOF
     spawn /bin/kill -9 $top_pid
     expect eof
 EOF
 EOF1
-    CHECK_RESULT $? 0 0 ""
+    CHECK_RESULT $? 0 0 "Failed to kill process"
     ps -aux | grep top | grep $top_pid | grep -v 'grep'
-    CHECK_RESULT $? 0 1 ""
+    CHECK_RESULT $? 0 1 "The viewing process succeeded, but it should fail here"
     LOG_INFO "Finish testcase execution."
 }
 
