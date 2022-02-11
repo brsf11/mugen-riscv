@@ -350,7 +350,45 @@
         },
         {
             "name":"oe_test_cmd_sudo"
+        },
+        {
+            "name":"oe_test_hwclock"
+        },
+        {
+            "name":"oe_test_IOaccess_500Mfile"
+        },
+        {
+            "name":"oe_test_group_access"
+        },
+        {
+            "name":"oe_test_kernel_sysctl"
+        },
+        {
+            "name":"oe_test_hostnamectl",
+            "machine num": 2
+        },
+        {
+            "name":"oe_test_kernel_kdump"
+        },
+        {
+            "name":"oe_test_IOaccess_100Mfile"
+        },
+        {
+            "name":"oe_test_IOaccess_1Gfile"
+        },
+        {
+            "name":"oe_test_kernel_module_operation"
+        },
+        {
+            "name":"oe_test_kernel_cgroup"
+        },
+        {
+            "name":"oe_test_home_directory"
+        },
+        {
+            "name":"oe_test_groupdel"
         }
+
 
     ]
 }
