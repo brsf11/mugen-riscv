@@ -1,80 +1,257 @@
 {
-    "path":"$OET_PATH/testcases/system-test/system-integration/os-storage",
-    "machine type":"kvm",
-    "add network interface":2,
-    "add disk":[2,2,2],
-    "cases":[
+    "path": "$OET_PATH/testcases/system-test/system-integration/os-storage",
+    "machine type": "kvm",
+    "add network interface": 2,
+    "add disk": [
+        2,
+        2,
+        2
+    ],
+    "cases": [
         {
-            "name":"oe_test_storage_ext3_mount_write"
+            "name": "oe_test_storage_ext3_mount_write"
         },
         {
-            "name":"oe_test_storage_diskpartiton_fdisk_settype",
-	    "add disk":[2,2,2]
+            "name": "oe_test_storage_diskpartiton_fdisk_settype",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         },
         {
-            "name":"oe_test_storage_DevMgmt_swap"
+            "name": "oe_test_storage_DevMgmt_swap"
         },
         {
-            "name":"oe_test_storage_diskpartiton_parted_delete",
-	    "add disk":[2,2,2]
+            "name": "oe_test_storage_diskpartiton_parted_delete",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         },
         {
-            "name":"oe_test_storage_diskpartiton_view_fdisk",
-	    "add disk":[2,2,2]
+            "name": "oe_test_storage_diskpartiton_view_fdisk",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         },
         {
-            "name":"oe_test_storage_ext3_resize"
+            "name": "oe_test_storage_ext3_resize"
         },
         {
-            "name":"oe_test_storage_diskpartiton_parted_create"
+            "name": "oe_test_storage_diskpartiton_parted_create"
         },
         {
-            "name":"oe_test_storage_DevMgmt_lsblk",
-	    "add disk":[2,2,2]
+            "name": "oe_test_storage_DevMgmt_lsblk",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         },
         {
-            "name":"oe_test_storage_diskpartiton_fdisk",
-	    "add disk":[2,2,2]
+            "name": "oe_test_storage_diskpartiton_fdisk",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         },
         {
-            "name":"oe_test_storage_DevMgmt_disk_operation"
+            "name": "oe_test_storage_DevMgmt_disk_operation",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         },
         {
-            "name":"oe_test_storage_diskpartiton_fdisk_delete",
-	    "add disk":[2,2,2]
+            "name": "oe_test_storage_diskpartiton_fdisk_delete",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         },
         {
-            "name":"oe_test_storage_diskpartiton_view_lsblk",
-	    "add disk":[2,2,2]
+            "name": "oe_test_storage_diskpartiton_view_lsblk",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         },
         {
-            "name":"oe_test_storage_DevMgmt_block_drop"
+            "name": "oe_test_storage_DevMgmt_block_drop"
         },
         {
-            "name":"oe_test_storage_ext3_mount"
+            "name": "oe_test_storage_ext3_mount"
         },
         {
-            "name":"oe_test_storage_ext3_create"
+            "name": "oe_test_storage_ext3_create"
         },
         {
-            "name":"oe_test_storage_diskpartiton_parted_view",
-	    "add disk":[2,2,2]
+            "name": "oe_test_storage_diskpartiton_parted_view",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         },
         {
-            "name":"oe_test_storage_diskpartiton_create_raid0",
-	    "add disk":[2,2,2]
+            "name": "oe_test_storage_diskpartiton_create_raid0",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         },
         {
-            "name":"oe_test_storage_diskpartiton_create_raid5",
-	    "add disk":[2,2,2]
+            "name": "oe_test_storage_diskpartiton_create_raid5",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         },
         {
-            "name":"oe_test_storage_diskpartiton_parted_resize",
-	    "add disk":[2,2,2]
+            "name": "oe_test_storage_diskpartiton_parted_resize",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         },
         {
-            "name":"oe_test_storage_diskpartiton_create_raid1",
-	    "add disk":[2,2,2]
+            "name": "oe_test_storage_diskpartiton_create_raid1",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_create_raid",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_cling",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_add_VG",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_change_number",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_expand_stripeLV",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_create_cache",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_help_info",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_activation",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_create_thinSnapshot",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_expand_pools",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_create_snapshot",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_activation_missing",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_print",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_lvdisplay_lvscan",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_merge_VG",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         }
     ]
 }
