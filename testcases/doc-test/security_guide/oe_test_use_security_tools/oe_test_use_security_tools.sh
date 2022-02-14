@@ -48,6 +48,7 @@ function run_test() {
     CHECK_RESULT $? 0 1
     grep '807@touch @/tmp/touch_test' /var/log/openEuler-security.log
     CHECK_RESULT $?
+    SLEEP_WAIT 1
     systemctl status httpd | grep running
     CHECK_RESULT $?
     LOG_INFO "Finish testcase execution."

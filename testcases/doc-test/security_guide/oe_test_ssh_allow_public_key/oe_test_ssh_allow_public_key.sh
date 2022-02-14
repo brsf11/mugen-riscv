@@ -72,9 +72,15 @@ EOF
                 send "yes\\r"
             }
         }
+        expect {
+            "password" {
+                send "${NODE2_PASSWORD}\\r"
+            }
+        }
         expect eof
 EOF
-    grep 'root@localhost ~]#' testlog
+    SLEEP_WAIT 1
+    grep '\[root@openEuler ~]#' testlog
     CHECK_RESULT $? 0 0 "login failed"
     LOG_INFO "Finish testcase execution."
 }
@@ -82,7 +88,7 @@ EOF
 function post_test() {
     LOG_INFO "Start cleanning environment."
     SSH_CMD "rm -rf /root/.ssh/authorized_keys" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
-    rm -rf /root/.ssh/id_rsa /root/.ssh/id_rsa.pub testlog /home/authorized_keys
+    rm -rf /root/.ssh/id_rsa /root/.ssh/id_rsa.pub /home/authorized_keys testlog
     LOG_INFO "Finish environment cleanup!"
 }
 
