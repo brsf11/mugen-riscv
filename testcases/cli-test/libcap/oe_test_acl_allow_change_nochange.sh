@@ -34,7 +34,7 @@ EOF
     su - example -c 'touch /home/example/test'
     su - example -c 'chattr +i /home/example/test'
     CHECK_RESULT $? 0 1 "Authorization succeeded, but it should fail here"
-    setcap cap_linux_immutable=eip /usr/bin/chattr 
+    setcap cap_linux_immutable=eip /usr/bin/chattr
     CHECK_RESULT $? 0 0 "Failed to set cap"
     su - example -c 'chattr +i /home/example/test'
     CHECK_RESULT $? 0 0 "Privilege grant failed"
