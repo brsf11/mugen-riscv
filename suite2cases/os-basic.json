@@ -387,6 +387,60 @@
         },
         {
             "name":"oe_test_groupdel"
+        },
+        {
+            "name":"oe_test_net_IPVLAN",
+            "add network interface": 2
+        },
+        {
+            "name":"oe_test_net_setmode",
+            "add network interface": 2
+        },
+        {
+            "name":"oe_test_net_scriprts",
+            "add network interface": 2
+        },
+        {
+            "name":"oe_test_net_cmd_ifconfig",
+            "add network interface": 2
+        },
+        {
+            "name":"oe_test_net_VRF",
+            "add network interface": 2
+        },
+        {
+            "name":"oe_test_localectl"
+        },
+        {
+            "name":"oe_test_man"
+        },
+        {
+            "name":"oe_test_net_cmd_scp",
+            "machine num":2,
+            "add network interface": 2
+        },
+        {
+            "name":"oe_test_net_cmd_ping",
+            "add network interface": 2
+        },
+        {
+            "name":"oe_test_net_conninfo_lsof",
+            "add network interface": 2
+        },
+        {
+            "name":"oe_test_net_config",
+            "machine num":2,
+            "add network interface": 2
+        },
+        {
+            "name":"oe_test_net_cmd_telnet",
+            "machine num":2,
+            "add network interface": 2
+        },
+        {
+            "name":"oe_test_net_ncat",
+            "machine num":2,
+            "add network interface": 2
         }
 
 
