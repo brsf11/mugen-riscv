@@ -367,6 +367,82 @@
                 2,
                 2
             ]
+        },
+        {
+            "name":"oe_test_storage_ext4_create",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name":"oe_test_storage_fileCMD_df",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name":"oe_test_storage_fileCMD_file"
+        },
+        {
+            "name":"oe_test_storage_fileCMD_cat"
+        },
+        {
+            "name":"oe_test_storage_ext4_mount",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name":"oe_test_storage_fileCMD_chown"
+        },
+        {
+            "name":"oe_test_storage_fileCMD_gzip"
+        },
+        {
+            "name":"oe_test_storage_fileaccess_bashrc"
+        },
+        {
+            "name":"oe_test_storage_ext4_mount_write",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name":"oe_test_storage_fileCMD_chmod"
+        },
+        {
+            "name":"oe_test_storage_fileCMD_cp"
+        },
+        {
+            "name":"oe_test_storage_fileCMD_dd",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name":"oe_test_storage_fileCMD_cd"
+        },
+        {
+            "name":"oe_test_storage_ext4_resize",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name":"oe_test_storage_fileCMD_grep"
         }
+
     ]
 }
