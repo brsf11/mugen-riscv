@@ -252,6 +252,121 @@
                 2,
                 2
             ]
+        },
+        {
+            "name": "oe_test_storage_lvm_print_history",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_raid_synchronization",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_separate_raid",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_pvs_format",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_scan_block",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_print_VG",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_print_json",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_rename_VG",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_query_lvmsnap",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_pvs",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_replace_badraid",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_rename",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_print_info"
+        },
+        {
+            "name": "oe_test_storage_lvm_replace_raid",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_resize_PV",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         }
     ]
 }
