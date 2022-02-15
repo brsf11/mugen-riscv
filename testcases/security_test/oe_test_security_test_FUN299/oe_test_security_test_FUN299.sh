@@ -18,16 +18,15 @@
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function pre_test()
-{
+function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    sed 's/password    required      pam_deny.so/password    required      pam_deny.so minlen=8 enforce_for_root try_first_pass local_users_only retry=3/g' /etc/pam.d/system-auth
+    sed -i 's/password    requisite     pam_pwquality.so try_first_pass local_users_only/password    requisite     pam_pwquality.so minlen=8 minclass=3 enforce_for_root try_first_pass local_users_only retry=3 dcredit=0 ucredit=0 lcredit=0 ocredit=0\npassword    required      pam_pwhistory.so use_authtok remember=5 enforce_for_root/g' /etc/pam.d/system-auth
+    # sed -i 's/password    required      pam_deny.so/password    required      pam_deny.so minlen=8 enforce_for_root try_first_pass local_users_only retry=3/g' /etc/pam.d/system-auth
     useradd test
     LOG_INFO "End to prepare the test environment."
 }
 
-function run_test()
-{
+function run_test() {
     LOG_INFO "Start to run test."
     expect <<EOF1
     log_file testlog
@@ -38,16 +37,17 @@ function run_test()
     expect eof
 EOF1
     grep -e "passwd: all authentication tokens updated successfully" testlog
-    CHECK_RESULT $? 0 0 "grep failed" 
+    CHECK_RESULT $? 0 0 "grep failed"
     grep -e "BAD PASSWORD" testlog
-    CHECK_RESULT $? 0 0 "grep bad failed" 
+    CHECK_RESULT $? 0 0 "grep bad failed"
     LOG_INFO "End to run test."
 }
 
-function post_test()
-{
+function post_test() {
     LOG_INFO "Start to restore the test environment."
-    sed 's/password    required      pam_deny.so minlen=8 enforce_for_root try_first_pass local_users_only retry=3/password    required      pam_deny.so/g' /etc/pam.d/system-auth
+    # sed 's/password    required      pam_deny.so minlen=8 enforce_for_root try_first_pass local_users_only retry=3/password    required      pam_deny.so/g' /etc/pam.d/system-auth
+    sed -i 's/password    requisite     pam_pwquality.so minlen=8 minclass=3 enforce_for_root try_first_pass local_users_only retry=3 dcredit=0 ucredit=0 lcredit=0 ocredit=0\npassword    required      pam_pwhistory.so use_authtok remember=5 enforce_for_root/password    requisite     pam_pwquality.so try_first_pass local_users_only/g' /etc/pam.d/system-auth
+    rm -rf testlog
     userdel -rf test
     LOG_INFO "End to restore the test environment."
 }

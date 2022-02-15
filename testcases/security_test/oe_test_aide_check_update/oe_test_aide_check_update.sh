@@ -30,7 +30,7 @@ function run_test() {
     aide --init | grep "Number of entries"
     CHECK_RESULT $? 0 0 "exec 'aide --init' failed"
     mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz -f
-    aide --check | grep "Total number of entries"
+    aide --check | grep "Number of entries:"
     CHECK_RESULT $? 0 0 "exec 'aide --check' failed"
     aide --update | grep "New AIDE database written to /var/lib/aide/aide.db.new.gz"
     CHECK_RESULT $? 0 0 "exec 'aide --update' failed"
