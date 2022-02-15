@@ -19,6 +19,13 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
+function pre_test() {
+    LOG_INFO "Start environmental preparation."
+    grep "^test:" /etc/passwd && userdel -rf test
+    ls testlog && rm -rf testlog
+    LOG_INFO "End of environmental preparation!"
+}
+
 function run_test() {
     LOG_INFO "Start executing testcase."
     grep "^PubkeyAuthentication yes" /etc/ssh/sshd_config
