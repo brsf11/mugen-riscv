@@ -8,8 +8,38 @@
             "name": "oe_test_socket_io.podman"
         },
 	{
-	    "name": "oe_test_podman_19"
+            "name": "oe_test_podman_01"
+        },
+        {
+            "name": "oe_test_podman_02"
+        },
+        {
+            "name": "oe_test_podman_03"
+        },
+        {
+            "name": "oe_test_podman_04"
+        },
+        {
+            "name": "oe_test_podman_05"
+        },
+        {
+            "name": "oe_test_podman_06"
+        },
+        {
+            "name": "oe_test_podman_07"
+        },
+        {
+            "name": "oe_test_podman_08"
+        },
+	{
+	    "name": "oe_test_podman_09"
 	},
+	{
+            "name": "oe_test_podman_10"
+        },
+	{
+            "name": "oe_test_podman_19"
+        },
 	{
 	    "name": "oe_test_podman_20"
 	},
