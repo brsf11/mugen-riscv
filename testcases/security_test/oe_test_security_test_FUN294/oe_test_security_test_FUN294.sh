@@ -20,32 +20,29 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    
     useradd test
-
     LOG_INFO "Finish preparing the test environment."
 }
 
-function run_test()
-{
+function run_test() {
     LOG_INFO "Start to run test."
 
     echo "huawei666" | passwd --stdin test
     CHECK_RESULT $? 0 0 "set failed"
     su test -c "passwd root" 2>&1 | grep "Only root can specify a user name"
     CHECK_RESULT $? 0 0 "change failed"
-    su test -c "(echo "huawei666";echo "Jevons99$$";echo "Jevons99$$" | passwd)"
+    su test -c "passwd" << EOF
+huawei666
+Jevons99$$
+Jevons99$$
+EOF
     CHECK_RESULT $? 0 0 "change num failed"
-
     LOG_INFO "End to run test."
 }
 
-function post_test()
-{
+function post_test() {
     LOG_INFO "Start to restore the test environment."
-
     userdel -rf test
-
     LOG_INFO "End to restore the test environment."
 }
 

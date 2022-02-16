@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2022. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -12,35 +12,47 @@
 # #############################################
 # @Author    :   huyahui
 # @Contact   :   huyahui8@163.com
-# @modify    :   yang_lijin@qq.com
-# @Date      :   2021/05/11
+# @Date      :   2020/7/17
 # @License   :   Mulan PSL v2
-# @Desc      :   Install ADIDE, AIDE integrity check, AIDE library update
+# @Desc      :   The setting program allows ordinary users to use the setgid function
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
+function config_params() {
+    LOG_INFO "This test case has no config params to load!"
+}
+
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL aide
+    grep "^example:" /etc/passwd && userdel -rf example
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    aide --init | grep "Number of entries"
-    CHECK_RESULT $? 0 0 "exec 'aide --init' failed"
-    mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz -f
-    aide --check | grep "Number of entries:"
-    CHECK_RESULT $? 0 0 "exec 'aide --check' failed"
-    aide --update | grep "New AIDE database written to /var/lib/aide/aide.db.new.gz"
-    CHECK_RESULT $? 0 0 "exec 'aide --update' failed"
+    useradd example
+    passwd example <<EOF
+${NODE1_PASSWORD}
+${NODE1_PASSWORD}
+EOF
+    su - example -c 'touch /home/example/test'
+    CHECK_RESULT $? 0 0 ""
+    su - example -c 'chattr +i /home/example/test'
+    CHECK_RESULT $? 0 1 ""
+    setcap cap_linux_immutable=eip /usr/bin/chattr
+    CHECK_RESULT $? 0 0 ""
+    su - example -c 'chattr +i /home/example/test'
+    CHECK_RESULT $? 0 0 ""
+    su - example -c 'lsattr /home/example/test | grep "\-\-\-\-i\-\-\-\-\-\-\-\-\-e-\-\-\-\- /home/example/test"'
+    CHECK_RESULT $? 0 0 ""
     LOG_INFO "Finish testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    DNF_REMOVE
-    rm -rf /var/lib/aide/aide.db.*
+    su - example -c 'chattr -i /home/example/test'
+    setcap -r /usr/bin/chattr
+    userdel -rf example
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"

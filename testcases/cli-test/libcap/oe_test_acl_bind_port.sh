@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2022. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -15,32 +15,39 @@
 # @modify    :   yang_lijin@qq.com
 # @Date      :   2021/05/11
 # @License   :   Mulan PSL v2
-# @Desc      :   Install ADIDE, AIDE integrity check, AIDE library update
+# @Desc      :   Allow binding to ports less than 1024
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL aide
+    grep "^example:" /etc/passwd && userdel -rf example
+    DNF_INSTALL nc
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    aide --init | grep "Number of entries"
-    CHECK_RESULT $? 0 0 "exec 'aide --init' failed"
-    mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz -f
-    aide --check | grep "Number of entries:"
-    CHECK_RESULT $? 0 0 "exec 'aide --check' failed"
-    aide --update | grep "New AIDE database written to /var/lib/aide/aide.db.new.gz"
-    CHECK_RESULT $? 0 0 "exec 'aide --update' failed"
+    useradd example
+    su - example -c "nc -l -p 500 &"
+    SLEEP_WAIT 2
+    pgrep -f 'nc -l -p 500'
+    CHECK_RESULT $? 0 1 "Getting process PID succeeded, but it should fail here"
+    setcap 'cap_net_bind_service=+ep' /bin/ncat
+    CHECK_RESULT $? 0 0 "Failed to set cap"
+    su - example -c "nc -l -p 500 &"
+    SLEEP_WAIT 2
+    pgrep -f 'nc -l -p 500'
+    CHECK_RESULT $? 0 0 "Failed to get process PID"
+    kill -9 $(pgrep -f 'nc -l -p 500')
     LOG_INFO "Finish testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    DNF_REMOVE
-    rm -rf /var/lib/aide/aide.db.*
+    setcap -r /bin/ncat
+    userdel -rf example
+    DNF_REMOVE nc
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"

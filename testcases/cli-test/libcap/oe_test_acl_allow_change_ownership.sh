@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2022. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -12,35 +12,43 @@
 # #############################################
 # @Author    :   huyahui
 # @Contact   :   huyahui8@163.com
-# @modify    :   yang_lijin@qq.com
-# @Date      :   2021/05/11
+# @Date      :   2020/7/17
 # @License   :   Mulan PSL v2
-# @Desc      :   Install ADIDE, AIDE integrity check, AIDE library update
+# @Desc      :   allow to change the ownership of the file
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL aide
+    grep "^example:" /etc/passwd && userdel -rf example
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    aide --init | grep "Number of entries"
-    CHECK_RESULT $? 0 0 "exec 'aide --init' failed"
-    mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz -f
-    aide --check | grep "Number of entries:"
-    CHECK_RESULT $? 0 0 "exec 'aide --check' failed"
-    aide --update | grep "New AIDE database written to /var/lib/aide/aide.db.new.gz"
-    CHECK_RESULT $? 0 0 "exec 'aide --update' failed"
+    useradd example
+    passwd example <<EOF
+${NODE1_PASSWORD}
+${NODE1_PASSWORD}
+EOF
+    touch /tmp/test
+    ls -l /tmp/test | grep 'root root'
+    CHECK_RESULT $? 0 0 "Failed to view '/tmp/test' document and obtain 'root root' field"
+    su - example -c 'chown example:example /tmp/test'
+    CHECK_RESULT $? 0 1 "Switching example user to change the file owner succeeded, but it should fail here"
+    setcap cap_chown=eip /bin/chown
+    CHECK_RESULT $? 0 0 "Failed to set cap"
+    su - example -c 'chown example:example /tmp/test'
+    CHECK_RESULT $? 0 0 "Failed to switch example user to change file owner"
+    ls -l /tmp/test | grep 'example example'
     LOG_INFO "Finish testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    DNF_REMOVE
-    rm -rf /var/lib/aide/aide.db.*
+    rm -rf /tmp/test
+    setcap -r /bin/chown
+    userdel -rf example
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"
