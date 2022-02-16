@@ -126,6 +126,9 @@
         {
             "name": "oe_test_sevice_001"
         },
+	{
+            "name": "oe_test_sort"
+        },
         {
             "name": "oe_test_skopeo"
         },
