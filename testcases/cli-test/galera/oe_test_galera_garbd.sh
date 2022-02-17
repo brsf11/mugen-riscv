@@ -17,7 +17,7 @@
 # @Desc      :   A plug-in shared library file
 # ############################################
 
-source "../common/common_galera.sh"
+source "./common/common_galera.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
@@ -75,7 +75,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start environment cleanup."
-    DNF_REMOVE galera
+    DNF_REMOVE
     rm -rf galera_zl
     LOG_INFO "Finish environment cleanup."
 }
