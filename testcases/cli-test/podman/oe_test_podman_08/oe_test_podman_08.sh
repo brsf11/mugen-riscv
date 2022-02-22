@@ -35,11 +35,9 @@ function run_test() {
     podman ps -a | grep "Created"
     CHECK_RESULT $?
     ID=$(podman create --add-host host:192.168.122.172 alpine)
-    CHECK_RESULT $?
     grep "192.168.122.172" /var/lib/containers/storage/overlay-containers/$ID/userdata/artifacts/create-config
     CHECK_RESULT $?
     ID=$(podman create --annotation HELLO=WORLD alpine)
-    CHECK_RESULT $?
     podman inspect $ID | grep '"HELLO": "WORLD"'
     CHECK_RESULT $?
     podman create --attach STDIN alpine ls
@@ -47,19 +45,15 @@ function run_test() {
     podman ps -a | grep ls
     CHECK_RESULT $?
     ID=$(podman create --blkio-weight 15 alpine ls)
-    CHECK_RESULT $?
     podman inspect $ID | grep '"BlkioWeight": 15'
     CHECK_RESULT $?
     ID=$(podman create --blkio-weight-device /dev/:15 fedora ls)
-    CHECK_RESULT $?
     podman inspect $ID | grep '"weight": 15'
     CHECK_RESULT $?
     ID=$(podman create --cap-add net_admin alpine ls)
-    CHECK_RESULT $?
     podman inspect $ID | grep -A 1 "CapAdd" | grep "net_admin"
     CHECK_RESULT $?
     ID=$(podman create --cap-drop net_admin alpine ls)
-    CHECK_RESULT $?
     podman inspect $ID | grep -A 1 "CapDrop" | grep "net_admin"
     CHECK_RESULT $?
     LOG_INFO "End to run test."

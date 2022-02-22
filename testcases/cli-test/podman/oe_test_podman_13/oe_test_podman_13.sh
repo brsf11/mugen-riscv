@@ -28,32 +28,33 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ID=$(podman create --cpuset-cpus 1 alpine ls)
-    podman inspect $ID | grep '"CpuSetCpus": "1"'
+    ID=$(podman create --log-driver=k8s-file alpine ls)
+    podman inspect $ID | grep -i driver
     CHECK_RESULT $?
-    ID=$(podman create --cpuset-mems 0 alpine ls)
-    podman inspect $ID | grep '"CpuSetMems": "0"'
+    ID=$(podman create --log-opt max-size=10mb alpine ls)
+    podman inspect $ID | grep -i log
     CHECK_RESULT $?
-    ID=$(podman create -d alpine ls)
-    podman inspect $ID | grep alpine
+    ID=$(podman create --memory 5MB alpine ls)
+    podman inspect $ID | grep '"Memory": 5242880'
     CHECK_RESULT $?
-    ID=$(podman create --detach-keys abc alpine ls)
-    podman inspect $ID | grep -i key
+    ID=$(podman create --memory-reservation 5g alpine ls)
+    podman inspect $ID | grep '"MemoryReservation": 5368709120'
     CHECK_RESULT $?
-    ID=$(podman create --device /dev/dm-0 alpine ls)
-    podman inspect $ID | grep '"path": "/dev/dm-0"'
+    ID=$(podman create --memory 2g --memory-swap 4g alpine ls)
+    podman inspect $ID | grep '"MemorySwap": 4294967296'
     CHECK_RESULT $?
-    ID=$(podman create --device-read-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "lkioDeviceReadBps" | grep 1048576
+    ID=$(podman create --memory-swappiness 4 alpine ls)
+    podman inspect $ID | grep '"MemorySwappiness": 4'
     CHECK_RESULT $?
-    ID=$(podman create --device-read-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceReadIOps" | grep 1000
+    touch /tmp/host || exit 1
+    ID=$(podman create --mount type=bind,source=/tmp/host,destination=/tmp/container alpine ls)
+    podman inspect $ID | grep '"source": "/tmp/host"'
     CHECK_RESULT $?
-    ID=$(podman create --device-write-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteBps" | grep 1048576
+    ID=$(podman create --name example alpine ls)
+    podman inspect $ID | grep '"Name": "example"'
     CHECK_RESULT $?
-    ID=$(podman create --device-write-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteIOps" | grep 1000
+    ID=$(podman create --net bridge alpine ls)
+    podman inspect $ID | grep '"NetworkMode": "bridge"'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -61,7 +62,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    rm -rf $(ls | grep -vE ".sh")
+    rm -rf $(ls | grep -vE ".sh") /tmp/host
     LOG_INFO "End to restore the test environment."
 }
 

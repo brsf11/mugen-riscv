@@ -23,7 +23,8 @@ function pre_test() {
     deploy_env
     local_disks=$(TEST_DISK 1)
     local_disk=$(echo $local_disks | awk -F " " '/sd[a-z]/ {for(i=1;i<=NF;i++) if ($i~/sd/ && $i!~/[0-9]/)j=i;print $j}')
-    test_dm=$(ls -l /dev/mapper/ | grep mpatha | awk -F "/" '{print $2}' | head -n 1)
+    test_mapper=$(ls /dev/mapper | grep mpath | head -n 1)
+    test_dm=$(ls -l /dev/mapper/ | grep ${test_mapper} | awk -F "/" '{print $2}' | head -n 1)
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -33,12 +34,12 @@ function run_test() {
     CHECK_RESULT $?
     multipath -r -v3 2>&1 | grep "delegating"
     CHECK_RESULT $?
-    multipath -i -v3 /dev/mapper/mpatha 2>&1 | grep "scope limited to 3600"
+    multipath -i -v3 /dev/mapper/${test_mapper} 2>&1 | grep "scope limited to 3600"
     CHECK_RESULT $?
     cd /etc/multipath/ || exit 1
     multipath -B bindings -v3 2>&1 | grep "binding"
     CHECK_RESULT $?
-    multipath -b bindings -v3 /dev/mapper/mpatha 2>&1 | grep "loaded successfully"
+    multipath -b bindings -v3 /dev/mapper/${test_mapper} 2>&1 | grep "setting: multipath"
     CHECK_RESULT $?
     cd - || exit 1
     multipath -v3 -p multibus 2>&1 | grep "multipath"

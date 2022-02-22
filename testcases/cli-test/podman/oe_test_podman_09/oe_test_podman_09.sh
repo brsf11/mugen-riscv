@@ -29,39 +29,30 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start to run test."
     ID=$(podman create --cgroup-parent machine.slice alpine ls)
-    CHECK_RESULT $?
     podman inspect $ID | grep '"CgroupParent": "machine.slice"'
     CHECK_RESULT $?
     ID=$(podman create --cidfile cidfile alpine ls)
-    CHECK_RESULT $?
     grep $ID cidfile
     CHECK_RESULT $?
     ID=$(podman create --conmon-pidfile ./ alpine ls)
-    CHECK_RESULT $?
     podman inspect $ID | grep $ID
     CHECK_RESULT $?
     ID=$(podman create --cpu-period 10000 alpine ls)
-    CHECK_RESULT $?
     podman inspect $ID | grep '"CpuPeriod": 10000'
     CHECK_RESULT $?
     ID=$(podman create --cpu-quota 1001 alpine ls)
-    CHECK_RESULT $?
     podman inspect $ID | grep '"CpuQuota": 1001'
     CHECK_RESULT $?
     ID=$(podman create --cpu-rt-period 1 alpine ls)
-    CHECK_RESULT $?
     podman inspect $ID | grep '"CpuRealtimePeriod": 1'
     CHECK_RESULT $?
     ID=$(podman create --cpu-rt-runtime 2 alpine ls)
-    CHECK_RESULT $?
     podman inspect $ID | grep '"CpuRealtimeRuntime": 2'
     CHECK_RESULT $?
     ID=$(podman create --cpu-shares 3 alpine ls)
-    CHECK_RESULT $?
     podman inspect $ID | grep '"CpuShares": 3'
     CHECK_RESULT $?
     ID=$(podman create --cpus 4 alpine ls)
-    CHECK_RESULT $?
     podman inspect $ID | grep '"CpuQuota": 400000'
     CHECK_RESULT $?
     LOG_INFO "End to run test."

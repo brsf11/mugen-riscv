@@ -14,7 +14,7 @@
 # @Contact   :   liujingjing25812@163.com
 # @Date      :   2021/01/11
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of commands in podman package
+# @Desc      :   The usage of commands in docker package
 # ############################################
 
 source "../common/common_podman.sh"
@@ -28,32 +28,38 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ID=$(podman create --cpuset-cpus 1 alpine ls)
-    podman inspect $ID | grep '"CpuSetCpus": "1"'
+    docker pull busybox
+    docker images --filter after=$(docker images -q) | grep $(docker images -q)
+    CHECK_RESULT $? 0 1
+    docker images -sort created | grep busybox
     CHECK_RESULT $?
-    ID=$(podman create --cpuset-mems 0 alpine ls)
-    podman inspect $ID | grep '"CpuSetMems": "0"'
+    docker rmi busybox
+    docker images | grep "alpine"
     CHECK_RESULT $?
-    ID=$(podman create -d alpine ls)
-    podman inspect $ID | grep alpine
+    docker stop postgres
+    docker commit postgres images1
     CHECK_RESULT $?
-    ID=$(podman create --detach-keys abc alpine ls)
-    podman inspect $ID | grep -i key
+    docker images | grep images1
     CHECK_RESULT $?
-    ID=$(podman create --device /dev/dm-0 alpine ls)
-    podman inspect $ID | grep '"path": "/dev/dm-0"'
+    docker commit --change CMD=/bin/bash --change ENTRYPOINT=/bin/sh postgres images2
     CHECK_RESULT $?
-    ID=$(podman create --device-read-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "lkioDeviceReadBps" | grep 1048576
+    docker images | grep images2
     CHECK_RESULT $?
-    ID=$(podman create --device-read-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceReadIOps" | grep 1000
+    docker commit -p postgres images3
     CHECK_RESULT $?
-    ID=$(podman create --device-write-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteBps" | grep 1048576
+    docker images | grep images3
     CHECK_RESULT $?
-    ID=$(podman create --device-write-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteIOps" | grep 1000
+    docker commit -q postgres images4
+    CHECK_RESULT $?
+    docker images | grep images4
+    CHECK_RESULT $?
+    docker commit -f docker -q --message "committing container to image" postgres images5
+    CHECK_RESULT $?
+    docker images | grep images5
+    CHECK_RESULT $?
+    docker image ls --quiet | grep "$(docker images -aq)"
+    CHECK_RESULT $?
+    docker image ls --sort size
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

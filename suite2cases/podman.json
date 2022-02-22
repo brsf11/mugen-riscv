@@ -7,7 +7,7 @@
         {
             "name": "oe_test_socket_io.podman"
         },
-	{
+        {
             "name": "oe_test_podman_01"
         },
         {
@@ -31,72 +31,101 @@
         {
             "name": "oe_test_podman_08"
         },
-	{
-	    "name": "oe_test_podman_09"
-	},
-	{
+        {
+            "name": "oe_test_podman_09"
+        },
+        {
             "name": "oe_test_podman_10"
         },
-	{
+        {
+            "name": "oe_test_podman_11"
+        },
+        {
+            "name": "oe_test_podman_12"
+        },
+        {
+            "name": "oe_test_podman_13"
+        },
+        {
+            "name": "oe_test_podman_14"
+        },
+        {
+            "name": "oe_test_podman_15"
+        },
+        {
+            "name": "oe_test_podman_16"
+        },
+        {
+            "name": "oe_test_podman_17"
+        },
+        {
+            "name": "oe_test_podman_18"
+        },
+        {
             "name": "oe_test_podman_19"
         },
-	{
-	    "name": "oe_test_podman_20"
-	},
-	{
-	    "name": "oe_test_podman_21"
-	},
-	{
-	    "name": "oe_test_podman_22"
-	},
         {
-	    "name": "oe_test_podman_23"
-	},
-	{
-	    "name": "oe_test_podman_24"
-	},
-	{
-	    "name": "oe_test_podman_25"
-	},
-	{
-	    "name": "oe_test_podman_26"
-	},
-	{
-	    "name": "oe_test_podman_27"
-	},
-	{
-	    "name": "oe_test_podman_28"
-	},
-	{
-	    "name": "oe_test_podman_docker_19"
-	},
+            "name": "oe_test_podman_20"
+        },
         {
-	    "name": "oe_test_podman_docker_20"
-	},
-	{
-	    "name": "oe_test_podman_docker_21"
-	},
-	{
-	    "name": "oe_test_podman_docker_22"
-	},
-	{
-	    "name": "oe_test_podman_docker_23"
-	},
-	{
-	    "name": "oe_test_podman_docker_24"
-	},
-	{
-	    "name": "oe_test_podman_docker_25"
-	},
-	{
-	    "name": "oe_test_podman_docker_26"
-	},
-	{
-	    "name": "oe_test_podman_docker_27"
-	},
-	{
-	    "name": "oe_test_podman_docker_28"
-	}
-
+            "name": "oe_test_podman_21"
+        },
+        {
+            "name": "oe_test_podman_22"
+        },
+        {
+            "name": "oe_test_podman_23"
+        },
+        {
+            "name": "oe_test_podman_24"
+        },
+        {
+            "name": "oe_test_podman_25"
+        },
+        {
+            "name": "oe_test_podman_26"
+        },
+        {
+            "name": "oe_test_podman_27"
+        },
+        {
+            "name": "oe_test_podman_28"
+        },
+        {
+            "name": "oe_test_podman_DK_01"
+        },
+        {
+            "name": "oe_test_podman_DK_02"
+        },
+        {
+            "name": "oe_test_podman_DK_19"
+        },
+        {
+            "name": "oe_test_podman_DK_20"
+        },
+        {
+            "name": "oe_test_podman_DK_21"
+        },
+        {
+            "name": "oe_test_podman_DK_22"
+        },
+        {
+            "name": "oe_test_podman_DK_23"
+        },
+        {
+            "name": "oe_test_podman_DK_24"
+        },
+        {
+            "name": "oe_test_podman_DK_25"
+        },
+        {
+            "name": "oe_test_podman_DK_26"
+        },
+        {
+            "name": "oe_test_podman_DK_27"
+        },
+        {
+            "name": "oe_test_podman_DK_28"
+        }
     ]
 }

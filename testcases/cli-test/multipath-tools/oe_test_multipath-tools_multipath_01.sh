@@ -23,7 +23,8 @@ function pre_test() {
     deploy_env
     local_disks=$(TEST_DISK 1)
     local_disk=$(echo $local_disks | awk -F " " '/sd[a-z]/ {for(i=1;i<=NF;i++) if ($i~/sd/ && $i!~/[0-9]/)j=i;print $j}')
-    test_dm=$(ls -l /dev/mapper/ | grep mpatha | awk -F "/" '{print $2}' | head -n 1)
+    test_mapper=$(ls /dev/mapper | grep mpath | head -n 1)
+    test_dm=$(ls -l /dev/mapper/ | grep ${test_mapper} | awk -F "/" '{print $2}' | head -n 1)
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -37,12 +38,13 @@ function run_test() {
     CHECK_RESULT $?
     multipath -v3 -f /dev/$test_dm
     CHECK_RESULT $?
-    test -L /dev/mapper/mpatha1
+    test -L /dev/mapper/${test_mapper}1
     CHECK_RESULT $? 1
     service multipathd restart
+    sleep 10
     multipath -v3 -R 1 -F
     CHECK_RESULT $?
-    test -L /dev/mapper/mpatha
+    test -L /dev/mapper/${test_mapper}
     CHECK_RESULT $? 1
     service multipathd restart
     multipath -a /dev/$test_dm | grep "added"

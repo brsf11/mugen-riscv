@@ -28,32 +28,54 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ID=$(podman create --cpuset-cpus 1 alpine ls)
-    podman inspect $ID | grep '"CpuSetCpus": "1"'
+    podman port --all | grep "$(podman ps -aq)"
     CHECK_RESULT $?
-    ID=$(podman create --cpuset-mems 0 alpine ls)
-    podman inspect $ID | grep '"CpuSetMems": "0"'
+    podman port --latest
     CHECK_RESULT $?
-    ID=$(podman create -d alpine ls)
-    podman inspect $ID | grep alpine
+    expect <<EOF
+        set time 30
+        spawn podman login docker.io 
+        expect {
+            "Username*" { send "umohnani\r"; exp_continue }
+            "Password:" { send "\r" }
+        }
+        expect eof
+EOF
     CHECK_RESULT $?
-    ID=$(podman create --detach-keys abc alpine ls)
-    podman inspect $ID | grep -i key
+    podman logout docker.io
     CHECK_RESULT $?
-    ID=$(podman create --device /dev/dm-0 alpine ls)
-    podman inspect $ID | grep '"path": "/dev/dm-0"'
+    expect <<EOF
+        set time 30
+        spawn podman login --authfile authdir/myauths.json docker.io
+        expect {
+            "Username*" { send "umohnani\r"; exp_continue }
+            "Password:" { send "\r" }
+        }
+        expect eof
+EOF
     CHECK_RESULT $?
-    ID=$(podman create --device-read-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "lkioDeviceReadBps" | grep 1048576
+    podman logout --authfile authdir/myauths.json docker.io
     CHECK_RESULT $?
-    ID=$(podman create --device-read-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceReadIOps" | grep 1000
+    expect <<EOF
+        set time 30
+        spawn podman login -u umohnani docker.io
+        expect {
+            "Password:" { send "\r" }
+        }
+        expect eof
+EOF
     CHECK_RESULT $?
-    ID=$(podman create --device-write-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteBps" | grep 1048576
+    expect <<EOF
+        set time 30
+        spawn podman login --tls-verify=false docker.io
+        expect {
+            "Username*" { send "umohnani\r"; exp_continue }
+            "Password:" { send "\r" }
+        }
+        expect eof
+EOF
     CHECK_RESULT $?
-    ID=$(podman create --device-write-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteIOps" | grep 1000
+    podman logout --all | grep "Remove"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
