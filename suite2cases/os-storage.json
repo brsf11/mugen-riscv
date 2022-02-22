@@ -442,6 +442,71 @@
         },
         {
             "name":"oe_test_storage_fileCMD_grep"
+        },
+        {
+            "name": "oe_test_storage_fileCMD_sort"
+        },
+        {
+            "name": "oe_test_storage_fileCMD_unzip"
+        },
+        {
+            "name": "oe_test_storage_fileCMD_mv"
+        },
+        {
+            "name": "oe_test_storage_longname_list",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_fileCMD_mkdir",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_fileCMD_ln"
+        },
+        {
+            "name": "oe_test_storage_fileCMD_pwd"
+        },
+        {
+            "name": "oe_test_storage_fileCMD_rmdir"
+        },
+        {
+            "name": "oe_test_storage_fileCMD_wc"
+        },
+        {
+            "name": "oe_test_storage_fileCMD_tar"
+        },
+        {
+            "name": "oe_test_storage_fileCMD_zip"
+        },
+        {
+            "name": "oe_test_storage_fileCMD_ls"
+        },
+        {
+            "name": "oe_test_storage_longname_modify",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_fileCMD_mkfs",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_fileCMD_touch"
         }
 
     ]
