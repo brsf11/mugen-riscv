@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/procinfo",
+    "cases": [
+        {
+            "name": "oe_test_procinfo_01"
+        },
+        {
+            "name": "oe_test_procinfo_02"
+        }
+    ]
+}
