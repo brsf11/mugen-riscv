@@ -1,0 +1,53 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/tidy",
+    "cases": [
+        {
+            "name": "oe_test_tidy_file_manipulation"
+        },
+        {
+            "name": "oe_test_tidy_processing_directives"
+        },
+        {
+            "name": "oe_test_tidy_character_encodings"
+        },
+        {
+            "name": "oe_test_tidy_miscellaneous"
+        },
+        {
+            "name": "oe_test_tidy_xml"
+        },
+        {
+            "name": "oe_test_tidy_document_display_options"
+        },
+        {
+            "name": "oe_test_tidy_document_in_and_out_options"
+        },
+        {
+            "name": "oe_test_tidy_file_input-output_options"
+        },
+        {
+            "name": "oe_test_tidy_diagnostics_options"
+        },
+        {
+            "name": "oe_test_tidy_encoding_options"
+        },
+        {
+            "name": "oe_test_tidy_cleanup_options"
+        },
+        {
+            "name": "oe_test_tidy_entities_options"
+        },
+        {
+            "name": "oe_test_tidy_repair_options"
+        },
+        {
+            "name": "oe_test_tidy_transformation_options"
+        },
+        {
+            "name": "oe_test_tidy_teaching_tidy_options"
+        },
+        {
+            "name": "oe_test_tidy_pretty_print_options"
+        }
+    ]
+}
