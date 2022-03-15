@@ -28,32 +28,33 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ID=$(podman create --cpuset-cpus 1 alpine ls)
-    podman inspect $ID | grep '"CpuSetCpus": "1"'
+    ID=$(podman create -t -i --name myctr alpine ls)
+    podman inspect $ID | grep '"Name": "myctr"'
     CHECK_RESULT $?
-    ID=$(podman create --cpuset-mems 0 alpine ls)
-    podman inspect $ID | grep '"CpuSetMems": "0"'
+    ID=$(podman create --hostname localhost alpine ls)
+    podman inspect $ID | grep '"Hostname": "localhost"'
     CHECK_RESULT $?
-    ID=$(podman create -d alpine ls)
-    podman inspect $ID | grep alpine
+    ID=$(podman create --image-volume bind alpine ls)
+    podman inspect $ID | grep -i bind
     CHECK_RESULT $?
-    ID=$(podman create --detach-keys abc alpine ls)
-    podman inspect $ID | grep -i key
+    ID=$(podman create --builtin-volume tmpfs alpine ls)
+    podman inspect $ID | grep -i tmpfs
     CHECK_RESULT $?
-    ID=$(podman create --device /dev/dm-0 alpine ls)
-    podman inspect $ID | grep '"path": "/dev/dm-0"'
+    ID=$(podman create --ip ${NODE1_IPV4} alpine ls)
+    podman inspect $ID | grep -i ip
     CHECK_RESULT $?
-    ID=$(podman create --device-read-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "lkioDeviceReadBps" | grep 1048576
+    ID=$(podman create --ipc host alpine ls)
+    podman inspect $ID | grep '"IpcMode": "host"'
     CHECK_RESULT $?
-    ID=$(podman create --device-read-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceReadIOps" | grep 1000
+    ID=$(podman create --kernel-memory 1g alpine ls)
+    podman inspect $ID | grep '"KernelMemory": 1073741824'
     CHECK_RESULT $?
-    ID=$(podman create --device-write-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteBps" | grep 1048576
+    ID=$(podman create --label com.example.key=value alpine ls)
+    podman inspect $ID | grep '"com.example.key": "value"'
     CHECK_RESULT $?
-    ID=$(podman create --device-write-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteIOps" | grep 1000
+    echo "com.example.key=value" >./a
+    ID=$(podman create --label-file ./a alpine ls)
+    podman inspect $ID | grep '"com.example.key": "value"'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

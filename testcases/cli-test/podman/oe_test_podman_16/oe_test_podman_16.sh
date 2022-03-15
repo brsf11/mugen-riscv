@@ -28,33 +28,39 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ID=$(podman create --cpuset-cpus 1 alpine ls)
-    podman inspect $ID | grep '"CpuSetCpus": "1"'
+    ID=$(podman create --tmpfs tmpfs alpine ls)
+    podman inspect $ID | grep tmpfs
     CHECK_RESULT $?
-    ID=$(podman create --cpuset-mems 0 alpine ls)
-    podman inspect $ID | grep '"CpuSetMems": "0"'
+    ID=$(podman create --user root alpine ls)
+    grep '"User":"root"' /var/lib/containers/storage/overlay-containers/$ID/userdata/artifacts/create-config
     CHECK_RESULT $?
-    ID=$(podman create -d alpine ls)
-    podman inspect $ID | grep alpine
+    ID=$(podman create --userns host alpine ls)
+    podman inspect $ID | grep '"UsernsMode": "host"'
     CHECK_RESULT $?
-    ID=$(podman create --detach-keys abc alpine ls)
-    podman inspect $ID | grep -i key
+    ID=$(podman create --uts host alpine ls)
+    podman inspect $ID | grep '"UTSMode": "host"'
     CHECK_RESULT $?
-    ID=$(podman create --device /dev/dm-0 alpine ls)
-    podman inspect $ID | grep '"path": "/dev/dm-0"'
+    podman create --name example alpine ls
+    ID=$(podman create --volume /tmp:/tmp:z alpine ls)
+    podman inspect $ID | grep '"destination": "/tmp"'
     CHECK_RESULT $?
-    ID=$(podman create --device-read-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "lkioDeviceReadBps" | grep 1048576
+    ID=$(podman create --volumes-from example alpine ls)
+    grep '"VolumesFrom":\["example"\]' /var/lib/containers/storage/overlay-containers/$ID/userdata/artifacts/create-config
     CHECK_RESULT $?
-    ID=$(podman create --device-read-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceReadIOps" | grep 1000
+    ID=$(podman create --workdir /tmp alpine ls)
+    podman inspect $ID | grep '"WorkingDir": "/tmp"'
     CHECK_RESULT $?
-    ID=$(podman create --device-write-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteBps" | grep 1048576
+    podman rmi -f $(podman images -q)
     CHECK_RESULT $?
-    ID=$(podman create --device-write-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteIOps" | grep 1000
+    podman images | grep "postgres"
+    CHECK_RESULT $? 1
+    podman pull postgres:alpine
+    podman images | grep "postgres"
     CHECK_RESULT $?
+    podman rmi --all
+    CHECK_RESULT $?
+    podman images | grep "postgres"
+    CHECK_RESULT $? 1
     LOG_INFO "End to run test."
 }
 

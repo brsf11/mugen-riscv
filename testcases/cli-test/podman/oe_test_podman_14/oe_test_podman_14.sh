@@ -28,32 +28,33 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ID=$(podman create --cpuset-cpus 1 alpine ls)
-    podman inspect $ID | grep '"CpuSetCpus": "1"'
+    ID=$(podman create --oom-kill-disable alpine ls)
+    podman inspect $ID | grep '"OomKillDisable": true'
     CHECK_RESULT $?
-    ID=$(podman create --cpuset-mems 0 alpine ls)
-    podman inspect $ID | grep '"CpuSetMems": "0"'
+    ID=$(podman create --oom-score-adj 100 alpine ls)
+    podman inspect $ID | grep '"OomScoreAdj": 100'
     CHECK_RESULT $?
-    ID=$(podman create -d alpine ls)
-    podman inspect $ID | grep alpine
+    ID=$(podman create --pid host alpine ls)
+    podman inspect $ID | grep '"PidMode": "host"'
     CHECK_RESULT $?
-    ID=$(podman create --detach-keys abc alpine ls)
-    podman inspect $ID | grep -i key
+    ID=$(podman create --pids-limit 3 alpine ls)
+    podman inspect $ID | grep '"PidsLimit": 3'
     CHECK_RESULT $?
-    ID=$(podman create --device /dev/dm-0 alpine ls)
-    podman inspect $ID | grep '"path": "/dev/dm-0"'
+    podman pod create --infra=false
+    ID=$(podman create --pod $(podman pod list -lq) alpine ls)
+    podman rm $ID
     CHECK_RESULT $?
-    ID=$(podman create --device-read-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "lkioDeviceReadBps" | grep 1048576
+    podman pod rm $(podman pod list -q)
+    ID=$(podman create --privileged alpine ls)
+    podman inspect $ID | grep '"Privileged": true'
     CHECK_RESULT $?
-    ID=$(podman create --device-read-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceReadIOps" | grep 1000
+    ID=$(podman create --publish 23 alpine ls)
+    podman inspect $ID | grep '"containerPort": 23'
     CHECK_RESULT $?
-    ID=$(podman create --device-write-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteBps" | grep 1048576
+    ID=$(podman create --publish-all alpine ls)
+    podman inspect $ID | grep '"PublishAllPorts": false'
     CHECK_RESULT $?
-    ID=$(podman create --device-write-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteIOps" | grep 1000
+    podman create -q alpine ls
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

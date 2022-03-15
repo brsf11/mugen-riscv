@@ -28,32 +28,30 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ID=$(podman create --cpuset-cpus 1 alpine ls)
-    podman inspect $ID | grep '"CpuSetCpus": "1"'
+    ID=$(podman create --dns 255.255.255.0 alpine ls)
+    podman inspect $ID | grep "255.255.255.0"
     CHECK_RESULT $?
-    ID=$(podman create --cpuset-mems 0 alpine ls)
-    podman inspect $ID | grep '"CpuSetMems": "0"'
+    ID=$(podman create --dns-opt 8.8.8.8 alpine ls)
+    podman inspect $ID | grep "8.8.8.8"
     CHECK_RESULT $?
-    ID=$(podman create -d alpine ls)
-    podman inspect $ID | grep alpine
+    ID=$(podman create --dns-search domain alpine ls)
+    podman inspect $ID | grep "domain"
     CHECK_RESULT $?
-    ID=$(podman create --detach-keys abc alpine ls)
-    podman inspect $ID | grep -i key
+    ID=$(podman create --name ctr --env ENV*****=b alpine printenv ENV*****)
+    podman inspect $ID | grep "ENV****"
     CHECK_RESULT $?
-    ID=$(podman create --device /dev/dm-0 alpine ls)
-    podman inspect $ID | grep '"path": "/dev/dm-0"'
+    echo "ENV*****=b" >./a
+    ID=$(podman create --env-file ./a alpine ls)
+    podman inspect $ID | grep "ENV"
     CHECK_RESULT $?
-    ID=$(podman create --device-read-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "lkioDeviceReadBps" | grep 1048576
+    ID=$(podman create --expose 0 alpine ls)
+    podman inspect $ID | grep "0"
     CHECK_RESULT $?
-    ID=$(podman create --device-read-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceReadIOps" | grep 1000
+    ID=$(podman create --uidmap 0:30000:7000 --gidmap 0:30000:7000 fedora echo hello)
+    podman inspect $ID | grep '"gid": 0'
     CHECK_RESULT $?
-    ID=$(podman create --device-write-bps=/dev/:1mb alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteBps" | grep 1048576
-    CHECK_RESULT $?
-    ID=$(podman create --device-write-iops=/dev/:1000 alpine ls)
-    podman inspect $ID | grep -A 5 "BlkioDeviceWriteIOps" | grep 1000
+    ID=$(podman create --group-add groups alpine ls)
+    podman inspect $ID | grep -i group
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
