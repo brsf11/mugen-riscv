@@ -1,0 +1,32 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/cobbler",
+    "cases": [
+        {
+            "name": "oe_test_cobbler_distro"
+        },
+        {
+            "name": "oe_test_cobbler_profile"
+        },
+        {
+            "name": "oe_test_cobbler_system" 
+        },
+        {
+            "name": "oe_test_cobbler_repo"
+        },
+        {
+            "name": "oe_test_cobbler_image"
+        },
+        {
+            "name": "oe_test_cobbler_mgmtclass"
+        },
+        {
+            "name": "oe_test_cobbler_package"
+        },
+        {
+            "name": "oe_test_cobbler_file"
+        },
+        {
+            "name": "oe_test_cobbler_other"
+        }
+   ]
+}
