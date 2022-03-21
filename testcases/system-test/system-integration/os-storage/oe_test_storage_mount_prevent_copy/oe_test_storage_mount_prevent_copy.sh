@@ -12,33 +12,26 @@
 # #############################################
 # @Author    :   Classicriver_jia
 # @Contact   :   classicriver_jia@foxmail.com
-# @Date      :   2021.4.27
+# @Date      :   2020-4-10
 # @License   :   Mulan PSL v2
-# @Desc      :   Bashrc configuring umask
-# ############################################
+# @Desc      :   Prevent copying mount points
+# #############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-function pre_test() {
-    userdel -rf testuser1 
-    useradd testuser1
-    umask_1=$(su testuser1 -c "umask")
-}
 function run_test() {
     LOG_INFO "Start executing testcase."
-    grep -i -B 1 umask /etc/bashrc
+    mount --bind /media /media
     CHECK_RESULT $?
-    [ -z ${umask_1} ]
-    CHECK_RESULT $? 0 1
-    echo 'umask 227' >>/home/testuser1/.bashrc
-    source /home/testuser1/.bashrc >/dev/null
-    su testuser1 -c "umask" | grep 227
+    mount --make-unbindable /media
     CHECK_RESULT $?
+    mount --bind /media /mnt
+    CHECK_RESULT $? 32
     LOG_INFO "End of testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    userdel -r /home/testuser1
+    umount /media
     LOG_INFO "Finish environment cleanup."
 }
 

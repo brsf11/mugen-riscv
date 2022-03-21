@@ -16,11 +16,12 @@
 # @License   :   Mulan PSL v2
 # @Desc      :   MariaDB remote execution script
 # #############################################
-
-set timeout 10
-log_file testlog
-spawn mysql -h ${NODE1_IPV4} -u root -p${NODE1_PASSWORD}
-expect {
+expect -c "
+    log_file testlog
+    set timeout 10
+    spawn mysql -h ${NODE1_IPV4} -u root -p
+    expect {
+        \"Enter*\" { send \"${NODE1_PASSWORD}\r\";
         "Maria*" { send "create database test;\r"
         expect "Maria*" { send "use test;\r"}
         expect "Maria*" { send "create table testtable(id int(3), name char(8));\r"}
@@ -33,3 +34,4 @@ expect {
 }
 }
 expect eof
+"

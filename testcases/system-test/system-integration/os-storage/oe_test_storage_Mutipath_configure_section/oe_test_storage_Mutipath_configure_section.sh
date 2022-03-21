@@ -12,33 +12,39 @@
 # #############################################
 # @Author    :   Classicriver_jia
 # @Contact   :   classicriver_jia@foxmail.com
-# @Date      :   2021.4.27
+# @Date      :   2020-04-27
 # @License   :   Mulan PSL v2
-# @Desc      :   Bashrc configuring umask
+# @Desc      :   Configure the multipaths section
 # ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
-    userdel -rf testuser1 
-    useradd testuser1
-    umask_1=$(su testuser1 -c "umask")
+    LOG_INFO "Start environment preparation."
+    DNF_INSTALL multipath-tools
+    mpathconf --enable --with_multipathd y
+    LOG_INFO "Environmental preparation is over."
 }
+
 function run_test() {
     LOG_INFO "Start executing testcase."
-    grep -i -B 1 umask /etc/bashrc
+    mv /etc/multipath.conf /etc/multipath.conf.bak
     CHECK_RESULT $?
-    [ -z ${umask_1} ]
-    CHECK_RESULT $? 0 1
-    echo 'umask 227' >>/home/testuser1/.bashrc
-    source /home/testuser1/.bashrc >/dev/null
-    su testuser1 -c "umask" | grep 227
+    cp ../common/multipath_008.conf /etc/multipath.conf
     CHECK_RESULT $?
+    systemctl reload multipathd.service
+    CHECK_RESULT $?
+    systemctl status multipathd | grep "invalid key"
+    CHECK_RESULT $? 1
     LOG_INFO "End of testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    userdel -r /home/testuser1
+    rm -rf /etc/multipath.conf
+    mv /etc/multipath.conf.bak /etc/multipath.conf
+    systemctl reload multipathd.service
+    multipath -F
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup."
 }
 

@@ -26,7 +26,8 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    systemctl start httpd
+    systemctl restart httpd
+    SLEEP_WAIT 9
     systemctl status httpd | grep running
     CHECK_RESULT $?
     mv /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf_bak
@@ -35,7 +36,9 @@ function run_test() {
     CHECK_RESULT $? 1
     mv /etc/httpd/conf/httpd.conf_bak /etc/httpd/conf/httpd.conf
     systemctl restart httpd.service
-    SLEEP_WAIT 1
+    SLEEP_WAIT 7
+    systemctl start httpd
+    SLEEP_WAIT 7
     systemctl status httpd | grep running
     CHECK_RESULT $?
     LOG_INFO "End to run test."

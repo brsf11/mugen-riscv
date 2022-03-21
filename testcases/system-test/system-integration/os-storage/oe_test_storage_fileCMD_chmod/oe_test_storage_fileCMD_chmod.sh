@@ -31,13 +31,13 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    [ "$per03" == "drwxrwxrwx" ]
+    echo $per03 | grep "drwxrwxrwx"
     CHECK_RESULT $?
     [ "$per02" == "$per04" ]
     CHECK_RESULT $?
-    [ "$per05" == "drwxrwxrwx" ]
+    echo $per05 | grep "drwxrwxrwx" 
     CHECK_RESULT $?
-    [ "$per06" == "drwxr-xr-x" ]
+    echo $per06 | grep  "drwxr-xr-x" 
     CHECK_RESULT $?
     chmod --help | grep -i "Usage"
     CHECK_RESULT $?

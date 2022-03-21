@@ -26,7 +26,7 @@ function config_params() {
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    lsblk --fs "/dev/${local_disk}" | awk '{if (NR>1){print$NF}}') | grep [a-z,-,0-9]*-[a-z,-,0-9]*
+    lsblk --fs "/dev/${local_disk}" | awk '{if (NR>1){print$NF}}' | grep [a-z,-,0-9]*-[a-z,-,0-9]*
     CHECK_RESULT $?
     echo -e "n\np\n1\n\n\nw" | fdisk "/dev/${local_disk}"
     CHECK_RESULT $?

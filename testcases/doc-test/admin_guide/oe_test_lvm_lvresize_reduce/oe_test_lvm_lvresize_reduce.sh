@@ -49,6 +49,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
+    rm -rf testlog
     lvremove -y openeulertest/test
     vgremove -y openeulertest
     pvremove /dev/${local_disk1} /dev/${local_disk}

@@ -29,7 +29,7 @@ function run_test() {
         grep "0x48" /proc/cpuinfo
         CHECK_RESULT $?
     else
-        grep $(lscpu | grep "Vendor ID" | awk -F " " '{print$3}') /proc/cpuinfo
+        grep $(lscpu | grep "GenuineIntel" | awk -F " " '{print$3}') /proc/cpuinfo
         CHECK_RESULT $?
     fi
     LOG_INFO "End fo test result detection!"

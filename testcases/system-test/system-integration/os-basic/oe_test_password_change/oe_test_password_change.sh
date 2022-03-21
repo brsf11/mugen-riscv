@@ -21,6 +21,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     grep "testuser:" /etc/passwd && userdel -rf testuser
+    groupdel testuser
     useradd testuser
     LOG_INFO "End to prepare the test environment."
 }

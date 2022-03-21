@@ -29,6 +29,7 @@ function run_test() {
     for count_httpd in $(seq 1 10); do
         systemctl enable httpd
         systemctl start httpd
+	SLEEP_WAIT 7
         systemctl status httpd | grep running
         CHECK_RESULT $?
         systemctl stop httpd
@@ -38,7 +39,7 @@ function run_test() {
         systemctl is-enabled httpd | grep disable
         CHECK_RESULT $?
         systemctl restart httpd
-        SLEEP_WAIT 2
+        SLEEP_WAIT 7
         systemctl status httpd | grep running
         CHECK_RESULT $?
     done
