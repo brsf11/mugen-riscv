@@ -12,9 +12,9 @@
 # #############################################
 # @Author    :   liujingjing
 # @Contact   :   liujingjing25812@163.com
-# @Date      :   2021/01/11
+# @Date      :   2020/01/11
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of commands in podman package
+# @Desc      :   The usage of commands in docker package
 # ############################################
 
 source "../common/common_podman.sh"
@@ -28,32 +28,33 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    podman push postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
+    docker help | grep -E "docker|help"
     CHECK_RESULT $?
-    podman push --authfile temp-auths/myauths.json postgres:alpine dir:/tmp/myimage
+    docker create alpine
     CHECK_RESULT $?
-    test -f /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    docker ps -a | grep -i "Created"
     CHECK_RESULT $?
-    podman push --format oci postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --add-host host:192.168.122.172 alpine)
+    grep "192.168.122.172" /var/lib/containers/storage/overlay-containers/$ID/userdata/artifacts/create-config
     CHECK_RESULT $?
-    grep "oci" /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    ID=$(docker create --annotation HELLO=WORLD alpine)
+    docker inspect $ID | grep '"HELLO": "WORLD"'
     CHECK_RESULT $?
-    podman push --compress postgres:alpine dir:/tmp/myimage
+    docker create --attach STDIN alpine ls
     CHECK_RESULT $?
-    grep "image.rootfs.diff.tar.gzip" /tmp/myimage/manifest.json
+    docker ps -a | grep ls
     CHECK_RESULT $?
-    podman push -q postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
-    CHECK_RESULT $? 0 1
-    podman push --remove-signatures postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
+    ID=$(docker create --blkio-weight 15 alpine ls)
+    docker inspect $ID | grep '"BlkioWeight": 15'
     CHECK_RESULT $?
-    podman push --tls-verify postgres:alpine dir:/tmp/myimage 2>&1 | grep "Copying blob"
+    ID=$(docker create --blkio-weight-device /dev/:15 fedora ls)
+    docker inspect $ID | grep '"weight": 15'
     CHECK_RESULT $?
-    podman push --creds postgres:screte postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
+    ID=$(docker create --cap-add net_admin alpine ls)
+    docker inspect $ID | grep -A 1 "CapAdd" | grep "net_admin"
     CHECK_RESULT $?
-    rm -rf /tmp/myimage
-    podman push --cert-dir /tmp postgres:alpine dir:/tmp/myimage
-    CHECK_RESULT $?
-    test -d /tmp/myimage
+    ID=$(docker create --cap-drop net_admin alpine ls)
+    docker inspect $ID | grep -A 1 "CapDrop" | grep "net_admin"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -61,7 +62,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    rm -rf $(ls | grep -vE ".sh") /tmp/myimage
+    rm -rf $(ls | grep -vE ".sh")
     LOG_INFO "End to restore the test environment."
 }
 

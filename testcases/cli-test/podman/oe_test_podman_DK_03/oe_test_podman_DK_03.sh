@@ -14,7 +14,7 @@
 # @Contact   :   liujingjing25812@163.com
 # @Date      :   2021/01/11
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of commands in podman package
+# @Desc      :   The usage of commands in docker package
 # ############################################
 
 source "../common/common_podman.sh"
@@ -28,30 +28,30 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    podman push postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
+    docker push postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
     CHECK_RESULT $?
-    podman push --authfile temp-auths/myauths.json postgres:alpine dir:/tmp/myimage
+    docker push --authfile temp-auths/myauths.json postgres:alpine dir:/tmp/myimage
     CHECK_RESULT $?
     test -f /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
     CHECK_RESULT $?
-    podman push --format oci postgres:alpine dir:/tmp/myimage
+    docker push --format oci postgres:alpine dir:/tmp/myimage
     CHECK_RESULT $?
     grep "oci" /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
     CHECK_RESULT $?
-    podman push --compress postgres:alpine dir:/tmp/myimage
+    docker push --compress postgres:alpine dir:/tmp/myimage
     CHECK_RESULT $?
     grep "image.rootfs.diff.tar.gzip" /tmp/myimage/manifest.json
     CHECK_RESULT $?
-    podman push -q postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
+    docker push -q postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
     CHECK_RESULT $? 0 1
-    podman push --remove-signatures postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
+    docker push --remove-signatures postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
     CHECK_RESULT $?
-    podman push --tls-verify postgres:alpine dir:/tmp/myimage 2>&1 | grep "Copying blob"
+    docker push --tls-verify postgres:alpine dir:/tmp/myimage 2>&1 | grep "Copying blob"
     CHECK_RESULT $?
-    podman push --creds postgres:screte postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
+    docker push --creds postgres:screte postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
     CHECK_RESULT $?
     rm -rf /tmp/myimage
-    podman push --cert-dir /tmp postgres:alpine dir:/tmp/myimage
+    docker push --cert-dir /tmp postgres:alpine dir:/tmp/myimage
     CHECK_RESULT $?
     test -d /tmp/myimage
     CHECK_RESULT $?

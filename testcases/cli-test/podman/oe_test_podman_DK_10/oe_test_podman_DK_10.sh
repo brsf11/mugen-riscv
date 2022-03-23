@@ -14,7 +14,7 @@
 # @Contact   :   liujingjing25812@163.com
 # @Date      :   2021/01/11
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of commands in podman package
+# @Desc      :   The usage of commands in docker package
 # ############################################
 
 source "../common/common_podman.sh"
@@ -28,32 +28,32 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    podman push postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
+    ID=$(docker create --cpuset-cpus 1 alpine ls)
+    docker inspect $ID | grep '"CpuSetCpus": "1"'
     CHECK_RESULT $?
-    podman push --authfile temp-auths/myauths.json postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --cpuset-mems 0 alpine ls)
+    docker inspect $ID | grep '"CpuSetMems": "0"'
     CHECK_RESULT $?
-    test -f /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    ID=$(docker create -d alpine ls)
+    docker inspect $ID | grep alpine
     CHECK_RESULT $?
-    podman push --format oci postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --detach-keys abc alpine ls)
+    docker inspect $ID | grep -i key
     CHECK_RESULT $?
-    grep "oci" /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    ID=$(docker create --device /dev/dm-0 alpine ls)
+    docker inspect $ID | grep '"path": "/dev/dm-0"'
     CHECK_RESULT $?
-    podman push --compress postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --device-read-bps=/dev/:1mb alpine ls)
+    docker inspect $ID | grep -A 5 "lkioDeviceReadBps" | grep 1048576
     CHECK_RESULT $?
-    grep "image.rootfs.diff.tar.gzip" /tmp/myimage/manifest.json
+    ID=$(docker create --device-read-iops=/dev/:1000 alpine ls)
+    docker inspect $ID | grep -A 5 "BlkioDeviceReadIOps" | grep 1000
     CHECK_RESULT $?
-    podman push -q postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
-    CHECK_RESULT $? 0 1
-    podman push --remove-signatures postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
+    ID=$(docker create --device-write-bps=/dev/:1mb alpine ls)
+    docker inspect $ID | grep -A 5 "BlkioDeviceWriteBps" | grep 1048576
     CHECK_RESULT $?
-    podman push --tls-verify postgres:alpine dir:/tmp/myimage 2>&1 | grep "Copying blob"
-    CHECK_RESULT $?
-    podman push --creds postgres:screte postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
-    CHECK_RESULT $?
-    rm -rf /tmp/myimage
-    podman push --cert-dir /tmp postgres:alpine dir:/tmp/myimage
-    CHECK_RESULT $?
-    test -d /tmp/myimage
+    ID=$(docker create --device-write-iops=/dev/:1000 alpine ls)
+    docker inspect $ID | grep -A 5 "BlkioDeviceWriteIOps" | grep 1000
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -61,7 +61,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    rm -rf $(ls | grep -vE ".sh") /tmp/myimage
+    rm -rf $(ls | grep -vE ".sh")
     LOG_INFO "End to restore the test environment."
 }
 

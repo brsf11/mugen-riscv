@@ -32,7 +32,7 @@ function run_test() {
     CHECK_RESULT $?
     podman create alpine
     CHECK_RESULT $?
-    podman ps -a | grep "Created"
+    podman ps -a | grep -i "Created"
     CHECK_RESULT $?
     ID=$(podman create --add-host host:192.168.122.172 alpine)
     grep "192.168.122.172" /var/lib/containers/storage/overlay-containers/$ID/userdata/artifacts/create-config

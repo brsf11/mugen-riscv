@@ -34,11 +34,17 @@ function run_test() {
     CHECK_RESULT $?
     podman ps -s | grep SIZE
     CHECK_RESULT $?
-    podman ps --sort created
+    podman run --name postgres2 -e POSTGRES_PASSWORD=secret -d postgres:alpine
+    CHECK_RESULT $?
+    podman ps --sort names | awk '{print $11}' | grep -wA 1 "postgres" | grep -w "postgres2"
     CHECK_RESULT $?
     podman ps | grep "postgres"
     CHECK_RESULT $?
-    podman ps -all | grep "postgres"
+    podman ps --all | awk '{print $11}' | grep -wA 1 "postgres2" | grep -w "postgres"
+    CHECK_RESULT $?
+    podman stop postgres2
+    CHECK_RESULT $?
+    podman rm postgres2
     CHECK_RESULT $?
     podman ps -aq | grep "$(ls /run/runc/ | cut -b 1-12)"
     CHECK_RESULT $?
@@ -52,7 +58,6 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    rm -rf $(ls | grep -vE ".sh")
     LOG_INFO "End to restore the test environment."
 }
 
