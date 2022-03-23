@@ -55,19 +55,16 @@ function run_test() {
     cp ../common/mariadb_remote .
     sed -i s/local_ip/${NODE1_IPV4}/g mariadb_remote
     sed -i s/local_password/${NODE1_PASSWORD}/g mariadb_remote
-    SSH_SCP ./mariadb_remote ${NODE2_USER}@${NODE2_IPV4}:/opt/ ${NODE2_PASSWORD}
-    SSH_CMD "expect /opt/mariadb_remote" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    SSH_SCP ./mariadb_remote ${NODE2_USER}@${NODE2_IPV4}:/opt/mugen ${NODE2_PASSWORD}
+    SSH_CMD "expect /opt/mugen/mariadb_remote" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     CHECK_RESULT $?
-    SSH_SCP ${NODE2_USER}@${NODE2_IPV4}:/root/testlog . ${NODE2_PASSWORD}
-    grep -i "ERROR 1245" testlog
-    CHECK_RESULT $? 1
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -rf /var/lib/mysql mariadb.sh testlog mariadb_remote
-    SSH_CMD "yum remove mariadb-server expect -y;rm -rf /opt/mariadb.sh;rm -rf /root/testlog" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    rm -rf /var/lib/mysql  mariadb_remote
+    SSH_CMD "yum remove mariadb-server expect -y;rm -rf /opt/mugen/mariadb_remote /root/testlog" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }

@@ -5,6 +5,7 @@
     "add disk": [
         2,
         2,
+        2,
         2
     ],
     "machine num": 2,
@@ -102,6 +103,10 @@
             "name": "oe_test_server_mariadb_loadfile"
         },
         {
+            "name": "oe_test_server_mariadb_compatibilty",
+            "machine num":2
+        },
+        {
             "name": "oe_test_server_mariadb_dumpMulDB"
         },
         {
@@ -109,10 +114,6 @@
         },
         {
             "name": "oe_test_server_mariadb_copy"
-        },
-        {
-            "name": "oe_test_server_mariadb_compatibilty",
-            "machine num": 2
         },
         {
             "name": "oe_test_server_mariadb_backuptable"
@@ -266,12 +267,14 @@
             "add disk": [
                 2,
                 2,
+                2,
                 2
             ]
         },
         {
             "name":"oe_test_disk_schedule_specific",
             "add disk": [
+                2,
                 2,
                 2,
                 2
@@ -282,6 +285,7 @@
             "add disk": [
                 2,
                 2,
+                2,
                 2
             ]
         },
@@ -290,11 +294,18 @@
             "add disk": [
                 2,
                 2,
+                2,
                 2
             ]
         },
         {
-            "name":"oe_test_disk_tuned_install"
+            "name":"oe_test_disk_tuned_install",
+            "add disk": [
+                2,
+                2,
+                2,
+                2
+            ]
         },
         {
             "name":"oe_test_date"
@@ -307,6 +318,7 @@
             "add disk": [
                 2,
                 2,
+                2,
                 2
             ]
         },
@@ -315,11 +327,13 @@
             "add disk": [
                 2,
                 2,
+                2,
                 2
             ]
         },
         {
-            "name":"oe_test_ethtool"
+            "name":"oe_test_ethtool",
+            "add network interface": 2
         },
         {
             "name":"oe_test_basic_create_group"

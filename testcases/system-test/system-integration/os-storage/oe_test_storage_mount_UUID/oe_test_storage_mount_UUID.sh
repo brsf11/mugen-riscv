@@ -12,33 +12,46 @@
 # #############################################
 # @Author    :   Classicriver_jia
 # @Contact   :   classicriver_jia@foxmail.com
-# @Date      :   2021.4.27
+# @Date      :   2020-4-10
 # @License   :   Mulan PSL v2
-# @Desc      :   Bashrc configuring umask
-# ############################################
+# @Desc      :   Mount the file system according to UUID using mount
+# #############################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source ../common/storage_disk_lib.sh
 function pre_test() {
-    userdel -rf testuser1 
-    useradd testuser1
-    umask_1=$(su testuser1 -c "umask")
+    LOG_INFO "Start environment preparation."
+    check_free_disk
+    echo "n
+
+p
+
+
++20M
+w" | fdisk /dev/"${local_disk}"
+    mkfs.xfs -f /dev/"${local_disk1}"
+    sleep 2
+    udevadm settle
+    mkdir /tmp/data
+    UUID=$(lsblk --fs /dev/"${local_disk1}" | awk '{if (NR>1){print $3}}')
+    LOG_INFO "Environmental preparation is over."
 }
+
 function run_test() {
     LOG_INFO "Start executing testcase."
-    grep -i -B 1 umask /etc/bashrc
+    mount UUID=$UUID /tmp/data
     CHECK_RESULT $?
-    [ -z ${umask_1} ]
-    CHECK_RESULT $? 0 1
-    echo 'umask 227' >>/home/testuser1/.bashrc
-    source /home/testuser1/.bashrc >/dev/null
-    su testuser1 -c "umask" | grep 227
+    df -h | grep "/tmp/data"
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    userdel -r /home/testuser1
+    umount /tmp/data
+    rm -rf /tmp/data
+    echo "d
+
+w" | fdisk /dev/"${local_disk}"
     LOG_INFO "Finish environment cleanup."
 }
 

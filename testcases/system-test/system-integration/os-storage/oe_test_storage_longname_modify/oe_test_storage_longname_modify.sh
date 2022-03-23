@@ -26,7 +26,7 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    mkfs.ext2 -F "/dev/${local_disk}"1 | grep "Writing superblocks and filesystem accounting information: done"
+    mkfs.ext2 -F "/dev/${local_disk}1" | grep "done"
     CHECK_RESULT $?
     lsblk --fs "/dev/${local_disk}"1 | grep "${local_disk}1"
     CHECK_RESULT $?

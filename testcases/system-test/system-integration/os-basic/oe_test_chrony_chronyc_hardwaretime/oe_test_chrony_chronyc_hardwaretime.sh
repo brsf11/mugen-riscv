@@ -30,7 +30,7 @@ function run_test() {
     systemctl status chronyd | grep running
     CHECK_RESULT $?
 
-    SLEEP_WAIT 5 "chronyc ntpdata | grep 'Local address' | grep ${NODE1_IPV4}"
+    SLEEP_WAIT 5 "chronyc ntpdata | grep 'Local address'"
     CHECK_RESULT $?
 
     chronyc sourcestats | grep "Name/IP Address"

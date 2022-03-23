@@ -12,33 +12,53 @@
 # #############################################
 # @Author    :   Classicriver_jia
 # @Contact   :   classicriver_jia@foxmail.com
-# @Date      :   2021.4.27
+# @Date      :   2020-4-10
 # @License   :   Mulan PSL v2
-# @Desc      :   Bashrc configuring umask
-# ############################################
-
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+# @Desc      :   Mount through fast device and installation point
+# #############################################
+source ../common/storage_disk_lib.sh
 function pre_test() {
-    userdel -rf testuser1 
-    useradd testuser1
-    umask_1=$(su testuser1 -c "umask")
+    LOG_INFO "Start environment preparation."
+    check_free_disk
+    echo "n
+
+p
+
+
++20M
+w" | fdisk /dev/"${local_disk}"
+    mkfs.xfs -f /dev/"${local_disk1}"
+    CHECK_RESULT $?
+    sleep 2
+    udevadm settle
+    mkdir /tmp/data
+    cp /etc/fstab /etc/fstab.bak
+    LOG_INFO "Environmental preparation is over."
 }
+
 function run_test() {
     LOG_INFO "Start executing testcase."
-    grep -i -B 1 umask /etc/bashrc
+    echo /dev/"${local_disk1} /tmp/data xfs defaults 0 0" >>/etc/fstab
     CHECK_RESULT $?
-    [ -z ${umask_1} ]
-    CHECK_RESULT $? 0 1
-    echo 'umask 227' >>/home/testuser1/.bashrc
-    source /home/testuser1/.bashrc >/dev/null
-    su testuser1 -c "umask" | grep 227
+    mount /tmp/data
     CHECK_RESULT $?
+    df -h | grep '/tmp/data'
+    CHECK_RESULT $?
+    umount /tmp/data
+    mount /dev/"${local_disk1}"
+    df -h | grep '/tmp/data'
+    CHECK_RESULT $?
+    umount /tmp/data
     LOG_INFO "End of testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    userdel -r /home/testuser1
+    rm -rf /tmp/data
+    mv /etc/fstab.bak /etc/fstab -f
+    echo "d
+
+w" | fdisk /dev/"${local_disk}"
     LOG_INFO "Finish environment cleanup."
 }
 

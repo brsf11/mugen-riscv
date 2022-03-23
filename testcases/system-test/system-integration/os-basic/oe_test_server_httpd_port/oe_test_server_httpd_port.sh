@@ -34,7 +34,7 @@ function run_test() {
     kill -9 "$pid"
     systemctl start httpd
     CHECK_RESULT $?
-    SLEEP_WAIT 1
+    SLEEP_WAIT 7
     systemctl status httpd | grep -wE 'active|running'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
