@@ -244,6 +244,48 @@
                 2,
                 2
             ]
+        },
+        {
+            "name": "oe_test_mysql_backup_restore_db"
+        },
+        {
+            "name": "oe_test_httpd_transfer_start_stop_restart"
+        },
+        {
+            "name": "oe_test_mariadb_grant_delete_authorization"
+        },
+        {
+            "name": "oe_test_mysql_configuration"
+        },
+        {
+            "name": "oe_test_mysql_create_view_user"
+        },
+        {
+            "name": "oe_test_mysql_create_view_select_delete_db"
+        },
+        {
+            "name": "oe_test_mariadb_install_run_uninstall"
+        },
+        {
+            "name": "oe_test_mariadb_create_view_select_delete_db"
+        },
+        {
+            "name": "oe_test_mysql_grant_delete_authorization"
+        },
+        {
+            "name": "oe_test_mariadb_create_view_user"
+        },
+        {
+            "name": "oe_test_mariadb_backup_restore_db"
+        },
+        {
+            "name": "oe_test_httpd_verify_status"
+        },
+        {
+            "name": "oe_test_mariadb_modify_delete_user"
+        },
+        {
+            "name": "oe_test_dnf_create_local_repository"
         }
     ]
 }
