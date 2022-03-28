@@ -1,0 +1,9 @@
+DEVICE=bond0
+NAME=bond0
+TYPE=Bond
+BONDING_MASTER=yes
+IPADDR=192.0.1.1
+PREFIX=24
+ONBOOT=yes
+BOOTPROTO=none
+BONDING_OPTS="bonding parameters separated by spaces"
