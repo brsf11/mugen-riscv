@@ -14,7 +14,7 @@
 # @Contact   :   liujingjing25812@163.com
 # @Date      :   2021/01/11
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of commands in podman package
+# @Desc      :   The usage of commands in docker package
 # ############################################
 
 source "../common/common_podman.sh"
@@ -28,32 +28,36 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    podman push postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
+    docker stop postgres
+    docker wait --latest | grep [0-9]
     CHECK_RESULT $?
-    podman push --authfile temp-auths/myauths.json postgres:alpine dir:/tmp/myimage
+    docker wait --interval 250 postgres | grep [0-9]
     CHECK_RESULT $?
-    test -f /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    docker start postgres
+    docker kill -l
     CHECK_RESULT $?
-    podman push --format oci postgres:alpine dir:/tmp/myimage
+    docker ps -a | grep "Exited"
     CHECK_RESULT $?
-    grep "oci" /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    docker start postgres
+    docker kill -a
     CHECK_RESULT $?
-    podman push --compress postgres:alpine dir:/tmp/myimage
+    docker ps -a | grep "Exited"
     CHECK_RESULT $?
-    grep "image.rootfs.diff.tar.gzip" /tmp/myimage/manifest.json
+    docker start postgres
+    docker kill -s KILL $(docker ps -q)
     CHECK_RESULT $?
-    podman push -q postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
-    CHECK_RESULT $? 0 1
-    podman push --remove-signatures postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
+    docker ps -a | grep "Exited"
     CHECK_RESULT $?
-    podman push --tls-verify postgres:alpine dir:/tmp/myimage 2>&1 | grep "Copying blob"
+    docker start postgres
+    docker varlink tcp:127.0.0.1:12345
     CHECK_RESULT $?
-    podman push --creds postgres:screte postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
+    docker varlink --timeout 1000 tcp:127.0.0.1:12345
     CHECK_RESULT $?
-    rm -rf /tmp/myimage
-    podman push --cert-dir /tmp postgres:alpine dir:/tmp/myimage
+    docker diff postgres | grep -E "C|A"
     CHECK_RESULT $?
-    test -d /tmp/myimage
+    docker diff --format json postgres | grep -E "changed|added"
+    CHECK_RESULT $?
+    docker version | grep "$(rpm -qa docker | awk -F "-" '{print $2}')"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -61,7 +65,6 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    rm -rf $(ls | grep -vE ".sh") /tmp/myimage
     LOG_INFO "End to restore the test environment."
 }
 

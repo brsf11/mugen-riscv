@@ -14,7 +14,7 @@
 # @Contact   :   liujingjing25812@163.com
 # @Date      :   2021/01/11
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of commands in podman package
+# @Desc      :   The usage of commands in docker package
 # ############################################
 
 source "../common/common_podman.sh"
@@ -28,40 +28,46 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    podman push postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
+    ID=$(docker create --tmpfs tmpfs alpine ls)
+    docker inspect $ID | grep tmpfs
     CHECK_RESULT $?
-    podman push --authfile temp-auths/myauths.json postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --user root alpine ls)
+    grep '"User":"root"' /var/lib/containers/storage/overlay-containers/$ID/userdata/artifacts/create-config
     CHECK_RESULT $?
-    test -f /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    ID=$(docker create --userns host alpine ls)
+    docker inspect $ID | grep '"UsernsMode": "host"'
     CHECK_RESULT $?
-    podman push --format oci postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --uts host alpine ls)
+    docker inspect $ID | grep '"UTSMode": "host"'
     CHECK_RESULT $?
-    grep "oci" /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    docker create --name example alpine ls
+    ID=$(docker create --volume /tmp:/tmp:z alpine ls)
+    docker inspect $ID | grep '"destination": "/tmp"'
     CHECK_RESULT $?
-    podman push --compress postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --volumes-from example alpine ls)
+    grep '"VolumesFrom":\["example"\]' /var/lib/containers/storage/overlay-containers/$ID/userdata/artifacts/create-config
     CHECK_RESULT $?
-    grep "image.rootfs.diff.tar.gzip" /tmp/myimage/manifest.json
+    ID=$(docker create --workdir /tmp alpine ls)
+    docker inspect $ID | grep '"WorkingDir": "/tmp"'
     CHECK_RESULT $?
-    podman push -q postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
-    CHECK_RESULT $? 0 1
-    podman push --remove-signatures postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
+    docker rmi -f $(docker images -q)
     CHECK_RESULT $?
-    podman push --tls-verify postgres:alpine dir:/tmp/myimage 2>&1 | grep "Copying blob"
+    docker images | grep "postgres"
+    CHECK_RESULT $? 1
+    docker pull postgres:alpine
+    docker images | grep "postgres"
     CHECK_RESULT $?
-    podman push --creds postgres:screte postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
+    docker rmi --all
     CHECK_RESULT $?
-    rm -rf /tmp/myimage
-    podman push --cert-dir /tmp postgres:alpine dir:/tmp/myimage
-    CHECK_RESULT $?
-    test -d /tmp/myimage
-    CHECK_RESULT $?
+    docker images | grep "postgres"
+    CHECK_RESULT $? 1
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    rm -rf $(ls | grep -vE ".sh") /tmp/myimage
+    rm -rf $(ls | grep -vE ".sh")
     LOG_INFO "End to restore the test environment."
 }
 

@@ -14,7 +14,7 @@
 # @Contact   :   liujingjing25812@163.com
 # @Date      :   2021/01/11
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of commands in podman package
+# @Desc      :   The usage of commands in docker package
 # ############################################
 
 source "../common/common_podman.sh"
@@ -28,14 +28,14 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    podman port --all | grep "$(podman ps -aq)"
+    docker port --all | grep "$(docker ps -aq)"
     CHECK_RESULT $?
-    podman port --latest
+    docker port --latest
     CHECK_RESULT $?
     expect <<EOF
         set time 30
         log_file testlog
-        spawn podman login docker.io 
+        spawn docker login docker.io 
         expect {
             "Username*" { send "umohnani\r"; exp_continue }
             "Password:" { send "\r" }
@@ -45,12 +45,12 @@ EOF
     grep -i "Login Succeeded" testlog
     CHECK_RESULT $?
     rm -rf testlog
-    podman logout docker.io
+    docker logout docker.io
     CHECK_RESULT $?
     expect <<EOF
         set time 30
         log_file testlog
-        spawn podman login --authfile authdir/myauths.json docker.io
+        spawn docker login --authfile authdir/myauths.json docker.io
         expect {
             "Username*" { send "umohnani\r"; exp_continue }
             "Password:" { send "\r" }
@@ -60,12 +60,12 @@ EOF
     grep -i "Login Succeeded" testlog
     CHECK_RESULT $?
     rm -rf testlog
-    podman logout --authfile authdir/myauths.json docker.io
+    docker logout --authfile authdir/myauths.json docker.io
     CHECK_RESULT $?
     expect <<EOF
         set time 30
         log_file testlog
-        spawn podman login -u umohnani docker.io
+        spawn docker login -u umohnani docker.io
         expect {
             "Password:" { send "\r" }
         }
@@ -77,7 +77,7 @@ EOF
     expect <<EOF
         set time 30
         log_file testlog
-        spawn podman login --tls-verify=false docker.io
+        spawn docker login --tls-verify=false docker.io
         expect {
             "Username*" { send "umohnani\r"; exp_continue }
             "Password:" { send "\r" }
@@ -86,7 +86,7 @@ EOF
 EOF
     grep -i "(umohnani)" testlog
     CHECK_RESULT $?
-    podman logout --all | grep "Remove"
+    docker logout --all | grep "Remove"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -94,7 +94,7 @@ EOF
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    rm -rf $(ls | grep -vE ".sh")
+    rm -rf $(ls | grep -vE ".sh") testlog
     LOG_INFO "End to restore the test environment."
 }
 

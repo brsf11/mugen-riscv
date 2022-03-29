@@ -65,7 +65,6 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    rm -rf $(ls | grep -vE ".sh")
     LOG_INFO "End to restore the test environment."
 }
 

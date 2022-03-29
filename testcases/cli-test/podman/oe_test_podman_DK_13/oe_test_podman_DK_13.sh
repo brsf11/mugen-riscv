@@ -14,7 +14,7 @@
 # @Contact   :   liujingjing25812@163.com
 # @Date      :   2021/01/11
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of commands in podman package
+# @Desc      :   The usage of commands in docker package
 # ############################################
 
 source "../common/common_podman.sh"
@@ -28,32 +28,33 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    podman push postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
+    ID=$(docker create --log-driver=k8s-file alpine ls)
+    docker inspect $ID | grep -i driver
     CHECK_RESULT $?
-    podman push --authfile temp-auths/myauths.json postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --log-opt max-size=10mb alpine ls)
+    docker inspect $ID | grep -i log
     CHECK_RESULT $?
-    test -f /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    ID=$(docker create --memory 5MB alpine ls)
+    docker inspect $ID | grep '"Memory": 5242880'
     CHECK_RESULT $?
-    podman push --format oci postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --memory-reservation 5g alpine ls)
+    docker inspect $ID | grep '"MemoryReservation": 5368709120'
     CHECK_RESULT $?
-    grep "oci" /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    ID=$(docker create --memory 2g --memory-swap 4g alpine ls)
+    docker inspect $ID | grep '"MemorySwap": 4294967296'
     CHECK_RESULT $?
-    podman push --compress postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --memory-swappiness 4 alpine ls)
+    docker inspect $ID | grep '"MemorySwappiness": 4'
     CHECK_RESULT $?
-    grep "image.rootfs.diff.tar.gzip" /tmp/myimage/manifest.json
+    touch /tmp/host || exit 1
+    ID=$(docker create --mount type=bind,source=/tmp/host,destination=/tmp/container alpine ls)
+    docker inspect $ID | grep '"source": "/tmp/host"'
     CHECK_RESULT $?
-    podman push -q postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
-    CHECK_RESULT $? 0 1
-    podman push --remove-signatures postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
+    ID=$(docker create --name example alpine ls)
+    docker inspect $ID | grep '"Name": "example"'
     CHECK_RESULT $?
-    podman push --tls-verify postgres:alpine dir:/tmp/myimage 2>&1 | grep "Copying blob"
-    CHECK_RESULT $?
-    podman push --creds postgres:screte postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
-    CHECK_RESULT $?
-    rm -rf /tmp/myimage
-    podman push --cert-dir /tmp postgres:alpine dir:/tmp/myimage
-    CHECK_RESULT $?
-    test -d /tmp/myimage
+    ID=$(docker create --net bridge alpine ls)
+    docker inspect $ID | grep '"NetworkMode": "bridge"'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -61,7 +62,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    rm -rf $(ls | grep -vE ".sh") /tmp/myimage
+    rm -rf $(ls | grep -vE ".sh") /tmp/host
     LOG_INFO "End to restore the test environment."
 }
 

@@ -14,7 +14,7 @@
 # @Contact   :   liujingjing25812@163.com
 # @Date      :   2021/01/11
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of commands in podman package
+# @Desc      :   The usage of commands in docker package
 # ############################################
 
 source "../common/common_podman.sh"
@@ -28,32 +28,30 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    podman push postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
+    ID=$(docker create --read-only alpine ls)
+    docker inspect $ID | grep '"ReadonlyRootfs": true'
     CHECK_RESULT $?
-    podman push --authfile temp-auths/myauths.json postgres:alpine dir:/tmp/myimage
+    docker create --rm alpine ls
     CHECK_RESULT $?
-    test -f /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    ID=$(docker create --security-opt apparmor=unconfined alpine ls)
+    docker inspect $ID | grep 'apparmor=unconfined'
     CHECK_RESULT $?
-    podman push --format oci postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --shm-size 65536k alpine ls)
+    docker inspect $ID | grep '"ShmSize": 65536000'
     CHECK_RESULT $?
-    grep "oci" /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    ID=$(docker create --stop-signal 20 alpine ls)
+    docker inspect $ID | grep '"StopSignal": 20'
     CHECK_RESULT $?
-    podman push --compress postgres:alpine dir:/tmp/myimage
+    docker create --stop-timeout 10 alpine ls
     CHECK_RESULT $?
-    grep "image.rootfs.diff.tar.gzip" /tmp/myimage/manifest.json
+    ID=$(docker create --storage-opt overlay alpine ls)
+    docker inspect $ID | grep '"Name": "overlay"'
     CHECK_RESULT $?
-    podman push -q postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
-    CHECK_RESULT $? 0 1
-    podman push --remove-signatures postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
+    ID=$(docker create --sysctl net.ipv6.conf.all.disable_ipv6=1 alpine ls)
+    grep '"net.ipv6.conf.all.disable_ipv6":"1"' /var/lib/containers/storage/overlay-containers/$ID/userdata/artifacts/create-config
     CHECK_RESULT $?
-    podman push --tls-verify postgres:alpine dir:/tmp/myimage 2>&1 | grep "Copying blob"
-    CHECK_RESULT $?
-    podman push --creds postgres:screte postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
-    CHECK_RESULT $?
-    rm -rf /tmp/myimage
-    podman push --cert-dir /tmp postgres:alpine dir:/tmp/myimage
-    CHECK_RESULT $?
-    test -d /tmp/myimage
+    ID=$(docker create --systemd alpine ls)
+    grep '"Systemd":false' /var/lib/containers/storage/overlay-containers/$ID/userdata/artifacts/create-config
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -61,7 +59,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    rm -rf $(ls | grep -vE ".sh") /tmp/myimage
+    rm -rf $(ls | grep -vE ".sh")
     LOG_INFO "End to restore the test environment."
 }
 

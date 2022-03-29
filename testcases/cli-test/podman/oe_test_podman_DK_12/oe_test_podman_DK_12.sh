@@ -14,7 +14,7 @@
 # @Contact   :   liujingjing25812@163.com
 # @Date      :   2021/01/11
 # @License   :   Mulan PSL v2
-# @Desc      :   The usage of commands in podman package
+# @Desc      :   The usage of commands in docker package
 # ############################################
 
 source "../common/common_podman.sh"
@@ -28,32 +28,33 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    podman push postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
+    ID=$(docker create -t -i --name myctr alpine ls)
+    docker inspect $ID | grep '"Name": "myctr"'
     CHECK_RESULT $?
-    podman push --authfile temp-auths/myauths.json postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --hostname localhost alpine ls)
+    docker inspect $ID | grep '"Hostname": "localhost"'
     CHECK_RESULT $?
-    test -f /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    ID=$(docker create --image-volume bind alpine ls)
+    docker inspect $ID | grep -i bind
     CHECK_RESULT $?
-    podman push --format oci postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --builtin-volume tmpfs alpine ls)
+    docker inspect $ID | grep -i tmpfs
     CHECK_RESULT $?
-    grep "oci" /tmp/myimage/manifest.json && rm -rf /tmp/myimage/manifest.json
+    ID=$(docker create --ip ${NODE1_IPV4} alpine ls)
+    docker inspect $ID | grep -i ip
     CHECK_RESULT $?
-    podman push --compress postgres:alpine dir:/tmp/myimage
+    ID=$(docker create --ipc host alpine ls)
+    docker inspect $ID | grep '"IpcMode": "host"'
     CHECK_RESULT $?
-    grep "image.rootfs.diff.tar.gzip" /tmp/myimage/manifest.json
+    ID=$(docker create --kernel-memory 1g alpine ls)
+    docker inspect $ID | grep '"KernelMemory": 1073741824'
     CHECK_RESULT $?
-    podman push -q postgres:alpine dir:/tmp/myimage 2>&1 | grep "Storing signatures"
-    CHECK_RESULT $? 0 1
-    podman push --remove-signatures postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
+    ID=$(docker create --label com.example.key=value alpine ls)
+    docker inspect $ID | grep '"com.example.key": "value"'
     CHECK_RESULT $?
-    podman push --tls-verify postgres:alpine dir:/tmp/myimage 2>&1 | grep "Copying blob"
-    CHECK_RESULT $?
-    podman push --creds postgres:screte postgres:alpine dir:/tmp/myimage 2>&1 | grep "Writing manifest"
-    CHECK_RESULT $?
-    rm -rf /tmp/myimage
-    podman push --cert-dir /tmp postgres:alpine dir:/tmp/myimage
-    CHECK_RESULT $?
-    test -d /tmp/myimage
+    echo "com.example.key=value" >./a
+    ID=$(docker create --label-file ./a alpine ls)
+    docker inspect $ID | grep '"com.example.key": "value"'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
@@ -61,7 +62,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    rm -rf $(ls | grep -vE ".sh") /tmp/myimage
+    rm -rf $(ls | grep -vE ".sh")
     LOG_INFO "End to restore the test environment."
 }
 
