@@ -332,6 +332,48 @@
         },
         {
             "name": "oe_test_nginx_check_configuration"
+        },
+        {
+            "name": "oe_test_procmgmt_who"
+        },
+        {
+            "name": "oe_test_procmgmt_ps_top_kill"
+        },
+        {
+            "name": "oe_test_set_XLL_Forwarding"
+        },
+        {
+            "name": "oe_test_procmgmt_run_programs_regularly"
+        },
+        {
+            "name": "oe_test_vsftpd_start_stop"
+        },
+        {
+            "name": "oe_test_server_verify_service_status"
+        },
+        {
+            "name": "oe_test_vsftpd_transfer_deleted",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_server_operate_service"
+        },
+        {
+            "name": "oe_test_procmgmt_create_another_cron_file"
+        },
+        {
+            "name": "oe_test_postgresql_grant_delete_authorization"
+        },
+        {
+            "name": "oe_test_vsftpd_transfer_download",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_vsftpd_transfer_upload",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_vsftpd_conf"
         }
     ]
 }
