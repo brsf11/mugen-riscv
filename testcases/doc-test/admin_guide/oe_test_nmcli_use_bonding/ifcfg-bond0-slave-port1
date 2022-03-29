@@ -1,0 +1,7 @@
+TYPE=Ethernet
+NAME=bond0-slave-port1
+UUID=3b7601d1-b373-4fdf-a996-9d267d1cac40
+DEVICE=test_eth1
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes

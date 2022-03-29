@@ -286,6 +286,52 @@
         },
         {
             "name": "oe_test_dnf_create_local_repository"
+        },
+        {
+            "name": "oe_test_nmcli_config_dynamic_IP"
+        },
+        {
+            "name": "oe_test_postgresql_create_delete_roles"
+        },
+        {
+            "name": "oe_test_nginx_verify_web",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_postgresql_backup_restore_db"
+        },
+        {
+            "name": "oe_test_nmcli_query_link"
+        },
+        {
+            "name": "oe_test_postgresql_create_run_delete"
+        },
+        {
+            "name": "oe_test_nmcli_mod_attribute"
+        },
+        {
+            "name": "oe_test_postgresql_change_roles"
+        },
+        {
+            "name": "oe_test_postgresql_create_delete_db"
+        },
+        {
+            "name": "oe_test_nmcli_config_static_IP"
+        },
+        {
+            "name": "oe_test_nmcli_use_bonding"
+        },
+        {
+            "name": "oe_test_nmcli_config_hostname"
+        },
+        {
+            "name": "oe_test_nginx_manage_status"
+        },
+        {
+            "name": "oe_test_mysql_modify_delete_user"
+        },
+        {
+            "name": "oe_test_nginx_check_configuration"
         }
     ]
 }
