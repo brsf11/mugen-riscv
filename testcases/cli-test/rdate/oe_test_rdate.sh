@@ -33,7 +33,7 @@ function run_test() {
          break
       else
          if [[ $i == 10 ]]; then
-            CHECK_RESULT $? 0 1 0 "Failed option: -p"
+            CHECK_RESULT $? 0 1 "Failed option: -p"
          fi
       fi
     done    
@@ -43,7 +43,7 @@ function run_test() {
          break
       else
          if [[ $i == 10 ]]; then
-            CHECK_RESULT $? 0 1 0 "Failed option: -s"
+            CHECK_RESULT $? 0 1 "Failed option: -s"
          fi
       fi
     done
@@ -53,7 +53,7 @@ function run_test() {
          break
       else
          if [[ $i == 10 ]];then
-            CHECK_RESULT $? 0 1 0  "Failed option: -u"
+            CHECK_RESULT $? 0 1 "Failed option: -u"
          fi
       fi
     done
@@ -63,7 +63,7 @@ function run_test() {
          break
       else
          if [[ $i == 10 ]];then
-            CHECK_RESULT $? 0 1 0  "Failed option: -a"
+            CHECK_RESULT $? 0 1 "Failed option: -a"
          fi
       fi
     done
@@ -73,7 +73,7 @@ function run_test() {
          break
       else
          if [[ $i == 10 ]];then
-            CHECK_RESULT $? 0 1 0 "Failed option: -l"
+            CHECK_RESULT $? 0 1 "Failed option: -l"
          fi
       fi
     done
@@ -83,7 +83,7 @@ function run_test() {
          break
       else
          if [[ $i == 10 ]];then
-            CHECK_RESULT $? 0 1 0 "Failed option: -t"
+            CHECK_RESULT $? 0 1 "Failed option: -t"
          fi
       fi
     done
