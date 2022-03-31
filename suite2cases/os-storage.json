@@ -8,6 +8,7 @@
         2,
         2
     ],
+    "machine num": 2,
     "cases": [
         {
             "name": "oe_test_storage_fileCMD_file"
@@ -82,7 +83,7 @@
                 2,
                 2,
                 2
-            ]          
+            ]
         },
         {
             "name": "oe_test_storage_lvm_raid_synchronization",
@@ -659,6 +660,62 @@
                 2,
                 2
             ]
+        },
+        {
+            "name": "oe_test_storage_nfs_repeat_restart",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_repeat_restartServer",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_configure_nfsv4",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_modify_port",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_showmount",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_mount_root",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_RPC",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_rpcinfo",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_mount_readonly",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_exportfs",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_repeat_mount",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_mount_RW",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_share_mount",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_network_latency",
+            "machine num": 2
         }
     ]
 }
