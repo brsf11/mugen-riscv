@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2022. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -12,29 +12,25 @@
 # #############################################
 # @Author    :   Classicriver_jia
 # @Contact   :   classicriver_jia@foxmail.com
-# @Date      :   2020.4-9
+# @Date      :   2020-4-9
 # @License   :   Mulan PSL v2
-# @Desc      :   Verify the httpd service status
+# @Desc      :   Start stop and restart services
 # #############################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
-	LOG_INFO "Start environment preparation."
-	DNF_INSTALL httpd
-	LOG_INFO "Environmental preparation is over."
+	LOG_INFO "Start executing testcase."
+	DNF_INSTALL ntp
+	LOG_INFO "End of testcase execution."
 }
 
 function run_test() {
 	LOG_INFO "Start executing testcase."
-	systemctl enable httpd
-	systemctl daemon-reload
-	SLEEP_WAIT 3
-	systemctl restart httpd
-	SLEEP_WAIT 8
-	systemctl start httpd
-	SLEEP_WAIT 7
-	systemctl is-active httpd.service | grep active
+	systemctl enable ntpd
+	systemctl start ntpd
 	CHECK_RESULT $?
-	LOG_INFO "End of  executing testcase."
+	systemctl is-active ntpd | grep -w "active"
+	CHECK_RESULT $?
+	LOG_INFO "End of testcase execution."
 }
 
 function post_test() {

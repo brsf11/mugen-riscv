@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2022. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -12,29 +12,39 @@
 # #############################################
 # @Author    :   Classicriver_jia
 # @Contact   :   classicriver_jia@foxmail.com
-# @Date      :   2020.4-9
+# @Date      :   2020-4-9
 # @License   :   Mulan PSL v2
-# @Desc      :   Verify the httpd service status
+# @Desc      :   Verify service status
 # #############################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
-	LOG_INFO "Start environment preparation."
-	DNF_INSTALL httpd
-	LOG_INFO "Environmental preparation is over."
+	LOG_INFO "Start executing testcase."
+	DNF_INSTALL nginx
+	LOG_INFO "End of testcase execution."
 }
 
 function run_test() {
 	LOG_INFO "Start executing testcase."
-	systemctl enable httpd
-	systemctl daemon-reload
-	SLEEP_WAIT 3
-	systemctl restart httpd
-	SLEEP_WAIT 8
-	systemctl start httpd
-	SLEEP_WAIT 7
-	systemctl is-active httpd.service | grep active
+	systemctl enable nginx
+	systemctl is-enabled nginx | grep enable
 	CHECK_RESULT $?
-	LOG_INFO "End of  executing testcase."
+	systemctl start nginx
+	systemctl status nginx | grep running
+	CHECK_RESULT $?
+
+	systemctl restart nginx
+	systemctl status nginx | grep running
+	CHECK_RESULT $?
+	systemctl reload nginx
+	CHECK_RESULT $?
+
+	systemctl stop nginx
+	systemctl status nginx | grep dead
+	CHECK_RESULT $?
+	systemctl disable nginx
+	systemctl status nginx | grep disable
+	CHECK_RESULT $?
+	LOG_INFO "End of testcase execution."
 }
 
 function post_test() {

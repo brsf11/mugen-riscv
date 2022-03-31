@@ -12,40 +12,35 @@
 # #############################################
 # @Author    :   xuchunlin
 # @Contact   :   xcl_job@163.com
-# @Date      :   2020.05-08
+# @Date      :   2020-04-28
 # @License   :   Mulan PSL v2
-# @Desc      :   Nmcli connection query activation test
+# @Desc      :   Run a batch of programs regularly-at
 # ############################################
 source ${OET_PATH}/libs/locallibs/common_lib.sh
-function config_params() {
-    LOG_INFO "Start loading data!"
-    test_eth=$(ls /sys/class/net/ | grep -Ewv 'lo.*|docker.*|bond.*|vlan.*|virbr.*|br.*' | grep -v $(ip route | grep ${NODE1_IPV4} | awk '{print$3}') | sed -n 1p)
-    LOG_INFO "Loading data is complete!"
+function pre_test() {
+    LOG_INFO "Start environment preparation."
+    DNF_INSTALL at
+    LOG_INFO "Environmental preparation is over."
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    nmcli con add type ethernet ifname ${test_eth} | grep successfully
-    CHECK_RESULT $?
-
-    nmcli general status | grep "connected"
-    CHECK_RESULT $?
-    nmcli connection show | grep "ethernet-${test_eth}"
-    CHECK_RESULT $?
-    nmcli connection show --active | grep "ethernet"
-    CHECK_RESULT $?
-    nmcli device status | grep "connected"
-    CHECK_RESULT $?
-    nmcli connection up id ethernet-${test_eth}
-    CHECK_RESULT $?
-    nmcli device disconnect ${test_eth}
-    CHECK_RESULT $?
+    echo -e "ls\n\004\n" | at 4:30pm
+    echo -e "ls\n\004\n" | at 16:35
+    echo -e "ls\n\004\n" | at now+4 hours
+    echo -e "ls\n\004\n" | at now+ 240 minutes
+    echo -e "ls\n\004\n" | at 16:30 12.12.29
+    echo -e "ls\n\004\n" | at 16:30 12/12/29
+    echo -e "ls\n\004\n" | at 16:30 Dec 12
+    ret=$(atq | wc -l)
+    CHECK_RESULT "$ret" 7
     LOG_INFO "End of testcase execution!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    nmcli con delete $(nmcli con show | grep ethernet- | awk -F " " '{print$1}')
+    atrm $(atq | awk -F " " '{print$1}')
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup."
 }
 
