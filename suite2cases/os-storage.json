@@ -716,6 +716,63 @@
         {
             "name": "oe_test_storage_nfs_network_latency",
             "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_restrict_hostname",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_write_full",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_start_server"
+        },
+        {
+            "name": "oe_test_storage_smb_cmd_smbcontrol",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_repair_e2fsck",
+            "add disk": [
+                2,
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_smb_cmd_smbpasswd",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_v3_v4",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_cmd_smbstatus",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_repair_xfs",
+            "add disk": [
+                2,
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_smb_3.0",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_nfs_restrict_ip",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_cmd_rpcclient",
+            "machine num": 2
         }
     ]
 }
