@@ -3,6 +3,21 @@
     "cases": [
         {
             "name": "oe_test_service_etcd"
+        },
+        {
+            "name": "oe_test_etcd_01"
+        },
+        {
+            "name": "oe_test_etcd_02"
+        },
+        {
+            "name": "oe_test_etcd_03"
+        },
+        {
+            "name": "oe_test_etcd_04"
+        },
+        {
+            "name": "oe_test_etcd_05"
         }
     ]
 }

@@ -1,0 +1,17 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/gradle",
+    "cases": [
+        {
+            "name": "oe_test_gradle_01"
+        },
+        {
+            "name": "oe_test_gradle_02"
+        },
+        {
+            "name": "oe_test_gradle_03"
+        },
+        {
+            "name": "oe_test_gradle_04"
+        }
+    ]
+}
