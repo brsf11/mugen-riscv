@@ -46,7 +46,8 @@ EOF1
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     # sed 's/password    required      pam_deny.so minlen=8 enforce_for_root try_first_pass local_users_only retry=3/password    required      pam_deny.so/g' /etc/pam.d/system-auth
-    sed -i 's/password    requisite     pam_pwquality.so minlen=8 minclass=3 enforce_for_root try_first_pass local_users_only retry=3 dcredit=0 ucredit=0 lcredit=0 ocredit=0\npassword    required      pam_pwhistory.so use_authtok remember=5 enforce_for_root/password    requisite     pam_pwquality.so try_first_pass local_users_only/g' /etc/pam.d/system-auth
+    sed -i 's/password    requisite     pam_pwquality.so minlen=8 minclass=3 enforce_for_root try_first_pass local_users_only retry=3 dcredit=0 ucredit=0 lcredit=0 ocredit=0/password    requisite     pam_pwquality.so try_first_pass local_users_only/g' /etc/pam.d/system-auth
+    sed -i '/password    required      pam_pwhistory.so use_authtok remember=5 enforce_for_root/d' /etc/pam.d/system-auth
     rm -rf testlog
     userdel -rf test
     LOG_INFO "End to restore the test environment."
