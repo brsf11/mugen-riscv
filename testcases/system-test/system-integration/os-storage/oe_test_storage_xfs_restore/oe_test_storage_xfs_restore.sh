@@ -10,48 +10,55 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   xuchunlin
-# @Contact   :   xcl_job@163.com
-# @Date      :   2020-04-10
+# @Author    :   Classicriver_jia
+# @Contact   :   classicriver_jia@foxmail.com
+# @Date      :   2020-4-10
 # @License   :   Mulan PSL v2
-# @Desc      :   Check ext2, ext3, ext4 file system with e2fsck
-# ############################################
+# @Desc      :   Restore XFS file system from backup
+# #############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 source ../common/storage_disk_lib.sh
-function config_params() {
-    LOG_INFO "Start loading data!"
-    check_free_disk
-    LOG_INFO "Loading data is complete!"
-}
-
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    echo -e "n\np\n1\n\n+20M\nn\np\n2\n\n+20M\nn\np\n3\n\n+20M\np\nw\n" | fdisk /dev/${local_disk}
-    mkfs.ext2 -F "/dev/${local_disk1}"
-    SLEEP_WAIT 2
-    mkfs.ext3 -F "/dev/${local_disk2}"
-    SLEEP_WAIT 2
-    mkfs.ext4 -F "/dev/${local_disk3}"
-    SLEEP_WAIT 2
+    check_free_disk
+    DNF_INSTALL xfsdump
+    echo "n
+
+p
+
+
++20M
+w" | fdisk "/dev/${local_disk}"
+    mkfs.xfs -f "/dev/${local_disk1}"
     udevadm settle
     LOG_INFO "Environmental preparation is over."
 }
 
 function run_test() {
-    LOG_INFO "Start executing testcase!"
-    e2fsck -n "/dev/${local_disk1}"
+    LOG_INFO "Start executing testcase."
+    mkdir /home/data /home/backup /opt/data
+    mount "/dev/${local_disk1}" /home/data
+    echo "test" >/home/data/test
+    echo "backup_data
+1
+" | xfsdump -l 0 -f /home/backup/data.xfsdump /home/data
     CHECK_RESULT $?
-    e2fsck -n "/dev/${local_disk2}"
+    xfsrestore -f /home/backup/data.xfsdump /opt/data
     CHECK_RESULT $?
-    e2fsck -n "/dev/${local_disk3}"
+    test -f /opt/data/test
     CHECK_RESULT $?
-    LOG_INFO "End of testcase execution!"
+    LOG_INFO "End of testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    echo -e "d\n\nd\n\nd\n\np\nw\n" | fdisk /dev/${local_disk}
+    umount /home/data
+    rm -rf /home/data /home/backup /opt/data
+    echo "d
+
+w" | fdisk "/dev/${local_disk}"
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup."
 }
 

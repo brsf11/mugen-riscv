@@ -33,9 +33,9 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start executing testcase!"
     mkdir /home/data
-    mkfs.ext3 -F /dev/${local_disk}1
+    mkfs.ext3 -F /dev/${local_disk1}
     CHECK_RESULT $?
-    mount /dev/${local_disk}1 /home/data
+    mount /dev/${local_disk1} /home/data
     CHECK_RESULT $?
     df -h | grep "/home/data"
     CHECK_RESULT $?

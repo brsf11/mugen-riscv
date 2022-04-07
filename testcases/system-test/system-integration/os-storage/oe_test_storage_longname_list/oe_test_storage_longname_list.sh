@@ -30,9 +30,10 @@ function run_test() {
     CHECK_RESULT $?
     echo -e "n\np\n1\n\n\nw" | fdisk "/dev/${local_disk}"
     CHECK_RESULT $?
-    mkfs.ext4 -F "/dev/${local_disk}1"
+    mkfs.ext4 -F "/dev/${local_disk1}"
     CHECK_RESULT $?
-    lsblk --output +PARTUUID "/dev/${local_disk}1" | awk 'NR==2{print$NF}' | grep [a-z,-,0-9]*-[a-z,-,0-9]*
+    lsblk --output +PARTUUID "/dev/${local_disk1}"
+    lsblk --fs "/dev/${local_disk1}" | awk '{if (NR>1){print$NF}}' | grep [a-z,-,0-9]*-[a-z,-,0-9]*
     CHECK_RESULT $?
     file /dev/disk/by-id/* | grep "/dev/disk/by-id/dm-name-openeuler"
     CHECK_RESULT $?

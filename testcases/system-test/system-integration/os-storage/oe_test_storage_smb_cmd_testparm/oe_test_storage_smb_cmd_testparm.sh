@@ -10,47 +10,46 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   xuchunlin
-# @Contact   :   xcl_job@163.com
-# @Date      :   2020-04-10
+# @Author    :   Classicriver_jia
+# @Contact   :   classicriver_jia@foxmail.com
+# @Date      :  2020-4-10
 # @License   :   Mulan PSL v2
-# @Desc      :   File system common command test-touch
-# ############################################
+# @Desc      :  Common Samba command line utilities-testparm
+# #############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    current_path=$(
-        cd "$(dirname $0)" || exit 1
-        pwd
-    )
-    cd ~ || exit 1
-    touch test1
+    DNF_INSTALL samba
     LOG_INFO "Environmental preparation is over."
 }
 
 function run_test() {
-    LOG_INFO "Start executing testcase!"
-    test -f test1
-    CHECK_RESULT $?
-    time01=$(ls -l test1 | awk -F ' ' '{print $8}')
-    CHECK_RESULT $?
-    SLEEP_WAIT 60
-    touch -m test1
-    CHECK_RESULT $?
-    time02=$(ls -l test1 | awk -F ' ' '{print $8}')
-    CHECK_RESULT $?
-    [ "$time01" != "$time02" ]
-    CHECK_RESULT $?
-    touch --help | grep "Usage"
-    CHECK_RESULT $?
-    LOG_INFO "End of testcase execution!"
+    LOG_INFO "Start executing testcase."
+    expect -c "
+		spawn testparm
+        log_file testlog
+		expect \"Press enter*\" {send \"\n\\r\"}
+	"
+    grep -iE "error|fail" testlog
+    CHECK_RESULT $? 1
+    cp -a /etc/samba/smb.conf /etc/samba/smb.conf.bak
+    echo "hello world" >>/etc/samba/smb.conf
+    expect -c "
+	    log_file second.log
+        spawn testparm
+        expect \"Press enter*\" {send \"\n\\r\"}
+    "
+    grep 'hello world' second.log
+    CHECK_RESULT $? 1
+    LOG_INFO "End of testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    rm -rf test1
-    cd ${current_path} || exit 1
+    DNF_REMOVE
+    rm -rf /etc/samba/smb.conf second.log testlog
+    mv /etc/samba/smb.conf.bak /etc/samba/smb.conf
     LOG_INFO "Finish environment cleanup."
 }
 

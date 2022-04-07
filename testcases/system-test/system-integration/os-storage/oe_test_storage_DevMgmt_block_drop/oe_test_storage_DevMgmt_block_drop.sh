@@ -17,17 +17,11 @@
 # @Desc      :   Enable online block dropping
 # ############################################
 source ../common/storage_disk_lib.sh
-function config_params() {
-    LOG_INFO "Start loading data!"
-    check_free_disk
-    ADD_DISK="/dev/${local_disk}"
-    LOG_INFO "Loading data is complete!"
-}
-
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    echo -e "n\np\n1\n\n+20M\np\nw\n" | fdisk "${ADD_DISK}"
-    mkfs.xfs -f "${ADD_DISK}"1
+    check_free_disk
+    echo -e "n\np\n1\n\n+20M\np\nw\n" | fdisk "/dev/${local_disk}"
+    mkfs.xfs -f "/dev/${local_disk1}"
     SLEEP_WAIT 3
     udevadm settle
     LOG_INFO "Environmental preparation is over."
@@ -36,13 +30,13 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start executing testcase!"
     mkdir /home/data
-    mount -o discard "${ADD_DISK}"1 /home/data
+    mount -o discard "/dev/${local_disk1}" /home/data
     CHECK_RESULT $?
     df -h | grep "/home/data"
     CHECK_RESULT $?
     umount /home/data
     cp /etc/fstab /etc/fstab.bak
-    echo "${ADD_DISK}1 /home/data xfs discard 0 0" >>/etc/fstab
+    echo "/dev/${local_disk1} /home/data xfs discard 0 0" >>/etc/fstab
     mount -a
     df -h | grep "/home/data"
     CHECK_RESULT $?
@@ -54,7 +48,7 @@ function post_test() {
     umount /home/data
     rm -rf /home/data
     mv /etc/fstab.bak /etc/fstab -f
-    echo -e "d\np\nw\n" | fdisk "${ADD_DISK}"
+    echo -e "d\np\nw\n" | fdisk "/dev/${local_disk}"
     LOG_INFO "Finish environment cleanup."
 }
 

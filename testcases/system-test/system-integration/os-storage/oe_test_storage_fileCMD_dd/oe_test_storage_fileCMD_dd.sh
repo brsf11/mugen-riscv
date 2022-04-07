@@ -21,18 +21,18 @@ function pre_test() {
     LOG_INFO "Start environment preparation."
     check_free_disk
     echo -e "n\np\n1\n\n+1G\np\nw\n" | fdisk /dev/${local_disk}
-    mkfs.ext4 -F /dev/${local_disk}1
-    mount /dev/${local_disk}1 /mnt
+    mkfs.ext4 -F /dev/${local_disk1}
+    mount /dev/${local_disk1} /mnt
     LOG_INFO "Environmental preparation is over."
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    umount /dev/${local_disk}1
+    umount /dev/${local_disk1}
     CHECK_RESULT $?
-    echo "y" | sudo mkfs -t ext3 /dev/${local_disk}1
+    echo "y" | sudo mkfs -t ext3 /dev/${local_disk1}
     CHECK_RESULT $?
-    dd if=/dev/zero of=/dev/${local_disk}1 count=1 bs=512
+    dd if=/dev/zero of=/dev/${local_disk1} count=1 bs=512
     CHECK_RESULT $?
     dd --help | grep -i "Usage"
     CHECK_RESULT $?

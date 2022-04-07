@@ -20,10 +20,10 @@ source ../common/storage_disk_lib.sh
 function pre_test() {
     LOG_INFO "Start environment preparation."
     check_free_disk
-    echo -e "n\np\n1\n\n+20M\np\nw\n" | fdisk /dev/${local_disk}
-    mkfs -t ext4 -F /dev/${local_disk}1
+    echo -e "n\np\n1\n\n+20M\np\nw\n" | fdisk "/dev/${local_disk}"
+    mkfs -t ext4 -F "/dev/${local_disk1}"
     SLEEP_WAIT 3
-    mount /dev/${local_disk}1 /mnt
+    mount "/dev/${local_disk1}" /mnt
     LOG_INFO "Environmental preparation is over."
 }
 
@@ -31,11 +31,11 @@ function run_test() {
     LOG_INFO "Start executing testcase!"
     umount /mnt
     CHECK_RESULT $?
-    mkfs -t ext3 -F /dev/${local_disk}1 | grep "done"
+    mkfs -t ext3 -F "/dev/${local_disk1}" | grep "done"
     CHECK_RESULT $?
-    mkfs -V -t ext3 -F /dev/${local_disk}1 | grep "done"
+    mkfs -V -t ext3 -F "/dev/${local_disk1}" | grep "done"
     CHECK_RESULT $?
-    lsblk -fs /dev/${local_disk}1 | grep ext3
+    lsblk -fs "/dev/${local_disk1}" | grep ${local_disk1}
     CHECK_RESULT $?
     mkfs -h | grep "Usage"
     CHECK_RESULT $?
@@ -44,7 +44,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    echo -e "d\np\nw\n" | fdisk /dev/${local_disk}
+    echo -e "d\np\nw\n" | fdisk "/dev/${local_disk}"
     LOG_INFO "Finish environment cleanup."
 }
 

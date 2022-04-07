@@ -26,22 +26,22 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    mkfs.ext4 -F "/dev/${local_disk}"1
+    mkfs.ext4 -F "/dev/${local_disk1}"
     CHECK_RESULT $?
     SLEEP_WAIT 3
-    blkid | grep "/dev/${local_disk}"1 | grep ext4
+    blkid | grep "/dev/${local_disk1}" | grep ext4
     CHECK_RESULT $?
-    mkfs.ext4 -F -U a7784af8-d965-4ffe-8582-549cef1fa222 "/dev/${local_disk}"1
-    CHECK_RESULT $?
-    SLEEP_WAIT 3
-    udevadm settle
-    blkid | grep "/dev/${local_disk}"1 | awk -F' ' '{print $2}' | grep a7784af8-d965-4ffe-8582-549cef1fa222
-    CHECK_RESULT $?
-    mkfs.ext4 -F -L newlable "/dev/${local_disk}"1
+    mkfs.ext4 -F -U a7784af8-d965-4ffe-8582-549cef1fa222 "/dev/${local_disk1}"
     CHECK_RESULT $?
     SLEEP_WAIT 3
     udevadm settle
-    blkid | grep "/dev/${local_disk}"1 | awk -F' ' '{print $2}' | grep newlable
+    blkid | grep "/dev/${local_disk1}" | awk -F' ' '{print $2}' | grep a7784af8-d965-4ffe-8582-549cef1fa222
+    CHECK_RESULT $?
+    mkfs.ext4 -F -L newlable "/dev/${local_disk1}"
+    CHECK_RESULT $?
+    SLEEP_WAIT 3
+    udevadm settle
+    blkid | grep "/dev/${local_disk1}" | awk -F' ' '{print $2}' | grep newlable
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"
 }

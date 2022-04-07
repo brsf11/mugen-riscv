@@ -20,13 +20,12 @@ source ../common/storage_disk_lib.sh
 function config_params() {
     LOG_INFO "Start loading data!"
     check_free_disk
-    ADD_DISK="/dev/${local_disk}"
     LOG_INFO "Loading data is complete!"
 }
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    fdisk "${ADD_DISK}" <<HGG
+    fdisk "/dev/${local_disk}" <<HGG
 n
 p
 1
@@ -34,7 +33,7 @@ p
 +1G
 w
 HGG
-    mkfs.ext4 -F ${ADD_DISK}1
+    mkfs.ext4 -F /dev/${local_disk1}
     SLEEP_WAIT 3
     LOG_INFO "Environmental preparation is over."
 }
@@ -54,9 +53,9 @@ function run_test() {
     CHECK_RESULT $?
     CHECK_RESULT $(grep -c dm /proc/swaps) 1
 
-    pvcreate -y "${ADD_DISK}1"
+    pvcreate -y "/dev/${local_disk1}"
     SLEEP_WAIT 3
-    vgcreate vg0 "${ADD_DISK}1"
+    vgcreate vg0 "/dev/${local_disk1}"
     SLEEP_WAIT 3
     lvcreate -y -L 600M -n lv_test vg0
     SLEEP_WAIT 3
@@ -118,9 +117,9 @@ function post_test() {
     LOG_INFO "start environment cleanup."
     vgremove -y /dev/vg0
     SLEEP_WAIT 2
-    pvremove -y "${ADD_DISK}"1
+    pvremove -y "/dev/${local_disk1}"
     SLEEP_WAIT 1   
-    fdisk "${ADD_DISK}" <<HEE
+    fdisk "/dev/${local_disk}" <<HEE
 d
 w
 HEE

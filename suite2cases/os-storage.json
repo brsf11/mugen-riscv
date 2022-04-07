@@ -773,6 +773,111 @@
         {
             "name": "oe_test_storage_smb_cmd_rpcclient",
             "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_mount",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_multi-user_mount",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_cmd_testparm",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_vfat_mount_write",
+            "add disk": [
+                2,
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_xfs_Increase_size",
+            "add disk": [
+                2,
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_smb_guest_share",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_POSIX_ACL",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_host_share",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_repeat_restart",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_abnormal_poweroff",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_credential_files",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_xfs_restore",
+            "add disk": [
+                2,
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_smb_network_latency",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_automatically_mount",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_mount_umount",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_xfs_create",
+            "add disk": [
+                2,
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_smb_share_dir",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_write_full",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_smb_cmd_smbclient",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_storage_xfs_backup",
+            "add disk": [
+                2,
+                2,
+                2,
+                2
+            ]
         }
     ]
 }
