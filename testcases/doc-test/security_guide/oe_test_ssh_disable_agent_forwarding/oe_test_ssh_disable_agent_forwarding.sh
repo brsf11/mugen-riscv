@@ -97,7 +97,7 @@ EOF
     expect <<EOF
         set timeout 15
         log_file testlog
-        spawn scp ${NODE2_USER}@${NODE2_IPV4}:/home/test.txt ${NODE3_USER}@${NODE3_IPV4}:/home
+        spawn scp -R ${NODE2_USER}@${NODE2_IPV4}:/home/test.txt ${NODE3_USER}@${NODE3_IPV4}:/home
         expect {
             "*yes/no*" {
                 send "yes\\r"
