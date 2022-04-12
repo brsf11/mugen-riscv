@@ -21,7 +21,7 @@ source ../common/storage_disk_lib.sh
 function config_params() {
     LOG_INFO "Start loading data!"
     check_free_disk
-    mkfs.ext4 -F ${local_disk}
+    mkfs.ext4 -F "/dev/${local_disk}"
     SLEEP_WAIT 3
     LOG_INFO "Loading data is complete!"
 }
@@ -34,18 +34,18 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    mkfs.ext3 -F /dev/${local_disk}1
-    blkid | grep /dev/${local_disk}1 | grep ext3
+    mkfs.ext3 -F /dev/${local_disk1}
+    blkid | grep /dev/${local_disk1} | grep ext3
     CHECK_RESULT $?
-    mkfs.ext3 -F -U a7784af8-d965-4ffe-8582-549cef1fa222 /dev/${local_disk}1
-    CHECK_RESULT $?
-    udevadm settle
-    blkid | grep /dev/${local_disk}1 | awk -F' ' '{print $2}' | grep a7784af8-d965-4ffe-8582-549cef1fa222
-    CHECK_RESULT $?
-    mkfs.ext3 -F -L newlable /dev/${local_disk}1
+    mkfs.ext3 -F -U a7784af8-d965-4ffe-8582-549cef1fa222 /dev/${local_disk1}
     CHECK_RESULT $?
     udevadm settle
-    blkid | grep /dev/${local_disk}1 | awk -F' ' '{print $2}' | grep newlable
+    blkid | grep /dev/${local_disk1} | awk -F' ' '{print $2}' | grep a7784af8-d965-4ffe-8582-549cef1fa222
+    CHECK_RESULT $?
+    mkfs.ext3 -F -L newlable /dev/${local_disk1}
+    CHECK_RESULT $?
+    udevadm settle
+    blkid | grep /dev/${local_disk1} | awk -F' ' '{print $2}' | grep newlable
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"
 }

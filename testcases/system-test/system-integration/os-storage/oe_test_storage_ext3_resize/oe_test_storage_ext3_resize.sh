@@ -31,11 +31,11 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    mkfs.ext3 -F "/dev/${local_disk}"1
+    mkfs.ext3 -F "/dev/${local_disk1}"
     CHECK_RESULT $?
-    e2fsck -y "/dev/${local_disk}"1
+    e2fsck -y "/dev/${local_disk1}"
     CHECK_RESULT $?
-    resize2fs "/dev/${local_disk}"1 20000
+    resize2fs "/dev/${local_disk1}" 30000
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"
 }

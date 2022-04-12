@@ -16,8 +16,6 @@
 # @License   :   Mulan PSL v2
 # @Desc      :   Check XFS file system with XFS? Repair
 # ############################################
-
-source ${OET_PATH}/libs/locallibs/common_lib.sh
 source ../common/storage_disk_lib.sh
 function config_params() {
     LOG_INFO "Start loading data!"
@@ -31,14 +29,14 @@ function pre_test() {
     SLEEP_WAIT 2
     echo -e "n\np\n1\n\n+200M\np\nw\n" | fdisk /dev/${local_disk}
     SLEEP_WAIT 2
-    mkfs.xfs -f "/dev/${local_disk}"1
+    mkfs.xfs -f "/dev/${local_disk1}"
     SLEEP_WAIT 3
     LOG_INFO "Environmental preparation is over."
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    xfs_repair -n "/dev/${local_disk}"1
+    xfs_repair -n "/dev/${local_disk1}"
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"
 }

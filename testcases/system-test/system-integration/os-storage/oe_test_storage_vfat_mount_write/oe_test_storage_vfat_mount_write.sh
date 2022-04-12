@@ -14,44 +14,37 @@
 # @Contact   :   xcl_job@163.com
 # @Date      :   2020-04-10
 # @License   :   Mulan PSL v2
-# @Desc      :   Check ext2, ext3, ext4 file system with e2fsck
+# @Desc      :   vfat test
 # ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 source ../common/storage_disk_lib.sh
-function config_params() {
-    LOG_INFO "Start loading data!"
-    check_free_disk
-    LOG_INFO "Loading data is complete!"
-}
-
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    echo -e "n\np\n1\n\n+20M\nn\np\n2\n\n+20M\nn\np\n3\n\n+20M\np\nw\n" | fdisk /dev/${local_disk}
-    mkfs.ext2 -F "/dev/${local_disk1}"
-    SLEEP_WAIT 2
-    mkfs.ext3 -F "/dev/${local_disk2}"
-    SLEEP_WAIT 2
-    mkfs.ext4 -F "/dev/${local_disk3}"
-    SLEEP_WAIT 2
-    udevadm settle
+    check_free_disk
+    DNF_INSTALL dosfstools
     LOG_INFO "Environmental preparation is over."
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    e2fsck -n "/dev/${local_disk1}"
+    echo -e "n\np\n1\n\n+1200M\np\nw\n" | fdisk /dev/${local_disk}
     CHECK_RESULT $?
-    e2fsck -n "/dev/${local_disk2}"
+    SLEEP_WAIT 2
+    mkfs -t vfat "/dev/${local_disk}"
     CHECK_RESULT $?
-    e2fsck -n "/dev/${local_disk3}"
+    mount "/dev/${local_disk}" /mnt
+    dd if=/dev/zero of=/mnt/test.img bs=1M count=1024 oflag=direct
+    ls /mnt/test.img
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    echo -e "d\n\nd\n\nd\n\np\nw\n" | fdisk /dev/${local_disk}
+    rm -rf /mnt/test.img
+    umount /mnt
+    echo -e "d\np\nw\n" | fdisk /dev/${local_disk}
     LOG_INFO "Finish environment cleanup."
 }
 

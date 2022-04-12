@@ -27,7 +27,7 @@ function pre_test() {
     LOG_INFO "Start environment preparation."
     echo -e "m\np\nn\np\n1\n2048\n+1G\np\nw\n" | fdisk /dev/${local_disk} >log
     CHECK_RESULT $?
-    lsblk | grep ${local_disk}1
+    lsblk | grep ${local_disk1}
     CHECK_RESULT $?
     LOG_INFO "Environmental preparation is over."
 }
@@ -37,8 +37,8 @@ function run_test() {
     echo -e "m\np\nd\nw\n" | fdisk /dev/${local_disk}
     CHECK_RESULT $?
     SLEEP_WAIT 2
-    lsblk | grep ${local_disk}1
-    CHECK_RESULT $? 1
+    lsblk | grep ${local_disk1}
+    CHECK_RESULT $? 
     LOG_INFO "End of testcase execution!"
 }
 

@@ -19,7 +19,7 @@
 source ../common/storage_disk_lib.sh
 function pre_test() {
     LOG_INFO "Start loading data!"
-    check_free_disk 2
+    check_free_disk 
     LOG_INFO "Loading data is complete!"
 }
 

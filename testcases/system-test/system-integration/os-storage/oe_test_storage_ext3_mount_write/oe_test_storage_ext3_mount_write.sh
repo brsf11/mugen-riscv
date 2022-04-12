@@ -20,22 +20,21 @@ source ../common/storage_disk_lib.sh
 function config_params() {
     LOG_INFO "Start loading data!"
     check_free_disk
-    ADD_DISK="/dev/${local_disk}"    
-    mkfs.ext4 -F $ADD_DISK
+    mkfs.ext4 -F /dev/${local_disk}
     LOG_INFO "Loading data is complete!"
 }
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    echo -e "n\np\n1\n\n+1200M\np\nw\n" | fdisk "${ADD_DISK}"
+    echo -e "n\np\n1\n\n+1200M\np\nw\n" | fdisk "/dev/${local_disk}"
     LOG_INFO "Environmental preparation is over."
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    mkfs.ext3 -F "${ADD_DISK}"1
+    mkfs.ext3 -F "/dev/${local_disk1}"
     CHECK_RESULT $?
-    sudo mount "${ADD_DISK}"1 /mnt
+    sudo mount "/dev/${local_disk1}" /mnt
     dd if=/dev/zero of=/mnt/test.img bs=1M count=1024 oflag=direct
     find /mnt/test.img
     CHECK_RESULT $?
@@ -46,7 +45,7 @@ function post_test() {
     LOG_INFO "start environment cleanup."
     umount /mnt
     rm -rf /mnt/test.img
-    echo -e "d\np\nw\n" | fdisk "${ADD_DISK}"
+    echo -e "d\np\nw\n" | fdisk "/dev/${local_disk}"
     LOG_INFO "Finish environment cleanup."
 }
 
