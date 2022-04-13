@@ -1,8 +1,168 @@
 {
-    "path": "$OET_PATH/testcases/cli-test/firewalld",
+    "path": "${OET_PATH}/testcases/cli-test/firewalld",
+    "machine num": 3,
+    "add network interface": 1,
     "cases": [
+        {
+            "name": "oe_test_firewalld_add_newservice",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_add_port",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_addport_udp",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_add_service",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_add_sourceip"
+        },
+        {
+            "name": "oe_test_firewalld_add_sourceport"
+        },
+        {
+            "name": "oe_test_firewalld_allow_zones",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_block_all_icmp"
+        },
+        {
+            "name": "oe_test_firewalld_block_icmp",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_change_interface",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_change_xml",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_directrule_acceptdport",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_dnat",
+            "add network interface": 1,
+            "machine num": 3
+        },
+        {
+            "name": "oe_test_firewalld_dropzone_service",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_forward_nat",
+            "add network interface": 1,
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_getzone"
+        },
+        {
+            "name": "oe_test_firewalld_ip_camouflage"
+        },
+        {
+            "name": "oe_test_firewalld_list"
+        },
+        {
+            "name": "oe_test_firewalld_lockdown"
+        },
+        {
+            "name": "oe_test_firewalld_log_denied"
+        },
+        {
+            "name": "oe_test_firewalld_manage_icmp"
+        },
+        {
+            "name": "oe_test_firewalld_new_zone"
+        },
+        {
+            "name": "oe_test_firewalld_panic_on",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_port_map",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_protocol_tcp",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_richrule_acceptsource",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_richrule_allowippak",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_richrule_blacklist",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_richrule_dropicmppack",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_richrule_dropipv4pak",
+            "machine num": 3
+        },
+        {
+            "name": "oe_test_firewalld_richrule_forwardport",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_runtime_permanent"
+        },
+        {
+            "name": "oe_test_firewalld_set_defaultzone",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_set_ipset",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_firewalld_set_priority"
+        },
+        {
+            "name": "oe_test_firewalld_set_target"
+        },
+        {
+            "name": "oe_test_firewalld_start_check"
+        },
+        {
+            "name": "oe_test_firewalld_start_status"
+        },
+        {
+            "name": "oe_test_firewalld_start_stop"
+        },
+        {
+            "name": "oe_test_firewalld_whitelist_command"
+        },
+        {
+            "name": "oe_test_firewalld_whitelist_contexts"
+        },
+        {
+            "name": "oe_test_firewalld_whitelist_uids"
+        },
+        {
+            "name": "oe_test_firewalld_whitelist_user"
+        },
+        {
+            "name": "oe_test_firewalld_zone_add_service"
+        },
         {
             "name": "oe_test_service_firewalld"
         }
     ]
 }
+
