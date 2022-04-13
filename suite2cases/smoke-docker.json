@@ -1,0 +1,44 @@
+{
+    "path": "$OET_PATH/testcases/smoke-test/smoke-docker",
+    "cases": [
+        {
+            "name": "oe_test_docker_cp_001"
+        },
+        {
+            "name": "oe_test_docker_rename_pause_resume_001"
+        },
+        {
+            "name": "oe_test_docker_search_info_001"
+        },
+        {
+            "name": "oe_test_docker_image_history_001"
+        },
+        {
+            "name": "oe_test_docker_commit_export_import_001"
+        },
+        {
+            "name": "oe_test_docker_create_002"
+        },
+        {
+            "name": "oe_test_docker_attach_001"
+        },
+        {
+            "name": "oe_test_docker_start_stop_delete_001"
+        },
+        {
+            "name": "oe_test_docker_tag_001"
+        },
+        {
+            "name": "oe_test_docker_exec_cmd_001"
+        },
+        {
+            "name": "oe_test_docker_create_003"
+        },
+        {
+            "name": "oe_test_docker_create_001"
+        },
+        {
+            "name": "oe_test_docker_save_load_001"
+        }
+    ]
+}
