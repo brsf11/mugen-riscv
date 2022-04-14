@@ -6,6 +6,12 @@
         },
         {
             "name": "oe_test_service_redis6"
+        },
+        {
+            "name": "oe_test_redis6_02"
+        },
+        {
+            "name": "oe_test_redis6_01"
         }
     ]
 }
