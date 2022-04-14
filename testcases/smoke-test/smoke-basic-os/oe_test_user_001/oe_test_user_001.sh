@@ -53,8 +53,8 @@ EOF
     echo testuser1:Administrator12#$ | chpasswd
     CHECK_RESULT $?
 
-    ls /home/testuser2 || mkdir /home/testuser2
-    useradd testuser2 2>&1 | grep 'home directory already exists'
+    test -d /home/testuser2 || mkdir /home/testuser2
+    useradd testuser2 2>&1 | grep 'already exists'
     CHECK_RESULT $?
     LOG_INFO "Finish test!"
 }

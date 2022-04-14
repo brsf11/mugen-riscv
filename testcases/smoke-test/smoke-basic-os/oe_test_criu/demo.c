@@ -16,7 +16,7 @@ int main()
     fp = fopen("output.txt", "w+");
 
     int i;
-    for (i = 0; i <= 20; i++) {
+    for (i = 0; i <= 300; i++) {
         usleep(100000);
         fprintf(fp, "%d\n", i);
 	fflush(fp);

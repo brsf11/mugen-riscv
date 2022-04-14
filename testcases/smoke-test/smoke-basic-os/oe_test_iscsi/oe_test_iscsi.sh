@@ -60,6 +60,7 @@ function run_test() {
     systemctl restart multipathd
     CHECK_RESULT $?
     multipath -v2
+    SLEEP_WAIT 3
     path1=$(multipath -ll | grep disk1 | awk '{print $1}')
     path2=$(multipath -ll | grep disk2 | awk '{print $1}')
     test -n "$path1" && test -n "$path2" || return 1
