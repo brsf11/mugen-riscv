@@ -22,15 +22,12 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_docker_env() {
     DNF_INSTALL docker
     clean_docker_env
-    test -f ../common/openEuler-docker.${NODE1_FRAME}.tar.xz || {
-        if grep openEuler /etc/os-release; then
-            if grep -i version= /etc/os-release | awk -F '"' '{print$2}' | grep "("; then
-                os_version=$(grep -i version= /etc/os-release | awk -F '"' '{print$2}' | tr '()' '- ' | sed s/[[:space:]]//g)
-            fi
-        else
-            os_version=$(grep -i version= /etc/os-release | awk -F '"' '{print$2}' | awk -F ' ' '{print$1"-"$2}')
-        fi
-    }
+    if grep -i version= /etc/os-release | awk -F '"' '{print$2}' | grep "("; then
+        os_version=$(grep -i version= /etc/os-release | awk -F '"' '{print$2}' | tr '()' '- ' | sed s/[[:space:]]//g)
+    else
+	os_version=$(grep -i version= /etc/os-release | awk -F '"' '{print$2}' | awk -F ' ' '{print$1"-"$2}')
+	echo ${os_version}
+     fi
     wget -P ../common/ https://repo.openeuler.org/openEuler-${os_version}/docker_img/${NODE1_FRAME}/openEuler-docker.${NODE1_FRAME}.tar.xz
     docker load -i ../common/openEuler-docker.${NODE1_FRAME}.tar.xz
     Images_name=$(docker images | grep latest | awk '{print$1}')

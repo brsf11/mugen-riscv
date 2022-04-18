@@ -22,16 +22,11 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_isulad_env() {
     DNF_INSTALL "iSulad tar"
     clean_isulad_env
-    test -f ../common/openEuler-docker.${NODE1_FRAME}.tar.xz || {
-        if grep openEuler /etc/os-release; then
-            if grep -i version= /etc/os-release | awk -F '"' '{print$2}' | grep "("; then
-                os_version=$(grep -i version= /etc/os-release | awk -F '"' '{print$2}' | tr '()' '- ' | sed s/[[:space:]]//g)
-            fi
-
-        else
-            os_version=$(grep -i version= /etc/os-release | awk -F '"' '{print$2}' | awk -F ' ' '{print$1"-"$2}')
-        fi
-    }
+    if grep -i version= /etc/os-release | awk -F '"' '{print$2}' | grep "("; then
+        os_version=$(grep -i version= /etc/os-release | awk -F '"' '{print$2}' | tr '()' '- ' | sed s/[[:space:]]//g)
+    else
+        os_version=$(grep -i version= /etc/os-release | awk -F '"' '{print$2}' | awk -F ' ' '{print$1"-"$2}')
+    fi
     wget -P ../common/ https://repo.openeuler.org/openEuler-${os_version}/docker_img/${NODE1_FRAME}/openEuler-docker.${NODE1_FRAME}.tar.xz
     isula load -i ../common/openEuler-docker.${NODE1_FRAME}.tar.xz
     Images_name=$(isula images | grep latest | awk '{print$1}')
