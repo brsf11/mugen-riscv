@@ -18,7 +18,9 @@
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function pre_test() {
+
+
+function pre_test(){
 	LOG_INFO "Start environmental preparation."
 	DNF_INSTALL "rpmdevtools"
 	pkg_name=$(dnf list | head -n 3 | tail -n 1 | awk '{print $1}')
@@ -27,10 +29,10 @@ function pre_test() {
 	LOG_INFO "End of environmental preparation."
 }
 
-function run_test() {
+function run_test(){
 	LOG_INFO "Start testing"
 
-	rpmdev-rmdevelrpms -h
+	rpmdev-rmdevelrpms -h 
 	CHECK_RESULT $? 0 0 "Failed option: -h"
 	rpmdev-rmdevelrpms -v | grep 'version'
 	CHECK_RESULT $? 0 0 "Failed option: -v"
@@ -68,12 +70,13 @@ function run_test() {
 
 	rpmdev-sum *rpm
 	CHECK_RESULT $? 0 0 "Failed command: rpmdev-sum"
+	
 
 	LOG_INFO "End to run test."
 
 }
 
-function post_test() {
+function post_test(){
 	LOG_INFO "Start to restore the test environment."
 	DNF_REMOVE
 	rm -rf ~/rpmbuild
@@ -82,3 +85,4 @@ function post_test() {
 }
 
 main "$@"
+

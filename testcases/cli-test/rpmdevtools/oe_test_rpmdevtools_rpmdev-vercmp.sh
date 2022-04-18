@@ -16,9 +16,10 @@
 #@Desc      	:   test rpmdev-vercmp rpmdev-wipetree rpmelfsym rpmfile rpminfo rpmls rpmpeek rpmsodiff rpmsoname spectool
 #####################################
 
+
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function pre_test() {
+function pre_test(){
 	LOG_INFO "Start environmental preparation."
 	DNF_INSTALL "rpmdevtools"
 	useradd user_test
@@ -48,7 +49,8 @@ function pre_test() {
 	LOG_INFO "End of environmental preparation."
 }
 
-function run_test() {
+
+function run_test(){
 	LOG_INFO "Start testing"
 
 	rpmdev-vercmp 1 1 2 2 1 2
@@ -66,7 +68,7 @@ function run_test() {
 	rpmdev-vercmp -h
 	CHECK_RESULT $? 0 0 "Failed option: -h"
 
-	test -e /home/user_test/rpmbuild/RPMS/x86_64/*rpm
+	test -e /home/user_test/rpmbuild/RPMS/x86_64/*rpm 
 	CHECK_RESULT $? 0 0 "Failed pre_test"
 	su user_test -c "rpmdev-wipetree"
 	test -e /home/user_test/rpmbuild/RPMS/x86_64/*rpm
@@ -88,7 +90,7 @@ function run_test() {
 
 	rpminfo -h | grep 'Usage'
 	CHECK_RESULT $? 0 0 "Failed option: -h"
-	rpminfo -v *rpm
+	rpminfo -v *rpm 
 	CHECK_RESULT $? 0 0 "Failed option: -v"
 	rpminfo -q *rpm
 	CHECK_RESULT $? 0 0 "Failed option: -q"
@@ -97,7 +99,7 @@ function run_test() {
 	rpminfo -i -o record
 	test -e record
 	CHECK_RESULT $? 0 0 'Failed option: -i -o'
-	rpminfo -e *rpm
+	rpminfo -e *rpm 
 	CHECK_RESULT $? 0 0 "Failed option: -e"
 	rpminfo -l *rpm
 	CHECK_RESULT $? 0 0 "Failed option: -l"
@@ -124,7 +126,7 @@ function run_test() {
 	CHECK_RESULT $? 0 0 "Failed option: -h"
 	rpmpeek *rpm ls -l | grep "usr"
 	CHECK_RESULT $? 0 0 "Failed command: rpmpeek"
-	rpmpeek -n attr*rpm ls -l
+	rpmpeek -n attr*rpm ls -l 
 	CHECK_RESULT $? 0 0 "Failed option: -n"
 
 	rpmsodiff -h | grep "Usage:"
@@ -159,20 +161,20 @@ function run_test() {
 	CHECK_RESULT $? 0 0 "Failed option: -d"
 	spectool -g -C ./test_dir rpmdevtools.spec && test -e ./test_dir/*tar.xz
 	CHECK_RESULT $? 0 0 "Failed option: -C"
-	spectool -g -R rpmdevtools.spec && test -e ~/rpmbuild/SOURCES/*tar.xz
+	spectool -g -R rpmdevtools.spec && test -e ~/rpmbuild/SOURCES/*tar.xz 
 	CHECK_RESULT $? 0 0 "Failed option: -R"
 	test -e *tar.xz && spectool -g -f rpmdevtools.spec
 	CHECK_RESULT $? 0 0 "Failed option: -f"
 	rm *tar.gz
 	spectool -g -n rpmdevtools.spec
 	CHECK_RESULT $? 0 0 "Failed option: -n"
-	spectool -D rpmdevtools.spec
+	spectool -D rpmdevtools.spec 
 	CHECK_RESULT $? 0 0 "Failed option: -D"
 
 	LOG_INFO "End to run test."
 }
 
-function post_test() {
+function post_test(){
 	LOG_INFO "Start to restore the test environment."
 	DNF_REMOVE
 	userdel -r user_test
@@ -187,4 +189,6 @@ function post_test() {
 	LOG_INFO "End to restore the test environment."
 }
 
+
 main "$@"
+

@@ -18,38 +18,38 @@
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function pre_test() {
-	LOG_INFO "Start environment preparation."
-	DNF_INSTALL "rpmdevtools"
-	pkg_name=$(dnf list | head -n 3 | tail -n 1 | awk '{print $1}')
-	yumdownloader ${pkg_name}
-	mkdir -p /ALT/Sisyphus/files/i586/RPMS
-	mkdir -p /ALT/Sisyphus/files/noarch/RPMS
-	mkdir -p /ALT/Sisyphus/files/SRPMS
-	wget https://repo.openeuler.org/openEuler-21.09/source/Packages/nodejsporter-1.0-2.oe1.src.rpm
-	mv *src.rpm /ALT/Sisyphus/files/SRPMS/
-	cp *rpm /ALT/Sisyphus/files/i586/RPMS/
-	cp *rpm /ALT/Sisyphus/files/noarch/RPMS
+function pre_test(){
+    LOG_INFO "Start environment preparation."
+    DNF_INSTALL "rpmdevtools"
+    pkg_name=$(dnf list | head -n 3 | tail -n 1 | awk '{print $1}')
+    yumdownloader ${pkg_name}
+    mkdir -p /ALT/Sisyphus/files/i586/RPMS
+    mkdir -p /ALT/Sisyphus/files/noarch/RPMS
+    mkdir -p /ALT/Sisyphus/files/SRPMS
+    wget https://repo.openeuler.org/openEuler-21.09/source/Packages/nodejsporter-1.0-2.oe1.src.rpm
+    mv *src.rpm /ALT/Sisyphus/files/SRPMS/
+    cp *rpm /ALT/Sisyphus/files/i586/RPMS/
+    cp *rpm /ALT/Sisyphus/files/noarch/RPMS
 
-	wget https://gitee.com/src-openeuler/rootsh/raw/master/rootsh.spec
-	echo "test -f." >file1
+    wget https://gitee.com/src-openeuler/rootsh/raw/master/rootsh.spec
+    echo "test -f." > file1
 
-	pkg_name1=$(dnf list | head -n 4 | tail -n 1 | awk '{print $1}')
-	mkdir ./tmp_dir
-	yumdownloader --destdir=./tmp_dir ${pkg_name1}
+    pkg_name1=$(dnf list | head -n 4 | tail -n 1 | awk '{print $1}')
+    mkdir ./tmp_dir
+    yumdownloader --destdir=./tmp_dir ${pkg_name1}
 
-	LOG_INFO "End of environmental preparation."
+    LOG_INFO "End of environmental preparation."
 }
 
-function run_test() {
+function run_test(){
 	LOG_INFO "Start testing."
 
-	rpmargs -h
+	rpmargs -h 
 	CHECK_RESULT $? 0 0 "Failed option: -h"
 	rpmargs -c file -a | grep "RPM"
 	CHECK_RESULT $? 0 0 "Failed option: -a"
 	rpmargs -c file -p /ALT/Sisyphus/files/noarch/RPMS/*rpm
-	CHECK_RESULT $? 0 0 "Failed option: -p"
+	CHECK_RESULT $? 0 0 "Failed option: -p"	
 
 	rpmdev-bumpspec -h
 	CHECK_RESULT $? 0 0 "Failed option: -h"
@@ -59,7 +59,7 @@ function run_test() {
 	rpmdev-bumpspec -V rootsh.spec | grep '[-+]'
 	CHECK_RESULT $? 0 0 "Failed option: -V"
 	rpmdev-bumpspec -v
-	CHECK_RESULT $? 0 0 "Failed option: -v"
+	CHECK_RESULT $? 0 0 "Failed option: -v"	
 	rpmdev-bumpspec -u test_name\ xxxxxxxxxx@qq.com rootsh.spec
 	cat rootsh.spec | grep 'test_name'
 	CHECK_RESULT $? 0 0 "Failed option: -u"
@@ -97,10 +97,10 @@ function run_test() {
 	rpmdev-extract -q ./*rpm
 	CHECK_RESULT $? 0 0 "Failed option: -q"
 	rpmdev-extract -f ./*rpm
-	CHECK_RESULT $? 0 0 "Failed option: -f"
+	CHECK_RESULT $? 0 0 "Failed option: -f"	
 	rpmdev-extract -C ./tmp_dir ./*rpm
 	CHECK_RESULT $? 0 0 "Failed option: -C"
-	rpmdev-extract -h
+	rpmdev-extract -h 
 	CHECK_RESULT $? 0 0 "Failed option: -h"
 	rpmdev-extract -v
 	CHECK_RESULT $? 0 0 "Failed option: -v"
@@ -108,12 +108,12 @@ function run_test() {
 	rpmdev-md5 *rpm
 	CHECK_RESULT $? 0 0 "Failed command: rpmdev-md5"
 
-	rpmdev-newinit -v
+	rpmdev-newinit -v 
 	CHECK_RESULT $? 0 0 "Failed options: -v"
 	rpmdev-newinit -h
 	CHECK_RESULT $? 0 0 "Failed options: -h"
 	rpmdev-newinit -o test.init
-	test -f ./test.init
+	test -f ./test.init 
 	CHECK_RESULT $? 0 0 "Failted options: -o"
 
 	rpmdev-newspec -o testo.spec
@@ -129,7 +129,7 @@ function run_test() {
 	CHECK_RESULT $? 0 0 "Failed option: -r"
 	rpmdev-newspec -h
 	CHECK_RESULT $? 0 0 "Failed option: -h"
-	rpmdev-newspec -v
+	rpmdev-newspec -v 
 	CHECK_RESULT $? 0 0 "Failed option: -v"
 
 	rpmdev-packager
@@ -138,7 +138,7 @@ function run_test() {
 	LOG_INFO "End to run test."
 }
 
-function post_test() {
+function post_test(){
 	LOG_INFO "Start to restore the test environment."
 	DNF_REMOVE
 	rm rootsh.spec
@@ -154,3 +154,7 @@ function post_test() {
 }
 
 main "$@"
+
+
+
+
