@@ -51,7 +51,7 @@ function run_test(){
     CHECK_RESULT $? 0 0 "Failed option: -l"
     spectool -g rpmdevtools.spec && test -e *tar.xz
     CHECK_RESULT $? 0 0 "Failed option: -g"
-    spectool -h | grep "spectool"
+    spectool -h | grep -e "spectool" -e "Options:"
     CHECK_RESULT $? 0 0 "Failed option: -h"
     spectool -A rpmdevtools.spec | grep "Source"
     CHECK_RESULT $? 0 0 "Failed option: -A"

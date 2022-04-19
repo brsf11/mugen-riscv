@@ -31,14 +31,14 @@ function pre_test(){
 function run_test(){
     LOG_INFO "Start to run test."
 
-    rpmdev-bumpspec -h | grep 'rpmdev-bumpspec'
+    rpmdev-bumpspec -h | grep -e 'rpmdev-bumpspec' -e 'Options:'
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmdev-bumpspec -c "test1" test.spec
     cat test.spec | grep 'test1'
     CHECK_RESULT $? 0 0 "Failed option: -c"
     rpmdev-bumpspec -V test.spec | grep 'test.spec'
     CHECK_RESULT $? 0 0 "Failed option: -V"
-    rpmdev-bumpspec -v | grep 'rpmdev-bumpspec'
+    rpmdev-bumpspec -v | grep 'rpmdev-bumpspec version'
     CHECK_RESULT $? 0 0 "Failed option: -v"	
     rpmdev-bumpspec -u test_name\ xxxxxxxxxx@qq.com test.spec
     cat test.spec | grep 'test_name'
@@ -53,9 +53,9 @@ function run_test(){
     rpmdev-bumpspec -n new_test test.spec
     CHECK_RESULT $? 0 0 "Failed option: -n"
 
-    rpmdev-newinit -v | grep 'rpmdev-newinit' 
+    rpmdev-newinit -v | grep 'rpmdev-newinit version' 
     CHECK_RESULT $? 0 0 "Failed options: -v"
-    rpmdev-newinit -h | grep 'rpmdev-newinit'
+    rpmdev-newinit -h | grep -e 'rpmdev-newinit' -e 'Options:'
     CHECK_RESULT $? 0 0 "Failed options: -h"
     rpmdev-newinit -o test.init
     test -f ./test.init 
@@ -72,9 +72,9 @@ function run_test(){
     CHECK_RESULT $? 0 0 "Failed option: -m"
     rpmdev-newspec -r 4.3 -o testr.spec | grep '4.3'
     CHECK_RESULT $? 0 0 "Failed option: -r"
-    rpmdev-newspec -h | grep 'rpmdev-newspec'
+    rpmdev-newspec -h | grep -e 'rpmdev-newspec' -e 'Options:'
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    rpmdev-newspec -v | grep 'rpmdev-newspec'
+    rpmdev-newspec -v | grep 'rpmdev-newspec version'
     CHECK_RESULT $? 0 0 "Failed option: -v"
 
     LOG_INFO "End to run test."

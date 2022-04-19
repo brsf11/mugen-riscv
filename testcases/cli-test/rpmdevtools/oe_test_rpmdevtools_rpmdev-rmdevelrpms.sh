@@ -30,9 +30,9 @@ function pre_test(){
 function run_test(){
     LOG_INFO "Start to run test."
 
-    rpmdev-rmdevelrpms -h | grep 'rpmdev-rmdevelrpms' 
+    rpmdev-rmdevelrpms -h | grep -e 'rpmdev-rmdevelrpms' -e 'Options:'
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    rpmdev-rmdevelrpms -v | grep 'version'
+    rpmdev-rmdevelrpms -v | grep 'rpmdev-rmdevelrpms version'
     CHECK_RESULT $? 0 0 "Failed option: -v"
     rpmdev-rmdevelrpms -l | grep -E 'devel|debuginfo|sdk|static|perl'
     CHECK_RESULT $? 0 0 "Fail option: -l"
@@ -60,10 +60,8 @@ function run_test(){
     rpmdev-sha512 *rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sha512"
 
-    var1="$(ls *rpm | rpmdev-sort | wc -l)"
-    [ "$var1" == 1 ]
-    CHECK_RESULT $? 0 0 "Failed command: rpmdev-sort"
-    rpmdev-sort -h | grep 'rpmdev-sort'
+    CHECK_RESULT $(ls *rpm | rpmdev-sort | wc -l) 1 0 "Failed command: rpmdev-sort"
+    rpmdev-sort -h | grep -e 'rpmdev-sort' -e 'Supported formats:'
     CHECK_RESULT $? 0 0 "Failed option: rpmdev-sort -h"
 
     rpmdev-sum *rpm | grep "${pkg_name}"

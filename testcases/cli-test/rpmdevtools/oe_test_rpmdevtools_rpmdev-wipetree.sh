@@ -56,19 +56,19 @@ function run_test(){
 
     rpmelfsym -p *rpm | grep '/usr' 
     CHECK_RESULT $? 0 0 "Failed option: -p"
-    rpmelfsym -h | grep 'rpmelfsym'
+    rpmelfsym -h | grep -e 'rpmelfsym' -e 'Options:'
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmelfsym -a | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed option: -a"
 
     rpmfile -p *rpm | grep '/usr'
     CHECK_RESULT $? 0 0 "Failed option: -p"
-    rpmfile -h | grep 'rpmfile'
+    rpmfile -h | grep -e 'rpmfile' -e 'Options:'
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmfile -a | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed option: -a"
 
-    rpminfo -h | grep 'rpminfo'
+    rpminfo -h | grep -e 'rpminfo' -e 'Usage'
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpminfo -v *rpm | grep "${pkg_name}" 
     CHECK_RESULT $? 0 0 "Failed option: -v"
@@ -103,19 +103,19 @@ function run_test(){
     rpmls -l *rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed command: rpmls"
 
-    rpmpeek -h | grep "rpmpeek"
+    rpmpeek -h | grep -e "rpmpeek" -e "Options:"
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmpeek *rpm ls -l | grep "usr"
     CHECK_RESULT $? 0 0 "Failed command: rpmpeek"
     rpmpeek -n *rpm ls -l 
     CHECK_RESULT $? 0 0 "Failed option: -n"
 
-    rpmsodiff -h | grep "rpmsodiff"	
+    rpmsodiff -h | grep -e "rpmsodiff" -e "Usage"
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmsodiff *rpm *rpm
     CHECK_RESULT $? 0 0 "Failed command: rpmsodiff"
 
-    rpmsoname -h | grep "rpmsoname"
+    rpmsoname -h | grep -e "rpmsoname" -e "Options"
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmsoname -p *rpm | grep "/usr/lib64"
     CHECK_RESULT $? 0 0 "Failed option: -p"

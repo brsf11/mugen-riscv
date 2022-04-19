@@ -41,7 +41,7 @@ function pre_test(){
 function run_test(){
     LOG_INFO "Start to run test."
 
-    rpmargs -h | grep 'rpmargs'
+    rpmargs -h | grep -e 'rpmargs' -e 'Usage:'
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmargs -c file -a | grep "RPM"
     CHECK_RESULT $? 0 0 "Failed option: -a"
@@ -54,9 +54,9 @@ function run_test(){
     rpmdev-cksum *rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-cksum"
 
-    rpmdev-diff -v | grep 'rpmdev-diff'
+    rpmdev-diff -v | grep 'rpmdev-diff version'
     CHECK_RESULT $? 0 0 "Failed option: -v"
-    rpmdev-diff -h | grep 'rpmdev-diff'
+    rpmdev-diff -h | grep -e 'rpmdev-diff' -e 'Options:'
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmdev-diff -c ./*rpm ./tmp_dir/*rpm
     CHECK_RESULT $? 0 0 "Failed option: -c"
@@ -75,9 +75,9 @@ function run_test(){
     CHECK_RESULT $? 0 0 "Failed option: -f"	
     rpmdev-extract -C ./tmp_dir ./*rpm
     CHECK_RESULT $? 0 0 "Failed option: -C"
-    rpmdev-extract -h | grep 'rpmdev-extract'
+    rpmdev-extract -h | grep -e 'rpmdev-extract' -e 'Usage:'
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    rpmdev-extract -v | grep 'rpmdev-extract'
+    rpmdev-extract -v | grep 'rpmdev-extract version'
     CHECK_RESULT $? 0 0 "Failed option: -v"
 
     rpmdev-md5 *rpm | grep "${pkg_name}"
