@@ -28,7 +28,7 @@ function pre_test(){
 }
 
 function run_test(){
-    LOG_INFO "Start testing"
+    LOG_INFO "Start to run test."
 
     rpmdev-rmdevelrpms -h | grep 'rpmdev-rmdevelrpms' 
     CHECK_RESULT $? 0 0 "Failed option: -h"

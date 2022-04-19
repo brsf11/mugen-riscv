@@ -30,7 +30,7 @@ function pre_test(){
 }
 
 function run_test(){
-    LOG_INFO "Start testing"
+    LOG_INFO "Start to run test."
 
     rpmdev-vercmp 1 1 2 2 1 2
     CHECK_RESULT $? 12 0 "Failed option: n:n-n < n:n-n"

@@ -46,7 +46,7 @@ function pre_test(){
 
 
 function run_test(){
-    LOG_INFO "Start testing"
+    LOG_INFO "Start to run test."
 
     test -e /home/user_test/rpmbuild/RPMS/${NODE1_FRAME}/*rpm 
     CHECK_RESULT $? 0 0 "Failed pre_test"
