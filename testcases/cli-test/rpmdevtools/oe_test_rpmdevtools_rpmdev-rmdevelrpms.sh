@@ -23,7 +23,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test(){
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL "rpmdevtools"
-    pkg_name=$(dnf list | head -n 3 | tail -n 1 | awk '{print $1}')
+    pkg_name=$(dnf list | head -n 3 | tail -n 1 | awk '{print $1}' | awk 'BEGIN {FS="."} {print $1}')
     yumdownloader ${pkg_name}
     test -d ~/rpmbuild && rm -rf ~/rpmbuild && LOG_INFO "Successfully deleted this dir."
     LOG_INFO "End of environmental preparation."
@@ -47,19 +47,19 @@ function run_test(){
     test -d ~/rpmbuild
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-setuptree"
 
-    rpmdev-sha1 *rpm
+    rpmdev-sha1 *rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sha1"
 
-    rpmdev-sha224 *rpm
+    rpmdev-sha224 *rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sha224"
 
-    rpmdev-sha256 *rpm
+    rpmdev-sha256 *rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sha256"
 
-    rpmdev-sha384 *rpm
+    rpmdev-sha384 *rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sha384"
 
-    rpmdev-sha512 *rpm
+    rpmdev-sha512 *rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sha512"
 
     var1="$(ls *rpm | rpmdev-sort | wc -l)"
@@ -68,7 +68,7 @@ function run_test(){
     rpmdev-sort -h | grep 'rpmdev-sort'
     CHECK_RESULT $? 0 0 "Failed option: rpmdev-sort -h"
 
-    rpmdev-sum *rpm
+    rpmdev-sum *rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sum"
 	
 

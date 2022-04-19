@@ -24,7 +24,7 @@ function pre_test(){
     DNF_INSTALL "rpmdevtools"
     useradd user_test
     su user_test -c "mkdir -p /home/user_test/rpmbuild/RPMS/${NODE1_FRAME}"
-    pkg_name=$(dnf list | head -n 3 | tail -n 1 | awk '{print$1}')
+    pkg_name=$(dnf list | head -n 3 | tail -n 1 | awk '{print $1}' | awk 'BEGIN {FS="."} {print $1}' )
     yumdownloader ${pkg_name}
     chown user_test *rpm
     chmod 755 *rpm
@@ -54,25 +54,25 @@ function run_test(){
     test -e /home/user_test/rpmbuild/RPMS/${NODE1_FRAME}/*rpm
     CHECK_RESULT $? 1 0 "Failed command: rpmdev-wipetree"
 
-    rpmelfsym -p *rpm
+    rpmelfsym -p *rpm | grep '/usr' 
     CHECK_RESULT $? 0 0 "Failed option: -p"
     rpmelfsym -h | grep 'rpmelfsym'
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    rpmelfsym -a
+    rpmelfsym -a | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed option: -a"
 
-    rpmfile -p *rpm
+    rpmfile -p *rpm | grep '/usr'
     CHECK_RESULT $? 0 0 "Failed option: -p"
     rpmfile -h | grep 'rpmfile'
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    rpmfile -a
+    rpmfile -a | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed option: -a"
 
     rpminfo -h | grep 'rpminfo'
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    rpminfo -v *rpm | grep '/usr' 
+    rpminfo -v *rpm | grep "${pkg_name}" 
     CHECK_RESULT $? 0 0 "Failed option: -v"
-    rpminfo -q *rpm
+    rpminfo -q *rpm 
     CHECK_RESULT $? 0 0 "Failed option: -q"
     rpminfo -qq *rpm
     CHECK_RESULT $? 0 0 "Failed option: -qq"
@@ -100,7 +100,8 @@ function run_test(){
     CHECK_RESULT $? 0 0 "Failed option: -t"
     rpminfo -T ./tmp_dir *rpm
 
-    rpmls -l *rpm
+    rpmls -l *rpm | grep "${pkg_name}"
+    CHECK_RESULT $? 0 0 "Failed command: rpmls"
 
     rpmpeek -h | grep "rpmpeek"
     CHECK_RESULT $? 0 0 "Failed option: -h"

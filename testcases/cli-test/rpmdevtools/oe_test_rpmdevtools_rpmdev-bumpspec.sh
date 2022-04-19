@@ -38,7 +38,7 @@ function run_test(){
     CHECK_RESULT $? 0 0 "Failed option: -c"
     rpmdev-bumpspec -V test.spec | grep 'test.spec'
     CHECK_RESULT $? 0 0 "Failed option: -V"
-    rpmdev-bumpspec -v
+    rpmdev-bumpspec -v | grep 'rpmdev-bumpspec'
     CHECK_RESULT $? 0 0 "Failed option: -v"	
     rpmdev-bumpspec -u test_name\ xxxxxxxxxx@qq.com test.spec
     cat test.spec | grep 'test_name'

@@ -21,7 +21,8 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test(){
     LOG_INFO "Start environment preparation."
     DNF_INSTALL "rpmdevtools"
-    pkg_name=$(dnf list | head -n 3 | tail -n 1 | awk '{print $1}')
+    pkg_name=$(dnf list | head -n 3 | tail -n 1 | awk '{print $1}' | awk 'BEGIN {FS="."} {print $1}')
+    pkg_arch=$(dnf list | head -n 3 | tail -n 1 | awk '{print $1}' | awk 'BEGIN {FS="."} {print $2}')
     yumdownloader ${pkg_name}
     mkdir -p /ALT/Sisyphus/files/i586/RPMS
     mkdir -p /ALT/Sisyphus/files/noarch/RPMS
@@ -50,7 +51,7 @@ function run_test(){
     rpmdev-checksig *rpm | grep 'SHA1'
     CHECK_RESULT $? 0 0 "Failed command:rpmdev-checksig"
 
-    rpmdev-cksum *rpm
+    rpmdev-cksum *rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-cksum"
 
     rpmdev-diff -v | grep 'rpmdev-diff'
@@ -79,7 +80,7 @@ function run_test(){
     rpmdev-extract -v | grep 'rpmdev-extract'
     CHECK_RESULT $? 0 0 "Failed option: -v"
 
-    rpmdev-md5 *rpm
+    rpmdev-md5 *rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-md5"
 
     LOG_INFO "End to run test."
@@ -88,7 +89,7 @@ function run_test(){
 function post_test(){
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf /ALT ./tmp_dir *x86_64 *rpm
+    rm -rf /ALT ./tmp_dir *${pkg_arch} *rpm
     LOG_INFO "End to restore the test environment."
 }
 
