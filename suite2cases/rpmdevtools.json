@@ -9,6 +9,12 @@
 	    },
 	    {
 		"name:" "oe_test_rpmdevtools_rpmdev-vercmp"
+	    },
+	    {
+		"name:" "oe_test_rpmdevtools_rpmdev-wipetree"
+	    },
+	    {
+		"name:" "oe_test_rpmdevtools_rpmdev-bumpspec"   
 	    }
 	]
 }

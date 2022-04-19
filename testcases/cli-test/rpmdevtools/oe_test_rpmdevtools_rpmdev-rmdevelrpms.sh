@@ -32,7 +32,7 @@ function pre_test(){
 function run_test(){
     LOG_INFO "Start testing"
 
-    rpmdev-rmdevelrpms -h 
+    rpmdev-rmdevelrpms -h | grep 'rpmdev-rmdevelrpms' 
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmdev-rmdevelrpms -v | grep 'version'
     CHECK_RESULT $? 0 0 "Failed option: -v"
@@ -65,7 +65,7 @@ function run_test(){
     var1="$(ls *rpm | rpmdev-sort | wc -l)"
     [ "$var1" == 1 ]
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sort"
-    rpmdev-sort -h
+    rpmdev-sort -h | grep 'rpmdev-sort'
     CHECK_RESULT $? 0 0 "Failed option: rpmdev-sort -h"
 
     rpmdev-sum *rpm
@@ -79,8 +79,7 @@ function run_test(){
 function post_test(){
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ~/rpmbuild
-    rm *rpm
+    rm -rf ~/rpmbuild *rpm
     LOG_INFO "End to restore the test environment."
 }
 
