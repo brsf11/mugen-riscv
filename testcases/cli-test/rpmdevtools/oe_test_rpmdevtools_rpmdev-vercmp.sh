@@ -16,7 +16,6 @@
 #@Desc      	:   test rpmdev-vercmp spectool
 #####################################
 
-
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test(){
@@ -29,7 +28,6 @@ function pre_test(){
 
     LOG_INFO "End of environmental preparation."
 }
-
 
 function run_test(){
     LOG_INFO "Start testing"
@@ -88,7 +86,6 @@ function post_test(){
     rm -rf ./test_dir ~/rpmbuild ./rpmdevtools*
     LOG_INFO "End to restore the test environment."
 }
-
 
 main "$@"
 
