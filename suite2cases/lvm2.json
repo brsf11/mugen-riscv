@@ -27,6 +27,18 @@
         },
         {
             "name": "oe_test_socket_lvm2-lvmpolld"
+        },
+        {
+            "name": "oe_test_lvm2_pvremove_001"
+        },
+        {
+            "name": "oe_test_lvm2_pvcreate_002"
+        },
+        {
+            "name": "oe_test_lvm2_pvresize_001"
+        },
+        {
+            "name": "oe_test_lvm2_pvcreate_001"
         }
     ]
 }
