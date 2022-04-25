@@ -1,6 +1,108 @@
 {
-    "path": "${OET_PATH}/testcases/smoke-test/smoke-basic-os",
+    "path": "$OET_PATH/testcases/smoke-test",
     "cases": [
+        {
+            "name": "oe_test_dmesg_messages_log"
+        },
+        {
+            "name": "oe_test_baseinfo"
+        },
+        {
+            "name": "oe_test_cockpit"
+        },
+        {
+            "name": "oe_test_firewalld"
+        },
+        {
+            "name": "oe_test_partition"
+        },
+        {
+            "name": "oe_test_selinux"
+        },
+        {
+            "name": "oe_test_system_level"
+        },
+        {
+            "name": "oe_test_service"
+        },
+        {
+            "name": "oe_test_ssh"
+        },
+        {
+            "name": "oe_test_OVS"
+        },
+        {
+            "name": "oe_test_docker_cp_001"
+        },
+        {
+            "name": "oe_test_docker_rename_pause_resume_001"
+        },
+        {
+            "name": "oe_test_docker_search_info_001"
+        },
+        {
+            "name": "oe_test_docker_image_history_001"
+        },
+        {
+            "name": "oe_test_docker_commit_export_import_001"
+        },
+        {
+            "name": "oe_test_docker_create_002"
+        },
+        {
+            "name": "oe_test_docker_attach_001"
+        },
+        {
+            "name": "oe_test_docker_start_stop_delete_001"
+        },
+        {
+            "name": "oe_test_docker_tag_001"
+        },
+        {
+            "name": "oe_test_docker_exec_cmd_001"
+        },
+        {
+            "name": "oe_test_docker_create_003"
+        },
+        {
+            "name": "oe_test_docker_create_001"
+        },
+        {
+            "name": "oe_test_docker_save_load_001"
+        },
+        {
+            "name": "oe_test_iSula_query_state_001"
+        },
+        {
+            "name": "oe_test_iSula_attach_rename_001"
+        },
+        {
+            "name": "oe_test_iSula_export_001"
+        },
+        {
+            "name": "oe_test_iSula_cp_001"
+        },
+        {
+            "name": "oe_test_iSula_create_start_001"
+        },
+        {
+            "name": "oe_test_iSula_restart_stop_001"
+        },
+        {
+            "name": "oe_test_iSula_search_info_001"
+        },
+        {
+            "name": "oe_test_iSula_exec_cmd_001"
+        },
+        {
+            "name": "oe_test_iSula_install_deploy_001"
+        },
+        {
+            "name": "oe_test_iSula_mkdir100_001"
+        },
+        {
+            "name": "oe_test_iSula_pause_resume_001"
+        },
         {
             "name": "oe_test_acl_001"
         },

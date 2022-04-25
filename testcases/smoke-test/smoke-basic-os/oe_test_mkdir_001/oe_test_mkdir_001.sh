@@ -21,21 +21,21 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    ls /tmp/test1 && rm -rf /tmp/test1
-    ls /tmp/test2 && rm -rf /tmp/test2
-    ls /tmp/test3 && rm -rf /tmp/test3
-    ls /tmp/test5 && rm -rf /tmp/test5
+    test -d /tmp/test1 && rm -rf /tmp/test1
+    test -d /tmp/test2 && rm -rf /tmp/test2
+    test -d /tmp/test3 && rm -rf /tmp/test3
+    test -d /tmp/test5 && rm -rf /tmp/test5
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
     mkdir /tmp/test1 /tmp/test2
-    ls /tmp/test1 && ls /tmp/test2
+    test -d /tmp/test1 && test -d /tmp/test2
     CHECK_RESULT $?
 
     mkdir -p /tmp/test3/test4
-    ls /tmp/test3/test4
+    test -d /tmp/test3/test4
     CHECK_RESULT $?
 
     mkdir -m 777 /tmp/test5
@@ -49,7 +49,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    rm -rf /tmp/test{1-5}
+    rm -rf /tmp/test*
     LOG_INFO "Finish environment cleanup!"
 }
 

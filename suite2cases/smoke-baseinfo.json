@@ -1,0 +1,32 @@
+{
+    "path": "$OET_PATH/testcases/smoke-test/smoke-baseinfo",
+    "cases": [
+        {
+            "name": "oe_test_dmesg_messages_log"
+        },
+        {
+            "name": "oe_test_baseinfo"
+        },
+        {
+            "name": "oe_test_cockpit"
+        },
+        {
+            "name": "oe_test_firewalld"
+        },
+        {
+            "name": "oe_test_partition"
+        },
+        {
+            "name": "oe_test_selinux"
+        },
+        {
+            "name": "oe_test_system_level"
+        },
+        {
+            "name": "oe_test_service"
+        },
+        {
+            "name": "oe_test_ssh"
+        }
+    ]
+}
