@@ -273,6 +273,9 @@
         },
         {
             "name": "oe_test_uname"
+        },
+        {
+            "name": "oe_test_module"
         }
     ]
 }
