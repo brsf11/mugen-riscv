@@ -878,6 +878,95 @@
                 2,
                 2
             ]
+        },
+	{
+            "name": "oe_test_storage_lvm_set_regionsize",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_snapshot_merge",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_VG_transfer",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_set_lvconvert_volume",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_snapshot_tag",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+	{
+            "name": "oe_test_storage_lvm_specify_size",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_set_lvconvert_raid1",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_set_limit",
+            "add disk": [
+                2,
+                2,
+                2,
+		2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_set_label",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {	
+            "name": "oe_test_storage_lvm_set_lvconvert_raid",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_lvm_split_VG",
+            "add disk": [
+                2,
+                2,
+                2
+            ]
         }
     ]
 }
