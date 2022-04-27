@@ -39,6 +39,30 @@
         },
         {
             "name": "oe_test_lvm2_pvcreate_001"
+        },
+        {
+            "name": "oe_test_lvm2_pvmove_001"
+        },
+        {
+            "name": "oe_test_lvm2_vgcreate_001"
+        },
+        {
+            "name": "oe_test_lvm2_pvdisplay_002"
+        },
+        {
+            "name": "oe_test_lvm2_vgdisplay_001"
+        },
+        {
+            "name": "oe_test_lvm2_vgrename_001"
+        },
+        {
+            "name": "oe_test_lvm2_pvdisplay_001"
+        },
+        {
+            "name": "oe_test_lvm2_pvmove_002"
+        },
+        {
+            "name": "oe_test_lvm2_pvchange_001"
         }
     ]
 }
