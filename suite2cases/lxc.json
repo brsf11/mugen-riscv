@@ -6,6 +6,39 @@
         },
         {
             "name": "oe_test_service_lxc"
+        },
+        {
+            "name": "oe_test_lxc_create_attach"
+        },
+        {
+            "name": "oe_test_lxc_ls_monitor"
+        },
+        {
+            "name": "oe_test_lxc_unfreeze_destroy"
+        },
+        {
+            "name": "oe_test_lxc_autostart_cgroup"
+        },
+        {
+            "name": "oe_test_lxc_device_copy"
+        },
+        {
+            "name": "oe_test_lxc_snapshot_start"
+        },
+        {
+            "name": "oe_test_lxc_unshare_update"
+        },
+        {
+            "name": "oe_test_lxc_checkconfig_console"
+        },
+        {
+            "name": "oe_test_lxc_execute_freeze"
+        },
+        {
+            "name": "oe_test_lxc_stop_top"
+        },
+        {
+            "name": "oe_test_lxc_info"
         }
     ]
 }
