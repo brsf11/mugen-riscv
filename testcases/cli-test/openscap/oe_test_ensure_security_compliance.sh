@@ -13,43 +13,32 @@
 # @Author    :   huyahui
 # @Contact   :   huyahui8@163.com
 # @modify    :   wangxiaoya@qq.com
-# @Date      :   2022/05/07
+# @Date      :   2022/05/09
 # @License   :   Mulan PSL v2
-# @Desc      :   Allow kill signals to be sent to processes that do not belong to you
+# @Desc      :   View configuration files to ensure security compliance
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    grep "^example:" /etc/passwd && userdel -rf example
+    DNF_INSTALL "openscap scap-security-guide"
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    useradd example
-    passwd example <<EOF
-${NODE1_PASSWORD}
-${NODE1_PASSWORD}
-EOF
-    nohup tail -f ./* &
-    tail_pid=$(ps -ef | grep "tail" | xargs | awk '{print $2}')
-    su - example -c "/bin/kill -9 $tail_pid"
-    CHECK_RESULT $? 0 1 "Kill process succeeded, but it should fail here"
-    setcap cap_kill=eip /bin/kill
+    ls /usr/share/xml/scap/ssg/content/ | grep xml
     CHECK_RESULT $?
-    su - example -c "/bin/kill -9 $tail_pid"
+    oscap info /usr/share/xml/scap/ssg/content/ssg-ol7-ds.xml | grep Ref-Id
     CHECK_RESULT $?
-    ps -aux | grep tail | grep $tail_pid | grep -v 'grep'
-    CHECK_RESULT $? 0 1 "The viewing process succeeded, but it should fail here"
-
+    oscap info --profile pci-dss /usr/share/xml/scap/ssg/content/ssg-sl6-xccdf.xml | grep pci-dss
+    CHECK_RESULT $?
     LOG_INFO "Finish testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    setcap -r /bin/kill
-    userdel -rf example
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"

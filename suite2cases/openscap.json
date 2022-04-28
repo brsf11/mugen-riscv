@@ -3,6 +3,21 @@
     "cases": [
         {
             "name": "oe_test_openscap_01"
+        },
+        {
+            "name": "oe_test_scanning_system"
+        },
+        {
+            "name": "oe_test_scanning_remote_system"
+        },
+        {
+            "name": "oe_test_ensure_security_compliance"
+        },
+        {
+            "name": "oe_test_assess_safety_compliance"
+        },
+        {
+            "name": "oe_test_fix_anisible"
         }
     ]
 }

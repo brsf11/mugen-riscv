@@ -10,32 +10,26 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   huyahui
-# @Contact   :   huyahui8@163.com
-# @modify    :   wangxiaoya@qq.com
-# @Date      :   2022/05/07
+# @Author    :   wangxiaoya
+# @Contact   :   wangxiaoya@qq.com
+# @Date      :   2022/05/06
 # @License   :   Mulan PSL v2
-# @Desc      :   Overwrite previous rules
+# @Desc      :   OpenSSH server configuration and startup
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
+
 function run_test() {
     LOG_INFO "Start executing testcase."
-    setcap cap_dac_override=eip /usr/bin/less
-    CHECK_RESULT $? 0 0 "Failed to set cap"
-    getcap /usr/bin/less | grep '/usr/bin/less cap_dac_override=eip'
-    CHECK_RESULT $? 0 0 "Failed to get cap"
-    setcap cap_dac_read_search=eip /usr/bin/less
-    CHECK_RESULT $? 0 0 "Failed to set cap"
-    getcap /usr/bin/less | grep '/usr/bin/less cap_dac_read_search=eip'
-    CHECK_RESULT $? 0 0 "Failed to get cap"
+    systemctl start sshd
+    CHECK_RESULT $?
+    systemctl enable sshd
+    CHECK_RESULT $?
+    systemctl daemon-reload
+    CHECK_RESULT $?
+    systemctl status sshd | grep "active (running)"
+    CHECK_RESULT $?
     LOG_INFO "Finish testcase execution."
-}
-
-function post_test() {
-    LOG_INFO "start environment cleanup."
-    setcap -r /usr/bin/less
-    LOG_INFO "Finish environment cleanup!"
 }
 main "$@"
