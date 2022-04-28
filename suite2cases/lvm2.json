@@ -63,6 +63,21 @@
         },
         {
             "name": "oe_test_lvm2_pvchange_001"
+        },
+        {
+            "name": "oe_test_lvm2_vgchange_001"
+        },
+        {
+            "name": "oe_test_lvm2_vgextend_002"
+        },
+        {
+            "name": "oe_test_lvm2_vgextend_001"
+        },
+        {
+            "name": "oe_test_lvm2_vgexport_001"
+        },
+        {
+            "name": "oe_test_lvm2_vgchange_002"
         }
     ]
 }
