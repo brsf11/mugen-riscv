@@ -30,7 +30,7 @@ function pre_test(){
 function run_test(){
     LOG_INFO "Start to run test."
 
-    rpmdev-rmdevelrpms -h | grep -e 'rpmdev-rmdevelrpms' -e 'Options:'
+    rpmdev-rmdevelrpms -h | grep -A 30 "rpmdev-rmdevelrpms" | grep "Options:"
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmdev-rmdevelrpms -v | grep 'rpmdev-rmdevelrpms version'
     CHECK_RESULT $? 0 0 "Failed option: -v"
@@ -45,26 +45,36 @@ function run_test(){
     test -d ~/rpmbuild
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-setuptree"
 
-    rpmdev-sha1 *rpm | grep "${pkg_name}"
+    sha1=$(rpmdev-sha1 ${pkg_name}*rpm | head -n 1| awk '{print $1}')
+    sha1_num=$(expr length ${sha1})
+    test ${sha1_num} == 40
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sha1"
 
-    rpmdev-sha224 *rpm | grep "${pkg_name}"
+    sha224=$(rpmdev-sha224 ${pkg_name}*rpm | head -n 1| awk '{print $1}')
+    sha224_num=$(expr length ${sha224})
+    test ${sha224_num} == 56
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sha224"
 
-    rpmdev-sha256 *rpm | grep "${pkg_name}"
+    sha256=$(rpmdev-sha256 ${pkg_name}*rpm | head -n 1| awk '{print $1}')
+    sha256_num=$(expr length ${sha256})
+    test ${sha256_num} == 64
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sha256"
 
-    rpmdev-sha384 *rpm | grep "${pkg_name}"
+    sha384=$(rpmdev-sha384 ${pkg_name}*rpm | head -n 1| awk '{print $1}')
+    sha384_num=$(expr length ${sha384})
+    test ${sha384_num} == 96
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sha384"
 
-    rpmdev-sha512 *rpm | grep "${pkg_name}"
+    sha512=$(rpmdev-sha512 ${pkg_name}*rpm | head -n 1| awk '{print $1}')
+    sha512_num=$(expr length ${sha512})
+    test ${sha512_num} == 128
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sha512"
 
     CHECK_RESULT $(ls *rpm | rpmdev-sort | wc -l) 1 0 "Failed command: rpmdev-sort"
-    rpmdev-sort -h | grep -e 'rpmdev-sort' -e 'Supported formats:'
+    rpmdev-sort -h | grep -A 4 "rpmdev-sort" | grep "Supported formats:"
     CHECK_RESULT $? 0 0 "Failed option: rpmdev-sort -h"
 
-    rpmdev-sum *rpm | grep "${pkg_name}"
+    rpmdev-sum ${pkg_name}*rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-sum"
 	
 

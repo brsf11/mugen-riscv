@@ -44,16 +44,16 @@ function run_test(){
     CHECK_RESULT $? 0 0 "Failed option: n == n"
     rpmdev-vercmp 2 1 2 2 1 2
     CHECK_RESULT $? 0 0 "Failed option: n:n-n == n:n-n"
-    rpmdev-vercmp -h | grep 'rpmdev-vercmp'
+    rpmdev-vercmp -h | grep -A 5 "rpmdev-vercmp" | grep "Exit status"
     CHECK_RESULT $? 0 0 "Failed option: -h"
 
     spectool -l rpmdevtools.spec | grep "Source"
     CHECK_RESULT $? 0 0 "Failed option: -l"
-    spectool -g rpmdevtools.spec && test -e *tar.xz
+    spectool -g rpmdevtools.spec && test -f *tar.xz
     CHECK_RESULT $? 0 0 "Failed option: -g"
-    spectool -h | grep -e "spectool" -e "Options:"
+    spectool -h | grep "Usage: spectool"
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    spectool -A rpmdevtools.spec | grep "Source"
+    spectool -A rpmdevtools.spec | grep -A 10 "Source" | grep "Patch"
     CHECK_RESULT $? 0 0 "Failed option: -A"
     spectool -S rpmdevtools.spec | grep "Source"
     CHECK_RESULT $? 0 0 "Failed option: -S"
@@ -74,7 +74,9 @@ function run_test(){
     rm *tar.gz
     spectool -g -n rpmdevtools.spec
     CHECK_RESULT $? 0 0 "Failed option: -n"
+    rm -rf /tmp/spectool*
     spectool -D rpmdevtools.spec 
+    test $(ls -l /tmp/spectool* | wc -l) ==  4
     CHECK_RESULT $? 0 0 "Failed option: -D"
 
     LOG_INFO "End to run test."

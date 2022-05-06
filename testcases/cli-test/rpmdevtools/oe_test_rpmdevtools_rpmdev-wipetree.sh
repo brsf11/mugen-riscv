@@ -16,15 +16,14 @@
 #@Desc      	:   test rpmdev-wipetree rpmelfsym rpmfile rpminfo rpmls rpmpeek rpmsodiff rpmsoname
 #####################################
 
-
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test(){
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL "rpmdevtools"
+    DNF_INSTALL "rpmdevtools gcc"
     useradd user_test
     su user_test -c "mkdir -p /home/user_test/rpmbuild/RPMS/${NODE1_FRAME}"
-    pkg_name=$(dnf list | head -n 3 | tail -n 1 | awk '{print $1}' | awk 'BEGIN {FS="."} {print $1}' )
+    pkg_name=$(dnf list | head -n 3 | tail -n 1 | awk '{print $1}' | awk 'BEGIN {FS="."} {print $1}')
     yumdownloader ${pkg_name}
     chown user_test *rpm
     chmod 755 *rpm
@@ -34,11 +33,12 @@ function pre_test(){
     mkdir -p /ALT/Sisyphus/files/i586/RPMS
     mkdir -p /ALT/Sisyphus/files/noarch/RPMS
     mkdir -p /ALT/Sisyphus/files/SRPMS
-    cp *rpm /ALT/Sisyphus/files/SRPMS/
-    cp *rpm /ALT/Sisyphus/files/i586/RPMS/
-    cp *rpm /ALT/Sisyphus/files/noarch/RPMS
+    cp -f *rpm /ALT/Sisyphus/files/SRPMS/
+    cp -f *rpm /ALT/Sisyphus/files/i586/RPMS/
+    cp -f *rpm /ALT/Sisyphus/files/noarch/RPMS
 
-    DNF_INSTALL "${pkg_name}"
+    yumdownloader gcc
+    pkg_name1=gcc
     mkdir ./tmp_dir
 
     LOG_INFO "End of environmental preparation."
@@ -54,72 +54,79 @@ function run_test(){
     test -e /home/user_test/rpmbuild/RPMS/${NODE1_FRAME}/*rpm
     CHECK_RESULT $? 1 0 "Failed command: rpmdev-wipetree"
 
-    rpmelfsym -p *rpm | grep '/usr' 
+    rpmelfsym -p ${pkg_name}*rpm | grep "/usr/.*" 
     CHECK_RESULT $? 0 0 "Failed option: -p"
-    rpmelfsym -h | grep -e 'rpmelfsym' -e 'Options:'
+    rpmelfsym -h | grep -A 1 "Usage:" | grep "rpmelfsym"
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmelfsym -a | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed option: -a"
 
-    rpmfile -p *rpm | grep '/usr'
+    rpmfile -p ${pkg_name}*rpm | grep "/usr/.*"
     CHECK_RESULT $? 0 0 "Failed option: -p"
-    rpmfile -h | grep -e 'rpmfile' -e 'Options:'
+    rpmfile -h | grep -A 1 "Usage:" | grep "rpmfile"
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmfile -a | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed option: -a"
 
-    rpminfo -h | grep -e 'rpminfo' -e 'Usage'
+    rpminfo -h | grep "Usage: rpminfo"
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    rpminfo -v *rpm | grep "${pkg_name}" 
+    rpminfo -v ${pkg_name1} | grep "${pkg_name1}" 
     CHECK_RESULT $? 0 0 "Failed option: -v"
-    rpminfo -q *rpm 
+    rpminfo -q ${pkg_name1} | grep "${pkg_name1}.*" 
     CHECK_RESULT $? 0 0 "Failed option: -q"
-    rpminfo -qq *rpm
+    rpminfo -qq ${pkg_name1} | grep "${pkg_name1}.*"
     CHECK_RESULT $? 0 0 "Failed option: -qq"
     rpminfo -i -o record
     test -e record
     CHECK_RESULT $? 0 0 'Failed option: -i -o'
-    rpminfo -e *rpm 
+    rpminfo -e ${pkg_name1} | grep -A 20 "${pkg_name1}.*" | grep "/usr/bin"
     CHECK_RESULT $? 0 0 "Failed option: -e"
-    rpminfo -l *rpm
+    rpminfo -l ${pkg_name1} | grep -A 20 "${pkg_name1}.*" | grep "/usr/lib" 
     CHECK_RESULT $? 0 0 "Failed option: -l"
-    rpminfo -p *rpm
+    rpminfo -p ${pkg_name1} | grep "PIC"
     CHECK_RESULT $? 0 0 "Failed option: -p"
-    rpminfo -np *rpm
+    output=$(rpminfo -np ${pkg_name1} | wc -l)
+    test ${output} == 0
     CHECK_RESULT $? 0 0 "Failed option: -np"
-    rpminfo -nP *rpm
+    output1=$(rpminfo -P ${pkg_name1} | wc -l)
+    test ${output1} == 0
+    CHECK_RESULT $? 0 0 "Failed option: -P"
+    output2=$(rpminfo -nP ${pkg_name1} | wc -l)
+    test ${output2} == 0
     CHECK_RESULT $? 0 0 "Failed option: -nP"
-    rpminfo -r *rpm
+    output3=$(rpminfo -r ${pkg_name1} | wc -l)
+    test ${output3} == 0
     CHECK_RESULT $? 0 0 "Failed option: -r"
-    rpminfo -ro *rpm
+    rpminfo -ro ${pkg_name1} | grep "PIC"
     CHECK_RESULT $? 0 0 "Failed option: -ro"
-    rpminfo -s -o record1 *rpm
-    test -e record1*
+    rpminfo -s -o record1 ${pkg_name1}*rpm
+    num_record1=$(ls -l record1* | wc -l)
+    test ${num_record1} -ge 1
     CHECK_RESULT $? 0 0 "Failed option: -s "
-    rpminfo -t *rpm
+    rpminfo -t ${pkg_name1} | grep "PIC"
     CHECK_RESULT $? 0 0 "Failed option: -t"
-    rpminfo -T ./tmp_dir *rpm
+    rpminfo -T ./tmp_dir ${pkg_name1}*rpm
 
-    rpmls -l *rpm | grep "${pkg_name}"
+    rpmls -l ${pkg_name}*rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed command: rpmls"
 
-    rpmpeek -h | grep -e "rpmpeek" -e "Options:"
+    rpmpeek -h | grep -A 1 "Usage:" | grep "rpmpeek"
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    rpmpeek *rpm ls -l | grep "usr"
+    rpmpeek ${pkg_name}*rpm ls -l | grep "usr"
     CHECK_RESULT $? 0 0 "Failed command: rpmpeek"
-    rpmpeek -n *rpm ls -l 
+    rpmpeek -n ${pkg_name}*rpm ls -l 
     CHECK_RESULT $? 0 0 "Failed option: -n"
 
-    rpmsodiff -h | grep -e "rpmsodiff" -e "Usage"
+    rpmsodiff -h | grep -A 1 "Usage:" | grep "rpmsodiff"
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    rpmsodiff *rpm *rpm
+    rpmsodiff ${pkg_name}*rpm ${pkg_name}*rpm
     CHECK_RESULT $? 0 0 "Failed command: rpmsodiff"
 
-    rpmsoname -h | grep -e "rpmsoname" -e "Options"
+    rpmsoname -h | grep -A 1 "Usage:" | grep "rpmsoname"
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    rpmsoname -p *rpm | grep "/usr/lib64"
+    rpmsoname -p ${pkg_name}*rpm | grep "/usr/lib64"
     CHECK_RESULT $? 0 0 "Failed option: -p"
-    rpmsoname . | grep "/usr/lib64"
+    rpmsoname ${pkg_name}*rpm | grep "/usr"
     CHECK_RESULT $? 0 0 "Failed command: rpmsoname"
 
     LOG_INFO "End to run test."
@@ -128,7 +135,7 @@ function run_test(){
 function post_test(){
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    userdel -r user_test
+    userdel -rf user_test
     rm -rf /ALT *rpm record* ./tmp_dir
 
     LOG_INFO "End to restore the test environment."

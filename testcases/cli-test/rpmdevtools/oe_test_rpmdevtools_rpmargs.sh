@@ -27,13 +27,13 @@ function pre_test(){
     mkdir -p /ALT/Sisyphus/files/i586/RPMS
     mkdir -p /ALT/Sisyphus/files/noarch/RPMS
     mkdir -p /ALT/Sisyphus/files/SRPMS
-    cp *rpm /ALT/Sisyphus/files/SRPMS/
-    cp *rpm /ALT/Sisyphus/files/i586/RPMS/
-    cp *rpm /ALT/Sisyphus/files/noarch/RPMS
+    cp ${pkg_name}*.rpm /ALT/Sisyphus/files/SRPMS/
+    cp ${pkg_name}*.rpm /ALT/Sisyphus/files/i586/RPMS/
+    cp ${pkg_name}*.rpm /ALT/Sisyphus/files/noarch/RPMS
 
-    pkg_name1=$(dnf list | head -n 4 | tail -n 1 | awk '{print $1}')
+    pkg_name1=$(dnf list | head -n 4 | tail -n 1 | awk '{print $1}' | awk 'BEGIN {FS="."} {print $1}')
     mkdir ./tmp_dir
-    yumdownloader --destdir=./tmp_dir ${pkg_name1}
+    yumdownloader ${pkg_name1}
 
     LOG_INFO "End of environmental preparation."
 }
@@ -41,46 +41,48 @@ function pre_test(){
 function run_test(){
     LOG_INFO "Start to run test."
 
-    rpmargs -h | grep -e 'rpmargs' -e 'Usage:'
+    rpmargs -h | grep Usage:$'\n'"  "rpmargs
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    rpmargs -c file -a | grep "RPM"
+    rpmargs -c file -a | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed option: -a"
-    rpmargs -c file -p /ALT/Sisyphus/files/noarch/RPMS/*rpm
+    rpmargs -c file -p /ALT/Sisyphus/files/noarch/RPMS/${pkg_name}*.rpm | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed option: -p"	
 
-    rpmdev-checksig *rpm | grep 'SHA1'
+    rpmdev-checksig ${pkg_name}*.rpm | grep "${pkg_name}.*.rpm: RSA/SHA1"
     CHECK_RESULT $? 0 0 "Failed command:rpmdev-checksig"
 
-    rpmdev-cksum *rpm | grep "${pkg_name}"
+    rpmdev-cksum ${pkg_name}*rpm | head -n 1 | awk '{print $3}' | grep "${pkg_name}.*rpm" 
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-cksum"
 
     rpmdev-diff -v | grep 'rpmdev-diff version'
     CHECK_RESULT $? 0 0 "Failed option: -v"
-    rpmdev-diff -h | grep -e 'rpmdev-diff' -e 'Options:'
+    rpmdev-diff -h | grep -A 5 "rpmdev-diff" | grep "Options:"
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    rpmdev-diff -c ./*rpm ./tmp_dir/*rpm
+    rpmdev-diff -c ${pkg_name}*.rpm ${pkg_name1}*.rpm
     CHECK_RESULT $? 0 0 "Failed option: -c"
-    rpmdev-diff -l ./*rpm ./tmp_dir/*rpm
+    rpmdev-diff -l ${pkg_name}*.rpm ${pkg_name1}*.rpm
     CHECK_RESULT $? 0 0 "Failed option: -l"
-    rpmdev-diff -L ./*rpm ./tmp_dir/*rpm
+    rpmdev-diff -L ${pkg_name}*.rpm ${pkg_name1}*.rpm
     CHECK_RESULT $? 0 0 "Failed option: -L"
-    rpmdev-diff -m ./*rpm ./tmp_dir/*rpm
+    rpmdev-diff -m ${pkg_name}*.rpm ${pkg_name1}*.rpm
     CHECK_RESULT $? 0 0 "Failed option: -m"
-    rpmdev-diff -c -y ./*rpm ./tmp_dir/*rpm
+    rpmdev-diff -c -y ${pkg_name}*.rpm ${pkg_name1}*.rpm
     CHECK_RESULT $? 0 0 "Failed option: -y"
 
-    rpmdev-extract -q ./*rpm
+    rpmdev-extract -q ${pkg_name}*.rpm
+    echo ${pkg_name}*${pkg_arch} | test -d
     CHECK_RESULT $? 0 0 "Failed option: -q"
-    rpmdev-extract -f ./*rpm
+    rpmdev-extract -f ${pkg_name}*.rpm | grep ${pkg_name}
     CHECK_RESULT $? 0 0 "Failed option: -f"	
-    rpmdev-extract -C ./tmp_dir ./*rpm
+    rpmdev-extract -C ./tmp_dir ${pkg_name}*.rpm
+    echo ./tmp_dir/${pkg_name}*{pkg_arch} | test -d 
     CHECK_RESULT $? 0 0 "Failed option: -C"
-    rpmdev-extract -h | grep -e 'rpmdev-extract' -e 'Usage:'
+    rpmdev-extract -h | grep -A 10 "rpmdev-extract" | grep "Options:"
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmdev-extract -v | grep 'rpmdev-extract version'
     CHECK_RESULT $? 0 0 "Failed option: -v"
 
-    rpmdev-md5 *rpm | grep "${pkg_name}"
+    rpmdev-md5 ${pkg_name}*rpm | head -n 1 | awk '{print $2}' | grep "${pkg_name}.*rpm"
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-md5"
 
     LOG_INFO "End to run test."
@@ -89,7 +91,7 @@ function run_test(){
 function post_test(){
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf /ALT ./tmp_dir *${pkg_arch} *rpm
+    rm -rf /ALT ./tmp_dir ${pkg_name}* 
     LOG_INFO "End to restore the test environment."
 }
 

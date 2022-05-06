@@ -31,31 +31,34 @@ function pre_test(){
 function run_test(){
     LOG_INFO "Start to run test."
 
-    rpmdev-bumpspec -h | grep -e 'rpmdev-bumpspec' -e 'Options:'
+    rpmdev-bumpspec -h | grep "Usage: rpmdev-bumpspec \[OPTION\]"
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmdev-bumpspec -c "test1" test.spec
-    cat test.spec | grep 'test1'
+    grep -A 2 "%changelog" test.spec | grep "\- test1"
     CHECK_RESULT $? 0 0 "Failed option: -c"
-    rpmdev-bumpspec -V test.spec | grep 'test.spec'
+    rpmdev-bumpspec -V test.spec | grep -A 2 "test.spec" | grep -A 1 "-" | grep "+"
     CHECK_RESULT $? 0 0 "Failed option: -V"
     rpmdev-bumpspec -v | grep 'rpmdev-bumpspec version'
     CHECK_RESULT $? 0 0 "Failed option: -v"	
     rpmdev-bumpspec -u test_name\ xxxxxxxxxx@qq.com test.spec
-    cat test.spec | grep 'test_name'
+    grep -A 2 "%changelog" test.spec | grep "\*.*test_name xxxxxxxxxx@qq.com"
     CHECK_RESULT $? 0 0 "Failed option: -u"
     rpmdev-bumpspec -f file1 test.spec
-    cat test.spec | grep '^-\ test\ -f.'
+    grep -A 2 "changelog" test.spec | grep "\- test -f."
     CHECK_RESULT $? 0 0 "Failed option: -f"
-    rpmdev-bumpspec -r test.spec
+    rpmdev-bumpspec -r test.spec 
+    grep -A 2 "%changelog" test.spec | grep "\- rebuilt"
     CHECK_RESULT $? 0 0 "Failed option: -r"
-    rpmdev-bumpspec -s release test.spec
+    rpmdev-bumpspec -s release test.spec 
+    grep -A 2 "%changelog" test.spec | grep "\- rebuilt"
     CHECK_RESULT $? 0 0 "Failed option: -s"
-    rpmdev-bumpspec -n new_test test.spec
+    rpmdev-bumpspec -n new_test test.spec 
+    grep -A 2 "%changelog" test.spec | grep "\- new version"
     CHECK_RESULT $? 0 0 "Failed option: -n"
 
     rpmdev-newinit -v | grep 'rpmdev-newinit version' 
     CHECK_RESULT $? 0 0 "Failed options: -v"
-    rpmdev-newinit -h | grep -e 'rpmdev-newinit' -e 'Options:'
+    rpmdev-newinit -h | grep "Usage: rpmdev-newinit \[option\]"
     CHECK_RESULT $? 0 0 "Failed options: -h"
     rpmdev-newinit -o test.init
     test -f ./test.init 
@@ -65,14 +68,14 @@ function run_test(){
     test -f testo.spec
     CHECK_RESULT $? 0 0 "Failed option: -o"
     rpmdev-newspec -t python -o testt.spec
-    cat testt.spec | grep 'python'
+    grep 'python' testt.spec
     CHECK_RESULT $? 0 0 "Failed option: -t"
     rpmdev-newspec -m -o testm.spec
-    cat testm.spec | grep '%{buildroot}'
+    grep '%{buildroot}' testm.spec
     CHECK_RESULT $? 0 0 "Failed option: -m"
     rpmdev-newspec -r 4.3 -o testr.spec | grep '4.3'
     CHECK_RESULT $? 0 0 "Failed option: -r"
-    rpmdev-newspec -h | grep -e 'rpmdev-newspec' -e 'Options:'
+    rpmdev-newspec -h | grep "Usage: rpmdev-newspec \[option\]"
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmdev-newspec -v | grep 'rpmdev-newspec version'
     CHECK_RESULT $? 0 0 "Failed option: -v"
