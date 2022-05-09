@@ -1,0 +1,35 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/openssl",
+    "cases": [
+        {
+            "name": "oe_test_openssl_concurrent_operations"
+        },
+        {
+            "name": "oe_test_openssl_create_CA_applying_certificate"
+        },
+        {
+            "name": "oe_test_openssl_delete_configuration_file"
+        },
+        {
+            "name": "oe_test_openssl_Diffie_Hellman"
+        },
+        {
+            "name": "oe_test_openssl_DSA_algorithm"
+        },
+        {
+            "name": "oe_test_openssl_empty_private_key"
+        },
+        {
+            "name": "oe_test_openssl_empty_public_key"
+        },
+        {
+            "name": "oe_test_openssl_encrypt_decrypt_file_asymmetrically"
+        },
+        {
+            "name": "oe_test_openssl_encrypte_decrypte_emails"
+        },
+        {
+            "name": "oe_test_openssl_encrypting_character_string"
+        }
+    ]
+}
