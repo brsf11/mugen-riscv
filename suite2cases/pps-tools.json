@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/pps-tools",
+    "cases": [
+        {
+            "name": "oe_test_pps-tools"
+        }
+    ]
+}
