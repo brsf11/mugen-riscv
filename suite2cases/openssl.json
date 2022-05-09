@@ -30,6 +30,33 @@
         },
         {
             "name": "oe_test_openssl_encrypting_character_string"
+        },
+        {
+            "name": "oe_test_openssl_expired_certificate"
+        },
+        {
+            "name": "oe_test_openssl_file_signature_verification"
+        },
+        {
+            "name": "oe_test_openssl_generate_key_pair"
+        },
+        {
+            "name": "oe_test_openssl_generate_password"
+        },
+        {
+            "name": "oe_test_openssl_generate_random_number"
+        },
+        {
+            "name": "oe_test_openssl_Implements_https"
+        },
+        {
+            "name": "oe_test_openssl_incorrect_public_private_key"
+        },
+        {
+            "name": "oe_test_openssl_message_digest"
+        },
+        {
+            "name": "oe_test_openssl_one_way_encryption"
         }
     ]
 }

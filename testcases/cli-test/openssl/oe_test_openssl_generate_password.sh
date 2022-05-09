@@ -11,39 +11,42 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-07-23
+#@Date          :   2020-07-22
 #@License       :   Mulan PSL v2
-#@Desc          :   Application scenarios: use RSA certificates to encrypte and decrypte emails
+#@Desc          :   Encryption algorithm: generate a password
 #####################################
 
-source "common/common_openssl.sh"
+source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function run_test() {
     LOG_INFO "Start to run test."
-    cat >test.txt <<EOF
-    This is a file created by shell.
-    We want to make a good world.   
-    Byebye!
-EOF
-    openssl genrsa -out rsakey.pem
+    echo "Hello, world!" >word
+    openssl passwd -crypt -salt 12345 root
     CHECK_RESULT $?
-    grep 'BEGIN RSA PRIVATE KEY' rsakey.pem
+    openssl passwd -crypt -in word -salt 12345
     CHECK_RESULT $?
-    generate_PublicKey
-    openssl smime -encrypt -in test.txt -out etest.txt mycert-rsa.pem
+    openssl passwd -1 -in word -salt 12345
     CHECK_RESULT $?
-    test -f etest.txt
-    CHECK_RESULT $?
-    openssl smime -decrypt -in etest.txt -inkey rsakey.pem -out dtest.txt
-    CHECK_RESULT $?
-    test -f dtest.txt
+    expect <<-END
+    log_file testlog1
+    spawn openssl passwd -1 -salt 12345 -stdin
+    expect ""
+    send "1\\n"
+    expect ""
+    send "11\\n"
+    expect ""
+    send "111\\n"
+    expect eof
+    exit
+END
+    grep '111' testlog1
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -f $(ls | grep -v "\.sh\|common")
+    rm -f word testlog1
     LOG_INFO "End to restore the test environment."
 }
 

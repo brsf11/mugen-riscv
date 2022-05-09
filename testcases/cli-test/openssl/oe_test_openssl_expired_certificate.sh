@@ -13,7 +13,7 @@
 #@Contact       :   zhujinlong@163.com
 #@Date          :   2020-07-29
 #@License       :   Mulan PSL v2
-#@Desc          :   delete the ssl-related files from httpd configuration file,acess request(Implements https based on httpd and OpenSSL)
+#@Desc          :   the certificate has expired
 #####################################
 
 source "common/common_openssl.sh"
@@ -31,20 +31,32 @@ function pre_test() {
     DNF_INSTALL "httpd mod_ssl"
     createCA_and_Self_signed_certificate
     generate_PrivateKey_and_Certificate_Signing_Request
-    CA_Signature_Authentication
-    Modify_application_configuration
+    ssl_Path=/etc/httpd/ssl
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
-    LOG_INFO "Start to run test."
-    rm -f /etc/httpd/conf.d/ssl.conf
-    systemctl restart httpd 
+    expect <<-END
+    log_file $ssl_Path/testlog3
+    spawn openssl ca -in $ssl_Path/httpd.csr -out $ssl_Path/httpd.crt -enddate 20200729000000Z
+    expect "Sign the certificate"
+    send "y\\n"
+    expect "1 out of 1 certificate requests certified"
+    send "y\\n"
+    expect eof
+    exit
+END
+    grep 'Certificate Details' $ssl_Path/testlog3
     CHECK_RESULT $?
+    grep 'BEGIN CERTIFICATE' $ssl_Path/httpd.crt
+    CHECK_RESULT $?
+    Modify_application_configuration
+    systemctl restart httpd 
+    CHECK_RESULT $? 0 0 "error:OPENSSL and HTTPD configuration failed."
     systemctl status httpd | grep "active (running)"
     CHECK_RESULT $?
-    curl --cacert /etc/pki/CA/cacert.pem https://www.openeuler.org/index.html -I 2>&1 | grep 'Connection refused'
-    CHECK_RESULT $?
+    curl --cacert /etc/pki/CA/cacert.pem https://www.openeuler.org/index.html -I 2>&1 | grep 'certificate has expired'
+    CHECK_RESULT $? 0 0 "Certificate not expired"
     LOG_INFO "End to run test."
 }
 

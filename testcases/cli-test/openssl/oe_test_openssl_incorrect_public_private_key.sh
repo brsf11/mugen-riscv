@@ -11,33 +11,34 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-07-23
+#@Date          :   2020-07-24
 #@License       :   Mulan PSL v2
-#@Desc          :   Application scenarios: use RSA certificates to encrypte and decrypte emails
+#@Desc          :   Exception scenarios: the key is incorrect,the public key is incorrect
 #####################################
 
-source "common/common_openssl.sh"
+source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function run_test() {
     LOG_INFO "Start to run test."
-    cat >test.txt <<EOF
-    This is a file created by shell.
-    We want to make a good world.   
-    Byebye!
-EOF
-    openssl genrsa -out rsakey.pem
+    echo "Hello, world!" >word
+    openssl genrsa -out rsakey.pem -passout pass:123123 2048
     CHECK_RESULT $?
     grep 'BEGIN RSA PRIVATE KEY' rsakey.pem
     CHECK_RESULT $?
-    generate_PublicKey
-    openssl smime -encrypt -in test.txt -out etest.txt mycert-rsa.pem
+    openssl rsa -in rsakey.pem -pubout -out rsakey-pub.pem
     CHECK_RESULT $?
-    test -f etest.txt
+    grep 'BEGIN PUBLIC KEY' rsakey-pub.pem
     CHECK_RESULT $?
-    openssl smime -decrypt -in etest.txt -inkey rsakey.pem -out dtest.txt
+    echo "999" >error_rsakey-pub.pem
+    openssl rsautl -encrypt -pubin -inkey error_rsakey-pub.pem -in word -out wordencp2 2>&1 | grep "unable to load Public Key"
+    CHECK_RESULT $? 0 0 "Incorrect public key succeeded in encrypting the file"
+    openssl rsautl -encrypt -pubin -inkey rsakey-pub.pem -in word -out wordencp2
     CHECK_RESULT $?
-    test -f dtest.txt
+    test -f wordencp2
     CHECK_RESULT $?
+    echo "999" >error_rsakey.pem
+    openssl rsautl -decrypt -inkey error_rsakey.pem -in wordencp2 -out word_replain2 2>&1 | grep 'unable to load Private Key'
+    CHECK_RESULT $? 0 0 "The wrong private key successfully decrypted the file"
     LOG_INFO "End to run test."
 }
 
