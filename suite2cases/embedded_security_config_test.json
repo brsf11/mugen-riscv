@@ -1,0 +1,65 @@
+{
+    "path": "$OET_PATH/testcases/embedded-test/security_config_test",
+    "cases": [
+        {
+            "name": "oe_test_check_file_sys_protect_001"
+        },
+        {
+            "name": "oe_test_check_file_sys_protect_002"
+        },
+        {
+            "name": "oe_test_check_file_sys_protect_003"
+        },
+        {
+            "name": "oe_test_check_file_sys_protect_004"
+        },
+        {
+            "name": "oe_test_check_file_sys_protect_005"
+        },
+        {
+            "name": "oe_test_check_user_account_001"
+        },
+        {
+            "name": "oe_test_check_user_account_002"
+        },
+        {
+            "name": "oe_test_check_user_account_003"
+        },
+        {
+            "name": "oe_test_check_user_account_004"
+        },
+        {
+            "name": "oe_test_check_user_account_005"
+        },
+        {
+            "name": "oe_test_check_user_account_006"
+        },
+        {
+            "name": "oe_test_check_user_account_007"
+        },
+        {
+            "name": "oe_test_check_user_account_008"
+        },
+        {
+            "name": "oe_test_check_network_firewall_001"
+        },
+        {
+            "name": "oe_test_check_network_firewall_002"
+        },
+        {
+            "name": "oe_test_check_ssh_config_001"
+        },
+        {
+            "name": "oe_test_check_ssh_config_002"
+        },
+        {
+            "name": "oe_test_check_ssh_config_003"
+        },
+        {
+            "name": "oe_test_check_runtime_security_001"
+        },
+        {
+            "name": "oe_test_check_log_001"
+        }
+    ]
+}
