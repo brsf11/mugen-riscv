@@ -10,46 +10,42 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   huyahui
-# @Contact   :   huyahui8@163.com
-# @modify    :   wangxiaoya@qq.com
-# @Date      :   2022/05/07
+# @Author    :   wangxiaoya
+# @Contact   :   wangxiaoya@qq.com
+# @Date      :   2022/05/06
 # @License   :   Mulan PSL v2
-# @Desc      :   Allow kill signals to be sent to processes that do not belong to you
+# @Desc      :   Network security configuration
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    grep "^example:" /etc/passwd && userdel -rf example
+    DNF_INSTALL setroubleshoot-server
+    systemctl start firewalld
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    useradd example
-    passwd example <<EOF
-${NODE1_PASSWORD}
-${NODE1_PASSWORD}
-EOF
-    nohup tail -f ./* &
-    tail_pid=$(ps -ef | grep "tail" | xargs | awk '{print $2}')
-    su - example -c "/bin/kill -9 $tail_pid"
-    CHECK_RESULT $? 0 1 "Kill process succeeded, but it should fail here"
-    setcap cap_kill=eip /bin/kill
+    grep "^PasswordAuthentication yes" /etc/ssh/sshd_config
     CHECK_RESULT $?
-    su - example -c "/bin/kill -9 $tail_pid"
+    semanage port --delete -t ssh_port_t -p tcp 36
     CHECK_RESULT $?
-    ps -aux | grep tail | grep $tail_pid | grep -v 'grep'
-    CHECK_RESULT $? 0 1 "The viewing process succeeded, but it should fail here"
-
+    semanage port -a -t ssh_port_t -p tcp 36
+    CHECK_RESULT $?
+    firewall-cmd --remove-port 36/tcp
+    firewall-cmd --add-port 36/tcp
+    CHECK_RESULT $?
+    firewall-cmd --runtime-to-permanent
+    CHECK_RESULT $?
     LOG_INFO "Finish testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    setcap -r /bin/kill
-    userdel -rf example
+    firewall-cmd --remove-port 36/tcp
+    firewall-cmd --runtime-to-permanent
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"

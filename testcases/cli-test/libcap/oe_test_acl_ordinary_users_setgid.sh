@@ -12,7 +12,8 @@
 # #############################################
 # @Author    :   huyahui
 # @Contact   :   huyahui8@163.com
-# @Date      :   2020/7/17
+# @modify    :   wangxiaoya@qq.com
+# @Date      :   2022/05/06
 # @License   :   Mulan PSL v2
 # @Desc      :   The setting program allows ordinary users to use the setgid function
 # #############################################
@@ -36,15 +37,15 @@ ${NODE1_PASSWORD}
 ${NODE1_PASSWORD}
 EOF
     su - example -c 'touch /home/example/test'
-    CHECK_RESULT $? 0 0 ""
+    CHECK_RESULT $? 
     su - example -c 'chattr +i /home/example/test'
-    CHECK_RESULT $? 0 1 ""
+    CHECK_RESULT $? 0 1 "Failed to chattr"
     setcap cap_linux_immutable=eip /usr/bin/chattr
-    CHECK_RESULT $? 0 0 ""
+    CHECK_RESULT $?
     su - example -c 'chattr +i /home/example/test'
-    CHECK_RESULT $? 0 0 ""
-    su - example -c 'lsattr /home/example/test | grep "\-\-\-\-i\-\-\-\-\-\-\-\-\-e-\-\-\-\- /home/example/test"'
-    CHECK_RESULT $? 0 0 ""
+    CHECK_RESULT $?
+    su - example -c 'lsattr /home/example/test | grep "\-\-\-\-i\-\-\-\-\-\-\-\-\-e-\-\-\-\-\-\- /home/example/test"'
+    CHECK_RESULT $?
     LOG_INFO "Finish testcase execution."
 }
 

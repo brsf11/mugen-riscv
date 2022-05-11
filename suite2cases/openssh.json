@@ -73,6 +73,15 @@
         },
         {
             "name": "oe_test_target_sshd-keygen"
+        },
+        {
+            "name": "oe_test_start_ssh"
+        },
+        {
+            "name": "oe_test_sec_ssh"
+        },
+        {
+            "name": "oe_test_sec_jump_login"
         }
     ]
 }

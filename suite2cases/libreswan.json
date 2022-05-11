@@ -13,18 +13,18 @@
         },
         {
             "name": "oe_test_libreswan_ipsec_addconn",
-	    "machine num": 2
+            "machine num": 2
         },
         {
             "name": "oe_test_libreswan_ipsec_algparse"
         },
         {
             "name": "oe_test_libreswan_ipsec_auto_1",
-	    "machine num": 2
+            "machine num": 2
         },
         {
             "name": "oe_test_libreswan_ipsec_auto_2",
-	    "machine num": 2
+            "machine num": 2
         },
         {
             "name": "oe_test_libreswan_ipsec_check"
@@ -37,7 +37,7 @@
         },
         {
             "name": "oe_test_libreswan_ipsec_showhostkey_nss",
-	    "machine num": 2
+            "machine num": 2
         },
         {
             "name": "oe_test_libreswan_ipsec_systemctl"
@@ -54,8 +54,14 @@
         {
             "name": "oe_test_libreswan_ipsec_whack_4"
         },
-	{
+        {
             "name": "oe_test_service_ipsec"
+        },
+        {
+            "name": "oe_test_host_to_host_vpn"
+        },
+        {
+            "name": "oe_test_site_to_site_vpn"
         }
     ]
 }

@@ -13,43 +13,46 @@
 # @Author    :   huyahui
 # @Contact   :   huyahui8@163.com
 # @modify    :   wangxiaoya@qq.com
-# @Date      :   2022/05/07
+# @Date      :   2022/05/09
 # @License   :   Mulan PSL v2
-# @Desc      :   Allow kill signals to be sent to processes that do not belong to you
+# @Desc      :   Scanning remote system vulnerabilities
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    grep "^example:" /etc/passwd && userdel -rf example
+    DNF_INSTALL "openscap scap-security-guide"
+    DNF_INSTALL "openscap scap-security-guide" 2
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    useradd example
-    passwd example <<EOF
-${NODE1_PASSWORD}
-${NODE1_PASSWORD}
-EOF
-    nohup tail -f ./* &
-    tail_pid=$(ps -ef | grep "tail" | xargs | awk '{print $2}')
-    su - example -c "/bin/kill -9 $tail_pid"
-    CHECK_RESULT $? 0 1 "Kill process succeeded, but it should fail here"
-    setcap cap_kill=eip /bin/kill
+    expect -c "
+        set timeout 300
+        spawn oscap-ssh ${NODE2_USER}@${NODE2_IPV4} 22 oval eval --report /tmp/remote-vulnerability.html /usr/share/xml/scap/ssg/content/ssg-ol7-oval.xml
+        expect {
+            \"*yes/no*\" {
+                send \"yes\\r\"
+                exp_continue
+            }
+            \"s password: \" {
+                send \"${NODE2_PASSWORD}\\r\"
+                exp_continue		
+            }
+            timeout
+        }
+    "
+    grep oscap /tmp/remote-vulnerability.html
     CHECK_RESULT $?
-    su - example -c "/bin/kill -9 $tail_pid"
-    CHECK_RESULT $?
-    ps -aux | grep tail | grep $tail_pid | grep -v 'grep'
-    CHECK_RESULT $? 0 1 "The viewing process succeeded, but it should fail here"
-
     LOG_INFO "Finish testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    setcap -r /bin/kill
-    userdel -rf example
+    DNF_REMOVE
+    DNF_REMOVE 2 "openscap scap-security-guide"
+    rm -rf /tmp/remote-vulnerability.html
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"
