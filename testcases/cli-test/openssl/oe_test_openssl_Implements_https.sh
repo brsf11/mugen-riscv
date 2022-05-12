@@ -11,17 +11,15 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-07-29
+#@Date          :   2020-07-28
 #@License       :   Mulan PSL v2
-#@Desc          :   delete the ssl-related files from httpd configuration file,acess request(Implements https based on httpd and OpenSSL)
+#@Desc          :   Application scenarios: Implements https based on httpd and OpenSSL
 #####################################
 
 source "common/common_openssl.sh"
 
 function config_params() {
     LOG_INFO "Start to config params of the case."
-    OLD_LANG=$LANG
-    export LANG=en_US.UTF-8
     deploy_env
     LOG_INFO "End to config params of the case."
 }
@@ -38,19 +36,17 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    rm -f /etc/httpd/conf.d/ssl.conf
     systemctl restart httpd 
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 0 'error:OPENSSL and HTTPD configuration failed.'
     systemctl status httpd | grep "active (running)"
     CHECK_RESULT $?
-    curl --cacert /etc/pki/CA/cacert.pem https://www.openeuler.org/index.html -I 2>&1 | grep 'Connection refused'
-    CHECK_RESULT $?
+    curl --cacert /etc/pki/CA/cacert.pem https://www.openeuler.org/index.html -I 2>&1 | grep '200'
+    CHECK_RESULT $? 0 0 'The HTTPS access on openEuler failed'
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    export LANG=${OLD_LANG}
     mv -f /etc/pki/tls/openssl.cnf.bak /etc/pki/tls/openssl.cnf
     clean_httpd_openssl
     systemctl stop httpd

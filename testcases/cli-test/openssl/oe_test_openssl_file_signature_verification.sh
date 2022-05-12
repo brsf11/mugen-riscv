@@ -11,32 +11,39 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-07-23
+#@Date          :   2020-07-21 20:20:00
 #@License       :   Mulan PSL v2
-#@Desc          :   Application scenarios: use RSA certificates to encrypte and decrypte emails
+#@Desc          :   OpenSSL commandline tool: file signature and signature verification
 #####################################
 
-source "common/common_openssl.sh"
+source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function run_test() {
     LOG_INFO "Start to run test."
-    cat >test.txt <<EOF
-    This is a file created by shell.
-    We want to make a good world.   
-    Byebye!
-EOF
+    openssl dsaparam -noout -out dsakey.pem -genkey 2048
+    CHECK_RESULT $?
+    grep 'BEGIN DSA PRIVATE KEY' dsakey.pem
+    CHECK_RESULT $?
+    echo "It is a test" >file.txt
+    openssl dgst -sha1 -sign dsakey.pem -out dsasign.bin file.txt
+    CHECK_RESULT $?
+    test -f dsasign.bin
+    CHECK_RESULT $?
+    openssl dgst -sha1 -prverify dsakey.pem -signature dsasign.bin file.txt | grep 'Verified OK'
+    CHECK_RESULT $?
     openssl genrsa -out rsakey.pem
     CHECK_RESULT $?
     grep 'BEGIN RSA PRIVATE KEY' rsakey.pem
     CHECK_RESULT $?
-    generate_PublicKey
-    openssl smime -encrypt -in test.txt -out etest.txt mycert-rsa.pem
+    openssl rsa -in rsakey.pem -pubout -out rsakey-pub.pem
     CHECK_RESULT $?
-    test -f etest.txt
+    grep 'BEGIN PUBLIC KEY' rsakey-pub.pem
     CHECK_RESULT $?
-    openssl smime -decrypt -in etest.txt -inkey rsakey.pem -out dtest.txt
+    openssl sha1 -sign rsakey.pem -out rsasign.bin file.txt
     CHECK_RESULT $?
-    test -f dtest.txt
+    test -f rsasign.bin
+    CHECK_RESULT $?
+    openssl sha1 -verify rsakey-pub.pem -signature rsasign.bin file.txt | grep 'Verified OK'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

@@ -11,39 +11,24 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-07-23
+#@Date          :   2020-07-22
 #@License       :   Mulan PSL v2
-#@Desc          :   Application scenarios: use RSA certificates to encrypte and decrypte emails
+#@Desc          :   Encryption algorithm: one-way encryption
 #####################################
 
-source "common/common_openssl.sh"
+source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function run_test() {
     LOG_INFO "Start to run test."
-    cat >test.txt <<EOF
-    This is a file created by shell.
-    We want to make a good world.   
-    Byebye!
-EOF
-    openssl genrsa -out rsakey.pem
-    CHECK_RESULT $?
-    grep 'BEGIN RSA PRIVATE KEY' rsakey.pem
-    CHECK_RESULT $?
-    generate_PublicKey
-    openssl smime -encrypt -in test.txt -out etest.txt mycert-rsa.pem
-    CHECK_RESULT $?
-    test -f etest.txt
-    CHECK_RESULT $?
-    openssl smime -decrypt -in etest.txt -inkey rsakey.pem -out dtest.txt
-    CHECK_RESULT $?
-    test -f dtest.txt
+    echo "Hello, world!" >word
+    openssl dgst -sha1 -c word | grep "SHA1(word)"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -f $(ls | grep -v "\.sh\|common")
+    rm -f word
     LOG_INFO "End to restore the test environment."
 }
 
