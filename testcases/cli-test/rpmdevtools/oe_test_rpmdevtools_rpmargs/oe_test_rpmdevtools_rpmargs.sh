@@ -13,12 +13,12 @@
 #@Contact   	:   mingxiang@isrc.iscas.ac.cn
 #@Date      	:   2022-3-18 19:37:00
 #@License   	:   Mulan PSL v2
-#@Desc      	:   test rpmargs rpmdev-checksig rpmdev-cksum rpmdev-diff rpmdev-extract rpmdev-md5 
+#@Desc      	:   test rpmargs rpmdev-checksig rpmdev-cksum rpmdev-diff rpmdev-extract rpmdev-md5
 #####################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function pre_test(){
+function pre_test() {
     LOG_INFO "Start environment preparation."
     DNF_INSTALL "rpmdevtools"
     pkg_name=$(dnf list | head -n 3 | tail -n 1 | awk '{print $1}' | awk 'BEGIN {FS="."} {print $1}')
@@ -38,7 +38,7 @@ function pre_test(){
     LOG_INFO "End of environmental preparation."
 }
 
-function run_test(){
+function run_test() {
     LOG_INFO "Start to run test."
 
     rpmargs -h | grep Usage:$'\n'"  "rpmargs
@@ -46,12 +46,12 @@ function run_test(){
     rpmargs -c file -a | grep "${pkg_name}"
     CHECK_RESULT $? 0 0 "Failed option: -a"
     rpmargs -c file -p /ALT/Sisyphus/files/noarch/RPMS/${pkg_name}*.rpm | grep "${pkg_name}"
-    CHECK_RESULT $? 0 0 "Failed option: -p"	
+    CHECK_RESULT $? 0 0 "Failed option: -p"
 
     rpmdev-checksig ${pkg_name}*.rpm | grep "${pkg_name}.*.rpm: RSA/SHA1"
     CHECK_RESULT $? 0 0 "Failed command:rpmdev-checksig"
 
-    rpmdev-cksum ${pkg_name}*rpm | head -n 1 | awk '{print $3}' | grep "${pkg_name}.*rpm" 
+    rpmdev-cksum ${pkg_name}*rpm | head -n 1 | awk '{print $3}' | grep "${pkg_name}.*rpm"
     CHECK_RESULT $? 0 0 "Failed command: rpmdev-cksum"
 
     rpmdev-diff -v | grep 'rpmdev-diff version'
@@ -70,12 +70,12 @@ function run_test(){
     CHECK_RESULT $? 0 0 "Failed option: -y"
 
     rpmdev-extract -q ${pkg_name}*.rpm
-    echo ${pkg_name}*${pkg_arch} | test -d
+    test -d ${pkg_name}*${pkg_arch}
     CHECK_RESULT $? 0 0 "Failed option: -q"
     rpmdev-extract -f ${pkg_name}*.rpm | grep ${pkg_name}
-    CHECK_RESULT $? 0 0 "Failed option: -f"	
+    CHECK_RESULT $? 0 0 "Failed option: -f"
     rpmdev-extract -C ./tmp_dir ${pkg_name}*.rpm
-    echo ./tmp_dir/${pkg_name}*{pkg_arch} | test -d 
+    test -d ./tmp_dir/${pkg_name}*${pkg_arch}
     CHECK_RESULT $? 0 0 "Failed option: -C"
     rpmdev-extract -h | grep -A 10 "rpmdev-extract" | grep "Options:"
     CHECK_RESULT $? 0 0 "Failed option: -h"
@@ -88,12 +88,11 @@ function run_test(){
     LOG_INFO "End to run test."
 }
 
-function post_test(){
+function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf /ALT ./tmp_dir ${pkg_name}* 
+    rm -rf /ALT ./tmp_dir ${pkg_name}* ${pkg_name1}*
     LOG_INFO "End to restore the test environment."
 }
 
 main "$@"
-
