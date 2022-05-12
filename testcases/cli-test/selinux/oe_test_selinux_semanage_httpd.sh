@@ -15,47 +15,53 @@
 # @modify    :   wangxiaoya@qq.com
 # @Date      :   2022/05/12
 # @License   :   Mulan PSL v2
-# @Desc      :   Customize SELinux strategy for apache http server in non-standard configuration
+# @Desc      :   Modify the HTTP default directory in SELinux
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL "httpd setroubleshoot-server"
+    DNF_INSTALL "setroubleshoot-server httpd"
+    test -f /srv/www1 || rm -rf /srv/www1
     rdport=$(GET_FREE_PORT "$NODE1_IPV4")
-    cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf-bak
-    sed -i "s/Listen 80/Listen $rdport/g" /etc/httpd/conf/httpd.conf
-    sed -i '/DocumentRoot/s/www/test_www/g' /etc/httpd/conf/httpd.conf
-    sed -i '/Directory/s/www/test_www/g' /etc/httpd/conf/httpd.conf
-    cp /var/www /var/test_www -rf
-    cp /usr/share/httpd/noindex/index.html /var/test_www/html
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    systemctl restart httpd
-    systemctl status httpd 2>&1 | grep "Failed to start The Apache HTTP Server"
-    CHECK_RESULT $? 0 0 "Check httpd status failed"
+    mkdir /srv/www1
+    semanage fcontext -a -t httpd_sys_content_t "/srv/www1(/.*)?"
+    CHECK_RESULT $?
+    restorecon -R -v /srv/www1
+    CHECK_RESULT $?
+    touch /var/www/html/index1.html
+    matchpathcon -V /var/www/html/*
+    CHECK_RESULT $?
+    restorecon -v /var/www/html/index1.html
+    CHECK_RESULT $?
+    setsebool -P httpd_can_network_connect_db on
+    CHECK_RESULT $?
+    getsebool -a | grep ftp
+    CHECK_RESULT $?
+    semanage port -l | grep http
+    CHECK_RESULT $?
+    systemctl start httpd
+    CHECK_RESULT $?
+    systemctl status httpd | grep "running"
+    CHECK_RESULT $?
     semanage port -a -t http_port_t -p tcp $rdport
-    semanage fcontext -a -e /var/www /var/test_www
-    restorecon -Rv /var/
-    chmod 777 -R /var/test_www
-    systemctl restart httpd
-    wget localhost:$rdport/index.html
-    CHECK_RESULT $? 0 0 "Check wget failed"
+    CHECK_RESULT $?
     LOG_INFO "Finish testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    mv -f /etc/httpd/conf/httpd.conf-bak /etc/httpd/conf/httpd.conf
-    semanage fcontext -d -e /var/www /var/test_www
     semanage port --delete -t ssh_port_t -p tcp $rdport
+    semanage fcontext -d -t httpd_sys_content_t "/srv/www1(/.*)?"
+    setsebool -P httpd_can_network_connect_db off
     systemctl stop httpd
+    rm -rf /var/www/html/index1.html /srv/www1
     DNF_REMOVE
-    rm -rf /var/test_www index.html /home/http_status.txt
     LOG_INFO "Finish environment cleanup!"
 }
 

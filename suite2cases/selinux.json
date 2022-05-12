@@ -4,23 +4,53 @@
         {
             "name": "oe_test_selinux_listuser"
         },
-	{
-	    "name": "oe_test_selinux_adduser"
-	},
-	{
-	    "name": "oe_test_selinux_confining_regular_user"
-	},
-	{
-	    "name": "oe_test_selinux_confining_admin_using_role"
-	},
-	{
-	    "name": "oe_test_selinux_confining_admin_to_sysadm_u"
-	},
-	{
-	    "name": "oe_test_selinux_http"
-	},
-	{
-	    "name": "oe_test_selinux_sharing_nfs_cifs_using_booleans"
-	}
+        {
+            "name": "oe_test_selinux_adduser"
+        },
+        {
+            "name": "oe_test_selinux_confining_regular_user"
+        },
+        {
+            "name": "oe_test_selinux_confining_admin_using_role"
+        },
+        {
+            "name": "oe_test_selinux_confining_admin_to_sysadm_u"
+        },
+        {
+            "name": "oe_test_selinux_http"
+        },
+        {
+            "name": "oe_test_selinux_sharing_nfs_cifs_using_booleans"
+        },
+        {
+            "name": "oe_test_selinux_sec_status_mode"
+        },
+        {
+            "name": "oe_test_selinux_sec_sestatus"
+        },
+        {
+            "name": "oe_test_selinux_change_permissive"
+        },
+        {
+            "name": "oe_test_selinux_change_enforcing"
+        },
+        {
+            "name": "oe_test_selinux_disable"
+        },
+        {
+            "name": "oe_test_selinux_booleands"
+        },
+        {
+            "name": "oe_test_identify_selinux_rejects"
+        },
+        {
+            "name": "oe_test_fix_selinux_reject_messages"
+        },
+        {
+            "name": "oe_test_selinux_semanage_httpd"
+        },
+        {
+            "name": "oe_test_selinux_audit"
+        }
     ]
 }

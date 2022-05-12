@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2022. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -10,35 +10,38 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   yanglijin
-# @Contact   :   yang_lijin@qq.com
-# @Date      :   2021/09/10
+# @Author    :   huyahui
+# @Contact   :   huyahui8@163.com
+# @modify    :   wangxiaoya@qq.com
+# @Date      :   2022/05/12
 # @License   :   Mulan PSL v2
-# @Desc      :   list confined and unconfined user
+# @Desc      :   Permanently disable SELinux
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL "setools-console"
-    LOG_INFO "End of environmental preparation."
+    P_SSH_CMD --cmd "cp /etc/selinux/config /etc/selinux/config-bak" --node 2
+    LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    semanage login -l | grep "__default__" | grep "unconfined_u"
-    CHECK_RESULT $? 0 0 "Check user mapping failed"
-    seinfo -u | grep -e "guest_u" -e "root" -e "staff_u" -e "sysadm_u" -e "system_u" -e "unconfined_u" -e "user_u" -e "xguest_u"
-    CHECK_RESULT $? 0 0 "Check selinux users failed"
-    seinfo -r | grep "Roles: 14"
-    CHECK_RESULT $? 0 0 "Check selinux roles failed"
+    P_SSH_CMD --cmd "echo 'SELINUX=disabled
+SELINUXTYPE=targeted'>/etc/selinux/config" --node 2
+    SLEEP_WAIT 1
+    P_SSH_CMD --cmd "reboot &" --node 2
+    REMOTE_REBOOT_WAIT 2 15
+    P_SSH_CMD --cmd "getenforce | grep Disabled" --node 2
+    CHECK_RESULT $?
     LOG_INFO "Finish testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    DNF_REMOVE
+    P_SSH_CMD --cmd "mv -f /etc/selinux/config-bak /etc/selinux/config" --node 2
+    P_SSH_CMD --cmd "reboot &" --node 2
+    REMOTE_REBOOT_WAIT 2 15
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"

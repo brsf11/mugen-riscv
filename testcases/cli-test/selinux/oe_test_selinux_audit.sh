@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2022. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -10,35 +10,29 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   yanglijin
-# @Contact   :   yang_lijin@qq.com
-# @Date      :   2021/09/10
+# @Author    :   huyahui
+# @Contact   :   huyahui8@163.com
+# @modify    :   wangxiaoya@qq.com
+# @Date      :   2022/05/12
 # @License   :   Mulan PSL v2
-# @Desc      :   list confined and unconfined user
+# @Desc      :   View SELinux logs in audit
 # #############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
-function pre_test() {
-    LOG_INFO "Start environmental preparation."
-    DNF_INSTALL "setools-console"
-    LOG_INFO "End of environmental preparation."
-}
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    semanage login -l | grep "__default__" | grep "unconfined_u"
-    CHECK_RESULT $? 0 0 "Check user mapping failed"
-    seinfo -u | grep -e "guest_u" -e "root" -e "staff_u" -e "sysadm_u" -e "system_u" -e "unconfined_u" -e "user_u" -e "xguest_u"
-    CHECK_RESULT $? 0 0 "Check selinux users failed"
-    seinfo -r | grep "Roles: 14"
-    CHECK_RESULT $? 0 0 "Check selinux roles failed"
+    ausearch -m AVC,USER_AVC,SELINUX_ERR,USER_SELINUX_ERR > selinux_log
+    CHECK_RESULT $?
+    test $(grep -c AVC selinux_log) -gt 0
+    CHECK_RESULT $?
     LOG_INFO "Finish testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    DNF_REMOVE
+    rm -rf selinux_log
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"
