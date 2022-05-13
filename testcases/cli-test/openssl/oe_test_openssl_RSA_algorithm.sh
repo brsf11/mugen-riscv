@@ -11,34 +11,30 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-07-27
+#@Date          :   2020-07-23
 #@License       :   Mulan PSL v2
-#@Desc          :   Pressure load : concurrent operations
+#@Desc          :   Application scenarios: method of generating the private key,public key,and self-shared key(signature certificate) of the RSA algorithm
 #####################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function run_test() {
     LOG_INFO "Start to run test."
-    for i in $(seq 1 200); do
-        echo $i >word_$i
-        CHECK_RESULT $?
-    done
-    for i in $(seq 1 200); do
-        openssl enc -e -des3 -a -salt -in word_$i -out encword_$i -pass pass:123456 &
-        CHECK_RESULT $?
-    done
-    SLEEP_WAIT 3
-    for i in $(seq 1 200); do
-        grep "U2FsdGVkX1" encword_$i
-        CHECK_RESULT $?
-    done
+    openssl genrsa -out rsakey.pem
+    CHECK_RESULT $?
+    grep 'BEGIN RSA PRIVATE KEY' rsakey.pem
+    CHECK_RESULT $?
+    openssl rsa -in rsakey.pem -pubout -out rsakey-pub.pem
+    CHECK_RESULT $?
+    grep 'BEGIN PUBLIC KEY' rsakey-pub.pem
+    CHECK_RESULT $?
+    generate_PublicKey
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -f word* encword*
+    rm -f rsakey.pem rsakey-pub.pem mycert-rsa.pem testlog
     LOG_INFO "End to restore the test environment."
 }
 

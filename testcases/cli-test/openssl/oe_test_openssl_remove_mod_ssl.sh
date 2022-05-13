@@ -11,34 +11,43 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-07-27
+#@Date          :   2020-07-29
 #@License       :   Mulan PSL v2
-#@Desc          :   Pressure load : concurrent operations
+#@Desc          :   remove the mod_ssl.so module,restart service(Implements https based on httpd and OpenSSL)
 #####################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source "common/common_openssl.sh"
+
+function config_params() {
+    LOG_INFO "Start to config params of the case."
+    deploy_env
+    LOG_INFO "End to config params of the case."
+}
+
+function pre_test() {
+    LOG_INFO "Start to prepare the test environment."
+    DNF_INSTALL "httpd mod_ssl"
+    createCA_and_Self_signed_certificate
+    generate_PrivateKey_and_Certificate_Signing_Request
+    CA_Signature_Authentication
+    Modify_application_configuration
+    rm -f /usr/lib64/httpd/modules/mod_ssl.so
+    LOG_INFO "End to prepare the test environment."
+}
 
 function run_test() {
     LOG_INFO "Start to run test."
-    for i in $(seq 1 200); do
-        echo $i >word_$i
-        CHECK_RESULT $?
-    done
-    for i in $(seq 1 200); do
-        openssl enc -e -des3 -a -salt -in word_$i -out encword_$i -pass pass:123456 &
-        CHECK_RESULT $?
-    done
-    SLEEP_WAIT 3
-    for i in $(seq 1 200); do
-        grep "U2FsdGVkX1" encword_$i
-        CHECK_RESULT $?
-    done
+    systemctl restart httpd  2>&1 | grep 'failed'
+    CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -f word* encword*
+    mv -f /etc/pki/tls/openssl.cnf.bak /etc/pki/tls/openssl.cnf
+    clean_httpd_openssl
+    systemctl stop httpd
+    DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
 

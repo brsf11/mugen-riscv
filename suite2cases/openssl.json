@@ -57,6 +57,30 @@
         },
         {
             "name": "oe_test_openssl_one_way_encryption"
+        },
+        {
+            "name": "oe_test_openssl_related_concurrent_operations"
+        },
+        {
+            "name": "oe_test_openssl_reliability"
+        },
+        {
+            "name": "oe_test_openssl_remove_mod_ssl"
+        },
+        {
+            "name": "oe_test_openssl_repeated_execution"
+        },
+        {
+            "name": "oe_test_openssl_repeat_restart"
+        },
+        {
+            "name": "oe_test_openssl_RSA_algorithm"
+        },
+        {
+            "name": "oe_test_openssl_symmetrically_encrypts_decrypts_files"
+        },
+        {
+            "name": "oe_test_openssl_symmetric_encryption_decryption"
         }
     ]
 }
