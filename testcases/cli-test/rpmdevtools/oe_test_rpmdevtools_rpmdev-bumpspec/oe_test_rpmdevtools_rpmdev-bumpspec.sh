@@ -18,17 +18,17 @@
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function pre_test(){
+function pre_test() {
     LOG_INFO "Start environment preparation."
     DNF_INSTALL "rpmdevtools"
 
     rpmdev-newspec -o test.spec
-    echo "test -f." > file1
+    echo "test -f." >file1
 
     LOG_INFO "End of environmental preparation."
 }
 
-function run_test(){
+function run_test() {
     LOG_INFO "Start to run test."
 
     rpmdev-bumpspec -h | grep "Usage: rpmdev-bumpspec \[OPTION\]"
@@ -39,29 +39,29 @@ function run_test(){
     rpmdev-bumpspec -V test.spec | grep -A 2 "test.spec" | grep -A 1 "-" | grep "+"
     CHECK_RESULT $? 0 0 "Failed option: -V"
     rpmdev-bumpspec -v | grep 'rpmdev-bumpspec version'
-    CHECK_RESULT $? 0 0 "Failed option: -v"	
+    CHECK_RESULT $? 0 0 "Failed option: -v"
     rpmdev-bumpspec -u test_name\ xxxxxxxxxx@qq.com test.spec
     grep -A 2 "%changelog" test.spec | grep "\*.*test_name xxxxxxxxxx@qq.com"
     CHECK_RESULT $? 0 0 "Failed option: -u"
     rpmdev-bumpspec -f file1 test.spec
     grep -A 2 "changelog" test.spec | grep "\- test -f."
     CHECK_RESULT $? 0 0 "Failed option: -f"
-    rpmdev-bumpspec -r test.spec 
+    rpmdev-bumpspec -r test.spec
     grep -A 2 "%changelog" test.spec | grep "\- rebuilt"
     CHECK_RESULT $? 0 0 "Failed option: -r"
-    rpmdev-bumpspec -s release test.spec 
+    rpmdev-bumpspec -s release test.spec
     grep -A 2 "%changelog" test.spec | grep "\- rebuilt"
     CHECK_RESULT $? 0 0 "Failed option: -s"
-    rpmdev-bumpspec -n new_test test.spec 
+    rpmdev-bumpspec -n new_test test.spec
     grep -A 2 "%changelog" test.spec | grep "\- new version"
     CHECK_RESULT $? 0 0 "Failed option: -n"
 
-    rpmdev-newinit -v | grep 'rpmdev-newinit version' 
+    rpmdev-newinit -v | grep 'rpmdev-newinit version'
     CHECK_RESULT $? 0 0 "Failed options: -v"
     rpmdev-newinit -h | grep "Usage: rpmdev-newinit \[option\]"
     CHECK_RESULT $? 0 0 "Failed options: -h"
     rpmdev-newinit -o test.init
-    test -f ./test.init 
+    test -f ./test.init
     CHECK_RESULT $? 0 0 "Failted options: -o"
 
     rpmdev-newspec -o testo.spec
@@ -83,7 +83,7 @@ function run_test(){
     LOG_INFO "End to run test."
 }
 
-function post_test(){
+function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
     rm -rf test* file1
@@ -91,7 +91,3 @@ function post_test(){
 }
 
 main "$@"
-
-
-
-

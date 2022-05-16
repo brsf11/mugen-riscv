@@ -18,7 +18,7 @@
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function pre_test(){
+function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL "rpmdevtools"
 
@@ -29,7 +29,7 @@ function pre_test(){
     LOG_INFO "End of environmental preparation."
 }
 
-function run_test(){
+function run_test() {
     LOG_INFO "Start to run test."
 
     rpmdev-vercmp 1 1 2 2 1 2
@@ -65,24 +65,24 @@ function run_test(){
     CHECK_RESULT $? 0 0 "Failed option: -p"
     spectool -d 'test test1' rpmdevtools.spec
     CHECK_RESULT $? 0 0 "Failed option: -d"
-    spectool -g -C ./test_dir rpmdevtools.spec && test -e ./test_dir/*tar.xz
+    spectool -g -C ./test_dir rpmdevtools.spec && test -f ./test_dir/*tar.xz
     CHECK_RESULT $? 0 0 "Failed option: -C"
-    spectool -g -R rpmdevtools.spec && test -e ~/rpmbuild/SOURCES/*tar.xz 
+    spectool -g -R rpmdevtools.spec && test -f ~/rpmbuild/SOURCES/*tar.xz
     CHECK_RESULT $? 0 0 "Failed option: -R"
-    test -e *tar.xz && spectool -g -f rpmdevtools.spec
+    test -f *tar.xz && spectool -g -f rpmdevtools.spec
     CHECK_RESULT $? 0 0 "Failed option: -f"
     rm *tar.gz
     spectool -g -n rpmdevtools.spec
     CHECK_RESULT $? 0 0 "Failed option: -n"
     rm -rf /tmp/spectool*
-    spectool -D rpmdevtools.spec 
-    test $(ls -l /tmp/spectool* | wc -l) ==  4
+    spectool -D rpmdevtools.spec
+    test $(ls -l /tmp/spectool* | wc -l) == 4
     CHECK_RESULT $? 0 0 "Failed option: -D"
 
     LOG_INFO "End to run test."
 }
 
-function post_test(){
+function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
     rm -rf ./test_dir ~/rpmbuild ./rpmdevtools*
@@ -90,4 +90,3 @@ function post_test(){
 }
 
 main "$@"
-

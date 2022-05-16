@@ -18,7 +18,7 @@
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function pre_test(){
+function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL "rpmdevtools gcc"
     useradd user_test
@@ -44,17 +44,16 @@ function pre_test(){
     LOG_INFO "End of environmental preparation."
 }
 
-
-function run_test(){
+function run_test() {
     LOG_INFO "Start to run test."
 
-    test -e /home/user_test/rpmbuild/RPMS/${NODE1_FRAME}/*rpm 
+    test -f /home/user_test/rpmbuild/RPMS/${NODE1_FRAME}/*rpm
     CHECK_RESULT $? 0 0 "Failed pre_test"
     su user_test -c "rpmdev-wipetree"
-    test -e /home/user_test/rpmbuild/RPMS/${NODE1_FRAME}/*rpm
+    test -f /home/user_test/rpmbuild/RPMS/${NODE1_FRAME}/*rpm
     CHECK_RESULT $? 1 0 "Failed command: rpmdev-wipetree"
 
-    rpmelfsym -p ${pkg_name}*rpm | grep "/usr/.*" 
+    rpmelfsym -p ${pkg_name}*rpm | grep "/usr/.*"
     CHECK_RESULT $? 0 0 "Failed option: -p"
     rpmelfsym -h | grep -A 1 "Usage:" | grep "rpmelfsym"
     CHECK_RESULT $? 0 0 "Failed option: -h"
@@ -70,32 +69,28 @@ function run_test(){
 
     rpminfo -h | grep "Usage: rpminfo"
     CHECK_RESULT $? 0 0 "Failed option: -h"
-    rpminfo -v ${pkg_name1} | grep "${pkg_name1}" 
+    rpminfo -v ${pkg_name1} | grep "${pkg_name1}"
     CHECK_RESULT $? 0 0 "Failed option: -v"
-    rpminfo -q ${pkg_name1} | grep "${pkg_name1}.*" 
+    rpminfo -q ${pkg_name1} | grep "${pkg_name1}.*"
     CHECK_RESULT $? 0 0 "Failed option: -q"
     rpminfo -qq ${pkg_name1} | grep "${pkg_name1}.*"
     CHECK_RESULT $? 0 0 "Failed option: -qq"
     rpminfo -i -o record
-    test -e record
+    test -f record
     CHECK_RESULT $? 0 0 'Failed option: -i -o'
     rpminfo -e ${pkg_name1} | grep -A 20 "${pkg_name1}.*" | grep "/usr/bin"
     CHECK_RESULT $? 0 0 "Failed option: -e"
-    rpminfo -l ${pkg_name1} | grep -A 20 "${pkg_name1}.*" | grep "/usr/lib" 
+    rpminfo -l ${pkg_name1} | grep -A 20 "${pkg_name1}.*" | grep "/usr/lib"
     CHECK_RESULT $? 0 0 "Failed option: -l"
     rpminfo -p ${pkg_name1} | grep "PIC"
     CHECK_RESULT $? 0 0 "Failed option: -p"
-    output=$(rpminfo -np ${pkg_name1} | wc -l)
-    test ${output} == 0
+    rpminfo -np ${pkg_name1}
     CHECK_RESULT $? 0 0 "Failed option: -np"
-    output1=$(rpminfo -P ${pkg_name1} | wc -l)
-    test ${output1} == 0
+    rpminfo -P ${pkg_name1}
     CHECK_RESULT $? 0 0 "Failed option: -P"
-    output2=$(rpminfo -nP ${pkg_name1} | wc -l)
-    test ${output2} == 0
+    rpminfo -nP ${pkg_name1}
     CHECK_RESULT $? 0 0 "Failed option: -nP"
-    output3=$(rpminfo -r ${pkg_name1} | wc -l)
-    test ${output3} == 0
+    rpminfo -r ${pkg_name1}
     CHECK_RESULT $? 0 0 "Failed option: -r"
     rpminfo -ro ${pkg_name1} | grep "PIC"
     CHECK_RESULT $? 0 0 "Failed option: -ro"
@@ -114,7 +109,7 @@ function run_test(){
     CHECK_RESULT $? 0 0 "Failed option: -h"
     rpmpeek ${pkg_name}*rpm ls -l | grep "usr"
     CHECK_RESULT $? 0 0 "Failed command: rpmpeek"
-    rpmpeek -n ${pkg_name}*rpm ls -l 
+    rpmpeek -n ${pkg_name}*rpm ls -l
     CHECK_RESULT $? 0 0 "Failed option: -n"
 
     rpmsodiff -h | grep -A 1 "Usage:" | grep "rpmsodiff"
@@ -132,7 +127,7 @@ function run_test(){
     LOG_INFO "End to run test."
 }
 
-function post_test(){
+function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
     userdel -rf user_test
@@ -142,4 +137,3 @@ function post_test(){
 }
 
 main "$@"
-
