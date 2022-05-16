@@ -11,34 +11,30 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-07-27
+#@Date          :   2020-07-22
 #@License       :   Mulan PSL v2
-#@Desc          :   Pressure load : concurrent operations
+#@Desc          :   Encryption algorithm: symmetric encryption and decryption
 #####################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function run_test() {
     LOG_INFO "Start to run test."
-    for i in $(seq 1 200); do
-        echo $i >word_$i
-        CHECK_RESULT $?
-    done
-    for i in $(seq 1 200); do
-        openssl enc -e -des3 -a -salt -in word_$i -out encword_$i -pass pass:123456 &
-        CHECK_RESULT $?
-    done
-    SLEEP_WAIT 3
-    for i in $(seq 1 200); do
-        grep "U2FsdGVkX1" encword_$i
-        CHECK_RESULT $?
-    done
+    echo "Hello, world!" >word
+    openssl enc -e -des3 -a -salt -in word -out encword -pass pass:123456
+    CHECK_RESULT $?
+    grep "U2FsdGVkX1" encword
+    CHECK_RESULT $?
+    openssl enc -d -des3 -a -salt -in encword -out decword -pass pass:123456
+    CHECK_RESULT $?
+    test -f decword && diff word decword
+    CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -f word* encword*
+    rm -f word encword decword
     LOG_INFO "End to restore the test environment."
 }
 
