@@ -1,0 +1,17 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/fio",
+    "cases": [
+        {
+            "name": "oe_test_fio_001"
+        },
+        {
+            "name": "oe_test_fio_002"
+        },
+	{
+	    "name": "oe_test_fio_003"
+	},
+	{
+	    "name": "oe_test_fio_004"
+	}
+    ]
+}
