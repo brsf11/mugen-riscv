@@ -15,47 +15,54 @@
 # @modify    :   wangxiaoya@qq.com
 # @Date      :   2022/05/12
 # @License   :   Mulan PSL v2
-# @Desc      :   Customize SELinux strategy for apache http server in non-standard configuration
+# @Desc      :   Fix SELinux rejections that have been analyzed
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL "httpd setroubleshoot-server"
-    rdport=$(GET_FREE_PORT "$NODE1_IPV4")
+    default_selinux_status=$(getenforce)
+    [ "$default_selinux_status" == "Enforcing" ] || setenforce 1
     cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf-bak
-    sed -i "s/Listen 80/Listen $rdport/g" /etc/httpd/conf/httpd.conf
-    sed -i '/DocumentRoot/s/www/test_www/g' /etc/httpd/conf/httpd.conf
-    sed -i '/Directory/s/www/test_www/g' /etc/httpd/conf/httpd.conf
-    cp /var/www /var/test_www -rf
-    cp /usr/share/httpd/noindex/index.html /var/test_www/html
+    sed -i "s/Listen 80/Listen 3131/g" /etc/httpd/conf/httpd.conf
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase."
     systemctl restart httpd
-    systemctl status httpd 2>&1 | grep "Failed to start The Apache HTTP Server"
-    CHECK_RESULT $? 0 0 "Check httpd status failed"
-    semanage port -a -t http_port_t -p tcp $rdport
-    semanage fcontext -a -e /var/www /var/test_www
-    restorecon -Rv /var/
-    chmod 777 -R /var/test_www
-    systemctl restart httpd
-    wget localhost:$rdport/index.html
-    CHECK_RESULT $? 0 0 "Check wget failed"
+    sealert -a /var/log/audit/audit.log | grep "[a-z]" >/tmp/prevent_info.txt
+    grep "SELinux is preventing httpd from name_bind access on the tcp_socket port 3131" /tmp/prevent_info.txt
+    CHECK_RESULT $?
+    suggest_infoc=$(grep "ausearch -c" /tmp/prevent_info.txt)
+    suggest_infox=$(grep "semodule -X" /tmp/prevent_info.txt)
+    if [ -z "${suggest_infoc}" ] || [ -z "${suggest_infox}" ]; then
+        RULE_FLAG=1
+        auditctl -w /usr/bin/systemctl -p r -k httpd-start
+        rm -f /var/lib/setroubleshoot/setroubleshoot.xml
+        systemctl restart httpd
+        sealert -a /var/log/audit/audit.log | grep "[a-z]" >/tmp/prevent_info.txt
+        suggest_infoc=$(grep "ausearch -c" /tmp/prevent_info.txt)
+        suggest_infox=$(grep "semodule -X" /tmp/prevent_info.txt)
+        test -n "{suggest_infoc}" && test -n "{suggest_infox}"
+        CHECK_RESULT $?
+    fi
     LOG_INFO "Finish testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
     mv -f /etc/httpd/conf/httpd.conf-bak /etc/httpd/conf/httpd.conf
-    semanage fcontext -d -e /var/www /var/test_www
-    semanage port --delete -t ssh_port_t -p tcp $rdport
     systemctl stop httpd
     DNF_REMOVE
-    rm -rf /var/test_www index.html /home/http_status.txt
+    if [ "$default_selinux_status" == "Enforcing" ]; then
+        setenforce 1
+    else
+        setenforce 0
+    fi
+    rm -rf /tmp/prevent_info.txt
+    [ ${RULE_FLAG} -eq 1 ] && auditctl -w /usr/bin/systemctl -p r -k httpd-start
     LOG_INFO "Finish environment cleanup!"
 }
 
