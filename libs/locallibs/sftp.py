@@ -83,23 +83,28 @@ def psftp_get(conn, remote_dir, remote_file="", local_dir=os.getcwd()):
     if remote_file == "":
         all_file = get_remote_file(sftp, remote_dir)
     else:
-        if ssh_cmd.pssh_cmd(conn, "test -f " + remote_file)[0]:
+        if ssh_cmd.pssh_cmd(conn, "test -f " + os.path.join(remote_dir, remote_file))[0]:
             mugen_log.logging("error", "remote file:%s does not exist" % remote_file)
             conn.close()
             sys.exit(1)
 
         all_file = get_remote_file(sftp, remote_dir, remote_file)
 
+    local_dir = os.path.normpath(local_dir)
+    remote_dir = os.path.normpath(remote_dir)
+
     for f in all_file:
         if remote_file == "":
             storage_dir = remote_dir.split("/")[-1]
             storage_path = os.path.join(
-                local_dir, storage_dir + os.path.dirname(f).split(storage_dir)[-1]
+                local_dir, storage_dir + os.path.dirname(f[len(remote_dir):])
             )
             if not os.path.exists(storage_path):
                 os.makedirs(storage_path)
             sftp.get(f, os.path.join(storage_path, f.split("/")[-1]))
         else:
+            if not os.path.exists(local_dir):
+                os.makedirs(local_dir)
             sftp.get(f, os.path.join(local_dir, f.split("/")[-1]))
         mugen_log.logging("info", "start to get file:%s......" % f)
 
@@ -157,7 +162,7 @@ def psftp_put(conn, local_dir=os.getcwd(), local_file="", remote_dir=""):
     if local_file == "":
         all_file = get_local_file(local_dir)
     else:
-        if subprocess.getstatusoutput("test -f " + local_dir + local_file)[0]:
+        if subprocess.getstatusoutput("test -f " + os.path.join(local_dir, local_file))[0]:
             mugen_log.logging("error", "local file:%s does not exist" % local_file)
             conn.close()
             sys.exit(1)
@@ -165,17 +170,22 @@ def psftp_put(conn, local_dir=os.getcwd(), local_file="", remote_dir=""):
 
     if remote_dir == "":
         remote_dir = ssh_cmd.pssh_cmd(conn, "pwd")[1]
+    
+    local_dir = os.path.normpath(local_dir)
+    remote_dir = os.path.normpath(remote_dir)
 
     for f in all_file:
         if local_file == "":
             storage_dir = local_dir.split("/")[-1]
             storage_path = os.path.join(
-                remote_dir, storage_dir + os.path.dirname(f).split(storage_dir)[-1]
+                remote_dir, storage_dir + os.path.dirname(f[len(local_dir):])
             )
             if ssh_cmd.pssh_cmd(conn, "test -d " + storage_path)[0]:
                 ssh_cmd.pssh_cmd(conn, "mkdir -p " + storage_path)
             sftp.put(f, os.path.join(storage_path, f.split("/")[-1]))
         else:
+            if ssh_cmd.pssh_cmd(conn, "test -d " + remote_dir)[0]:
+                ssh_cmd.pssh_cmd(conn, "mkdir -p " + remote_dir)
             sftp.put(f, os.path.join(remote_dir, f.split("/")[-1]))
         mugen_log.logging("info", "start to put file:%s......" % f)
 
@@ -199,7 +209,7 @@ if __name__ == "__main__":
     parser.add_argument("--timeout", type=int, default=None)
     args = parser.parse_args()
 
-    if args.node is not None:
+    if args.node is not None and args.node > 0:
         args.ip = os.environ.get("NODE" + str(args.node) + "_IPV4")
         args.password = os.environ.get("NODE" + str(args.node) + "_PASSWORD")
         args.port = os.environ.get("NODE" + str(args.node) + "_SSH_PORT")
@@ -214,6 +224,14 @@ if __name__ == "__main__":
             mugen_log.logging(
                 "error",
                 "You need to check the environment configuration file to see if this node information exists.",
+            )
+            sys.exit(1)
+
+    if args.node < 0:
+        if args.ip is None or args.password is None:
+            mugen_log.logging(
+                "error",
+                "You need to check the parameter if node id < 0, ip and password must set.",
             )
             sys.exit(1)
 

@@ -28,6 +28,8 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 TIMEOUT="30m"
 COMMAND_X="no"
+COMMAND_S="no"
+COPY_DONE="no"
 CASE_NUM=0
 SUCCESS_NUM=0
 FAIL_NUM=0
@@ -36,9 +38,11 @@ function usage() {
     printf "Usage:  \n
     -c: configuration environment of test framework\n
     -a: execute all use cases\n
-    -f：designated test suite\n
-    -r：designated test case\n
-    -x：the shell script is executed in debug mode\n
+    -f: designated test suite\n
+    -r: designated test case\n
+    -x: the shell script is executed in debug mode\n
+    -b: do make for test suite if test suite path have makefile or Makefile file\n
+    -s: runing test case at remote NODE1
     \n
     Example: 
         run all cases:
@@ -58,9 +62,27 @@ function usage() {
             bash mugen.sh -f test_suite -r test_case
           debug mode:
             bash mugen.sh -f test_suite -r test_case -x
+        
+        run at remote:
+          normal mode:
+            bash mugen.sh -a -s
+            bash mugen.sh -f test_suite -s
+            bash mugen.sh -f test_suite -r test_case -s
+          debug mode:
+            bash mugen.sh -a -s
+            bash mugen.sh -f test_suite -s
+            bash mugen.sh -f test_suite -r test_case -s
         \n
 	configure env of test framework:
-	    bash mugen.sh -c --ip \$ip --password \$passwd --user \$user --port \$port\n"
+	    bash mugen.sh -c --ip \$ip --password \$passwd --user \$user --port \$port\n
+          if want run at remote should add --run_remote 
+          if want run at remote copy all testcase once add --put_all
+    \n
+    do make for test suite:
+        for all test suite:
+            bash mugen.sh -b -a
+        for one test suite:
+            bash mugen.sh -b test_suite\n"
 }
 
 function deploy_conf() {
@@ -79,6 +101,10 @@ function load_conf() {
     env_conf="$(echo -e $conf_file | sed -e 's/json/env/')"
     printf "%s\n" "$export_var" >$env_conf
 
+    if [[ $COMMAND_S == "yes" ]]; then
+        env_path="$(echo -e $conf_file | sed -e 's/mugen.json//')"
+        SFTP put --node 1 --remotedir /mugen_re/conf/ --localdir $env_path --localfile "mugen.env"
+    fi
 }
 
 function generate_result_file() {
@@ -177,6 +203,26 @@ function run_test_case() {
         exec_case "exit 255" "$log_path" "$test_case" "$test_suite"
     fi
 
+    if [[ $COMMAND_S == "yes" && $COPY_DONE == "no" ]]; then
+        common_files=$(python3 ${OET_PATH}/libs/locallibs/suite_case.py --suite $test_suite --key common-files)
+        test $? -ne 0 && return 1
+
+        for one_file in $common_files; do
+            local_dir=${one_file%/*}
+            local_file=${one_file##*/}
+            remote_dir=$(echo -e ${local_dir} | sed -e "s#${OET_PATH}#/mugen_re#")
+            SFTP put --node 1 --remotedir $remote_dir --remotefile $local_file --localdir $local_dir --localfile $local_file
+            if [ $? -ne 0 ]; then
+                LOG_ERROR "Copy $test_suite suite2cases to remote fail."
+                return 1
+            fi
+        done
+
+        remote_dir=$(echo -e ${case_path%/*} | sed -e "s#${OET_PATH}#/mugen_re#") 
+        SFTP put --node 1 --remotedir $remote_dir --localdir $case_path
+        test $? -ne 0 && return 1
+    fi
+
     pushd "$case_path" >/dev/null || return 1
 
     local time_out
@@ -188,15 +234,34 @@ function run_test_case() {
 
     if [[ "$script_type"x == "sh"x ]] || [[ "$script_type"x == "bash"x ]]; then
         if [ "$COMMAND_X"x == "yes"x ]; then
-            exec_case "bash -x ${test_case}.sh" "$log_path" "$test_case" "$test_suite"
+            run_cmd="bash -x ${test_case}.sh"
         else
-            exec_case "bash ${test_case}.sh" "$log_path" "$test_case" "$test_suite"
+            run_cmd="bash ${test_case}.sh"
         fi
     elif [ "$script_type"x == "py"x ]; then
-        exec_case "python3 ${test_case}.py" "$log_path" "$test_case" "$test_suite"
+        run_cmd="python3 ${test_case}.py"
     fi
 
+    if [[ $COMMAND_S == "yes" ]]; then
+        remote_case_path=$(echo -e ${case_path} | sed -e "s#${OET_PATH}#/mugen_re#")
+        remote_cmd=". /mugen_re/conf/mugen.env &&
+                 export OET_PATH=/mugen_re &&
+                 pushd \"$remote_case_path\" >/dev/null || exit 1 &&
+                 $run_cmd > /tmp/mugen_re.log 2>&1 &&
+                 (cat /tmp/mugen_re.log && rm -rf /tmp/mugen_re.log && popd >/dev/null || exit 1) ||
+                 (cat /tmp/mugen_re.log 1>&2 && rm -rf /tmp/mugen_re.log && popd >/dev/null && exit 1)
+                "
+        run_cmd="python3 ${OET_PATH}/libs/locallibs/ssh_cmd.py --node 1 --cmd \"${remote_cmd}\""
+    fi
+
+    exec_case "$run_cmd" "$log_path" "$test_case" "$test_suite"
+
     popd >/dev/null || return 1
+
+    if [[ $COMMAND_S == "yes" && $COPY_DONE == "no" ]]; then
+        remote_dir=$(echo -e ${suite_path} | sed -e "s#${OET_PATH}#/mugen_re#")
+        P_SSH_CMD --node 1 --cmd "rm -rf $remote_dir"
+    fi
 
     LOG_INFO "End to run testcase:$test_case."
 }
@@ -209,9 +274,30 @@ function run_test_suite() {
         return 1
     }
 
+    local this_copy=false
+    local suite_path=""
+    if [[ $COMMAND_S == "yes" && $COPY_DONE == "no" && ${NODE1_COPY_ALL}x == "true"x ]]; then
+        suite_path=$(python3 ${OET_PATH}/libs/locallibs/suite_case.py --suite $test_suite --key path)
+        test $? -ne 0 && return 1
+
+        remote_dir=$(echo -e ${suite_path%/*} | sed -e "s#${OET_PATH}#/mugen_re#")
+        SFTP put --node 1 --remotedir $remote_dir --localdir $suite_path
+        if [ $? -ne 0 ]; then
+            LOG_ERROR "Copy $test_suite testcases to remote fail."
+            return 1
+        fi
+        COPY_DONE="yes"
+        this_copy=true
+    fi
+
     for test_case in $(python3 ${OET_PATH}/libs/locallibs/suite_case.py --suite $test_suite --key cases-name | shuf); do
         run_test_case "$test_suite" "$test_case"
     done
+
+    if $this_copy; then
+        remote_dir=$(echo -e ${suite_path} | sed -e "s#${OET_PATH}#/mugen_re#")
+        P_SSH_CMD --node 1 --cmd "rm -rf $remote_dir"
+    fi
 }
 
 function run_all_cases() {
@@ -221,9 +307,24 @@ function run_all_cases() {
         return 1
     }
 
+    local this_copy=false
+    if [[ $COMMAND_S == "yes" && $COPY_DONE == "no" && ${NODE1_COPY_ALL}x == "true"x ]]; then
+        SFTP put --node 1 --remotedir /mugen_re/ --localdir ${OET_PATH}/testcases/
+        if [ $? -ne 0 ]; then
+            LOG_ERROR "Copy all testcases to remote fail."
+            return 1
+        fi
+        COPY_DONE="yes"
+        local this_copy=true
+    fi
+
     for test_suite in ${test_suites[*]}; do
         run_test_suite "$test_suite"
     done
+
+    if $this_copy; then
+        P_SSH_CMD --node 1 --cmd "rm -rf /mugen_re/testcases"
+    fi
 }
 
 function statistic_result() {
@@ -233,7 +334,88 @@ function statistic_result() {
     exit ${FAIL_NUM}
 }
 
-while getopts "c:af:r:dx" option; do
+DO_MAKE_COUNT=0
+NOT_DO_MAKE_COUNT=0
+TOTAL_MAKE_COUNT=0
+
+function build_one_suite() {
+    ((TOTAL_MAKE_COUNT++))
+    local test_suite=$1
+
+    [ -z "$(find $OET_PATH/suite2cases -name ${test_suite}.json)" ] && {
+        LOG_ERROR "In the suite2cases directory, Can't find the file of testsuite:${test_suite}."
+        return 1
+    }
+
+    suite_path=$(python3 ${OET_PATH}/libs/locallibs/suite_case.py --suite $test_suite --key path)
+    if [ $? -ne 0 ]; then
+        LOG_ERROR "find ${test_suite} test suite path fail"
+        return 1
+    fi
+    test -d "$suite_path" || {
+        LOG_ERROR "Path value:${suite_path} in a JSON file that does not exist in the environment."
+        return 1
+    }
+
+    pushd "$suite_path" >/dev/null || return 1
+
+    if [[ -f "./makefile" || -f "./Makefile" ]]; then
+        LOG_INFO "do make for testsuite: ${test_suite}"
+        make
+        if [ $? -ne 0 ]; then
+            LOG_ERROR "do make for testsuite: ${test_suite} fail"
+            popd >/dev/null
+            return 1
+        fi
+        ((DO_MAKE_COUNT++))
+    else
+        if [[ $2 != "no_print" ]]; then
+            LOG_INFO "This test suite $suite_path have no makefile or Makefile"
+        fi
+        ((NOT_DO_MAKE_COUNT++))
+    fi
+
+    popd >/dev/null || return 1
+
+    return 0
+}
+
+function build_all() {
+    test_suites=($(find ${OET_PATH}/suite2cases/ -type f -name "*.json" | awk -F '/' '{print $NF}' | sed -e 's/.json$//g'))
+    test ${#test_suites[@]} -eq 0 && {
+        LOG_ERROR "Can't find recording about test_suites."
+        return 1
+    }
+
+    do_error_count=0
+
+    for test_suite in ${test_suites[*]}; do
+        build_one_suite "$test_suite" "no_print"
+        if [ $? -ne 0 ]; then
+            LOG_ERROR "doing test suite $test_suite make fail"
+            ((do_error_count++))
+        fi
+    done
+
+    LOG_INFO "A total ${TOTAL_MAKE_COUNT} test suite run make, ${DO_MAKE_COUNT} had make, ${NOT_DO_MAKE_COUNT} no need do make, ${do_error_count} do make fail"
+    if [ $do_error_count -ne 0 ]; then
+        exit 1
+    fi
+
+    exit 0
+}
+
+function copy_libs_to_node1() {
+    if [[ $COMMAND_S == "no" ]]; then
+        return
+    fi
+    P_SSH_CMD --node 1 --cmd "ls -l /mugen_re/" | grep -q "libs"
+    if [ $? -ne 0 ]; then
+        SFTP put --node 1 --remotedir /mugen_re/ --localdir ${OET_PATH}/libs/
+    fi
+}
+
+while getopts "c:af:r:dxb:s" option; do
     case $option in
     c)
         deploy_conf ${*//-c/}
@@ -244,18 +426,47 @@ while getopts "c:af:r:dx" option; do
     a)
         if echo "$@" | grep -q -e ' -a *-x *$\| -x *-a *$\| -ax *$\| -xa *$'; then
             COMMAND_X="yes"
+        elif echo "$@" | grep -q -e '-a *-s *$\|-s *-a *$\|-as *$\|-sa *$'; then
+            COMMAND_S="yes"
+        elif echo "$@" | grep -q -e '-a *-b *$\|-b *-a *$\|-ab *$\|-ba *$'; then
+            ret=$(build_all)
+            exit $ret
         elif ! echo "$@" | grep -q -e '-a *$'; then
             usage
             exit 1
         fi
 
         load_conf
+        copy_libs_to_node1
         run_all_cases
         statistic_result
         ;;
+    b)
+        test_suite=$OPTARG
+        op_list=('-f' '-r' '-x' '-d' '-c' '-s')
 
+        for op in ${op_list[*]}; do
+            if [[ $test_suite ==  $op ]]; then
+                usage
+                exit 1
+            fi
+        done
+
+        if echo "$@" | grep -q -e ' *-a *$\|-ba *$'; then
+            build_all
+        else
+            build_one_suite $test_suite
+        fi
+
+        ;;
     f)
         test_suite=$OPTARG
+
+        echo "$@" | grep -q -e " -b *$"
+        if [ $? -eq 0 ]; then
+            usage
+            exit 1
+        fi
 
         echo $test_suite | grep -q -e ' -a\| -r \|-x\|-d' && {
             usage
@@ -266,14 +477,26 @@ while getopts "c:af:r:dx" option; do
             COMMAND_X="yes"
         }
 
+        echo "$@" | grep -q -e ' *-s *\| *-sf *' && {
+            COMMAND_S="yes"
+        }
+
         echo "$@" | grep -q -e ' -r ' || {
             load_conf
+            copy_libs_to_node1
             run_test_suite $test_suite
             statistic_result
         }
         ;;
     r)
         test_case=$OPTARG
+
+        echo "$@" | grep -q -e " -b *$"
+        if [ $? -eq 0 ]; then
+            usage
+            exit 1
+        fi
+
         echo $test_case | grep -q -e ' -a\| -f\| -x\| -d' && {
             usage
             exit 1
@@ -283,13 +506,24 @@ while getopts "c:af:r:dx" option; do
             COMMAND_X="yes"
         }
 
+        echo "$@" | grep -q -e ' *-s *\| *-sr *\| *-sf *' && {
+            COMMAND_S="yes"
+        }
+
         load_conf
+        copy_libs_to_node1
         run_test_case $test_suite $test_case
         statistic_result
         ;;
     x)
         echo "$@" | grep -q -e '^ [a-Z0-9-_]-x *$' && {
             LOG_ERROR "The -x parameter must be used in combination with -a, -f, and -r."
+            exit 1
+        }
+        ;;
+    s)
+        echo "$@" | grep -q -e '^ [a-Z0-9-_]-x *$' && {
+            LOG_ERROR "The -s parameter must be used in combination with -a, -f, and -r."
             exit 1
         }
         ;;

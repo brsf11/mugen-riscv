@@ -98,6 +98,16 @@ def read_configure():
                 + str(node[item])
                 + "\n"
             )
+        if "COPY_ALL" in node.keys():
+            env_var += (
+                "export NODE"
+                + str(node["ID"])
+                + "_"
+                + "COPY_ALL"
+                + "="
+                + str(node["COPY_ALL"])
+                + "\n"
+            )
     return env_var
 
 

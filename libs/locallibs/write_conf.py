@@ -32,7 +32,7 @@ import mugen_log
 NODE_DATA = {"ID": 1}
 
 
-def write_conf(ip, password, port=22, user="root"):
+def write_conf(ip, password, port=22, user="root", run_remote=False, copy_all=True):
     """写入测试环境的配置
 
     Args:
@@ -80,6 +80,8 @@ def write_conf(ip, password, port=22, user="root"):
 
     if subprocess.getstatusoutput("ip a | grep " + ip)[0] == 0:
         NODE_DATA["LOCALTION"] = "local"
+    elif run_remote:
+        NODE_DATA["LOCALTION"] = "local"
     else:
         NODE_DATA["LOCALTION"] = "remote"
 
@@ -105,6 +107,8 @@ def write_conf(ip, password, port=22, user="root"):
 
     stdin, stdout, stderr = ssh.exec_command("hostnamectl | grep 'Virtualization: kvm'")
     if stdout.read().decode("utf-8").strip("\n") == "":
+        NODE_DATA.update({"MACHINE": "physical"})
+    elif run_remote:
         NODE_DATA.update({"MACHINE": "physical"})
     else:
         NODE_DATA["MACHINE"] = "kvm"
@@ -140,7 +144,15 @@ def write_conf(ip, password, port=22, user="root"):
         NODE_DATA["BMC_USER"] = ""
         NODE_DATA["BMC_PASSWORD"] = ""
 
-    ENV_DATA["NODE"].append(NODE_DATA)
+    if run_remote :
+        NODE_DATA.update({"ID": 1})
+        if copy_all:
+            NODE_DATA["COPY_ALL"]="true"
+        for change_node in ENV_DATA["NODE"]:
+            change_node.update({"ID": change_node["ID"] + 1})
+        ENV_DATA["NODE"].insert(0, NODE_DATA)
+    else:
+        ENV_DATA["NODE"].append(NODE_DATA)
 
     with open(conf_path, "w") as f:
         f.write(json.dumps(ENV_DATA, indent=4))
@@ -155,6 +167,12 @@ if __name__ == "__main__":
     parser.add_argument("--password", type=str, default=None)
     parser.add_argument("--port", type=int, default=22)
     parser.add_argument("--user", type=str, default="root")
+    parser.add_argument("--run_remote", action='store_true')
+    parser.add_argument("--put_all", action='store_true')
+
     args = parser.parse_args()
 
-    write_conf(args.ip, args.password, args.port, args.user)
+    if not args.run_remote:
+        args.put_all = False
+
+    write_conf(args.ip, args.password, args.port, args.user, args.run_remote, args.put_all)

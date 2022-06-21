@@ -1,20 +1,20 @@
 {
 	"path": "$OET_PATH/testcases/cli-test/rpmdevtools",
-	"cases":[
+	"cases": [
 	    {
-		"name:" "oe_test_rpmdevtools_rpmargs"
+		"name": "oe_test_rpmdevtools_rpmargs"
 	    },
 	    {
-		"name:" "oe_test_rpmdevtools_rpmdev-rmdevelrpms"
+		"name": "oe_test_rpmdevtools_rpmdev-rmdevelrpms"
 	    },
 	    {
-		"name:" "oe_test_rpmdevtools_rpmdev-vercmp"
+		"name": "oe_test_rpmdevtools_rpmdev-vercmp"
 	    },
 	    {
-		"name:" "oe_test_rpmdevtools_rpmdev-wipetree"
+		"name": "oe_test_rpmdevtools_rpmdev-wipetree"
 	    },
 	    {
-		"name:" "oe_test_rpmdevtools_rpmdev-bumpspec"   
+		"name": "oe_test_rpmdevtools_rpmdev-bumpspec"   
 	    }
 	]
 }

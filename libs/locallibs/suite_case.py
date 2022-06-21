@@ -108,17 +108,67 @@ def suite_cases(suite):
         mugen_log.logging("error", "A key:%s error specifying JSON data" % e)
         sys.exit(1)
 
+def get_local_dir_files(local_dir):
+    """获取本地文件列表
+
+    Args:
+        local_dir ([str]): 本地文件所在的目录
+
+    Returns:
+        [list]: 文件列表
+    """
+    all_file = list()
+
+    local_dir = os.path.normpath(local_dir)
+
+    dir_files = os.listdir(local_dir)
+    for d_f in dir_files:
+        _name = os.path.join(local_dir, d_f)
+        if os.path.isdir(_name):
+            all_file.extend(get_local_dir_files(_name))
+        else:
+            all_file.append(_name)
+
+    return all_file
+
+def suite_common(suite):
+    """获取测试套中公共文件列表
+
+    Args:
+        suite ([str]): 测试套名
+
+    Returns:
+        [list]: 公共文件列表
+    """
+    test_case_list = suite_cases(suite).split("\n")
+    test_suite_path = suite_path(suite)
+
+    all_file = get_local_dir_files(test_suite_path)
+
+    common_file = ""
+    for one_file in all_file:
+        file_name = os.path.basename(one_file)
+        suffix_type = file_name.split(".")[-1]
+        if suffix_type == "py" or suffix_type == "sh":
+            check_file_name = file_name[0:file_name.rfind(".")]
+            if check_file_name in test_case_list:
+                continue
+        common_file += one_file + "\n"
+
+    return common_file.rstrip("\n")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="manual to this script")
     parser.add_argument("--suite", type=str, default=None)
-    parser.add_argument("--key", type=str, choices=["path", "cases-name"], default=None)
+    parser.add_argument("--key", type=str, choices=["path", "cases-name", "common-files"], default=None)
     args = parser.parse_args()
 
     if args.key == "path":
         print(suite_path(args.suite))
     elif args.key == "cases-name":
         print(suite_cases(args.suite))
+    elif args.key == "common-files":
+        print(suite_common(args.suite))
     else:
         mugen_log.logging(
             "error", "Other key value fetching is not currently supported."
