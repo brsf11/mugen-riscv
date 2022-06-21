@@ -20,8 +20,8 @@ source ./common/common_lib.sh
 
 function config_params() {
     LOG_INFO "Start to config params of the case."
-    connName1=:9004
-    connName2=:9005
+    connName1=$(GET_FREE_PORT)
+    connName2=$(GET_FREE_PORT)
     appPath=./fcgi2-2.4.2/examples/echo
     serverNum1=1
     serverNum2=2
@@ -31,7 +31,7 @@ function config_params() {
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    DNF_INSTALL fcgi
+    DNF_INSTALL "fcgi libtool tar"
     pre_fcgi
     LOG_INFO "End to prepare the test environment."
 }
