@@ -1,6 +1,6 @@
 {
 	"path": "$OET_PATH/testcases/cli-test/rpmdevtools",
-	"cases":[
+	"cases": [
 	    {
 		"name": "oe_test_rpmdevtools_rpmargs"
 	    },
