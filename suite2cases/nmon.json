@@ -1,0 +1,17 @@
+{
+        "path": "$OET_PATH/testcases/cli-test/nmon",
+        "cases": [
+            {
+                "name": "oe_test_nmon_01"
+            },
+            {
+                "name": "oe_test_nmon_02"
+            },
+            {
+                "name": "oe_test_nmon_03"
+            },
+            {
+                "name": "oe_test_nmon_04"
+            }
+        ]
+}
