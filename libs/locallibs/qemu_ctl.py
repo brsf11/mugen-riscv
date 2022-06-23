@@ -25,6 +25,7 @@ import argparse
 import time
 import threading
 import signal
+import paramiko
 
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(SCRIPT_PATH)
@@ -39,6 +40,7 @@ save_path = OET_PATH.rstrip("/") + "/" + "conf/qemu_info.json"
 os.makedirs(OET_PATH.rstrip("/") + "/" + "conf", exist_ok=True)
 
 MAX_QEMU_NUM = 253
+MAX_WAIT_SSH_CON_TIME = 60
 
 json_keys_help = "json key support:\n" \
     "    qemu_type: qemu type, support aarch64 and arm, default aarch64 \n" \
@@ -155,14 +157,17 @@ def qemu_start_wait_output(wait_output, one_sub, all_sub, wait_time = 60):
 
     line = one_sub.stdout.readline()
     while one_sub.poll() is None:
-        if line.find(wait_output) > 0:
+        if line.find(wait_output) >= 0:
             is_qemu_ok = True
             break
         line = one_sub.stdout.readline()
 
     return is_qemu_ok
 
+check_login_str=""
+
 def qemu_start_subprocess(finally_config, br_name):
+    global check_login_str
     sub_list = []
     i = 0
     while i < finally_config["count"]:
@@ -181,7 +186,10 @@ def qemu_start_subprocess(finally_config, br_name):
 
         sub_list.append(one_sub)
 
-        check_wait = qemu_start_wait_output("login:", one_sub, sub_list)
+        one_sub.stdin.write("\n")
+        one_sub.stdin.flush()
+
+        check_wait = qemu_start_wait_output(check_login_str, one_sub, sub_list)
         if not check_wait:
             mugen_log.logging("ERROR", "start qemu %d fail, wait time too long"%i)
             sys.exit(1)
@@ -198,6 +206,7 @@ def qemu_start_subprocess(finally_config, br_name):
         one_sub.stdin.write("ifconfig eth0 %s up\n"%finally_config["qemu_ip_list"][i] + "\n")
         one_sub.stdin.flush()
         time.sleep(1)
+
         one_sub.stdin.flush()
         one_sub.stdin.write("echo 'end set qemu'" + "\n")
         one_sub.stdin.flush()
@@ -205,11 +214,11 @@ def qemu_start_subprocess(finally_config, br_name):
         if not check_wait:
             mugen_log.logging("ERROR", "start qemu %d fail, check end output fail"%i)
             sys.exit(1)
-
+        
         check_sub = subprocess.Popen(["ping", finally_config["qemu_ip_list"][i], "-c", "3"],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
         check_out, check_error = check_sub.communicate()
-        if check_out.find("error") > 0 or check_error.find("error") > 0:
+        if check_out.lower().find("error") >= 0 or check_error.lower().find("error") >= 0:
             mugen_log.logging("ERROR", "set qemu %d ip fail"%i)
             qemu_start_stop_all(sub_list)
             sys.exit(1)
@@ -318,6 +327,20 @@ def qemu_start_get_finally_config(all_config):
             sys.exit(1)
     return finally_config
 
+def qemu_start_wait_ssh_connect(ip, port, user, password, wait_time = 60):
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy)
+    wait_i = 0
+    while wait_i < wait_time:
+        try:
+            ssh.connect(ip, port, user, password)
+            ssh.close()
+            break
+        except paramiko.ssh_exception.NoValidConnectionsError as e:
+            mugen_log.logging("INFO", "wait 1 sec for ssh connect, - out %s"%e)
+            time.sleep(1)
+            wait_i += 1
+    
 def qemu_start_config_conf(finally_config, put_all):
     i = 0
     copy_string = ""
@@ -328,6 +351,12 @@ def qemu_start_config_conf(finally_config, put_all):
         # only first qemu need set run_remote
         if i == 0:
             remote_str = "--run_remote"
+        # some time may wait some time to connect ssh, this is for it
+        qemu_start_wait_ssh_connect(finally_config["qemu_ip_list"][i],
+                                    finally_config["qemu_ssh_port_list"][i],
+                                    finally_config["user_list"][i],
+                                    finally_config["passwd_list"][i],
+                                    MAX_WAIT_SSH_CON_TIME)
         cmd = "python3 %s/libs/locallibs/write_conf.py --ip '%s' --password '%s' --port '%s' --user '%s' %s %s"%(
               OET_PATH,
               finally_config["qemu_ip_list"][i],
@@ -399,7 +428,11 @@ def qemu_start(qemu_config, put_all, br_name):
     qemu_start_updata_qemu_rem(all_sub)
 
 def qemu_control(options, args):
+    global check_login_str
     config_file = args.config_file
+    check_login_str = args.login_wait_str
+    if check_login_str == "":
+        check_login_str = "login:"
     put_all = args.put_all
     if (options == "stop" and config_file is not None):
         mugen_log.logging("ERROR", "stop no need config file")
@@ -446,6 +479,7 @@ if __name__ == "__main__":
     parser.add_argument('option', type=str, choices=['start', 'stop'], help = "start qemu or stop qemu")
     parser.add_argument('--put_all', action="store_true", help = "config all qemu before run test copy all test case to qemu")
     parser.add_argument('--br_name', type=str, help = "config qemu use br name", default="testbr0")
+    parser.add_argument('--login_wait_str', type=str, help = "start qemu wait this string to input user name ", default="login:")
 
     config_file_group = parser.add_argument_group("config_file_group")
     config_file_group.add_argument('--config_file', type=str, help = "start qemu config json file", default=None)
