@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/embedded-test/tiny_image_test",
+    "cases": [
+        {
+            "name": "oe_test_check_aarch_tiny_image_001"
+        }
+    ]
+}
