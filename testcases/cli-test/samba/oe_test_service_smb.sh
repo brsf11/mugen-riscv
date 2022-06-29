@@ -22,6 +22,11 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL samba
+    flag=false
+    if [ $(getenforce | grep Enforcing) ]; then
+        setenforce 0
+        flag=true
+    fi
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -45,6 +50,9 @@ function post_test() {
     systemctl reload smb.service
     systemctl stop smb.service
     DNF_REMOVE
+    if [ ${flag} = 'true' ]; then
+        setenforce 1
+    fi
     LOG_INFO "Finish environment cleanup!"
 }
 

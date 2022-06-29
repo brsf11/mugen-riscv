@@ -33,7 +33,7 @@ function pre_test() {
     echo -e "004" | /usr/lib64/yp/ypinit -m
     systemctl restart ypserv
     systemctl restart yppasswdd
-    echo "domain ${host_name} server ${host_name}" >>/etc/yp.conf
+    echo "domain ${host_name} server localhost" >>/etc/yp.conf
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -49,7 +49,7 @@ function post_test() {
     sed -i "/^NISDOMAIN=${host_name}$/d" /etc/sysconfig/network
     sed -i '$d' /etc/ypserv.conf
     sed -i "s/YPPASSWDD_ARGS='--port 1012'/YPPASSWDD_ARGS=/g" /etc/sysconfig/yppasswdd
-    sed -i "/^domain ${host_name} server ${host_name}$/d" /etc/yp.conf
+    sed -i "/^domain ${host_name} server localhost$/d" /etc/yp.conf
     systemctl stop ypserv
     systemctl stop yppasswdd
     systemctl stop ypbind.service
