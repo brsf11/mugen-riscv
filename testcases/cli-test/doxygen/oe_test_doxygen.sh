@@ -22,6 +22,7 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL doxygen
+    VERSION_ID=$(grep "VERSION_ID" /etc/os-release | awk -F '\"' '{print$2}')
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -63,12 +64,16 @@ function run_test() {
     CHECK_RESULT $?
     doxygen -v | grep "$(rpm -qa doxygen | awk -F '-' '{print $2}')"
     CHECK_RESULT $?
-    doxyindexer -o ./ test.xml | grep "Processing test.xml"
-    CHECK_RESULT $?
-    test -d doxysearch.db
-    CHECK_RESULT $?
-    doxysearch.cgi doxysearch.db | grep "Content-Type:application/javascript;charset=utf-8"
-    CHECK_RESULT $?
+    if [ $VERSION_ID != "22.03" ]; then
+        doxyindexer -o ./ test.xml | grep "Processing test.xml"
+        CHECK_RESULT $?
+        test -d doxysearch.db
+        CHECK_RESULT $?
+        doxysearch.cgi doxysearch.db | grep "Content-Type:application/javascript;charset=utf-8"
+        CHECK_RESULT $?
+    else
+        LOG_INFO "Obsolete version command"
+    fi
     LOG_INFO "Finish test!"
 }
 

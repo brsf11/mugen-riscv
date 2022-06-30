@@ -24,11 +24,11 @@ function run_test() {
     LOG_INFO "Start executing testcase."
     setcap cap_dac_override=eip /usr/bin/less
     CHECK_RESULT $? 0 0 "Failed to set cap"
-    getcap /usr/bin/less | grep '/usr/bin/less cap_dac_override=eip'
+    getcap /usr/bin/less | grep "/usr/bin/less" | grep "cap_dac_override.eip"
     CHECK_RESULT $? 0 0 "Failed to get cap"
     setcap cap_dac_read_search=eip /usr/bin/less
     CHECK_RESULT $? 0 0 "Failed to set cap"
-    getcap /usr/bin/less | grep '/usr/bin/less cap_dac_read_search=eip'
+    getcap /usr/bin/less | grep "/usr/bin/less" | grep "cap_dac_read_search.eip"
     CHECK_RESULT $? 0 0 "Failed to get cap"
     LOG_INFO "Finish testcase execution."
 }

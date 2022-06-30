@@ -35,7 +35,7 @@ function run_test() {
     CHECK_RESULT $?
     osinfo-query --sort=version os vendor="Fedora Project" | grep "[0-9]"
     CHECK_RESULT $?
-    osinfo-query --sort=version os | grep "[0-9a-Z]"
+    osinfo-query --sort=version os | grep -i "[0-9a-z]"
     CHECK_RESULT $?
     osinfo-query --fields=short-id,version os vendor="openSUSE" | grep "opensuse"
     CHECK_RESULT $?
@@ -48,4 +48,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"

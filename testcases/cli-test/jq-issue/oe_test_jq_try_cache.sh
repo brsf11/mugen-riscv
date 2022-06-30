@@ -29,12 +29,12 @@ function run_test() {
     LOG_INFO "Start executing testcase."
     echo '{"x":"123"}' | jq -c '.x = (.x | try tonumber catch "error")' | grep '{"x":123}'
     CHECK_RESULT $?
-    echo '{"x":"123"}' | jq -c '.x |= (try tonumber catch "error")' | grep '{"x":123}'
+    echo '{"x":"123"}' | jq -c '.x = (try tonumber catch "error")' | grep '{"x":"error"}'
     CHECK_RESULT $?
 }
 function post_test() {
     LOG_INFO "start environment cleanup."
-    DNF_REMOVE 1
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"

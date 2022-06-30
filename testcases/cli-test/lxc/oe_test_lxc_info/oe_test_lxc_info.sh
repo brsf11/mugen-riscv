@@ -45,7 +45,7 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Check lxc-info -n failed."
     lxc-info -p myEuler1 | grep -i "PID:"
     CHECK_RESULT $? 0 0 "Check lxc-info -p failed."
-    lxc-info -S myEuler1 | grep -i "Memory use:" | grep -i "KiB"
+    lxc-info -S myEuler1 | grep -i "Memory use:"
     CHECK_RESULT $? 0 0 "Check lxc-info -S failed."
     lxc-info -s myEuler1 | grep -i "RUNNING"
     CHECK_RESULT $? 0 0 "Check lxc-info -s failed."

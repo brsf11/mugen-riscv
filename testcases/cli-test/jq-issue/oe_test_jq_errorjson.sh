@@ -27,14 +27,15 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    echo '{"broken":"json"' | jq
-    CHECK_RESULT $? 0 1
-    echo '{"broken":"json"' | jq 2>&1 | grep 'parse error'
+    SLEEP_WAIT 5
+    echo '{"broken":"json"}' | jq .
     CHECK_RESULT $?
+    echo '{"broken":"json"}' | jq 2>&1 | grep 'parse error'
+    CHECK_RESULT $? 1
 }
 function post_test() {
     LOG_INFO "start environment cleanup."
-    DNF_REMOVE 1
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"

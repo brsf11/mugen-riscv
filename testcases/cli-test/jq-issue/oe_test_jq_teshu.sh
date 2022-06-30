@@ -28,14 +28,14 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start executing testcase."
     for ((i = 1; i < 2050; i++)); do
-        jq_var="${jq_var}"á
+        jq_var="${jq_var}"$
     done
     echo "${jq_var}" | jq --raw-input --raw-output '.' | grep "${jq_var}"
     CHECK_RESULT $?
 }
 function post_test() {
     LOG_INFO "start environment cleanup."
-    DNF_REMOVE 1
+    DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
 main "$@"

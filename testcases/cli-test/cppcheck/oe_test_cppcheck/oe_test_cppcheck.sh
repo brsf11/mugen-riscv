@@ -28,6 +28,7 @@ function pre_test() {
     cp main.c cppcheck1/main1.c
     cp test.cpp cppcheck2/test2.cpp
     cp main.c cppcheck2/main2.c
+    VERSION_ID=$(grep "VERSION_ID" /etc/os-release | awk -F '\"' '{print$2}')
     LOG_INFO "Finish preparing the test environment."
 }
 
@@ -89,8 +90,13 @@ function run_test() {
     CHECK_RESULT $?
     cppcheck -DA file.c | grep "A=1"
     CHECK_RESULT $?
-    cppcheck -DA --force file.c | grep "A=1"
-    CHECK_RESULT $? 1
+    if [ $VERSION_ID != "22.03" ]; then
+        cppcheck -DA --force file.c | grep "A=1"
+        CHECK_RESULT $? 1
+    else
+        cppcheck -DA --force file.c | grep "A=1"
+        CHECK_RESULT $?
+    fi
     cppcheck -DDEBUG=1-D_ucplusplus test.cpp | grep "DEBUG=1-D_ucplusplus"
     CHECK_RESULT $?
     cppcheck -UX file.c
@@ -108,4 +114,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"

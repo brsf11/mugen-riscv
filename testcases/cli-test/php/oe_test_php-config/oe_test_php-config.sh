@@ -47,7 +47,7 @@ function run_test() {
     CHECK_RESULT $?
     php-config --php-binary | grep "/usr/bin/php"
     CHECK_RESULT $?
-    php-config --php-sapis | grep "apache2handler litespeed fpm phpdbg cli embed cgi"
+    php-config --php-sapis|grep "apache2handler .* fpm .*"
     CHECK_RESULT $?
     php-config --configure-options | grep "\--"
     CHECK_RESULT $?
@@ -62,4 +62,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"

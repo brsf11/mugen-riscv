@@ -20,7 +20,7 @@ source "${OET_PATH}"/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "openmpi openmpi-devel nfs-utils nfs-utils-devel"
-    DNF_INSTALL "openmpi openmpi-devel nfs-utils nfs-utils-devel" 2
+    SSH_CMD "dnf -y install openmpi openmpi-devel nfs-utils nfs-utils-devel" "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
     mpi_path=$(whereis openmpi | awk '{print$2}')
     {
         echo "export PATH=$PATH:${mpi_path}/bin"

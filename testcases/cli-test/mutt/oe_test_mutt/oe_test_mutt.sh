@@ -33,6 +33,7 @@ function pre_test() {
     set realname="itdhz"' >>/root/.muttrc
     touch test.jar
     echo "test mutt from lisa" >sendmail
+    version=$(rpm -qa mutt | awk -F "-" '{print$2}')
     LOG_INFO "Finish preparing the test environment."
 }
 
@@ -40,7 +41,7 @@ function run_test() {
     LOG_INFO "Start to run test."
     mutt -help | grep "usage: mutt"
     CHECK_RESULT $?
-    mutt -version | grep "Copyright (C) 1996-2016 Michael R. Elkins and others"
+    mutt -version | grep $version
     CHECK_RESULT $?
     mutt Lisa@163.com -s "test mutt01" <sendmail
     grep -E "From: itdhz <root@itdhz.com>|Subject: test mutt01|test mutt from lisa" /root/sent
@@ -65,4 +66,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"

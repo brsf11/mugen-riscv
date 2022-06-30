@@ -26,6 +26,7 @@ function pre_test() {
     spawn any2djvu test.pdf
     expect "]:"
     send "yes\n"
+    sleep 10
     expect eof
 END
     LOG_INFO "End to prepare the test environment."

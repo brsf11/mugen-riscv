@@ -28,12 +28,23 @@ function run_test() {
     systemctl status etcd | grep "active (running)"
     CHECK_RESULT $? 0 0 "Check etcd.service start failed"
     expect <<-END
-    log_file etcd_log
-    spawn etcdctl user passwd root
+    log_file etcd_log1
+    spawn etcdctl user add root
     expect "Password of root:"
     send "123456\n"
     expect "Type password of root again for confirmation:"
     send "123456\n"
+    sleep 5
+    expect eof
+END
+    expect <<-END
+    log_file etcd_log
+    spawn etcdctl user passwd root
+    expect "Password of root:"
+    send "12345\n"
+    expect "Type password of root again for confirmation:"
+    send "12345\n"
+    sleep 5
     expect eof
 END
     grep "Password updated" etcd_log
@@ -53,6 +64,8 @@ END
     CHECK_RESULT $? 0 0 "Check etcdctl revoke failed."
     etcdctl lease list | grep "$Lease"
     CHECK_RESULT $? 1 0 "Check etcdctl list failed."
+    etcdctl user del root | grep -i "User root deleted"
+    CHECK_RESULT $? 0 0 "Check etcdctl user del failed."
     LOG_INFO "End to run test."
 }
 
