@@ -19,6 +19,10 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
+    version_id=`cat /etc/os-release  | grep "VERSION_ID" | awk -F "=" {'print$NF'} | awk -F "\"" {'print$2'}`
+    if [ ${version_id} = "20.03" ];then
+	exit 0
+    fi
     rm -rf /var/lib/mysql/*
     DNF_INSTALL mysql-server
     systemctl start mysqld
@@ -29,46 +33,50 @@ function run_test() {
     LOG_INFO "Start executing testcase!"
     systemctl status mysqld | grep running
     CHECK_RESULT $?
-    mysql -e "DROP DATABASE test45"
-    mysql -e "CREATE DATABASE test45;use test45;CREATE TABLE mytable (id INT)"
+    mysql -e "DROP DATABASE db"
+    mysql -e "create database db;use db;create table my (id int)"
     CHECK_RESULT $?
-    mysql -e "use test45;INSERT INTO mytable VALUES(1)"
+    mysqlshow --print-defaults db my id | grep "db my id"
     CHECK_RESULT $?
-    mysqldump test45 mytable >query.sql
+    mysqlshow --no-defaults db my id | grep "Database: db  Table: my  Wildcard: id"
     CHECK_RESULT $?
-    test -f query.sql
+    mysqlshow --defaults-file=/etc/my.cnf >dbfile
     CHECK_RESULT $?
-    mysqldump --add-drop-table test45 >create.sql
+    grep "db" dbfile
     CHECK_RESULT $?
-    test -f create.sql
+    mysqlshow --defaults-extra-file=/etc/my.cnf >dbfile1
+    grep "db" dbfile1
     CHECK_RESULT $?
-    mysqlslap --concurrency=5 --iterations=5 --query=query.sql --create=create.sql --delimiter=";" | grep "running"
+    mysqlshow --count db 2>&1 | grep "1 row in set"
     CHECK_RESULT $?
-    mysql -e "CREATE DATABASE mysqlslap"
+    mysqlshow --debug-info 2>&1 | grep "Maximum resident set size"
     CHECK_RESULT $?
-    mysqlslap --delimiter=";" --create="CREATE TABLE mytable1 (b int);INSERT INTO mytable1 VALUES (23)" --query="SELECT * FROM mytable1" --concurrency=50 --iterations=200 | grep "Benchmark"
+    mysqlshow --default-auth=test >dbfile2
     CHECK_RESULT $?
-    mysqlslap --concurrency=5 --iterations=20 --number-int-cols=2 --number-char-cols=3 --auto-generate-sql 
+    grep "db" dbfile2
     CHECK_RESULT $?
-    mysqlslap -a -c 100 2>&1 | grep "Number of clients running queries: 100"
+    mysqlshow --help | grep "Usage:"
     CHECK_RESULT $?
-    mysqlslap -a --auto-generate-sql-secondary-indexes=5 2>&1 | grep "Number of clients running queries: 1"
+    mysqlshow -i -k db | grep "Database: db"
     CHECK_RESULT $?
-    mysqlslap --auto-generate-sql-write-number=100 | grep "Benchmark"
+    mysqlshow --verbose db | grep "1 row in set"
     CHECK_RESULT $?
-    mysqlslap --auto-generate-sql-write-number=100 --only-print
+    mysqlshow --show-table-type db | grep my
     CHECK_RESULT $?
-    mysqlslap --create-schema=mysql --csv=use
+    mysqlshow --get-server-public-key db my | grep "Database: db  Table: my"
     CHECK_RESULT $?
-    grep "mixed" use
+    version=$(rpm -qa | grep mysql-server | cut -d "-" -f 3)
+    mysqlshow -V | grep "${version}"
+    CHECK_RESULT $?
+    mysqlshow --ssl-fips-mode=OFF --compression-algorithms=zstd | grep "db"
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"
 }
 
 function post_test() {
     LOG_INFO "Start environment cleanup."
-    rm -rf use *.sql test.txt
-    mysql -e "DROP database mysqlslap;use test45;DROP TABLE mytexttable;DROP DATABASE test45"
+    rm -rf dbfile*
+    mysql -e "use db;DROP TABLE my;DROP DATABASE db"
     systemctl stop mysqld
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup."

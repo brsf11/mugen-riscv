@@ -27,13 +27,9 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    opencc_dict -i /usr/share/opencc/TSPhrases.ocd -o /tmp/TSPhrases.txt -f ocd -t text
+    opencc_dict -i /usr/share/opencc/TSPhrases.ocd2 -o /tmp/TSPhrases.txt -f ocd2 -t ocd2
     CHECK_RESULT $?
-    grep '以功覆過' /tmp/TSPhrases.txt | grep '以功覆过'
-    CHECK_RESULT $?
-    grep '狐藉虎威' /tmp/TSPhrases.txt | awk -F ' ' '{print $2}' | grep "狐藉虎威"
-    CHECK_RESULT $?
-    grep '傷亡枕藉' /tmp/TSPhrases.txt | grep '伤亡枕藉'
+    grep '老态龙钟' /tmp/TSPhrases.txt 
     CHECK_RESULT $?
     LOG_INFO "Finish testcase execution."
 }

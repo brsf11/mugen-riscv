@@ -54,6 +54,8 @@ expect eof
 "
     grep -iE "error|failed" testlog
     CHECK_RESULT $? 1
+    SLEEP_WAIT 5
+    ls /var/lib/redis
     test -f /var/lib/redis/dump.rdb
     CHECK_RESULT $?
     redis-check-rdb /var/lib/redis/dump.rdb | grep "OK"

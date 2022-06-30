@@ -19,6 +19,10 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
+    version_id=`cat /etc/os-release  | grep "VERSION_ID" | awk -F "=" {'print$NF'} | awk -F "\"" {'print$2'}`
+    if [ ${version_id} = "20.03" ];then
+        exit 0
+    fi
     rm -rf /var/lib/mysql/*
     DNF_INSTALL mysql-server
     systemctl start mysqld
@@ -29,13 +33,33 @@ function run_test() {
     LOG_INFO "Start executing testcase!"
     systemctl status mysqld | grep running
     CHECK_RESULT $?
-    mysql_tzinfo_to_sql /usr/share/zoneinfo | grep "time_zone_id"
+    mysql -e "DROP DATABASE test45"
+    mysql -e "CREATE DATABASE test45;use test45;CREATE TABLE mytable (id INT);use test45;INSERT INTO mytable VALUES(1)"
     CHECK_RESULT $?
-    mysql_tzinfo_to_sql /usr/share/zoneinfo/Africa/Windhoek Africa | grep "time_zone_name"
+    test -f /var/lib/mysql/test45/mytable.ibd
     CHECK_RESULT $?
-    mysql_tzinfo_to_sql --leap /usr/share/zoneinfo/Africa/Windhoek | grep "time_zone_leap_second"
+    SLEEP_WAIT 10
+    ibd2sdi --dump-file=test.txt /var/lib/mysql/test45/mytable.ibd
     CHECK_RESULT $?
-    mysql_tzinfo_to_sql 2>&1 | grep "mysql_tzinfo_to_sql timezonedir"
+    grep "mytable" test.txt
+    CHECK_RESULT $?
+    version=$(rpm -qa | grep mysql-server | cut -d "-" -f 3)
+    CHECK_RESULT $?
+    ibd2sdi -v | grep "${version}"
+    CHECK_RESULT $?
+    ibd2sdi -h | grep -i "Usage: ibd2sdi"
+    CHECK_RESULT $?
+    ibd2sdi --skip-data /var/lib/mysql/test45/mytable.ibd | grep "type"
+    CHECK_RESULT $?
+    ibd2sdi --id=10 /var/lib/mysql/test45/mytable.ibd | grep 'ibd2sdi'
+    CHECK_RESULT $?
+    ibd2sdi --type=1 /var/lib/mysql/test45/mytable.ibd | grep '"type": 1'
+    CHECK_RESULT $?
+    ibd2sdi --strict-check=innodb /var/lib/mysql/test45/mytable.ibd | grep "mytable"
+    CHECK_RESULT $?
+    ibd2sdi -c crc32 /var/lib/mysql/test45/mytable.ibd | grep "./test45/mytable.ibd"
+    CHECK_RESULT $?
+    ibd2sdi --no-check /var/lib/mysql/test45/mytable.ibd | grep "InnoDB"
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"
 }
@@ -43,6 +67,8 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start environment cleanup."
     systemctl stop mysqld
+    rm -rf test.txt ib_sdipGMuTI
+    mysql -e "use test45;DROP TABLE mytexttable;DROP DATABASE test45"
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup."
 }

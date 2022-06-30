@@ -27,6 +27,7 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start executing testcase!"
     systemctl status redis | grep running
+    SLEEP_WAIT 5
     redis-cli -r 3 ping | grep "PONG"
     CHECK_RESULT $?
     redis-cli -r 3 -i 1 ping | grep "PONG"
@@ -48,6 +49,8 @@ expect eof
 "
     grep -iE "error|failed" testlog
     CHECK_RESULT $? 1
+    SLEEP_WAIT 5
+    ls /var/lib/redis
     test -f /var/lib/redis/dump.rdb
     CHECK_RESULT $?
     redis-check-rdb /var/lib/redis/dump.rdb | grep "OK"
@@ -58,6 +61,7 @@ expect eof
     CHECK_RESULT $?
     redis-cli config set save "" | grep "OK"
     CHECK_RESULT $?
+    SLEEP_WAIT 5
     cp /var/lib/redis/appendonly.aof /var/lib/redis/appendonly_bak.aof
     CHECK_RESULT $?
     redis-check-aof --fix /var/lib/redis/appendonly.aof

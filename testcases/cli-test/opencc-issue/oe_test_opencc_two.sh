@@ -35,9 +35,9 @@ function run_test() {
     CHECK_RESULT $?
     echo "纔" | opencc -c hk2s | grep '才'
     CHECK_RESULT $?
-    echo "纔" | opencc -c hk2s | opencc -c s2hk | grep "纔"
+    echo "纔" | opencc -c hk2s | opencc -c s2hk | grep "才"
     CHECK_RESULT $?
-    echo "纔" | opencc -c tw2s | opencc -c s2tw | grep "纔"
+    echo "纔" | opencc -c tw2s | opencc -c s2tw | grep "才"
     CHECK_RESULT $?
     LOG_INFO "Finish testcase execution."
 }
