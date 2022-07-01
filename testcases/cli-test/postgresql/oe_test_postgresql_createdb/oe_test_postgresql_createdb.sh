@@ -57,7 +57,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     systemctl stop postgresql
-    DNF_REMOVE
+    DNF_REMOVE 1 "postgresql postgresql-server postgresql-devel postgresql-contrib glibc-all-langpacks"
     rm -rf /var/lib/pgsql/*
     LOG_INFO "End to restore the test environment."
 }

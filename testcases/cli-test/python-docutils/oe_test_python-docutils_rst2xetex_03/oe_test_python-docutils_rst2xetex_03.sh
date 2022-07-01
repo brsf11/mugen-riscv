@@ -42,7 +42,7 @@ function run_test() {
     CHECK_RESULT $?
     rst2xetex --record-dependencies=recordlist.log testfile.rst test6.tex && test -f test6.tex
     CHECK_RESULT $?
-    test "$(rst2xetex -V | grep -Eo 'Docutils [0-9]*\.[0-9]* ' | grep -Eo '[0-9]*\.[0-9]*')" == "$(rpm -qa python3-docutils | awk -F "-" '{print$3}')"
+    test "$(rst2xetex -V | awk '{print$3}')" == "$(rpm -qa python3-docutils | awk -F "-" '{print$3}')"
     CHECK_RESULT $?
     rst2xetex -h | grep 'Usage'
     CHECK_RESULT $?

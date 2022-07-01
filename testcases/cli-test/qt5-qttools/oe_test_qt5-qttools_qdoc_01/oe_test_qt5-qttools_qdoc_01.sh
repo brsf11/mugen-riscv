@@ -35,32 +35,32 @@ function run_test() {
     CHECK_RESULT $?
     qdoc -D status=active example.qdocconf --outputdir ./html
     CHECK_RESULT $?
-    grep 'status="active"' html/.index
+    grep 'status="active"' html/new.qdoc.index
     CHECK_RESULT $?
     qdoc --depends Print example.qdocconf --outputdir ./html
     CHECK_RESULT $?
-    grep -i "print" html/.index
+    grep -i "print" html/new.qdoc.index
     CHECK_RESULT $?
     qdoc --showinternal example.qdocconf --outputdir ./html
     CHECK_RESULT $?
-    grep -i "show" html/.index
+    grep -i "show" html/new.qdoc.index
     CHECK_RESULT $?
     qdoc --redirect-documentation-to-dev-null example.qdocconf --outputdir ./html
     CHECK_RESULT $?
-    grep -i "document" html/.index
+    grep -i "document" html/new.qdoc.index
     CHECK_RESULT $?
     qdoc --no-examples example.qdocconf --outputdir ./html
     CHECK_RESULT $?
     ls html/ | grep example
     CHECK_RESULT $? 1
-    rm -rf ./html/.index
+    rm -rf ./html/new.qdoc.index
     qdoc example.qdocconf --indexdir ./html -outputdir ./html
     CHECK_RESULT $?
-    test -f ./html/.index && rm -rf ./html/.index
+    test -f ./html/new.qdoc.index && rm -rf ./html/new.qdoc.index
     CHECK_RESULT $?
     qdoc --highlighting example.qdocconf --outputdir ./html
     CHECK_RESULT $?
-    grep -i "Highlighting" ./html/.index
+    grep -i "Highlighting" ./html/new.qdoc.index
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

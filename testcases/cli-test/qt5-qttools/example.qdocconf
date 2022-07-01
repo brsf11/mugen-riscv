@@ -9,6 +9,16 @@
 # a pre-defined list of file extensions.
 #include(fileextensions.qdocconf)
 
+
+#项目
+project                 = new.qdoc
+#项目名称
+description             = doc项目
+#版本号
+version                 = 1.0
+
+
+
 # You can also specify file extensions manually.
 headers.fileextensions  = "*.h *.hpp"
 sources.fileextensions  = "*.cpp *.qml *.qdoc"

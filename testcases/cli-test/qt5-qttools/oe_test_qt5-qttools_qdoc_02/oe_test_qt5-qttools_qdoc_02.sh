@@ -35,21 +35,21 @@ function run_test() {
     CHECK_RESULT $?
     qdoc example.qdocconf -outputdir ./html --obsoletelinks
     CHECK_RESULT $?
-    grep -i "link" ./html/.index
+    grep -i "link" ./html/new.qdoc.index
     CHECK_RESULT $?
     qdoc example.qdocconf -outputdir ./html
     CHECK_RESULT $?
-    test -f ./html/.index && rm -rf ./html/.index
+    test -f ./html/new.qdoc.index && rm -rf ./html/new.qdoc.index
     CHECK_RESULT $?
     test -d ./html/images/ && rm -rf ./html/images/
     CHECK_RESULT $?
     qdoc example.qdocconf -outputdir ./html --outputformat HTML
     CHECK_RESULT $?
-    grep "HTML" ./html/.index
+    grep "HTML" ./html/new.qdoc.index
     CHECK_RESULT $?
     qdoc example.qdocconf -outputdir ./html --autolink-errors
     CHECK_RESULT $?
-    grep "erro" ./html/.index
+    grep "erro" ./html/new.qdoc.index
     CHECK_RESULT $?
     qdoc example.qdocconf -outputdir ./html --debug 2>&1 | grep -i "debug"
     CHECK_RESULT $?
@@ -60,7 +60,7 @@ function run_test() {
     rm -rf html
     qdoc example.qdocconf -outputdir ./html --generate
     CHECK_RESULT $?
-    test -f ./html/.index
+    test -f ./html/new.qdoc.index
     CHECK_RESULT $? 0 1
     grep -i "search" html/search-results.html
     CHECK_RESULT $?

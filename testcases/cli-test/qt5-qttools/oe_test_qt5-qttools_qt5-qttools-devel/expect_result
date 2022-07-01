@@ -1,8 +1,0 @@
-{
-    "IID": "org.qt-project.Qt.QDesignerCustomWidget",
-    "MetaData": {
-    },
-    "className": "MultiPageWidgetPlugin",
-    "debug": false,
-    "version": 330497
-}

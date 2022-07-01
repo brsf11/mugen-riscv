@@ -40,7 +40,7 @@ function run_test() {
     CHECK_RESULT $?
     pcp2xml -K del,60 -s 10 -t 2 $metric_name | grep 'disk'
     CHECK_RESULT $?
-    pcp2xml -c /etc/pcp/pmrep/pmrep.conf -s 10 -t 2 $metric_name | grep 'instance-name'
+    pcp2xml -c /etc/pcp/pmrep/collectl.conf -s 10 -t 2 $metric_name | grep 'instance-name'
     CHECK_RESULT $?
     pcp2xml -C $metric_name
     CHECK_RESULT $?

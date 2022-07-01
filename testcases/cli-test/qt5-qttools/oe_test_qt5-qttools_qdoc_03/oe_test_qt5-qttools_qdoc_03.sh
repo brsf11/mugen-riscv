@@ -28,22 +28,22 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    qdoc example.qdocconf -outputdir ./html --log-progress 2>&1 | grep -i "log"
+    qdoc example.qdocconf -outputdir ./html --log-progress 2>&1 | grep -E "qt.qdoc|LOG"
     CHECK_RESULT $?
     qdoc example.qdocconf --write-qa-pages
     CHECK_RESULT $?
-    grep "page" ./html/.index
+    grep "page" ./html/new.qdoc.index
     CHECK_RESULT $?
     rm -rf html
     qdoc example.qdocconf -I ./html
     CHECK_RESULT $?
-    test -f ./html/.index && rm -rf ./html/.index
+    test -f ./html/new.qdoc.index && rm -rf ./html/new.qdoc.index
     CHECK_RESULT $?
     test -d ./html/images/ && rm -rf ./html/images/
     CHECK_RESULT $?
     qdoc example.qdocconf --isystem ./html/
     CHECK_RESULT $?
-    grep -i "system" ./html/.index
+    grep -i "system" ./html/new.qdoc.index
     CHECK_RESULT $?
     qdoc example.qdocconf -F ./example.qdoc --debug 2>&1 | grep -i "include"
     CHECK_RESULT $?

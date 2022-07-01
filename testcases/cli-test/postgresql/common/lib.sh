@@ -20,6 +20,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function postgresql_install() {
     DNF_INSTALL "postgresql postgresql-server postgresql-devel postgresql-contrib"
+    rm -rf /tmp/.s.PGSQL*
     /usr/bin/postgresql-setup --initdb
     sed -i 's/ident/trust/g' /var/lib/pgsql/data/pg_hba.conf
     systemctl start postgresql

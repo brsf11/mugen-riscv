@@ -22,6 +22,7 @@ source "../common/common_ruby.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL rubygem-rdoc
+    gem install webrick
     LOG_INFO "Finish preparing the test environment."
 }
 
@@ -62,6 +63,7 @@ EOF
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     delete_files
+    gem uninstall webrick
     rm -rf /usr/share/ri/site
     DNF_REMOVE
     LOG_INFO "Finish restoring the test environment."

@@ -30,7 +30,7 @@ function run_test() {
     CHECK_RESULT $?
     rst2man --record-dependencies=recordlist.log testfile.rst test2.man
     CHECK_RESULT $?
-    test "$(rst2man -V | grep -Eo 'Docutils [0-9]*\.[0-9]* ' | grep -Eo '[0-9]*\.[0-9]*')" == "$(rpm -qa python3-docutils | awk -F "-" '{print$3}')"
+    test "$(rst2man -V | awk '{print$3}')" == "$(rpm -qa python3-docutils | awk -F "-" '{print$3}')"
     CHECK_RESULT $?
     rst2man -h | grep 'Usage'
     CHECK_RESULT $?
