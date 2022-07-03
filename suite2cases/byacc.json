@@ -1,0 +1,17 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/byacc",
+    "cases": [
+        {
+            "name": "oe_test_byacc_01"
+        },
+        {
+            "name": "oe_test_byacc_02"
+        },
+        {
+            "name": "oe_test_yacc_01"
+        },
+        {
+            "name": "oe_test_yacc_02"
+        }
+    ]
+}
