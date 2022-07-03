@@ -26,7 +26,7 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start testing..."
-    # TODO
+    
     byacc -v test.y -o test_v.output 2>&1 && ls | grep "test_v.output"
     CHECK_RESULT $? 0 0 "Failed option: -v"
 
