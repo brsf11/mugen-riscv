@@ -20,9 +20,8 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-
     DNF_INSTALL "rootsh"
-
+    useradd testUser
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -55,7 +54,7 @@ EOF
 
     expect <<EOF
         log_file /var/log/test.log
-        spawn rootsh --user=yili
+        spawn rootsh --user=testUser
         expect "Welcome*" {
             exec sleep 1
             send "exit\r"
@@ -138,9 +137,8 @@ EOF
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-
     DNF_REMOVE
-
+    userdel testUser
     LOG_INFO "End to restore the test environment."
 }
 
