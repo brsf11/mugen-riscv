@@ -43,6 +43,8 @@ function post_test() {
     sed -i 's\ExecStart=/usr/sbin/dovecot -a\ExecStart=/usr/sbin/dovecot\g' /usr/lib/systemd/system/dovecot.service
     systemctl daemon-reload
     systemctl reload dovecot.service
+    systemctl stop dovecot.service
+    rm -rf /etc/pki/dovecot/certs/dovecot.pem /etc/pki/dovecot/private/dovecot.pem
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

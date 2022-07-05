@@ -22,19 +22,24 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL nss-pam-ldapd
+    service=nslcd.service
+    log_time=$(date '+%Y-%m-%d %T')
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution nslcd.service
-    test_reload nslcd.service
+    test_restart "${service}"
+    test_enabled "${service}"
+    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING" | grep -v "_sasl_plugin_load failed on sasl_canonuser_init"
+    CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
+    test_reload "${service}"
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    systemctl stop nslcd.service
+    systemctl stop "${service}"
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

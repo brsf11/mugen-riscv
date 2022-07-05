@@ -34,7 +34,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    rm -rf /etc/pki/dovecot/private/dovecot.pem
+    rm -rf /etc/pki/dovecot/certs/dovecot.pem /etc/pki/dovecot/private/dovecot.pem
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

@@ -7,40 +7,43 @@
 # THIS PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-# See the Mulan PSL v2 for more details.
+# See the Mulan PSL v2 for more detaitest -f.
 
 # #############################################
-# @Author    :   zengcongwei
-# @Contact   :   735811396@qq.com
-# @Date      :   2020/12/29
+# @Author    :   huangrong
+# @Contact   :   1820463064@qq.com
+# @Date      :   2020/10/23
 # @License   :   Mulan PSL v2
-# @Desc      :   Test dovecot.socket restart
+# @Desc      :   Test rasdaemon.service restart
 # #############################################
 
 source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
-    DNF_INSTALL dovecot
+    DNF_INSTALL rasdaemon
+    log_time=$(date '+%Y-%m-%d %T')
+    service=rasdaemon.service
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
-    LOG_INFO "Start to run test."
-    test_execution dovecot.socket
-    systemctl start dovecot.socket
-    systemctl reload dovecot.socket 2>&1 | grep "Job type reload is not applicable for unit dovecot.socket"
-    CHECK_RESULT $?
-    systemctl status dovecot.socket | grep "Active: active"
-    CHECK_RESULT $?
-    LOG_INFO "End of the test."
+    LOG_INFO "Start testing..."
+    test_restart ${service}
+    test_enabled ${service}
+    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING" | 
+grep -v -i "memory_failure_event\|disk_errors" | grep -v "Corrected Errors is"
+    CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
+    test_reload ${service}
+    LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    systemctl stop dovecot.socket
+    systemctl stop ${service}
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }
+
 
 main "$@"

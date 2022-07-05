@@ -36,8 +36,8 @@ function run_test() {
 function post_test() {
     LOG_INFO "start environment cleanup."
     systemctl stop ctdb.service
+    rm -rf /etc/ctdb/nodes
     DNF_REMOVE
-    rm -rf /etc/ctdb
     LOG_INFO "Finish environment cleanup!"
 }
 

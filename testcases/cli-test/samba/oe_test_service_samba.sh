@@ -25,7 +25,7 @@ function pre_test() {
     hostname OE-TESTD
     echo "${NODE1_IPV4} TESTAD.LOCAL" >>/etc/hosts
     DNF_INSTALL "samba-dc python3-samba-dc krb5-server"
-    rm -rf /etc/samba/smb.conf
+    mv /etc/samba/smb.conf /etc/samba/smb.conf_bak
     expect <<EOF
         set timeout 600
         spawn samba-tool domain provision --use-rfc2307 --interactive --function-level=2008_R2
@@ -81,7 +81,8 @@ function post_test() {
         setenforce 1
     fi
     rm -rf  /etc/samba/smb.conf /var/lib/samba/private/* /var/lib/samba/sysvol/*  
-    mv /etc/krb5.bak /etc/krb5.conf
+    mv -f /etc/krb5.bak /etc/krb5.conf
+    mv -f /etc/samba/smb.conf_bak /etc/samba/smb.conf
     LOG_INFO "Finish environment cleanup!"
 }
 
