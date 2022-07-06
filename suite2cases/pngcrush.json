@@ -1,0 +1,20 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/pngcrush",
+    "cases": [
+        {
+            "name": "oe_test_pngcrush_01"
+        },
+        {
+            "name": "oe_test_pngcrush_02"
+        },
+        {
+            "name": "oe_test_pngcrush_03"
+        },
+        {
+            "name": "oe_test_pngcrush_04"
+        },
+        {
+            "name": "oe_test_pngcrush_05"
+        }
+    ]
+}
