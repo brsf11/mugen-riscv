@@ -43,12 +43,12 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Failed to use option in configuration: input-encoding"
     # --newline
     # 指定新行所使用的标记
-    echo '' | tidy --newline CRLF -o ./tidied.thml
-    file ./tidied.thml | grep 'CRLF'
+    echo '' | tidy --newline CRLF -o ./tidied.html
+    file ./tidied.html | grep 'CRLF'
     CHECK_RESULT $? 0 0 "Failed to use option: --newline"
     echo 'newline: CRLF' >./tidyrc
-    echo '' | tidy -config ./tidyrc -o ./tidied.thml
-    file ./tidied.thml | grep 'CRLF'
+    echo '' | tidy -config ./tidyrc -o ./tidied.html
+    file ./tidied.html | grep 'CRLF'
     CHECK_RESULT $? 0 0 "Failed to use option in configuration: newline"
     # --output-bom
     # 在输出的开头加入 BOM（字节顺序标记）
@@ -70,8 +70,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "start environment cleanup."
     DNF_REMOVE
-    rm -f ./tidyrc
-    rm -f ./tidied.html
+    rm -rf tidyrc tidied.html
     LOG_INFO "Finish environment cleanup!"
 }
 

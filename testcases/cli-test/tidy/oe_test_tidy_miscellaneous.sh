@@ -22,6 +22,8 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL tidy
+    OLD_LANG=$LANG
+    export LANG="en_US.UTF-8"
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -71,6 +73,7 @@ function post_test() {
     LOG_INFO "start environment cleanup."
     DNF_REMOVE
     rm -f ./tidyrc
+    export LANG=$OLD_LANG
     LOG_INFO "Finish environment cleanup!"
 }
 

@@ -74,9 +74,9 @@ function post_test() {
     LOG_INFO "Start to restore the test environment."
 
     systemctl stop dovecot
-    rm -f /etc/dovecot/conf.d/10-ssl.conf
+    rm -f a.sh* /etc/dovecot/conf.d/10-ssl.conf
     mv /etc/dovecot/conf.d/10-ssl.conf.bak /etc/dovecot/conf.d/10-ssl.conf
-    kill -9 $(ps -ef | grep "doveadm" | grep -Ev "grep|bash" | awk '{print $2}')
+    kill -9 $(ps -ef | grep "doveadm" | grep -Ev "grep|.sh" | awk '{print $2}')
     DNF_REMOVE
 
     LOG_INFO "End to restore the test environment."

@@ -22,6 +22,9 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL tidy
+    OLD_LANG=$LANG
+    export LANG="en_US.UTF-8"
+    version_id=$(grep VERSION_ID /etc/os-release | awk -F "\"" '{print $2}')
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -100,12 +103,14 @@ function run_test() {
     echo 'vertical-space: auto' >./tidyrc
     echo '<p>Some text</p>' | tidy -indent -config ./tidyrc | grep '<p>Some text</p></body></html>'
     CHECK_RESULT $? 0 0 "Failed to use option in configuration: vertical-space"
-    # --wrap
-    # 指定Tidy用于换行时的右边距，若设置为0则不换行
-    echo 'hi' | tidy --wrap 0 | grep '<meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.7.28">'
-    CHECK_RESULT $? 0 0 "Failed to use option: --wrap"
+    if [ ${version_id} =  "22.03" ]; then
+        # --wrap
+        # 指定Tidy用于换行时的右边距，若设置为0则不换行
+        echo 'hi' | tidy --wrap 0 | grep '<meta name="generator" content="HTML Tidy for HTML5 for Linux version'
+        CHECK_RESULT $? 0 0 "Failed to use option: --wrap"
+    fi
     echo 'wrap: 0' >./tidyrc
-    echo 'hi' | tidy -config ./tidyrc | grep '<meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.7.28">'
+    echo 'hi' | tidy -config ./tidyrc | grep '<meta name="generator" content="HTML Tidy for HTML5 for Linux version'
     CHECK_RESULT $? 0 0 "Failed to use option in configuration: wrap"
     # --wrap-asp
     # --wrap-attributes
@@ -120,6 +125,7 @@ function post_test() {
     LOG_INFO "start environment cleanup."
     DNF_REMOVE
     rm -f ./tidyrc
+    export LANG=$OLD_LANG
     LOG_INFO "Finish environment cleanup!"
 }
 
