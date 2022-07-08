@@ -77,7 +77,7 @@ END
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -rf Gemfile testgem* .bundle
+    rm -rf Gemfile testgem*  ~/.bundle
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
