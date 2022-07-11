@@ -1,0 +1,12 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/ladspa",
+    "cases": [
+        {
+            "name": "oe_test_ladspa_analyseplugin"
+        },
+	{
+            "name": "oe_test_ladspa_applyplugin"
+        }
+    ]
+}
+
