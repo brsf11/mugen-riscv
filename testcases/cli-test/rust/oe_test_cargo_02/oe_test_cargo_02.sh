@@ -54,9 +54,9 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Failed to update file"
     https_code=$(curl -s -w '%{http_code}' https://github.com/rust-lang/crates.io-index -o /dev/null)
     SLEEP_WAIT 3
-    if [ ${https_code} == "200" ];then
-    cargo search && cargo search serde | grep "serde"
-    CHECK_RESULT $? 0 0 "Failed to search for serde package"
+    if [ ${https_code} == "200" ]; then
+        cargo search && cargo search serde | grep "serde"
+        CHECK_RESULT $? 0 0 "Failed to search for serde package"
     fi
     LOG_INFO "End to run test."
 }
