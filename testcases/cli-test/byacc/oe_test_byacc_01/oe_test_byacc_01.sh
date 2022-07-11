@@ -40,37 +40,22 @@ function run_test() {
     byacc -b test_b test.y 
     ls | grep "test_b.tab.c" 
     CHECK_RESULT $? 0 0 "Failed option: -b"
-    byacc --file-prefix test_lb test.y 
-    ls | grep "test_lb.tab.c" 
-    CHECK_RESULT $? 0 0 "Failed option: --file-prefix"
 
     byacc -H test_h.c test.y
     ls | grep "test_h.c" 
     CHECK_RESULT $? 0 0 "Failed option: -H"
-    byacc --defines test_lh.c test.y
-    ls | grep "test_lh.c" 
-    CHECK_RESULT $? 0 0 "Failed option: --defines"
 
     byacc test.y -o test_o.tab.c
     ls | grep "test_o.tab.c"
     CHECK_RESULT $? 0 0 "Failed option: -o"
-    byacc test.y --output test_lo.tab.c
-    ls | grep "test_lo.tab.c"
-    CHECK_RESULT $? 0 0 "Failed option: --output"
 
     byacc -g test.y -o test_g.dot
     ls | grep "test_g.dot"
     CHECK_RESULT $? 0 0 "Failed option: -g"
-    byacc --graph test.y -o test_lg.dot
-    ls | grep "test_lg.dot"
-    CHECK_RESULT $? 0 0 "Failed option: --graph"
 
     byacc -p test_p test.y -o test_p.tab.c
     cat test_p.tab.c | grep -m 1 "test_p"
     CHECK_RESULT $? 0 0 "Failed option: -p"
-    byacc --name-prefix test_lp test.y -o test_lp.tab.c
-    cat test_lp.tab.c | grep -m 1 "test_lp"
-    CHECK_RESULT $? 0 0 "Failed option: --name-prefix"
 
     byacc -l test.y -o test_l.tab.c
     cat test_l.tab.c | grep "#line"
@@ -79,6 +64,28 @@ function run_test() {
     cat test_ll.tab.c | grep "#line"
     CHECK_RESULT $? 0 "Failed option: --no-lines" 0
 
+    cat /etc/os-release | grep "openEuler 22.03"
+    if [ $? ]; then
+    byacc --file-prefix test_lb test.y 
+    ls | grep "test_lb.tab.c" 
+    CHECK_RESULT $? 0 0 "Failed option: --file-prefix"
+
+    byacc --defines test_lh.c test.y
+    ls | grep "test_lh.c" 
+    CHECK_RESULT $? 0 0 "Failed option: --defines"
+
+    byacc test.y --output test_lo.tab.c
+    ls | grep "test_lo.tab.c"
+    CHECK_RESULT $? 0 0 "Failed option: --output"
+    
+    byacc --graph test.y -o test_lg.dot
+    ls | grep "test_lg.dot"
+    CHECK_RESULT $? 0 0 "Failed option: --graph"
+
+    byacc --name-prefix test_lp test.y -o test_lp.tab.c
+    cat test_lp.tab.c | grep -m 1 "test_lp"
+    CHECK_RESULT $? 0 0 "Failed option: --name-prefix"
+    fi
 
     LOG_INFO "Finish test!"
 
