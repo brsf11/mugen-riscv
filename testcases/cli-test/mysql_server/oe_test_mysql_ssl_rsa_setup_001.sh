@@ -19,6 +19,10 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
+    version_id=`cat /etc/os-release  | grep "VERSION_ID" | awk -F "=" {'print$NF'} | awk -F "\"" {'print$2'}`
+    if [ ${version_id} = "20.03" ];then
+        exit 0
+    fi
     rm -rf /var/lib/mysql/*
     DNF_INSTALL mysql-server
     systemctl start mysqld
@@ -29,32 +33,27 @@ function run_test() {
     LOG_INFO "Start executing testcase!"
     systemctl status mysqld | grep running
     CHECK_RESULT $?
-    my_print_defaults --help | grep -A2 -B2 my.cnf
+    mysql_ssl_rsa_setup --help | grep "mysql_ssl_rsa_setup"
     CHECK_RESULT $?
-    my_print_defaults mysqld server mysql_server mysql.server | grep mysql
+    mysql -e "show variables like 'have_ssl';" >test.txt
     CHECK_RESULT $?
-    mysql -e "CREATE DATABASE test45;use test45;CREATE TABLE mytexttable (id INT NOT NULL,txt TEXT NOT NULL,PRIMARY KEY (id),FULLTEXT (txt)) ENGINE=MyISAM;"
+    cat test.txt | sed -n 2p | awk '{print$2}' | grep "YES"
     CHECK_RESULT $?
-    myisam_ftdump mytexttable 1
+    mysql_ssl_rsa_setup -v FALSE | grep "Success"
     CHECK_RESULT $?
-    myisam_ftdump -c mytexttable 1 | sort -r
+    mysql_ssl_rsa_setup -V
+    mysql_ssl_rsa_setup -V | grep -i "mysql_ssl_rsa_setup.*Ver"
     CHECK_RESULT $?
-    myisam_ftdump --help | grep "Display help and exit"
+    mysql_ssl_rsa_setup -d /var/lib/mysql
     CHECK_RESULT $?
-    myisam_ftdump -d mytexttable 1
-    CHECK_RESULT $?
-    myisam_ftdump -l mytexttable 1
-    CHECK_RESULT $?
-    myisam_ftdump -s mytexttable 1
-    CHECK_RESULT $?
-    myisam_ftdump -? | grep "Synonym for -h"
+    mysql_ssl_rsa_setup -uid 123
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"
 }
 
 function post_test() {
     LOG_INFO "Start environment cleanup."
-    mysql -e "use test45;DROP TABLE mytexttable;DROP DATABASE test45"
+    rm -rf test.txt
     systemctl stop mysqld
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup."

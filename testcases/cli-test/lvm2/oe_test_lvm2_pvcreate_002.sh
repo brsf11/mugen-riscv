@@ -21,6 +21,7 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
     DNF_INSTALL lvm2
     check_free_disk
+    version_id=$(cat /etc/os-release | grep "VERSION_ID" | awk -F "=" {'print$NF'})
     LOG_INFO "End to prepare the test environment!"
 }
 
@@ -46,8 +47,10 @@ function run_test() {
     CHECK_RESULT $?
     pvcreate --version | grep "LVM version"
     CHECK_RESULT $?
-    pvcreate /dev/${local_disk} -y --nohints | grep "successfully created"
-    CHECK_RESULT $?
+    if [${version_id} = "22.03"]; then
+        pvcreate /dev/${local_disk} -y --nohints | grep "successfully created"
+        CHECK_RESULT $?
+    fi
     LOG_INFO "End executing testcase!"
 }
 function post_test() {

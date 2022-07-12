@@ -28,19 +28,16 @@ function run_test() {
     LOG_INFO "Start to run test."
     jsadebugd -help | grep Usage
     CHECK_RESULT $?
-
     jstack -h 2>&1 | grep Usage
     jrunscript &
-    jstack_pid=$!
-    jstack -m ${jstack_pid} | grep 'Debugger attached successfully'
+    jstack_pid=$! && exit
+    jstack -m ${jstack_pid} 2>&1 | grep 'Debugger attached successfully'
     CHECK_RESULT $?
-
     jstat -help | grep Usage
     CHECK_RESULT $?
     jstat -gc ${jstack_pid} | grep 'S0C' | grep 'S1C' | grep 'S0U'
     CHECK_RESULT $?
     kill -9 ${jstack_pid}
-
     echo "grant codebase \"file:\${java.home}/../lib/tools.jar\" {
     permission java.security.AllPermission;
  };" >jstatd.all.policy
@@ -52,7 +49,6 @@ function run_test() {
     kill -9 ${jstatd_pid}
     jstatd -help 2>&1 | grep usage
     CHECK_RESULT $?
-
     keytool -help 2>&1 | grep 'Commands'
     keytool -genkey -alias testuser -keypass testuser -keyalg RSA -keysize 1024 -validity 365 -keystore \
         ./testuser.keystore -storepass 123456 -dname "CN=testuser, OU=xx公司, O=xx协会, L=湘潭, ST=湖南, C=中国"

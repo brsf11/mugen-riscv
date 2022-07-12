@@ -19,6 +19,10 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
+    version_id=`cat /etc/os-release  | grep "VERSION_ID" | awk -F "=" {'print$NF'} | awk -F "\"" {'print$2'}`
+    if [ ${version_id} = "20.03" ];then
+        exit 0
+    fi
     rm -rf /var/lib/mysql/*
     DNF_INSTALL mysql-server
     systemctl start mysqld
@@ -29,26 +33,19 @@ function run_test() {
     LOG_INFO "Start executing testcase!"
     systemctl status mysqld | grep running
     CHECK_RESULT $?
-    mysql_ssl_rsa_setup --help | grep "Usage : mysql_ssl_rsa_setup [OPTIONS]"
+    mysql_tzinfo_to_sql /usr/share/zoneinfo | grep "time_zone_id"
     CHECK_RESULT $?
-    mysql -e "show variables like 'have_ssl';" >test.txt
+    mysql_tzinfo_to_sql /usr/share/zoneinfo/Africa/Windhoek Africa | grep "time_zone_name"
     CHECK_RESULT $?
-    cat test.txt | sed -n 2p | awk '{print$2}' | grep "YES"
+    mysql_tzinfo_to_sql --leap /usr/share/zoneinfo/Africa/Windhoek | grep "time_zone_leap_second"
     CHECK_RESULT $?
-    mysql_ssl_rsa_setup -v FALSE | grep "Success"
-    CHECK_RESULT $?
-    mysql_ssl_rsa_setup -V | grep -i "grep "mysql_ssl_rsa_setup.*Ver""
-    CHECK_RESULT $?
-    mysql_ssl_rsa_setup -d /var/lib/mysql
-    CHECK_RESULT $?
-    mysql_ssl_rsa_setup -uid 123
+    mysql_tzinfo_to_sql 2>&1 | grep "mysql_tzinfo_to_sql timezonedir"
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"
 }
 
 function post_test() {
     LOG_INFO "Start environment cleanup."
-    rm -rf test.txt
     systemctl stop mysqld
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup."

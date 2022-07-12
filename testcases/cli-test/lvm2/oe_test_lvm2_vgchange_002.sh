@@ -48,7 +48,7 @@ function run_test() {
     CHECK_RESULT $? 0 0 "failed to test vgchange --refresh --sysinit"
     vgchange --refresh --reportformat basic test
     CHECK_RESULT $? 0 0 "failed to test vgchange --refresh --reportformat basic"
-    vgchange --refresh --reportformat json test 
+    vgchange --refresh --reportformat json test
     CHECK_RESULT $? 0 0 "vgchange --refresh --reportformat json"
     LOG_INFO "End executing testcase!"
 }

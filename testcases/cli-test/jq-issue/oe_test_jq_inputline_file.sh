@@ -40,7 +40,7 @@ jq -n "now|strflocaltime(\"%Y-%m-%dT%H%M%S\")"' >/tmp/tlist.txt
 }
 function post_test() {
     LOG_INFO "start environment cleanup."
-    DNF_REMOVE 1
+    DNF_REMOVE
     rm -rf /tmp/tlist.txt /tmp/jq_result /tmp/diff_result
     LOG_INFO "Finish environment cleanup!"
 }

@@ -67,7 +67,7 @@ function post_test() {
     LOG_INFO "Start environment cleanup."
     vgimport test
     vgremove -f test
-    pvremove -f /dev/${local_disk} 
+    pvremove -f /dev/${local_disk}
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup."
 }

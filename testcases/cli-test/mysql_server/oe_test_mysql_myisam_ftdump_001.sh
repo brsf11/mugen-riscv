@@ -19,6 +19,10 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
+    version_id=`cat /etc/os-release  | grep "VERSION_ID" | awk -F "=" {'print$NF'} | awk -F "\"" {'print$2'}`
+    if [ ${version_id} = "20.03" ];then
+	exit 0
+    fi
     rm -rf /var/lib/mysql/*
     DNF_INSTALL mysql-server
     systemctl start mysqld
@@ -29,50 +33,32 @@ function run_test() {
     LOG_INFO "Start executing testcase!"
     systemctl status mysqld | grep running
     CHECK_RESULT $?
-    mysql -e "DROP DATABASE db"
-    mysql -e "create database db;use db;create table my (id int)"
+    my_print_defaults --help | grep -A2 -B2 my.cnf
     CHECK_RESULT $?
-    mysqlshow --print-defaults db my id | grep "db my id"
+    my_print_defaults mysqld server mysql_server mysql.server | grep mysql
     CHECK_RESULT $?
-    mysqlshow --no-defaults db my id | grep "Database: db  Table: my  Wildcard: id"
+    mysql -e "CREATE DATABASE test45;use test45;CREATE TABLE mytexttable (id INT NOT NULL,txt TEXT NOT NULL,PRIMARY KEY (id),FULLTEXT (txt)) ENGINE=MyISAM;"
     CHECK_RESULT $?
-    mysqlshow --defaults-file=/etc/my.cnf >dbfile
+    myisam_ftdump mytexttable 1
     CHECK_RESULT $?
-    grep "db" dbfile
+    myisam_ftdump -c mytexttable 1 | sort -r
     CHECK_RESULT $?
-    mysqlshow --defaults-extra-file=/etc/my.cnf >dbfile1
-    grep "db" dbfile1
+    myisam_ftdump --help | grep "Display help and exit"
     CHECK_RESULT $?
-    mysqlshow --count db 2>&1 | grep "1 row in set"
+    myisam_ftdump -d mytexttable 1
     CHECK_RESULT $?
-    mysqlshow --debug-info 2>&1 | grep "Maximum resident set size"
+    myisam_ftdump -l mytexttable 1
     CHECK_RESULT $?
-    mysqlshow --default-auth=test >dbfile2
+    myisam_ftdump -s mytexttable 1
     CHECK_RESULT $?
-    grep "db" dbfile2
-    CHECK_RESULT $?
-    mysqlshow --help | grep "Usage:"
-    CHECK_RESULT $?
-    mysqlshow -i -k db | grep "Database: db"
-    CHECK_RESULT $?
-    mysqlshow --verbose db | grep "1 row in set"
-    CHECK_RESULT $?
-    mysqlshow --show-table-type db | grep my
-    CHECK_RESULT $?
-    mysqlshow --get-server-public-key db my | grep "Database: db  Table: my"
-    CHECK_RESULT $?
-    version=$(rpm -qa | grep mysql-server | cut -d "-" -f 3)
-    mysqlshow -V | grep "${version}"
-    CHECK_RESULT $?
-    mysqlshow --ssl-fips-mode=OFF --compression-algorithms=zstd | grep "db"
+    myisam_ftdump -? | grep "Synonym for -h"
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"
 }
 
 function post_test() {
     LOG_INFO "Start environment cleanup."
-    rm -rf dbfile*
-    mysql -e "use db;DROP TABLE my;DROP DATABASE db"
+    mysql -e "use test45;DROP TABLE mytexttable;DROP DATABASE test45"
     systemctl stop mysqld
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup."

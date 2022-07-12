@@ -21,6 +21,7 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
     DNF_INSTALL lvm2
     check_free_disk
+    version_id=$(cat /etc/os-release | grep "VERSION_ID" | awk -F "=" {'print$NF'} | awk -F "\"" {'print$2'})
     LOG_INFO "End to prepare the test environment!"
 }
 
@@ -52,19 +53,21 @@ function run_test() {
     CHECK_RESULT $?
     pvcreate -y /dev/${local_disk}
     CHECK_RESULT $?
-    pvremove /dev/${local_disk} --devices /dev/${local_disk} | grep "successfully wiped"
-    CHECK_RESULT $?
-    pvcreate -y /dev/${local_disk}
-    CHECK_RESULT $?
-    pvremove --nohints /dev/${local_disk} | grep "successfully wiped"
-    CHECK_RESULT $?
+    if [${version_id} = "22.03"]; then
+        pvremove /dev/${local_disk} --devices /dev/${local_disk} | grep "successfully wiped"
+        CHECK_RESULT $?
+        pvcreate -y /dev/${local_disk}
+        CHECK_RESULT $?
+        pvremove --nohints /dev/${local_disk} | grep "successfully wiped"
+        CHECK_RESULT $?
+        pvcreate -y /dev/${local_disk}
+        CHECK_RESULT $?
+        pvremove /dev/${local_disk} --devicesfile test | grep "successfully wiped"
+        CHECK_RESULT $?
+    fi
     pvcreate -y /dev/${local_disk}
     CHECK_RESULT $?
     pvremove --longhelp | grep "PV"
-    CHECK_RESULT $?
-    pvcreate -y /dev/${local_disk}
-    CHECK_RESULT $?
-    pvremove /dev/${local_disk} --devicesfile test | grep "successfully wiped"
     CHECK_RESULT $?
     LOG_INFO "End executing testcase!"
 }

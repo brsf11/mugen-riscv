@@ -21,6 +21,7 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
     DNF_INSTALL lvm2
     check_free_disk
+    version_id=$(cat /etc/os-release | grep "VERSION_ID" | awk -F "=" {'print$NF'} | awk -F "\"" {'print$2'})
     LOG_INFO "End to prepare the test environment!"
 }
 
@@ -40,7 +41,7 @@ function run_test() {
     CHECK_RESULT $? 0 0 "create LV failed"
     lvcreate -L 0.1MB -n lv1 test 2>&1 | grep "Maximum number of logical volumes (1) reached"
     CHECK_RESULT $? 0 0 "Maximum number of logical volumes (1) reached"
-    vgchange --maxphysicalvolumes 1 test  2>&1 | grep "Volume group \"test\" successfully changed"
+    vgchange --maxphysicalvolumes 1 test 2>&1 | grep "Volume group \"test\" successfully changed"
     CHECK_RESULT $? 0 0 "set maxphysicalvolumes failed"
     pvcreate -y /dev/${local_disk1}
     CHECK_RESULT $? 0 0 "create PV failed"
@@ -60,10 +61,12 @@ function run_test() {
     CHECK_RESULT $? 0 0 "vgchange del tag failed"
     vgchange --vgmetadatacopies all test | grep "Volume group \"test\" successfully changed"
     CHECK_RESULT $? 0 0 "vgchange --vgmetadatacopies all failed"
-    vgchange --setautoactivation n test | grep "Volume group \"test\" successfully changed"
-    CHECK_RESULT $? 0 0 "vgchange --setautoactivation no failed"
-    vgchange --setautoactivation y test | grep "Volume group \"test\" successfully changed"
-    CHECK_RESULT $? 0 0 "vgchange --setautoactivation yes failed"
+    if [${version_id} = "22.03"]; then
+        vgchange --setautoactivation n test | grep "Volume group \"test\" successfully changed"
+        CHECK_RESULT $? 0 0 "vgchange --setautoactivation no failed"
+        vgchange --setautoactivation y test | grep "Volume group \"test\" successfully changed"
+        CHECK_RESULT $? 0 0 "vgchange --setautoactivation yes failed"
+    fi
     LOG_INFO "End executing testcase!"
 }
 function post_test() {

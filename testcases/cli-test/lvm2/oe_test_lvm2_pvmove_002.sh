@@ -38,12 +38,16 @@ function run_test() {
     CHECK_RESULT $?
     pvmove -A y /dev/${local_disk1} /dev/${local_disk} | grep "Moved: 100.00%"
     CHECK_RESULT $?
+    SLEEP_WAIT 5
     pvmove -n lv1 /dev/${local_disk} /dev/${local_disk1} | grep "Moved: 100.00%"
     CHECK_RESULT $?
+    SLEEP_WAIT 5
     pvmove --alloc contiguous /dev/${local_disk1} /dev/${local_disk} | grep "Moved: 100.00%"
     CHECK_RESULT $?
+    SLEEP_WAIT 5
     pvmove --atomic /dev/${local_disk} /dev/${local_disk1} | grep "Moved: 100.00%"
     CHECK_RESULT $?
+    SLEEP_WAIT 5
     pvmove --noudevsync /dev/${local_disk1} /dev/${local_disk} | grep "Moved: 100.00%"
     CHECK_RESULT $?
     pvmove --noudevsync --reportformat json /dev/${local_disk} /dev/${local_disk1} | grep "Moved: 100.00%"

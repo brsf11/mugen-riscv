@@ -28,7 +28,7 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start executing testcase."
     echo '1
-2
+1
 3' >/tmp/diff_result
     python3 -c "print('0\n\"' + 'a'*4093 + '\"\n0');" | jq 'input_line_number' >/tmp/jq_4095_result
     diff /tmp/diff_result /tmp/jq_4095_result
@@ -40,7 +40,7 @@ function run_test() {
 }
 function post_test() {
     LOG_INFO "start environment cleanup."
-    DNF_REMOVE 1
+    DNF_REMOVE
     rm -rf /tmp/diff_result /tmp/jq_16380_result /tmp/jq_4095_result
     LOG_INFO "Finish environment cleanup!"
 }

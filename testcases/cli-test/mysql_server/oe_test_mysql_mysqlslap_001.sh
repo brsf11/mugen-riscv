@@ -19,6 +19,10 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
+    version_id=`cat /etc/os-release  | grep "VERSION_ID" | awk -F "=" {'print$NF'} | awk -F "\"" {'print$2'}`
+    if [ ${version_id} = "20.03" ];then
+        exit 0
+    fi
     rm -rf /var/lib/mysql/*
     DNF_INSTALL mysql-server
     systemctl start mysqld
@@ -30,41 +34,46 @@ function run_test() {
     systemctl status mysqld | grep running
     CHECK_RESULT $?
     mysql -e "DROP DATABASE test45"
-    mysql -e "CREATE DATABASE test45;use test45;CREATE TABLE mytable (id INT);use test45;INSERT INTO mytable VALUES(1)"
+    mysql -e "CREATE DATABASE test45;use test45;CREATE TABLE mytable (id INT)"
     CHECK_RESULT $?
-    test -f /var/lib/mysql/test45/mytable.ibd
+    mysql -e "use test45;INSERT INTO mytable VALUES(1)"
     CHECK_RESULT $?
-    SLEEP_WAIT 10
-    ibd2sdi --dump-file=test.txt /var/lib/mysql/test45/mytable.ibd
+    mysqldump test45 mytable >query.sql
     CHECK_RESULT $?
-    grep "mytable" test.txt
+    test -f query.sql
     CHECK_RESULT $?
-    version=$(rpm -qa | grep mysql-server | cut -d "-" -f 3)
+    mysqldump --add-drop-table test45 >create.sql
     CHECK_RESULT $?
-    ibd2sdi -v | grep "${version}"
+    test -f create.sql
     CHECK_RESULT $?
-    ibd2sdi -h | grep -i "Usage: ibd2sdi"
+    mysqlslap --concurrency=5 --iterations=5 --query=query.sql --create=create.sql --delimiter=";" | grep "running"
     CHECK_RESULT $?
-    ibd2sdi --skip-data /var/lib/mysql/test45/mytable.ibd | grep "type"
+    mysql -e "CREATE DATABASE mysqlslap"
     CHECK_RESULT $?
-    ibd2sdi --id=10 /var/lib/mysql/test45/mytable.ibd | grep 'ibd2sdi'
+    mysqlslap --delimiter=";" --create="CREATE TABLE mytable1 (b int);INSERT INTO mytable1 VALUES (23)" --query="SELECT * FROM mytable1" --concurrency=50 --iterations=200 | grep "Benchmark"
     CHECK_RESULT $?
-    ibd2sdi --type=1 /var/lib/mysql/test45/mytable.ibd | grep '"type": 1'
+    mysqlslap --concurrency=5 --iterations=20 --number-int-cols=2 --number-char-cols=3 --auto-generate-sql 
     CHECK_RESULT $?
-    ibd2sdi --strict-check=innodb /var/lib/mysql/test45/mytable.ibd | grep "mytable"
+    mysqlslap -a -c 100 2>&1 | grep "Number of clients running queries: 100"
     CHECK_RESULT $?
-    ibd2sdi -c crc32 /var/lib/mysql/test45/mytable.ibd | grep "./test45/mytable.ibd"
+    mysqlslap -a --auto-generate-sql-secondary-indexes=5 2>&1 | grep "Number of clients running queries: 1"
     CHECK_RESULT $?
-    ibd2sdi --no-check /var/lib/mysql/test45/mytable.ibd | grep "InnoDB"
+    mysqlslap --auto-generate-sql-write-number=100 | grep "Benchmark"
+    CHECK_RESULT $?
+    mysqlslap --auto-generate-sql-write-number=100 --only-print
+    CHECK_RESULT $?
+    mysqlslap --create-schema=mysql --csv=use
+    CHECK_RESULT $?
+    grep "mixed" use
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"
 }
 
 function post_test() {
     LOG_INFO "Start environment cleanup."
+    rm -rf use *.sql test.txt
+    mysql -e "DROP database mysqlslap;use test45;DROP TABLE mytexttable;DROP DATABASE test45"
     systemctl stop mysqld
-    rm -rf test.txt ib_sdipGMuTI
-    mysql -e "use test45;DROP TABLE mytexttable;DROP DATABASE test45"
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup."
 }

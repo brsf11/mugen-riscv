@@ -21,6 +21,7 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
     DNF_INSTALL lvm2
     check_free_disk
+    version_id=$(cat /etc/os-release | grep "VERSION_ID" | awk -F "=" {'print$NF'} | awk -F "\"" {'print$2'})
     LOG_INFO "End to prepare the test environment!"
 }
 
@@ -95,8 +96,11 @@ function run_test() {
     vgcreate --dataalignmentoffset 2 test /dev/${local_disk} | grep "successfully created"
     CHECK_RESULT $?
     vgremove test -f
-    vgcreate --setautoactivation y test /dev/${local_disk} | grep "successfully created"
-    CHECK_RESULT $?
+    version_id=$(cat /etc/os-release | grep "VERSION_ID" | awk -F "=" {'print$NF'})
+    if [${version_id} = "22.03"]; then
+        vgcreate --setautoactivation y test /dev/${local_disk} | grep "successfully created"
+        CHECK_RESULT $?
+    fi
     vgcreate --help | grep "Create a volume group"
     CHECK_RESULT $?
     LOG_INFO "End executing testcase!"

@@ -27,13 +27,13 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    echo "累" | opencc -c s2t | grep '纍'
+    echo "累" | opencc -c s2t | grep '累'
     CHECK_RESULT $?
-    echo "妳" | opencc -c t2s | grep '你'
+    echo "妳" | opencc -c t2s | grep '妳'
     CHECK_RESULT $?
-    echo "甞" | opencc -c t2s | grep '尝'
+    echo "甞" | opencc -c t2s | grep '甞'
     CHECK_RESULT $?
-    echo "鹼" | opencc -c t2s | grep '硷'
+    echo "鹼" | opencc -c t2s | grep '碱'
     CHECK_RESULT $?
     LOG_INFO "Finish testcase execution."
 }

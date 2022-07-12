@@ -21,6 +21,7 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment!"
     DNF_INSTALL lvm2
     check_free_disk
+    version_id=$(cat /etc/os-release | grep "VERSION_ID" | awk -F "=" {'print$NF'} | awk -F "\"" {'print$2'})
     LOG_INFO "End to prepare the test environment!"
 }
 
@@ -38,20 +39,25 @@ function run_test() {
     CHECK_RESULT $?
     pvmove -t 2>&1 | grep "TEST MODE: Metadata will NOT be updated and volumes will not be (de)activated"
     CHECK_RESULT $?
-    pvmove --devices /dev/${local_disk}
-    CHECK_RESULT $?
+    if [${version_id} = "22.03"]; then
+        pvmove --devices /dev/${local_disk}
+        CHECK_RESULT $?
+    fi
     touch /etc/lvm/profile/my.profile
     CHECK_RESULT $?
     pvmove --commandprofile my /dev/${local_disk}
     CHECK_RESULT $?
+    SLEEP_WAIT 5
     pvmove --driverloaded y /dev/${local_disk1} /dev/${local_disk} | grep "Moved: 100.00%"
     CHECK_RESULT $?
     pvmove --nolocking /dev/${local_disk} /dev/${local_disk1} | grep "Moved: 100.00%"
     CHECK_RESULT $?
     pvmove --lockopt /dev/${local_disk} /dev/${local_disk1} | grep "Moved: 100.00%"
     CHECK_RESULT $?
-    pvmove --journal my /dev/${local_disk} /dev/${local_disk1} | grep "Moved: 100.00%"
-    CHECK_RESULT $?
+    if [${version_id} = "22.03"]; then
+        pvmove --journal my /dev/${local_disk} /dev/${local_disk1} | grep "Moved: 100.00%"
+        CHECK_RESULT $?
+    fi
     LOG_INFO "End executing testcase!"
 }
 function post_test() {
