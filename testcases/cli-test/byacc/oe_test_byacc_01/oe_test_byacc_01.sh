@@ -58,7 +58,7 @@ function run_test() {
     CHECK_RESULT $? 0 "Failed option: --no-lines" 0
 
     cat /etc/os-release | grep "openEuler 22.03"
-    if [ $? ]; then
+    if [ $? -eq 0 ]; then
     byacc -h 2>&1 | grep 'Usage: byacc'
     CHECK_RESULT $? 0 0 "Failed option: -h"
     byacc --help 2>&1 | grep 'Usage: byacc'
