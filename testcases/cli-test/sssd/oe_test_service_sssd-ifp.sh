@@ -35,6 +35,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "start environment cleanup."
     systemctl stop sssd-ifp.service
+    systemctl stop sssd.service
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

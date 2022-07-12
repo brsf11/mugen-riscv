@@ -61,9 +61,8 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-
     DNF_REMOVE
-
+    kill -9 $(ps -ef | grep dovecot | grep -v grep | grep -v ".sh\|.py" | awk '{print $2}')
     LOG_INFO "End to restore the test environment."
 }
 

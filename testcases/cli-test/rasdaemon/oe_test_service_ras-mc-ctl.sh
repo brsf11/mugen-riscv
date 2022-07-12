@@ -24,6 +24,11 @@ function pre_test() {
     DNF_INSTALL rasdaemon
     service=ras-mc-ctl.service
     log_time=$(date '+%Y-%m-%d %T')
+    flag=false
+    if [ $(getenforce | grep Enforcing) ]; then
+        setenforce 0
+        flag=true
+    fi
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -40,6 +45,9 @@ function run_test() {
 function post_test() {
     LOG_INFO "start environment cleanup."
     systemctl stop "${service}"
+    if [ ${flag} = 'true' ]; then
+        setenforce 1
+    fi
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup!"
 }

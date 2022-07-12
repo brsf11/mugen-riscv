@@ -21,7 +21,9 @@ source "../common/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environmental preparation."
+    DNF_INSTALL "dnf-automatic"
     service=dnf-automatic.service
+    log_time=$(date '+%Y-%m-%d %T')
     status='inactive (dead)'
     systemctl start "${service}"
     LOG_INFO "End of environmental preparation!"
@@ -32,9 +34,15 @@ function run_test() {
     systemctl status "${service}" | grep "Active" | grep -v "${status}"
     CHECK_RESULT $? 0 1 "There is an error for the status of ${service}"
     test_enabled "${service}"
-    journalctl -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING" | grep -v "libgpg-error"
+    journalctl --since "${log_time}" -u "${service}" | grep -i "fail\|error" | grep -v -i "DEBUG\|INFO\|WARNING" | grep -v "libgpg-error" | grep -v "_sasl_plugin_load failed on sasl_canonuser_init"
     CHECK_RESULT $? 0 1 "There is an error message for the log of ${service}"
     LOG_INFO "Finish test!"
+}
+
+function post_test() {
+    LOG_INFO "Start to restore the test environment."
+    DNF_REMOVE
+    LOG_INFO "End to restore the test environment."
 }
 
 main "$@"

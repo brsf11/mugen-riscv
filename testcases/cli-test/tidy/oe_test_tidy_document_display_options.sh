@@ -22,6 +22,9 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL tidy
+    OLD_LANG=$LANG
+    export LANG="en_US.UTF-8"
+    version_id=$(grep VERSION_ID /etc/os-release | awk -F "\"" '{print $2}')
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -38,13 +41,6 @@ function run_test() {
     echo 'gnu-emacs: true' >./tidyrc
     tidy -config ./tidyrc sample.html 2>&1 | grep 'sample.html' | grep 'Warning'
     CHECK_RESULT $? 0 0 "Failed to use option in configuration: gnu-emacs"
-    # --show-filename
-    # 在报告中展示文件名
-    tidy --show-filename true sample.html 2>&1 | grep 'sample.html'
-    CHECK_RESULT $? 0 0 "Failed to use option: show-filename"
-    echo 'show-filename: true' >./tidyrc
-    tidy -config ./tidyrc sample.html 2>&1 | grep 'sample.html'
-    CHECK_RESULT $? 0 0 "Failed to use option in configuration: show-filename"
     # --markup
     # 指定是否要生成格式化后的标记代码，若检测的目标中存在错误，则不生成
     # 该选项默认开启，则在此测试中，检验其关闭后的效果，即不输出处理后的结果
@@ -60,13 +56,6 @@ function run_test() {
     echo 'mute: MISSING_TITLE_ELEMENT' >./tidyrc
     echo '' | tidy -config ./tidyrc 2>&1 | grep "missing 'title' element"
     CHECK_RESULT $? 1 0 "Failed to use option in configuration: mute"
-    # --mute-id
-    # 指定是否要在输出的错误提示中包含其对应的 ID
-    echo '' | tidy --mute-id true 2>&1 | grep 'title' | grep 'MISSING_TITLE_ELEMENT'
-    CHECK_RESULT $? 0 0 "Failed to use option: --mute-id"
-    echo 'mute-id: true' >./tidyrc
-    echo '' | tidy -config ./tidyrc 2>&1 | grep 'title' | grep 'MISSING_TITLE_ELEMENT'
-    CHECK_RESULT $? 0 0 "Failed to use option in configuration: mute-id"
     # --quiet
     # 对非文档内容的输出做限制，只输出错误和警告，即不输出 Info 等信息
     echo '' | tidy --quiet true 2>&1 | grep 'Info'
@@ -88,14 +77,30 @@ function run_test() {
     echo 'show-errors: 0' >./tidyrc
     echo '<wrong>hi' | tidy -config ./tidyrc | grep 'Error: <wrong>'
     CHECK_RESULT $? 1 0 "Failed to use option in configuration: show-errors"
-    # --show-filename
-    # 输出文件名
-    echo '<h1>' >./sample.html
-    tidy --show-filename true ./sample.html 2>&1 | grep 'sample.html'
-    CHECK_RESULT $? 0 0 "Failed to use option: --show-filename"
-    echo 'show-filename: true' >./tidyrc
-    tidy -config ./tidyrc ./sample.html 2>&1 | grep 'sample.html'
-    CHECK_RESULT $? 0 0 "Failed to use option in configuration: show-filename"
+    if [ ${version_id} =  "22.03" ]; then
+        # --show-filename
+        # 在报告中展示文件名
+        tidy --show-filename true sample.html 2>&1 | grep 'sample.html'
+        CHECK_RESULT $? 0 0 "Failed to use option: show-filename"
+        echo 'show-filename: true' >./tidyrc
+        tidy -config ./tidyrc sample.html 2>&1 | grep 'sample.html'
+        CHECK_RESULT $? 0 0 "Failed to use option in configuration: show-filename"
+        # --mute-id
+        # 指定是否要在输出的错误提示中包含其对应的 ID
+        echo '' | tidy --mute-id true 2>&1 | grep 'title' | grep 'MISSING_TITLE_ELEMENT'
+        CHECK_RESULT $? 0 0 "Failed to use option: --mute-id"
+        echo 'mute-id: true' >./tidyrc
+        echo '' | tidy -config ./tidyrc 2>&1 | grep 'title' | grep 'MISSING_TITLE_ELEMENT'
+        CHECK_RESULT $? 0 0 "Failed to use option in configuration: mute-id"
+        # --show-filename
+        # 输出文件名
+        echo '<h1>' >./sample.html
+        tidy --show-filename true ./sample.html 2>&1 | grep 'sample.html'
+        CHECK_RESULT $? 0 0 "Failed to use option: --show-filename"
+        echo 'show-filename: true' >./tidyrc
+        tidy -config ./tidyrc ./sample.html 2>&1 | grep 'sample.html'
+        CHECK_RESULT $? 0 0 "Failed to use option in configuration: show-filename"
+    fi
     # --show-info
     # 指定是否输出 Info 级别的信息，默认开启
     echo '' | tidy --show-info false 2>&1 | grep 'Info'
@@ -116,7 +121,8 @@ function run_test() {
 function post_test() {
     LOG_INFO "start environment cleanup."
     DNF_REMOVE
-    rm -f ./tidyrc
+    rm -rf tidyrc sample.html
+    export LANG=$OLD_LANG
     LOG_INFO "Finish environment cleanup!"
 }
 

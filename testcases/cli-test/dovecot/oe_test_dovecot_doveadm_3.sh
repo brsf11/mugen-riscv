@@ -64,8 +64,9 @@ function post_test() {
     LOG_INFO "Start to restore the test environment."
 
     userdel -f testuser
-    rm -f a.sh testfile
+    rm -rf a.sh* testfile
     systemctl stop doveadm
+    systemctl stop dovecot.service
     DNF_REMOVE
 
     LOG_INFO "End to restore the test environment."
