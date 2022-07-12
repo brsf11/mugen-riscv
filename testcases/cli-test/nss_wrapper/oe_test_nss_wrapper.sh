@@ -20,6 +20,8 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function config_params() {
     LOG_INFO "Start to config params of the case."
+    OLD_LANG=$LANG
+    export LANG=en_US.UTF-8
     if ! grep 'Bruce_liu' /etc/passwd; then
         useradd Bruce_liu
     fi
@@ -51,6 +53,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
+    LANG=${OLD_LANG}
     DNF_REMOVE
     userdel -rf Bruce_liu
     LOG_INFO "End to restore the test environment."

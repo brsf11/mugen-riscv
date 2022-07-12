@@ -17,21 +17,27 @@
 # @Desc      :   Test "dnf list" & "dnf mark" command
 # ##################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source "common/common_dnf.sh"
+
+function pre_test() {
+    LOG_INFO "Start to prepare the test environment."
+    deploy_env
+    LOG_INFO "Finish preparing the test environment."
+}
 
 function run_test() {
     LOG_INFO "Start to run test."
-    dnf list --all | grep "oe1"
+    dnf list --all | grep "${NODE1_FRAME}"
     CHECK_RESULT $?
     dnf list --installed | grep "@anaconda"
     CHECK_RESULT $?
-    dnf list --available | grep "oe1"
+    dnf list --available | grep "${NODE1_FRAME}"
     CHECK_RESULT $?
     dnf list --extras
     CHECK_RESULT $?
     dnf list --obsoletes
     CHECK_RESULT $?
-    dnf list --recent | grep "Recently Added Packages"
+    dnf list --recent
     CHECK_RESULT $?
     dnf list --updates | grep "Available Upgrades"
     CHECK_RESULT $?
@@ -54,6 +60,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
+    clear_env
     dnf -y remove vim-common
     LOG_INFO "Finish restoring the test environment."
 }

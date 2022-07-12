@@ -16,10 +16,11 @@
 #@Desc          :   Test enabled=0 & enabled=1, Test "--enablerepo=<repoid>" option
 ###################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source "common/common_dnf.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
+    deploy_env
     line1=$(grep -nA4 "name=OS" /etc/yum.repos.d/*.repo | grep "enabled=" | awk -F "-" '{print $1}')
     line2=$(grep -nA4 "name=everything" /etc/yum.repos.d/*.repo | grep "enabled=" | awk -F "-" '{print $1}')
     LOG_INFO "Finish preparing the test environment."
@@ -48,6 +49,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
+    clear_env
     sed -i "${line1}c enabled=1" /etc/yum.repos.d/*.repo
     sed -i "${line2}c enabled=1" /etc/yum.repos.d/*.repo
     LOG_INFO "End of restore the test environment."

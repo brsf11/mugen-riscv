@@ -16,7 +16,13 @@
 #@Desc          :   test all oe repos
 ###################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source "common/common_dnf.sh"
+
+function pre_test() {
+    LOG_INFO "Start to prepare the test environment."
+    deploy_env
+    LOG_INFO "Finish preparing the test environment."
+}
 
 function run_test() {
     LOG_INFO "Start to run test."
@@ -34,6 +40,12 @@ function run_test() {
     CHECK_RESULT $?
     dnf remove -y vim tree
     LOG_INFO "End of the test."
+}
+
+function post_test() {
+    LOG_INFO "Start to restore the test environment."
+    clear_env
+    LOG_INFO "Finish restoring the test environment."
 }
 
 main "$@"

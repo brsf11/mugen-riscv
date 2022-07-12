@@ -22,6 +22,7 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
     metric_name=disk.dev.write
+    OLD_PATH=$PATH
     export PATH=/usr/libexec/pcp/bin/:$PATH
     LOG_INFO "End to prepare the test environment."
 }
@@ -43,6 +44,7 @@ function post_test() {
     LOG_INFO "Start to restore the test environment."
     kill -9 $(pgrep -f pcp-dmcache)
     clear_env
+    PATH=${OLD_PATH}
     LOG_INFO "End to restore the test environment."
 }
 

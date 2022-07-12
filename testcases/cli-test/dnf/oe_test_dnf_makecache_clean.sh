@@ -16,12 +16,12 @@
 #@Desc          :   Test "dnf makecache" & "dnf clean" command
 ###################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source "common/common_dnf.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    export LANG=en_US.UTF-8
-    LOG_INFO "End to prepare the test environment."
+    deploy_env
+    LOG_INFO "Finish preparing the test environment."
 }
 
 function run_test() {
@@ -62,6 +62,12 @@ function run_test() {
     ls /var/cache/dnf/*.solv 2>&1 | grep "No such file or directory"
     CHECK_RESULT $?
     LOG_INFO "End of the test."
+}
+
+function post_test() {
+    LOG_INFO "Start to prepare the test environment."
+    clear_env
+    LOG_INFO "Finish preparing the test environment."
 }
 
 main "$@"

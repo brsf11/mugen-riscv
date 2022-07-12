@@ -16,11 +16,11 @@
 #@Desc          :   Test "dnf alias" command
 ###################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source "common/common_dnf.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    export LANG=en_US.UTF-8
+    deploy_env
     DNF_INSTALL tree
     LOG_INFO "End to prepare the test environment."
 }
@@ -44,6 +44,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
+    deploy_env
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }

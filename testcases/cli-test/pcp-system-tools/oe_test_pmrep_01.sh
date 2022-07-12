@@ -42,7 +42,7 @@ function run_test() {
     CHECK_RESULT $?
     pmrep -K del,60 -s 10 $metric_name | grep 'count/s'
     CHECK_RESULT $?
-    pmrep -c /etc/pcp/pmrep/pmrep.conf -s 10 $metric_name | grep 'count/s'
+    pmrep -c /etc/pcp/pmrep/collectl.conf -s 10 $metric_name | grep 'count/s'
     CHECK_RESULT $?
     pmrep -C $metric_name | grep 'd.d.write'
     CHECK_RESULT $?

@@ -16,7 +16,13 @@
 #@Desc          :   Test "dnf check-update" & "dnf check" command, Install the different package by two dnf at the same time
 ###################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source "common/common_dnf.sh"
+
+function pre_test() {
+    LOG_INFO "Start to prepare the test environment."
+    deploy_env
+    LOG_INFO "End to prepare the test environment."
+}
 
 function run_test() {
     LOG_INFO "Start to run test."
@@ -45,6 +51,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start restore the test environment."
+    clear_env
     dnf remove -y vim tree
     LOG_INFO "End of restore the test environment."
 }

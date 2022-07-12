@@ -26,10 +26,17 @@ function config_params() {
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    DNF_INSTALL oemaker
+    OLD_LANG=$LANG
+    export LANG=en_US.UTF-8
     os_name=$(grep '^NAME=' /etc/os-release | awk -F '=' '{print $NF}' | tr -d '"')
     os_version=$(grep '^VERSION_ID=' /etc/os-release | awk -F '=' '{print $NF}' | tr -d '"')
-    repo_address=$(grep -i 'everything' /etc/yum.repos.d/openEuler.repo | grep -v name | grep 'baseurl' | awk -F '=' '{print $NF}')
+    repo_address=$(grep -i 'everything' /etc/yum.repos.d/*.repo | grep -v name | grep 'baseurl' | awk -F '=' '{print $NF}')
+    if yum list | grep oemaker; then
+        DNF_INSTALL oemaker
+    else
+        echo "Not found oemaker package in repo source."
+        exit 0
+    fi
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -46,6 +53,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
+    LANG=${OLD_LANG}
     DNF_REMOVE
     rm -rf /result
     LOG_INFO "End to restore the test environment."

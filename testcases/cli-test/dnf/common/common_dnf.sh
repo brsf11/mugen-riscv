@@ -11,26 +11,18 @@
 ####################################
 #@Author        :   zhujinlong
 #@Contact       :   zhujinlong@163.com
-#@Date          :   2020-10-23
+#@Date          :   2022-7-5
 #@License       :   Mulan PSL v2
 #@Desc          :   Public class
 #####################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function deploy_env {
-    DNF_INSTALL "pcp pcp-system-tools"
-    systemctl enable pmcd
-    systemctl start pmcd
-    systemctl enable pmlogger
-    systemctl start pmlogger
-    SLEEP_WAIT 20
-    host_name=$(hostname)
-    pcp_version=$(rpm -qa pcp | awk -F '-' '{print $2}')
+function deploy_env() {
+    OLD_LANG=$LANG
+    export LANG=en_US.UTF-8
 }
 
-function clear_env {
-    systemctl stop pmcd
-    systemctl stop pmlogger
-    DNF_REMOVE
+function clear_env() {
+    LANG=${OLD_LANG}
 }

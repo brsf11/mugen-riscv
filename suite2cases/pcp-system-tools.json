@@ -20,7 +20,7 @@
             "name": "oe_test_pmrep_06"
         },
         {
-            "name": "oe_test_pcp-collectl"
+            "name": "oe_test_pcp_collectl"
         },
         {
             "name": "oe_test_pcp_dmcache"
