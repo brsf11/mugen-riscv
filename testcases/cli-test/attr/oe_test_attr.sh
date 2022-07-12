@@ -27,7 +27,7 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    attr -s "oe" -V "top" test grep top
+    attr -s "oe" -V "top" test | grep top
     CHECK_RESULT $? 0 0 "add attr failed"
     attr -g "oe" test | grep top
     CHECK_RESULT $? 0 0 "get attr failed"

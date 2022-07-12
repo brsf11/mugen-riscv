@@ -31,7 +31,6 @@ function run_test() {
     CHECK_RESULT $?
     abs2rel foo/bar foo/baz | grep "../bar"
     CHECK_RESULT $?
-
     gradle-local build >build.log
     xmvn-builddep --help | grep "Usage: /usr/bin/xmvn-builddep"
     CHECK_RESULT $?
@@ -47,4 +46,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"

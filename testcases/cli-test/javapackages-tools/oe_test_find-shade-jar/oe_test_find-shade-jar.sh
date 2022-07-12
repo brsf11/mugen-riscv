@@ -31,7 +31,6 @@ function run_test() {
     CHECK_RESULT $?
     find-jar easymock | grep "/usr/share/java/easymock.jar"
     CHECK_RESULT $?
-
     mkdir -p com/example/shade/log4j lib
     shade-jar org.apache.log4j com.example.shaded.log4j /usr/share/java/log4j.jar lib/shaded-log4j.jar
     CHECK_RESULT $?
@@ -46,4 +45,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"

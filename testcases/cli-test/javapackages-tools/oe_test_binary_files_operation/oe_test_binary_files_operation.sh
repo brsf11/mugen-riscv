@@ -57,7 +57,6 @@ function run_test() {
     CHECK_RESULT $? 1
     test -f hello-clean-clean.tar.gz
     CHECK_RESULT $?
-
     mv hello hello_old
     tar zxvf hello-clean-clean.tar.gz
     test -d hello
@@ -83,8 +82,7 @@ function run_test() {
     CHECK_RESULT $?
     test -f hello-clean-clean-clean.tar.gz
     CHECK_RESULT $?
-
-    diff-jars hello/easymock.jar hello/junit.jar | grep "+org/"
+    diff-jars /usr/share/java/easymock.jar /usr/share/java/junit.jar | grep "+org/"
     CHECK_RESULT $?
     LOG_INFO "End of the test."
 }
@@ -95,4 +93,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"

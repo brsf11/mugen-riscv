@@ -80,16 +80,14 @@ function run_test() {
     grep -a "demo1 Installer Version: 2.2.3, Copyright (c) demo1" demo1-1.0.0-Linux.sh
     CHECK_RESULT $?
     OPENEULER_VERSION=$(awk '{print$3}' /etc/openEuler-release)
-    if [ ${OPENEULER_VERSION} == 20.09 ]; then
+    if [ ${OPENEULER_VERSION} != 20.03 ]; then
         cpack -B cpackdir -G "STGZ" | grep "cpackdir/demo1-1.0.0-Linux.sh generated."
-    elif [ ${OPENEULER_VERSION} == 20.03 ]; then
+    else
         currentDir=$(
             cd "$(dirname $0)" || exit 1
             pwd
         )
         cpack -B $currentDir/cpackdir -G "STGZ" | grep "cpackdir/demo1-1.0.0-Linux.sh generated."
-    else
-        exit 1
     fi
     test -d cpackdir -a -d cpackdir/_CPack_Packages
     CHECK_RESULT $?
@@ -108,4 +106,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"

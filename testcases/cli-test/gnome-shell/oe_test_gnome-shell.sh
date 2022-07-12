@@ -20,16 +20,14 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test() {
     LOG_INFO "Start to prepare the database config."
-
     DNF_INSTALL "gnome-shell elinks lynx"
-
+    OLD_LANG=$LANG
+    export LANG="en_US.UTF-8"
     LOG_INFO "End to prepare the database config."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-
-    # test gnome-shell
     gnome-shell --list-modes | grep -i "user"
     CHECK_RESULT $? 0 0 "Check gnome-shell --list-mode failed."
     gnome-shell --version | grep -i "GNOME Shell"
@@ -38,35 +36,20 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Check gnome-shell -h failed."
     gnome-shell --help-all | grep -i "option"
     CHECK_RESULT $? 0 0 "Check gnome-shell --help-all failed."
-
-    # test gnome-shell-perf-tool
     gnome-shell-perf-tool --version | grep -i "GNOME Shell"
     CHECK_RESULT $? 0 0 "Check gnome-shell-perf-tool --version failed."
-    gnome-shell-perf-tool -h | grep -i "option"
+    gnome-shell-perf-tool -h | grep -i "options"
     CHECK_RESULT $? 0 0 "Check gnome-shell-perf-tool -h failed."
-
-    # test gnome-shell-extension-tool
-    gnome-shell-extension-tool -c  <<EOF
-    test
-    test
-    test@test.com
-    \\n
-EOF
-    CHECK_RESULT $? 0 0 "Create extension failed."
-    gnome-shell-extension-tool -h | grep -i "option"
+    gnome-shell-extension-tool -h | grep -i "options"
     CHECK_RESULT $? 0 0 "Check gnome-shell-extension-tool -h failed."
-
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-
-    rm -rf /root/.local/share/gnome-shell/extensions/test@test.com
+    export LANG=${OLD_LANG}
     DNF_REMOVE
-
     LOG_INFO "End to restore the test environment."
 }
 
 main "$@"
-

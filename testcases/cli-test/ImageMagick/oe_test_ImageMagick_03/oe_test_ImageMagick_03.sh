@@ -33,7 +33,8 @@ function run_test() {
     CHECK_RESULT $?
     test -f test3-final.jpg
     CHECK_RESULT $?
-    convert -fill black -pointsize 60 -font helvetica -draw 'text 100,800 "hello"' test3.jpg hello.jpg
+    FONT=$(convert -list font|grep -i "Font:"| awk -F ':' '{print $2}' | head -1)
+    convert -fill black -pointsize 60 -font $FONT -draw 'text 100,800 "hello"' test3.jpg hello.jpg
     CHECK_RESULT $?
     test -f hello.jpg
     CHECK_RESULT $?
@@ -54,7 +55,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ./tmp
+    rm -rf ../tmp
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

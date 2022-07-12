@@ -33,6 +33,7 @@ function run_test() {
     spawn any2djvu http://barak.pearlmutter.net/papers mesh-preprint.ps.gz
     expect "]:"
     send "yes\n"
+    sleep 10
     expect eof
 END
     CHECK_RESULT $? 0 0 "Check any2djvu failed."

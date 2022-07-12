@@ -37,7 +37,7 @@ function run_test() {
     CHECK_RESULT $?
     test -f cmake_install.cmake -a -f CMakeCache.txt -a -f Makefile -a -f CTestTestfile.cmake
     CHECK_RESULT $?
-    make | grep "Scanning dependencies of target my_test"
+    make | grep "Built target my_test"
     CHECK_RESULT $?
     test -f my_test
     CHECK_RESULT $?

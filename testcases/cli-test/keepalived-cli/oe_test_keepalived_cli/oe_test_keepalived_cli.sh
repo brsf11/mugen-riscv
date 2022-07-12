@@ -39,6 +39,7 @@ function pre_test() {
     sed -i 's/priority\ 150/priority\ 100/g' /etc/keepalived/keepalived.conf;
     sed -i 's/router_id\ n1/router_id\ n2/g' /etc/keepalived/keepalived.conf;
     systemctl start keepalived;" "${NODE2_IPV4}" "${NODE2_PASSWORD}" "${NODE2_USER}"
+    VERSION_ID=$(grep "VERSION_ID" /etc/os-release | awk -F '\"' '{print$2}')
     LOG_INFO "End of environmental preparation!"
 }
 
@@ -99,8 +100,14 @@ function run_test() {
     CHECK_RESULT $?
     genhash -h 2>&1 | grep -i "Usage"
     CHECK_RESULT $?
-    test "$(genhash -r 2>&1 | grep -oE "[0-9]+\.[0-9]+\.[0-9]+")" == "$(rpm -qi keepalived | grep 'Version' | awk '{print$3}')"
-    CHECK_RESULT $?
+    if [ $VERSION_ID != "22.03" ]; then
+        test "$(genhash -r 2>&1 | grep -oE "[0-9]+\.[0-9]+\.[0-9]+")" == "$(rpm -qi keepalived | grep 'Version' | awk '{print$3}')"
+        CHECK_RESULT $?
+    else
+        LOG_INFO "Obsolete version command"
+        genhash -r 2>&1 | grep -i "Usage"
+        CHECK_RESULT $?
+    fi
     LOG_INFO "Finish testcase execution."
 }
 

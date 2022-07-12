@@ -27,8 +27,8 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start testing..."
-    test_execution etcd.service 
-    test_reload etcd.service 
+    test_execution etcd.service
+    test_reload etcd.service
     LOG_INFO "Finish test!"
 }
 

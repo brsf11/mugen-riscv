@@ -25,11 +25,11 @@ function run_test() {
     CHECK_RESULT $?
     modprobe --version | grep "kmod version"
     CHECK_RESULT $?
-    lsmod | grep dm_log && modprobe dm_log
+    SLEEP_WAIT 5 "lsmod | grep dm_log && modprobe dm_log" 2
     CHECK_RESULT $?
-    lsmod | grep -E "dm_log|dm_mirror" && modprobe -a dm_log dm_mirror
+    SLEEP_WAIT 5 "lsmod | grep -E \"dm_log|dm_mirror\" && modprobe -a dm_log dm_mirror" 2
     CHECK_RESULT $?
-    lsmod | grep dm_mirror && modprobe -r dm_mirror
+    SLEEP_WAIT 5 "lsmod | grep dm_mirror && modprobe -r dm_mirror" 2
     CHECK_RESULT $?
     lsmod | grep dm_mirror
     CHECK_RESULT $? 1
@@ -63,4 +63,4 @@ function run_test() {
     LOG_INFO "End of the test."
 }
 
-main $@
+main "$@"

@@ -35,7 +35,7 @@ function run_test() {
     CHECK_RESULT $?
     identify test1.jpg | grep "test1.jpg JPEG"
     CHECK_RESULT $?
-    identify -verbose test1.jpg | grep "Image: test1.jpg"
+    identify -verbose test1.jpg | grep -i "Image:"
     CHECK_RESULT $?
     identify -depth 8 -size 900x518 test1.jpg | grep "8-bit"
     CHECK_RESULT $?
@@ -47,7 +47,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ./tmp
+    rm -rf ../tmp
     LOG_INFO "End to restore the test environment."
 }
 main "$@"

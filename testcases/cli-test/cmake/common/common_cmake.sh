@@ -19,7 +19,6 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
-
 function deploy_env() {
     DNF_INSTALL "cmake gcc-c++ ninja-build make"
     mkdir build && cd build

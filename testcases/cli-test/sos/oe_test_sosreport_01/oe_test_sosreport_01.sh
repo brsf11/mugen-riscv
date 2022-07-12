@@ -34,7 +34,7 @@ function run_test() {
         spawn sosreport -a
         expect "" {send "\r"}
         expect ":" {send "001\r"}
-        sleep 330
+        sleep 500
         expect eof
 EOF
 	grep "sosreport-localhost-001" sos_log1 && test -f /var/tmp/sosreport-localhost-001-$(date +%Y-%m-%d)-*.tar.xz
