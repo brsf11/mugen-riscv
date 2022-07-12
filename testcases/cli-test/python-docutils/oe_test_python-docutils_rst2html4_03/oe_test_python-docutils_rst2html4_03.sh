@@ -31,7 +31,7 @@ function run_test() {
     CHECK_RESULT $?
     rst2html4 --record-dependencies=recordlist.log testfile.rst test2.html && grep 'html4css1.css' recordlist.log
     CHECK_RESULT $?
-    test "$(rst2html4 -V | grep -Eo 'Docutils [0-9]*\.[0-9]* ' | grep -Eo '[0-9]*\.[0-9]*')" == "$(rpm -qa python3-docutils | awk -F "-" '{print$3}')"
+    test "$(rst2html4 -V | awk '{print$3}')" == "$(rpm -qa python3-docutils | awk -F "-" '{print$3}')"
     CHECK_RESULT $?
     rst2html4 -h | grep 'Usage'
     CHECK_RESULT $?

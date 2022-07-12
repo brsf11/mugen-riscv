@@ -51,7 +51,7 @@ function run_test() {
     CHECK_RESULT $?
     grep 'language="en_US"' hello.ts
     CHECK_RESULT $?
-    lupdate-qt5 -tr-function-alias tr=tr ../hello.pro -ts hello.ts
+    lupdate-qt5 ../hello.pro -tr-function-alias tr=tr -ts hello.ts
     CHECK_RESULT $?
     grep "tr" hello.ts
     CHECK_RESULT $?

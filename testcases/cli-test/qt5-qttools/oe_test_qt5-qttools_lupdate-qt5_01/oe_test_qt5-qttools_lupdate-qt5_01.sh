@@ -33,7 +33,7 @@ function run_test() {
     CHECK_RESULT $?
     grep "obsolete" hello.ts
     CHECK_RESULT $? 0 1
-    lupdate-qt5 -extensions pro ../hello.pro -ts hello.ts | grep "Updating"
+    lupdate-qt5 -extensions ../hello.cpp -pro ../hello.pro -ts hello.ts | grep "Updating"
     CHECK_RESULT $?
     lupdate-qt5 -pluralonly ../hello.pro -ts hello.ts | grep "plural"
     CHECK_RESULT $?

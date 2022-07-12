@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 
+
 # Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
@@ -40,8 +41,7 @@ function run_test() {
     rst2latex --use-latex-docinfo testfile.rst test5.tex &&
         grep 'author{TESTER}' test5.tex
     CHECK_RESULT $?
-    test "$(rst2latex -V | grep -Eo 'Docutils [0-9]*\.[0-9]* ' |
-        grep -Eo '[0-9]*\.[0-9]*')" == "$(rpm -qa python3-docutils | awk -F "-" '{print$3}')"
+    test "$(rst2latex -V | awk '{print$3}')" == "$(rpm -qa python3-docutils | awk -F "-" '{print$3}')"
     CHECK_RESULT $?
     rst2latex -h | grep 'Usage'
     CHECK_RESULT $?

@@ -30,7 +30,7 @@ function run_test() {
     CHECK_RESULT $?
     rst2odt --record-dependencies=recordlist.log testfile.rst test2.odt && test -f test2.odt
     CHECK_RESULT $?
-    test "$(rst2odt -V | grep -Eo 'Docutils [0-9]*\.[0-9]* ' | grep -Eo '[0-9]*\.[0-9]*')" == "$(rpm -qa python3-docutils | awk -F "-" '{print$3}')"
+    test "$(rst2odt -V | awk '{print$3}')" == "$(rpm -qa python3-docutils | awk -F "-" '{print$3}')"
     CHECK_RESULT $?
     rst2odt -h | grep 'Usage'
     CHECK_RESULT $?

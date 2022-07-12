@@ -22,8 +22,7 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL "qt5-qttools qt5-qttools-devel"
     qt5_version=$(rpm -qa qt5-qttools | awk -F '-' '{print $3}')
-    example_so=$(rpm -ql qt5-qttools-devel | grep "libcontainerextension.so")
-    cp $example_so ./example.so
+    example_so=/usr/lib64/qt5/plugins/printsupport/libcupsprintersupport.so
     cp ../assistant.qhp ./
     LOG_INFO "End to prepare the test environment."
 }
@@ -36,15 +35,11 @@ function run_test() {
     CHECK_RESULT $?
     qcollectiongenerator-qt5 -v | grep -E "Collection Generator|${qt5_version}"
     CHECK_RESULT $?
-    qtplugininfo-qt5 --full-json example.so >actul_result
+    qtplugininfo-qt5 --full-json $example_so | grep "QCupsPrinterSupportPlugin"
     CHECK_RESULT $?
-    diff actul_result expect_result
+    qtplugininfo-qt5 -f indented $example_so | grep "cupsprintersupport"
     CHECK_RESULT $?
-    qtplugininfo-qt5 -f indented example.so >actul_result2
-    CHECK_RESULT $?
-    diff actul_result2 expect_result2
-    CHECK_RESULT $?
-    qtplugininfo-qt5 -p classname example.so | grep "class MultiPageWidgetPlugin"
+    qtplugininfo-qt5 -p classname $example_so | grep "class QCupsPrinterSupportPlugin"
     CHECK_RESULT $?
     qtplugininfo-qt5 -h | grep -E "qtplugininfo-qt5|help"
     CHECK_RESULT $?
@@ -56,8 +51,10 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf ./actul_result* example.so ./assistant* help.qhc
+    rm -rf ./actul_result* example_so ./assistant* help.qhc
     LOG_INFO "End to restore the test environment."
 }
 
 main "$@"
+
+

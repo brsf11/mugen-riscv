@@ -54,7 +54,7 @@ function run_test() {
     CHECK_RESULT $?
     rst2pseudoxml --no-traceback error.rst test9_2.xml && test -f test9_2.xml
     CHECK_RESULT $?
-    test "$(rst2pseudoxml -V | grep -Eo 'Docutils [0-9]*\.[0-9]* ' | grep -Eo '[0-9]*\.[0-9]*')" == "$(rpm -qa python3-docutils | awk -F "-" '{print$3}')"
+    test "$(rst2pseudoxml -V | awk '{print$3}')" == "$(rpm -qa python3-docutils | awk -F "-" '{print$3}')"
     CHECK_RESULT $?
     rst2pseudoxml -h | grep 'Usage'
     CHECK_RESULT $?

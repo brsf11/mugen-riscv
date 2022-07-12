@@ -22,6 +22,7 @@ source "../common/common_ruby.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL ruby-irb
+    VERSION_ID=$(grep "VERSION_ID" /etc/os-release | awk -F '\"' '{print$2}')
     LOG_INFO "Finish preparing the test environment."
 }
 
@@ -33,12 +34,14 @@ function run_test() {
     CHECK_RESULT $?
     irb --single-irb ../common/hello.rb | grep -i "hello"
     CHECK_RESULT $?
-    irb --tracer ../common/hello.rb | grep "Object"
+    irb --tracer ../common/hello.rb | grep "hello.rb:3"
     CHECK_RESULT $?
     irb --back-trace-limit 2 ../common/hello.rb | grep "Hello World"
     CHECK_RESULT $?
-    irb --irb_debug 3 ../common/hello.rb | grep -E "Tree|preproc|postproc"
-    CHECK_RESULT $?
+    if [ $VERSION_ID != "22.03" ]; then
+       irb --irb_debug 3 ../common/hello.rb | grep -E "Tree|preproc|postproc"
+       CHECK_RESULT $?
+    fi
     irb --verbose ../common/hello.rb | grep -E "Switch to inspect mode.|hello|main"
     CHECK_RESULT $?
     irb --noverbose ../common/hello.rb | grep -E "Switch to inspect mode.|hello|main"
