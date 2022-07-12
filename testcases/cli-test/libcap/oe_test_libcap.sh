@@ -50,7 +50,7 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Check capsh --mode failed."
     setcap cap_net_raw,cap_net_admin=eip ./ping
     CHECK_RESULT $? 0 0 "Check setcap failed."
-    getcap ./ping | grep "cap_net_admin,cap_net_raw+eip"
+    getcap ./ping | grep "cap_net_admin,cap_net_raw.eip"
     CHECK_RESULT $? 0 0 "Check getcap failed."
     setcap -r ./ping
     CHECK_RESULT $? 0 0 "Check setcap -r failed."
