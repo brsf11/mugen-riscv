@@ -36,7 +36,7 @@ EOF
     CHECK_RESULT $? 0 0 "Failed to switch example user to view '/etc/shadow' document and obtain 'Permission denied' field"
     setcap cap_dac_override=eip /usr/bin/less
     CHECK_RESULT $? 0 0 "Failed to set cap"
-    getcap /usr/bin/less | grep '/usr/bin/less cap_dac_override=eip'
+    getcap /usr/bin/less | grep "/usr/bin/less" | grep cap_dac_override.eip
     CHECK_RESULT $? 0 0 "Failed to get cap"
     su - example -c 'less /etc/shadow | grep root'
     CHECK_RESULT $? 0 0 "Failed to switch example user to view '/etc/shadow' document and obtain 'root' field"

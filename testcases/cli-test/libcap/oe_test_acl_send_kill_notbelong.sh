@@ -40,6 +40,7 @@ EOF
     CHECK_RESULT $?
     su - example -c "/bin/kill -9 $tail_pid"
     CHECK_RESULT $?
+    SLEEP_WAIT 3
     ps -aux | grep tail | grep $tail_pid | grep -v 'grep'
     CHECK_RESULT $? 0 1 "The viewing process succeeded, but it should fail here"
 
