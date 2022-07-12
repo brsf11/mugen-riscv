@@ -23,6 +23,7 @@ function pre_test() {
     deploy_env
     archive_data=$(pcp -h "$host_name" | grep 'primary logger:' | awk -F: '{print $NF}')
     disk_name=$(lsblk | grep 'disk' | awk '{print $1}')
+    OLD_PATH=$PATH
     export PATH=/usr/libexec/pcp/bin/:$PATH
     LOG_INFO "End to prepare the test environment."
 }
@@ -60,6 +61,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
+    PATH=${OLD_PATH}
     LOG_INFO "End to restore the test environment."
 }
 

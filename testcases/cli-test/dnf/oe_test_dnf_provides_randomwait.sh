@@ -17,17 +17,13 @@
 # @Desc      :   Random installing a package, Test "dnf provides" command, Test "-q, --quiet" & "-R <minutes>,--randomwait=<minutes>" & "--refresh" option
 # ##################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
-
-function config_params() {
-    LOG_INFO "Start to config params of the case."
-    dnf list --available | grep "arch\|x86_64" | awk '{print $1}' | awk -F . 'OFS="."{$NF="";print}' | awk '{print substr($0, 1, length($0)-1)}' >pkg_list
-    LOG_INFO "End to config params of the case."
-}
+source "common/common_dnf.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
+    deploy_env
     DNF_INSTALL time
+    dnf list --available | grep "arch\|x86_64" | awk '{print $1}' | awk -F . 'OFS="."{$NF="";print}' | awk '{print substr($0, 1, length($0)-1)}' >pkg_list
     LOG_INFO "Finish preparing the test environment."
 }
 
@@ -44,11 +40,7 @@ function run_test() {
     CHECK_RESULT $? 1 0
     dnf --quiet repoquery tree 2>&1 | grep check
     CHECK_RESULT $? 1 0
-    /usr/bin/time -f "time-%U" -o time.log dnf -R 2 repoquery | grep "oe1"
-    CHECK_RESULT $?
-    ret=$(echo "$(cat time.log | awk -F - '{print $2}') < 2" | bc)
-    CHECK_RESULT ${ret} 1 0
-    /usr/bin/time -f "time-%U" -o time.log dnf -R 3 repoquery | grep "oe1"
+    /usr/bin/time -f "time-%U" -o time.log dnf -R 3 repoquery | grep "${NODE1_FRAME}"
     CHECK_RESULT $?
     ret=$(echo "$(cat time.log | awk -F - '{print $2}') < 3" | bc)
     CHECK_RESULT ${ret} 1 0
@@ -59,6 +51,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
+    clear_env
     rm -rf pkg_list file_list time.log
     dnf -y remove "$pkg_name"
     DNF_REMOVE

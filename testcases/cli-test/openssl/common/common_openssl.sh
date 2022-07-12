@@ -20,6 +20,9 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function deploy_env() {
     CA_Path=/etc/pki/CA
+    if [ ! -d ${CA_Path} ]; then
+        mkdir -p ${CA_Path}/private ${CA_Path}/newcerts
+    fi
     cp /etc/pki/tls/openssl.cnf /etc/pki/tls/openssl.cnf.bak
     sed -i '0,/^dir/s/\.\/demoCA/\/etc\/pki\/CA/' /etc/pki/tls/openssl.cnf
 }

@@ -17,11 +17,11 @@
 # @Desc      :   Test "dnf reinstall" & "dnf repoinfo" & "dnf repolist" & "dnf repoquery" & "dnf search" & "dnf upgrade-minimal" command, Test "--repo=<repoid>, --repoid=<repoid>" & "--version" option, Install the same package by two dnf at the same time
 # ##################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source "common/common_dnf.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    export LANG=en_US.UTF-8
+    deploy_env
     DNF_INSTALL tree
     LOG_INFO "Finish preparing the test environment."
 }
@@ -51,13 +51,11 @@ function run_test() {
     dnf repoquery -all | grep "/usr/bin/tree"
     CHECK_RESULT $?
     dnf -y install sysstat &
-    dnf -y install sysstat
-    CHECK_RESULT $? 1 0
     rpm -q sysstat | grep "sysstat"
     CHECK_RESULT $?
     dnf search vim | grep vim-enhanced
     CHECK_RESULT $?
-    dnf update-minimal --assumeno 2>&1 | grep "Complete!"
+    dnf update-minimal --assumeno 2>&1 | grep "Upgrading:"
     CHECK_RESULT $?
     dnf --version | grep -B 1 dnf
     CHECK_RESULT $?
@@ -66,7 +64,8 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    DNF_REMOVE tree
+    clear_env
+    DNF_REMOVE
     dnf -y remove sysstat
     LOG_INFO "Finish restoring the test environment."
 }

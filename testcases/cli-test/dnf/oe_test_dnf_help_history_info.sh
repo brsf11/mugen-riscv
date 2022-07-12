@@ -17,7 +17,14 @@
 # @Desc      :   Test "-h, --help, --help-cmd" option, Test "dnf help" & "dnf history" & "dnf info" command
 # ##################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source "common/common_dnf.sh"
+
+function pre_test() {
+    LOG_INFO "Start to prepare the test environment."
+    deploy_env
+    DNF_INSTALL tree
+    LOG_INFO "Finish preparing the test environment."
+}
 
 function run_test() {
     LOG_INFO "Start to run test."
@@ -39,7 +46,8 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    dnf -y remove tree
+    clear_env
+    DNF_REMOVE
     LOG_INFO "Finish restoring the test environment."
 }
 

@@ -16,10 +16,11 @@
 #@Desc          :   Test "dnf distro-sync" command, check ll /usr/bin/dnf & /usr/bin/yum, Test "--downloaddir=<path>, --destdir=<path" & "--downloadonly" option
 ###################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source "common/common_dnf.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
+    deploy_env
     DNF_INSTALL tree
     LOG_INFO "Finish preparing the test environment."
 }
@@ -47,7 +48,9 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
+    clear_env
     dnf clean packages
+    DNF_REMOVE
     LOG_INFO "Finish restoring the test environment."
 }
 

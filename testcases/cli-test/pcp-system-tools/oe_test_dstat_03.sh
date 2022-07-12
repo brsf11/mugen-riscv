@@ -46,7 +46,7 @@ function run_test() {
     SLEEP_WAIT 3 "grep 'advanced-virtual-memory' /tmp/dstat_vm-adv" 2
     CHECK_RESULT $?
     kill -9 $!
-    dstat --list | grep 'internal'
+    dstat --list | grep 'disk'
     CHECK_RESULT $?
     nohup dstat -a >/tmp/dstat_a 2>&1 &
     SLEEP_WAIT 3 "grep 'total-usage' /tmp/dstat_a" 2

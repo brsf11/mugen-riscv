@@ -27,6 +27,7 @@ function pre_test() {
     system_query_g=$(free -g | grep 'Swap' | awk '{print $4}')
     system_query_l=$(free -l | grep 'Low' | awk '{print $2}')
     system_query_t=$(free -t | grep 'Total' | awk '{print $2}')
+    OLD_PATH=$PATH
     export PATH=/usr/libexec/pcp/bin/:$PATH
     LOG_INFO "End to prepare the test environment."
 }
@@ -63,13 +64,14 @@ function run_test() {
     CHECK_RESULT $?
     test $pcp_query_t -eq $system_query_t
     CHECK_RESULT $?
-    CHECK_RESULT $(pcp-free -s 2 -c 3 | grep -c 'buffers/cache') 3
+    CHECK_RESULT $(pcp-free -s 2 -c 3 | grep -c 'Swap') 3
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
+    PATH=${OLD_PATH}
     LOG_INFO "End to restore the test environment."
 }
 

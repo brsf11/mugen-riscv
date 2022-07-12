@@ -17,10 +17,11 @@
 # @Desc      :   Test priority option in configuration file
 # ##################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source "common/common_dnf.sh"
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
+    deploy_env
     line1=$(grep -nA4 "name=OS" /etc/yum.repos.d/*.repo | grep "gpgkey" | awk -F "-" '{print $1}')
     line2=$(grep -nA4 "name=everything" /etc/yum.repos.d/*.repo | grep "gpgkey" | awk -F "-" '{print $1}')
     sed -i "${line1} apriority=1" /etc/yum.repos.d/*.repo
@@ -39,6 +40,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
+    clear_env
     sed -ie '/priority=/d' /etc/yum.repos.d/*.repo
     dnf -y remove tree
     LOG_INFO "End of restore the test environment."

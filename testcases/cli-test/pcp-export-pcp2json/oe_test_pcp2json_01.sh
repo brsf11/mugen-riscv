@@ -40,7 +40,7 @@ function run_test() {
     CHECK_RESULT $?
     pcp2json -K del,60 -s 10 -t 2 $metric_name | grep '@host'
     CHECK_RESULT $?
-    pcp2json -c /etc/pcp/pmrep/pmrep.conf -s 10 -t 2 $metric_name | grep '@instances'
+    pcp2json -c /etc/pcp/pmrep/collectl.conf -s 10 -t 2 $metric_name | grep '@instances'
     CHECK_RESULT $?
     pcp2json -C $metric_name | grep 'Waiting for'
     CHECK_RESULT $?

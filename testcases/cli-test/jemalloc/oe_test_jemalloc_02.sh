@@ -38,7 +38,7 @@ function run_test() {
     CHECK_RESULT $?
     jemalloc-config --ldflags | grep 'openEuler-hardened-ld\|generic-hardened-ld'
     CHECK_RESULT $?
-    jemalloc-config --libs | grep 'ldl'
+    jemalloc-config --libs | grep 'lm'
     CHECK_RESULT $?
     source /usr/bin/jemalloc.sh
     CHECK_RESULT $?

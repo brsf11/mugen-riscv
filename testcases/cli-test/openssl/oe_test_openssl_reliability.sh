@@ -36,8 +36,6 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    pgrep -f httpd | xargs kill -9
-    CHECK_RESULT $?
     systemctl restart httpd && systemctl status httpd | grep "active"
     CHECK_RESULT $?
     curl --cacert /etc/pki/CA/cacert.pem https://www.openeuler.org/index.html -I 2>&1 | grep '200'

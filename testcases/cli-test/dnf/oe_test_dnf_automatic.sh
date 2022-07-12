@@ -16,7 +16,14 @@
 #@Desc          :   Test dnf-automatic services
 ###################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source "common/common_dnf.sh"
+
+function pre_test() {
+    LOG_INFO "Start to prepare the test environment."
+    deploy_env
+    DNF_INSTALL dnf-automatic
+    LOG_INFO "End to prepare the test environment."
+}
 
 function run_test() {
     LOG_INFO "Start to run test."
@@ -57,6 +64,13 @@ function run_test() {
     systemctl status dnf-automatic-install.timer | grep "inactive"
     CHECK_RESULT $?
     LOG_INFO "End of the test."
+}
+
+function post_test() {
+    LOG_INFO "Start to restore the test environment."
+    clear_env
+    DNF_REMOVE
+    LOG_INFO "End to restore the test environment."
 }
 
 main "$@"
