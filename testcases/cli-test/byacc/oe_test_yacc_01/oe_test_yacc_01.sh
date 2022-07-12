@@ -28,14 +28,7 @@ function run_test() {
     LOG_INFO "Start testing..."
 
     yacc -V 2>&1 | grep "yacc - " | grep '[[:digit:]]*'
-    CHECK_RESULT $? 0 0 "Failed option: -v"
-    yacc -V 2>&1 | grep "yacc - " | grep '[[:digit:]]*'
-    CHECK_RESULT $? 0 0 "Failed option: -v"
-
-    yacc -h 2>&1 | grep 'Usage: yacc'
-    CHECK_RESULT $? 0 0 "Failed option: -h"
-    yacc --help 2>&1 | grep 'Usage: yacc'
-    CHECK_RESULT $? 0 0 "Failed option: --help"
+    CHECK_RESULT $? 0 0 "Failed option: -V"
 
     yacc -b test_b test.y 
     ls | grep "test_b.tab.c" 
@@ -66,6 +59,11 @@ function run_test() {
 
     cat /etc/os-release | grep "openEuler 22.03"
     if [ $? ]; then
+    yacc -h 2>&1 | grep 'Usage: yacc'
+    CHECK_RESULT $? 0 0 "Failed option: -h"
+    yacc --help 2>&1 | grep 'Usage: yacc'
+    CHECK_RESULT $? 0 0 "Failed option: --help"
+
     yacc --file-prefix test_lb test.y 
     ls | grep "test_lb.tab.c" 
     CHECK_RESULT $? 0 0 "Failed option: --file-prefix"

@@ -28,14 +28,7 @@ function run_test() {
     LOG_INFO "Start testing..."
 
     byacc -V 2>&1 | grep "byacc - " | grep '[[:digit:]]*'
-    CHECK_RESULT $? 0 0 "Failed option: -v"
-    byacc -V 2>&1 | grep "byacc - " | grep '[[:digit:]]*'
-    CHECK_RESULT $? 0 0 "Failed option: -v"
-
-    byacc -h 2>&1 | grep 'Usage: byacc'
-    CHECK_RESULT $? 0 0 "Failed option: -h"
-    byacc --help 2>&1 | grep 'Usage: byacc'
-    CHECK_RESULT $? 0 0 "Failed option: --help"
+    CHECK_RESULT $? 0 0 "Failed option: -V"
 
     byacc -b test_b test.y 
     ls | grep "test_b.tab.c" 
@@ -66,6 +59,11 @@ function run_test() {
 
     cat /etc/os-release | grep "openEuler 22.03"
     if [ $? ]; then
+    byacc -h 2>&1 | grep 'Usage: byacc'
+    CHECK_RESULT $? 0 0 "Failed option: -h"
+    byacc --help 2>&1 | grep 'Usage: byacc'
+    CHECK_RESULT $? 0 0 "Failed option: --help"
+
     byacc --file-prefix test_lb test.y 
     ls | grep "test_lb.tab.c" 
     CHECK_RESULT $? 0 0 "Failed option: --file-prefix"
