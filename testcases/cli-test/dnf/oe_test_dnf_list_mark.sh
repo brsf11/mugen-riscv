@@ -61,7 +61,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    dnf -y remove vim-common
+    DNF_REMOVE 1 vim-common
     LOG_INFO "Finish restoring the test environment."
 }
 
