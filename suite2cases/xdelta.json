@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/xdelta",
+    "cases": [
+        {
+            "name": "oe_test_xdelta_001"
+        },
+        {
+            "name": "oe_test_xdelta_002"
+        },
+        {
+            "name": "oe_test_xdelta_003"
+        }
+    ]
+}
