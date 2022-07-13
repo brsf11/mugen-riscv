@@ -1,0 +1,20 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/p7zip",
+    "cases": [
+        {
+            "name": "oe_test_p7zip_7za_001"
+        },
+        {
+            "name": "oe_test_p7zip_7za_002"
+        },
+        {
+            "name": "oe_test_p7zip_7za_003"
+        },
+        {
+            "name": "oe_test_p7zip_7za_004"
+        },
+        {
+            "name": "oe_test_p7zip_7za_005"
+        }
+    ]
+}
