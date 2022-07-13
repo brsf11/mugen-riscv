@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-
 # Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
@@ -8,7 +7,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   liujuan
 # @Contact   :   lchutian@163.com
@@ -22,6 +20,7 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL wireshark
+    version=$(rpm -qa wireshark | awk -F "-" '{print$2}')
     LOG_INFO "Finish preparing the test environment."
 }
 
@@ -29,7 +28,7 @@ function run_test() {
     LOG_INFO "Start to run test."
     text2pcap --help | grep "Usage: text2pcap \[options\] <infile> <outfile>"
     CHECK_RESULT $?
-    text2pcap --version | grep "Text2pcap (Wireshark)"
+    text2pcap --version | grep "$version"
     CHECK_RESULT $?
     text2pcap -o hex test.txt test.pcap
     CHECK_RESULT $?
@@ -39,7 +38,7 @@ function run_test() {
     CHECK_RESULT $?
     text2pcap -t "%H:%M:%S" test.txt test1.pcap
     CHECK_RESULT $?
-    capinfos test1.pcap | grep -E "File name:.*test.pcap|"$(date +%Y-%m-%d)
+    capinfos test1.pcap | grep -E "File name:.*test.pcap|$(date +%Y-%m-%d)"
     CHECK_RESULT $?
     text2pcap -l 7 test.txt test2.pcap
     CHECK_RESULT $?
@@ -105,4 +104,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"
