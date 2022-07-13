@@ -22,10 +22,7 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environmental preparation."
     DNF_INSTALL lsyncd
-    mkdir /var/source_dir
-    mkdir /var/target_dir
-    mkdir /var/log/lsyncd
-    mkdir /etc/lsyncd
+    mkdir -p /var/source_dir /var/target_dir /var/log/lsyncd /etc/lsyncd
     cat >> /etc/lsyncd.conf << EOF
 settings {
     logfile = "/var/log/lsyncd/lsyncd.log",
@@ -86,7 +83,7 @@ EOF
 
 function run_test() {
     LOG_INFO "Start to run test."
-    lsyncd -rsyncssh /var/source_dir/ /var/target_dir/
+    lsyncd -rsyncssh /var/source_dir/ ${NODE1_IPV4} /var/target_dir/
     SLEEP_WAIT 5
     test -f /var/target_dir/test.lua
     CHECK_RESULT $? 0 0 "This is to test the rsyncssh function of lsyncd"
@@ -95,8 +92,8 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf /var/source_dir
-    rm -rf /var/target_dir
+    rm -rf /var/source_dir /var/target_dir /var/log/lsyncd /etc/lsyncd.conf /etc/lsyncd
+    kill -9 $(ps -ef | grep "lsyncd" | grep -Ev "grep|bash" | awk '{print $2}')
     LOG_INFO "End to restore the test environment."
 }
 
