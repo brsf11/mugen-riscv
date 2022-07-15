@@ -42,7 +42,7 @@ function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
     sed -ie '/priority=/d' /etc/yum.repos.d/*.repo
-    dnf -y remove tree
+    DNF_REMOVE 1 tree
     LOG_INFO "End of restore the test environment."
 }
 

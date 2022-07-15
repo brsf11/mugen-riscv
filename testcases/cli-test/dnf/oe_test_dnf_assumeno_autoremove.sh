@@ -54,7 +54,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    yum remove -y httpd
+    DNF_REMOVE 1 httpd
     dnf clean all
     LOG_INFO "Finish restoring the test environment."
 }

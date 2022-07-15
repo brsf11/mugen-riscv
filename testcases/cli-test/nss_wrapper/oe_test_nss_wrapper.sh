@@ -53,7 +53,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    LANG=${OLD_LANG}
+    export LANG=${OLD_LANG}
     DNF_REMOVE
     userdel -rf Bruce_liu
     LOG_INFO "End to restore the test environment."

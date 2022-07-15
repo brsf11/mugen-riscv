@@ -53,8 +53,7 @@ function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
     rm -rf pkg_list file_list time.log
-    dnf -y remove "$pkg_name"
-    DNF_REMOVE
+    DNF_REMOVE 1 "$pkg_name time"
     LOG_INFO "End of restore the test environment."
 }
 

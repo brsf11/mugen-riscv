@@ -44,8 +44,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    deploy_env
-    DNF_REMOVE
+    clear_env
     LOG_INFO "End to restore the test environment."
 }
 
