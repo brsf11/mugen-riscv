@@ -1,0 +1,146 @@
+{
+    "path": "$OET_PATH/testcases/embedded-test/os_basic_tests",
+    "cases": [
+        {
+            "name": "oe_test_bashrc_umask"
+        },
+        {
+            "name": "oe_test_basic_cmd_acl"
+        },
+        {
+            "name": "oe_test_basic_cmd_cat"
+        },
+        {
+            "name": "oe_test_basic_cmd_cd"
+        },
+        {
+            "name": "oe_test_basic_cmd_chmod"
+        },
+        {
+            "name": "oe_test_basic_cmd_chown"
+        },
+        {
+            "name": "oe_test_basic_cmd_cp"
+        },
+        {
+            "name": "oe_test_basic_cmd_date"
+        },
+        {
+            "name": "oe_test_basic_cmd_dd"
+        },
+        {
+            "name": "oe_test_basic_cmd_df"
+        },
+        {
+            "name": "oe_test_basic_cmd_dmesg"
+        },
+        {
+            "name": "oe_test_basic_cmd_grep"
+        },
+        {
+            "name": "oe_test_basic_cmd_groupadd"
+        },
+        {
+            "name": "oe_test_basic_cmd_groupdel"
+        },
+        {
+            "name": "oe_test_basic_cmd_groupmod"
+        },
+        {
+            "name": "oe_test_basic_cmd_gzip"
+        },
+        {
+            "name": "oe_test_basic_cmd_id"
+        },
+        {
+            "name": "oe_test_basic_cmd_ln"
+        },
+        {
+            "name": "oe_test_basic_cmd_ls"
+        },
+        {
+            "name": "oe_test_basic_cmd_lsof"
+        },
+        {
+            "name": "oe_test_basic_cmd_mkdir"
+        },
+        {
+            "name": "oe_test_basic_cmd_mv"
+        },
+        {
+            "name": "oe_test_basic_cmd_pgrep"
+        },
+        {
+            "name": "oe_test_basic_cmd_ping"
+        },
+        {
+            "name": "oe_test_basic_cmd_ps"
+        },
+        {
+            "name": "oe_test_basic_cmd_pwd"
+        },
+        {
+            "name": "oe_test_basic_cmd_rm"
+        },
+        {
+            "name": "oe_test_basic_cmd_rmdir"
+        },
+        {
+            "name": "oe_test_basic_cmd_sort"
+        },
+        {
+            "name": "oe_test_basic_cmd_su"
+        },
+        {
+            "name": "oe_test_basic_cmd_sysctl"
+        },
+        {
+            "name": "oe_test_basic_cmd_tar"
+        },
+        {
+            "name": "oe_test_basic_cmd_top"
+        },
+        {
+            "name": "oe_test_basic_cmd_touch"
+        },
+        {
+            "name": "oe_test_basic_cmd_umask"
+        },
+        {
+            "name": "oe_test_basic_cmd_uname"
+        },
+        {
+            "name": "oe_test_basic_cmd_wc"
+        },
+        {
+            "name": "oe_test_basic_cmd_which"
+        },
+        {
+            "name": "oe_test_continuous_100M"
+        },
+        {
+            "name": "oe_test_os_release"
+        },
+        {
+            "name": "oe_test_system_log_logrotate"
+        },
+        {
+            "name": "oe_test_system_monitor_process"
+        },
+        {
+            "name": "oe_test_system_service_sshd"
+        },
+        {
+            "name": "oe_test_system_user_options_001"
+        },
+        {
+            "name": "oe_test_system_user_options_002"
+        },
+        {
+            "name": "oe_test_system_user_options_003"
+        },
+        {
+            "name": "oe_test_var_log"
+        }
+    ]
+}
