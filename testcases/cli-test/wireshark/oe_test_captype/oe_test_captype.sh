@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-
 # Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
@@ -22,24 +21,23 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL wireshark
+    version=$(rpm -qa wireshark | awk -F "-" '{print$2}')
     LOG_INFO "Finish preparing the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    captype --help | grep "Usage: captype <infile>"
+    captype --help | grep "Usage: captype *"
     CHECK_RESULT $?
-    captype --version | grep "Captype (Wireshark)"
+    captype --version | grep "$version"
     CHECK_RESULT $?
     netCard=$(dumpcap -D | awk -F '.' '{print $2}' | head -1)
-    dumpcap -i $netCard -c 20 -w testfile1
-    CHECK_RESULT $?
+    SLEEP_WAIT 10 "dumpcap -i $netCard -c 20 -w testfile1" 2
     test -f testfile1
     CHECK_RESULT $?
     captype testfile1 | grep "testfile1: pcapng"
     CHECK_RESULT $?
-    dumpcap -i $netCard -P -c 20 -w testfile16
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "dumpcap -i $netCard -P -c 20 -w testfile16" 2
     test -f testfile16
     CHECK_RESULT $?
     captype testfile16 | grep "testfile16: pcap"
@@ -54,4 +52,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"

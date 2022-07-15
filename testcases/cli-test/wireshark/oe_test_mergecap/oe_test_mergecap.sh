@@ -1,5 +1,4 @@
-#!/usr/bin/bash
-
+#!/bin/bash
 # Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
@@ -22,6 +21,7 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL wireshark
+    version=$(rpm -qa wireshark | awk -F "-" '{print$2}')
     LOG_INFO "Finish preparing the test environment."
 }
 
@@ -29,15 +29,13 @@ function run_test() {
     LOG_INFO "Start to run test."
     mergecap --help | grep "Usage: mergecap \[options\]"
     CHECK_RESULT $?
-    mergecap --version | grep "Mergecap (Wireshark)"
+    mergecap --version | grep "$version"
     CHECK_RESULT $?
     netCard=$(dumpcap -D | awk -F '.' '{print $2}' | head -1)
-    dumpcap -i $netCard -c 20 -w testfile1
-    CHECK_RESULT $?
+    SLEEP_WAIT 10 "dumpcap -i $netCard -c 20 -w testfile1" 2
     capinfos testfile1 | grep "Number of packets:.*20"
     CHECK_RESULT $?
-    dumpcap -i $netCard -f "tcp port 22" -c 20 -w testfile2
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "dumpcap -i $netCard -f \"tcp port 22\" -c 20 -w testfile2" 2
     capinfos testfile2 | grep -E "Number of packets:.*20|Filter string = tcp port 22"
     CHECK_RESULT $?
     mergecap -a -w mergefile1 testfile1 testfile2
@@ -80,4 +78,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"

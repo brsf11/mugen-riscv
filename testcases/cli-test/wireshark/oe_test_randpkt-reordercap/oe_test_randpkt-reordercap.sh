@@ -1,5 +1,4 @@
-#!/usr/bin/bash
-
+#!/bin/bash
 # Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
@@ -8,7 +7,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   liujuan
 # @Contact   :   lchutian@163.com
@@ -37,7 +35,6 @@ function run_test() {
     CHECK_RESULT $?
     capinfos randomfile2 | grep -E "Packet size limit:.*file hdr: 100 bytes|Number of packets:.*100|File encapsulation:.*"
     CHECK_RESULT $?
-
     reordercap --help | grep "Usage: reordercap \[options\] <infile> <outfile>"
     CHECK_RESULT $?
     reordercap -n randomfile1 randomfile1_A
@@ -54,4 +51,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"
