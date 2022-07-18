@@ -57,34 +57,6 @@ function run_test() {
     cat test_ll.tab.c | grep "#line"
     CHECK_RESULT $? 0 "Failed option: --no-lines" 0 
 
-    cat /etc/os-release | grep "openEuler 22.03"
-    if [ $? -eq 0 ]; then
-    yacc -h 2>&1 | grep 'Usage: yacc'
-    CHECK_RESULT $? 0 0 "Failed option: -h"
-    yacc --help 2>&1 | grep 'Usage: yacc'
-    CHECK_RESULT $? 0 0 "Failed option: --help"
-
-    yacc --file-prefix test_lb test.y 
-    ls | grep "test_lb.tab.c" 
-    CHECK_RESULT $? 0 0 "Failed option: --file-prefix"
-
-    yacc --defines test_lh.c test.y
-    ls | grep "test_lh.c" 
-    CHECK_RESULT $? 0 0 "Failed option: --defines"
-
-    yacc test.y --output test_lo.tab.c
-    ls | grep "test_lo.tab.c"
-    CHECK_RESULT $? 0 0 "Failed option: --output"
-    
-    yacc --graph test.y -o test_lg.dot
-    ls | grep "test_lg.dot"
-    CHECK_RESULT $? 0 0 "Failed option: --graph"
-
-    yacc --name-prefix test_lp test.y -o test_lp.tab.c
-    cat test_lp.tab.c | grep -m 1 "test_lp"
-    CHECK_RESULT $? 0 0 "Failed option: --name-prefix"
-    fi
-
     LOG_INFO "Finish test!"
 }
 
