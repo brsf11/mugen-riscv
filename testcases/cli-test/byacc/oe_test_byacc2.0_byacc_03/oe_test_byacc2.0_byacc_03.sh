@@ -27,8 +27,6 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start testing..."
 
-    cat /etc/os-release | grep "openEuler 22.03"
-    if [ $? -eq 0 ]; then
     byacc -h 2>&1 | grep 'Usage: byacc'
     CHECK_RESULT $? 0 0 "Failed option: -h"
     byacc --help 2>&1 | grep 'Usage: byacc'
@@ -53,7 +51,6 @@ function run_test() {
     byacc --name-prefix test_lp test.y -o test_lp.tab.c
     cat test_lp.tab.c | grep -m 1 "test_lp"
     CHECK_RESULT $? 0 0 "Failed option: --name-prefix"
-    fi
 
     LOG_INFO "Finish test!"
 
