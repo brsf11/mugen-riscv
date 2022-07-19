@@ -104,7 +104,7 @@
         },
         {
             "name": "oe_test_server_mariadb_compatibilty",
-            "machine num":2
+            "machine num": 2
         },
         {
             "name": "oe_test_server_mariadb_dumpMulDB"
@@ -263,7 +263,7 @@
             "name": "oe_test_ProcMgmt_at"
         },
         {
-            "name":"oe_test_disk_tuned_set",
+            "name": "oe_test_disk_tuned_set",
             "add disk": [
                 2,
                 2,
@@ -272,7 +272,7 @@
             ]
         },
         {
-            "name":"oe_test_disk_schedule_specific",
+            "name": "oe_test_disk_schedule_specific",
             "add disk": [
                 2,
                 2,
@@ -281,7 +281,7 @@
             ]
         },
         {
-            "name":"oe_test_disk_schedule_udev",
+            "name": "oe_test_disk_schedule_udev",
             "add disk": [
                 2,
                 2,
@@ -290,7 +290,7 @@
             ]
         },
         {
-            "name":"oe_test_disk_tuned_new",
+            "name": "oe_test_disk_tuned_new",
             "add disk": [
                 2,
                 2,
@@ -299,7 +299,7 @@
             ]
         },
         {
-            "name":"oe_test_disk_tuned_install",
+            "name": "oe_test_disk_tuned_install",
             "add disk": [
                 2,
                 2,
@@ -308,13 +308,13 @@
             ]
         },
         {
-            "name":"oe_test_date"
+            "name": "oe_test_date"
         },
         {
-            "name":"oe_test_cmd_su_user"
+            "name": "oe_test_cmd_su_user"
         },
         {
-            "name":"oe_test_disk_tuned_modify",
+            "name": "oe_test_disk_tuned_modify",
             "add disk": [
                 2,
                 2,
@@ -323,7 +323,7 @@
             ]
         },
         {
-            "name":"oe_test_disk_tuned_disable",
+            "name": "oe_test_disk_tuned_disable",
             "add disk": [
                 2,
                 2,
@@ -332,131 +332,150 @@
             ]
         },
         {
-            "name":"oe_test_ethtool",
+            "name": "oe_test_ethtool",
             "add network interface": 2
         },
         {
-            "name":"oe_test_basic_create_group"
+            "name": "oe_test_basic_create_group"
         },
         {
-            "name":"oe_test_basic_modify_group"
+            "name": "oe_test_basic_modify_group"
         },
         {
-            "name":"oe_test_basic_modify_user"
+            "name": "oe_test_basic_modify_user"
         },
         {
-            "name":"oe_test_chrony_chronyc_cmd"
+            "name": "oe_test_chrony_chronyc_cmd"
         },
         {
-            "name":"oe_test_chrony_chronyc_hardwaretime"
+            "name": "oe_test_chrony_chronyc_hardwaretime"
         },
         {
-            "name":"oe_test_chrony_chronyc_ntpstat"
+            "name": "oe_test_chrony_chronyc_ntpstat"
         },
         {
-            "name":"oe_test_chrony_chronyd"
+            "name": "oe_test_chrony_chronyd"
         },
         {
-            "name":"oe_test_chrony_Manuall"
+            "name": "oe_test_chrony_Manuall"
         },
         {
-            "name":"oe_test_cmd_id"
+            "name": "oe_test_cmd_id"
         },
         {
-            "name":"oe_test_cmd_sudo"
+            "name": "oe_test_cmd_sudo"
         },
         {
-            "name":"oe_test_hwclock"
+            "name": "oe_test_hwclock"
         },
         {
-            "name":"oe_test_IOaccess_500Mfile"
+            "name": "oe_test_IOaccess_500Mfile"
         },
         {
-            "name":"oe_test_group_access"
+            "name": "oe_test_group_access"
         },
         {
-            "name":"oe_test_kernel_sysctl"
+            "name": "oe_test_kernel_sysctl"
         },
         {
-            "name":"oe_test_hostnamectl",
+            "name": "oe_test_hostnamectl",
             "machine num": 2
         },
         {
-            "name":"oe_test_kernel_kdump"
+            "name": "oe_test_kernel_kdump"
         },
         {
-            "name":"oe_test_IOaccess_100Mfile"
+            "name": "oe_test_IOaccess_100Mfile"
         },
         {
-            "name":"oe_test_IOaccess_1Gfile"
+            "name": "oe_test_IOaccess_1Gfile"
         },
         {
-            "name":"oe_test_kernel_module_operation"
+            "name": "oe_test_kernel_module_operation"
         },
         {
-            "name":"oe_test_kernel_cgroup"
+            "name": "oe_test_kernel_cgroup"
         },
         {
-            "name":"oe_test_home_directory"
+            "name": "oe_test_home_directory"
         },
         {
-            "name":"oe_test_groupdel"
+            "name": "oe_test_groupdel"
         },
         {
-            "name":"oe_test_net_IPVLAN",
+            "name": "oe_test_net_IPVLAN",
             "add network interface": 2
         },
         {
-            "name":"oe_test_net_setmode",
+            "name": "oe_test_net_setmode",
             "add network interface": 2
         },
         {
-            "name":"oe_test_net_scriprts",
+            "name": "oe_test_net_scriprts",
             "add network interface": 2
         },
         {
-            "name":"oe_test_net_cmd_ifconfig",
+            "name": "oe_test_net_cmd_ifconfig",
             "add network interface": 2
         },
         {
-            "name":"oe_test_net_VRF",
+            "name": "oe_test_net_VRF",
             "add network interface": 2
         },
         {
-            "name":"oe_test_localectl"
+            "name": "oe_test_localectl"
         },
         {
-            "name":"oe_test_man"
+            "name": "oe_test_man"
         },
         {
-            "name":"oe_test_net_cmd_scp",
-            "machine num":2,
+            "name": "oe_test_net_cmd_scp",
+            "machine num": 2,
             "add network interface": 2
         },
         {
-            "name":"oe_test_net_cmd_ping",
+            "name": "oe_test_net_cmd_ping",
             "add network interface": 2
         },
         {
-            "name":"oe_test_net_conninfo_lsof",
+            "name": "oe_test_net_conninfo_lsof",
             "add network interface": 2
         },
         {
-            "name":"oe_test_net_config",
-            "machine num":2,
+            "name": "oe_test_net_config",
+            "machine num": 2,
             "add network interface": 2
         },
         {
-            "name":"oe_test_net_cmd_telnet",
-            "machine num":2,
+            "name": "oe_test_net_cmd_telnet",
+            "machine num": 2,
             "add network interface": 2
         },
         {
-            "name":"oe_test_net_ncat",
-            "machine num":2,
+            "name": "oe_test_net_ncat",
+            "machine num": 2,
             "add network interface": 2
+        },
+        {
+            "name": "oe_test_nmcli_set_bond"
+        },
+        {
+            "name": "oe_test_basic_UserMgmt_permission"
+        },
+        {
+            "name": "oe_test_system_monitor_share_total"
+        },
+        {
+            "name": "oe_test_disk_graphics_card"
+        },
+        {
+            "name": "oe_test_nmcli_set_team"
+        },
+        {
+            "name": "oe_test_basic_set_account_expiration_time"
+        },
+        {
+            "name": "oe_test_basic_set_permissions"
         }
-
-
     ]
 }

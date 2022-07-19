@@ -879,7 +879,7 @@
                 2
             ]
         },
-	{
+        {
             "name": "oe_test_storage_lvm_set_regionsize",
             "add disk": [
                 2,
@@ -919,7 +919,7 @@
                 2
             ]
         },
-	{
+        {
             "name": "oe_test_storage_lvm_specify_size",
             "add disk": [
                 2,
@@ -941,7 +941,7 @@
                 2,
                 2,
                 2,
-		2
+                2
             ]
         },
         {
@@ -952,7 +952,7 @@
                 2
             ]
         },
-        {	
+        {
             "name": "oe_test_storage_lvm_set_lvconvert_raid",
             "add disk": [
                 2,
@@ -965,6 +965,12 @@
             "add disk": [
                 2,
                 2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_storage_DevMgmt_fstrim",
+            "add disk": [
                 2
             ]
         }
