@@ -18,6 +18,7 @@
 # ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
+
 function run_test() {
     LOG_INFO "Start to run test."
     nmcli connection add type bond con-name bond0 ifname bond0 bond.options "mode=active-backup" | grep "successfully added"

@@ -18,6 +18,7 @@
 # ############################################
 
 source ../common/storage_disk_lib.sh
+
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     check_free_disk
@@ -45,6 +46,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to clean the test environment."
     rm -rf /home/sdbpoint
+    DNF_REMOVE
     LOG_INFO "Start to clean the test environment."
 }
 main "$@"

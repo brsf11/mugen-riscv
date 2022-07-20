@@ -18,6 +18,7 @@
 # ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
+
 function run_test() {
     LOG_INFO "Start to run test."
     nmcli connection add type team con-name team0 ifname team0 config '{"runner":{"name":"activebackup"}}' | grep "successfully added"
