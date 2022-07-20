@@ -60,7 +60,9 @@ function run_test() {
 }
 
 function post_test() {
+    LOG_INFO "End to clean the test environment."
     userdel -rf testuser1
+    LOG_INFO "End to clean the test environment."
 }
 
 main "$@"

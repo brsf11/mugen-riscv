@@ -19,9 +19,11 @@
 
 source ../common/storage_disk_lib.sh
 function pre_test() {
+    LOG_INFO "Start to prepare the test environment."
     check_free_disk
     mkdir -p /home/sdbpoint/
     DNF_INSTALL "multipath-tools"
+    LOG_INFO "Start to prepare the test environment."
 }
 function run_test() {
     LOG_INFO "Start to run test."
@@ -30,7 +32,7 @@ function run_test() {
     fstrim --all
     CHECK_RESULT $?
     fstrim /dev/mapper/ | grep "fstrim: /dev/mapper/: the discard operation is not supported"
-    CHECK_RESULT $? 0 1
+    CHECK_RESULT $? 1
     mount -o discard /dev/${local_disk} /home/sdbpoint
     CHECK_RESULT $?
     systemctl enable --now fstrim.timer
@@ -41,6 +43,8 @@ function run_test() {
 }
 
 function post_test() {
+    LOG_INFO "Start to clean the test environment."
     rm -rf /home/sdbpoint
+    LOG_INFO "Start to clean the test environment."
 }
 main "$@"
