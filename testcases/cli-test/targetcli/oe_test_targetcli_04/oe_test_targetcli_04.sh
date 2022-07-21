@@ -80,7 +80,7 @@ function run_test() {
         expect "/tpg1> " {send "exit\r"}
         expect eof
 EOF
-    grep "/iscsi/iqn.2003-01.org.linux-iscsi.myhost*" target_log13
+    grep "/iscsi/iqn.2003-01.org.linux-iscsi*" target_log13
     CHECK_RESULT $?
     targetcli bookmarks go root
     CHECK_RESULT $?
