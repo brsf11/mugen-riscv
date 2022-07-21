@@ -33,7 +33,7 @@ function run_test() {
     CHECK_RESULT $?
     grep -ai "compat-32" a.out && rm -rf a.out
     CHECK_RESULT $?
-    ocamlmktop -dllib /usr/lib64/libbfd-2.34.so a.c
+    ocamlmktop -dllib /usr/lib64/libbfd-*.so a.c
     CHECK_RESULT $?
     grep -a "/usr/lib64/libbfd" a.out
     CHECK_RESULT $?

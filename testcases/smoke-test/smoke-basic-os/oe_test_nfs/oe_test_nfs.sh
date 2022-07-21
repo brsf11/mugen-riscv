@@ -29,6 +29,8 @@ function config_params() {
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
+    OLD_LANG=$LANG
+    export LANG=en_US.UTF-8
     DNF_INSTALL "nfs-utils nfs4-acl-tools"
     useradd $test_user
     mkdir $server_dir $client_dir
@@ -77,6 +79,7 @@ function post_test() {
     rm -f /tmp/error.log
     test -f exports && mv exports /etc/exports
     DNF_REMOVE
+    export LANG=${OLD_LANG}
     LOG_INFO "Finish environment cleanup!"
 }
 

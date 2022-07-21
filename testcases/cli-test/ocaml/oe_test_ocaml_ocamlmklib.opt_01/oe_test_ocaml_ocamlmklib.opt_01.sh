@@ -43,10 +43,6 @@ function run_test() {
     CHECK_RESULT $?
     objdump -x example.o | grep debug
     CHECK_RESULT $?
-    ocamlmklib.opt -dllpath /tmp example.o
-    CHECK_RESULT $?
-    strings dlla.so | grep "/tmp"
-    CHECK_RESULT $?
     ocamlmklib.opt -linkall example.o
     CHECK_RESULT $?
     objdump -x example.o | grep "camlStdlib"

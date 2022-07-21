@@ -47,7 +47,7 @@ function run_test() {
     CHECK_RESULT $?
     ocamlopt.byte -Oclassic example.ml
     CHECK_RESULT $?
-    grep -aE "ops.caml_classify" a.out
+    grep -aE "caml_classify" a.out
     CHECK_RESULT $?
     ocamlopt.byte -v | grep -E "version|Standard library directory"
     CHECK_RESULT $?

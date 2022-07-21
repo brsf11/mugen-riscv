@@ -21,6 +21,8 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
+    OLD_LANG=$LANG
+    export LANG=en_US.UTF-8
     grep "testuser1:" /etc/passwd && userdel -rf testuser1
     grep "test:" /etc/group && groupdel test
     LOG_INFO "End of environmental preparation!"
@@ -50,6 +52,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "start environment cleanup."
     groupdel test
+    export LANG=${OLD_LANG}
     LOG_INFO "Finish environment cleanup!"
 }
 

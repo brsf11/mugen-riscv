@@ -28,7 +28,7 @@ function run_test() {
     LOG_INFO "Start to run test."
     ocamlopt -depend -map /usr/lib64/ocaml/filename.ml /usr/lib64/ocaml/filename.mli | grep -c "cmi" | grep 1
     CHECK_RESULT $?
-    ocamlopt -depend -modules /usr/lib64/ocaml/filename.ml | grep "Buffer Lazy Printf Random String Sys"
+    ocamlopt -depend -modules /usr/lib64/ocaml/filename.ml | grep "Printf Random String Sys"
     CHECK_RESULT $?
     ocamlopt -depend -native /usr/lib64/ocaml/filename.ml | grep -E ".cmo"
     CHECK_RESULT $? 1
