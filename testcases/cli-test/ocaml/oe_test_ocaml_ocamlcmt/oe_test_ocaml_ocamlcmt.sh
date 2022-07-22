@@ -44,9 +44,6 @@ function run_test() {
     CHECK_RESULT $?
     ocamlcmt -info example.cmt | grep "module name" -A 15
     CHECK_RESULT $?
-    ocamlmktop -o hellotop.exe -custom hello_stubs.c hello.ml
-    ocamlbyteinfo hellotop.exe | grep -E "Imported|caml"
-    CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 

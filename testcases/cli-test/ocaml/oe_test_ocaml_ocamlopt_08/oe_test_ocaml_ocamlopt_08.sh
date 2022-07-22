@@ -37,7 +37,7 @@ function run_test() {
     CHECK_RESULT $?
     grep -ai "lazy" lazy.cmi
     CHECK_RESULT $?
-    ocamlopt -keep-locs -alias-deps -app-funct -labels -linkall -keep-docs -safe-string -open Printf -principal -rectypes -strict-sequence -strict-formats -unboxed-types -unsafe -unsafe-string -w +a-4-6-7-9-27-29-32..42-44-45-48-50-60 -warn-error -a+31 example.ml
+    ocamlopt -keep-locs -alias-deps -app-funct -labels -linkall -keep-docs -safe-string -open Printf -principal -rectypes -strict-sequence -strict-formats -unboxed-types -unsafe -w +a-4-6-7-9-27-29-32..42-44-45-48-50-60 -warn-error -a+31 example.ml
     CHECK_RESULT $?
     ./a.out | grep 6 && rm -rf a.out
     CHECK_RESULT $?

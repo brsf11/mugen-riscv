@@ -19,6 +19,13 @@
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
+function pre_test() {
+    LOG_INFO "Start to prepare the test environment."
+    OLD_LANG=$LANG
+    export LANG=en_US.UTF-8
+    LOG_INFO "End to prepare the test environment."
+}
+
 function run_test() {
     LOG_INFO "Start testing..."
     ls test1 || touch test1
@@ -45,6 +52,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "start environment cleanup."
+    export LANG=${OLD_LANG}
     rm -rf test1 test2 /tmp/test1 /tmp/test2 test4
     LOG_INFO "Finish environment cleanup!"
 }

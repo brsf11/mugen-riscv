@@ -21,6 +21,8 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
+    OLD_LANG=$LANG
+    export LANG=en_US.UTF-8
     grep "testuser:" /etc/passwd && userdel -rf testuser
     grep "testuser1:" /etc/passwd && userdel -rf testuser1
     grep "testuser2:" /etc/passwd && userdel -rf testuser2
@@ -64,6 +66,7 @@ function post_test() {
     userdel -rf testuser
     userdel -rf testuser1
     userdel -rf testuser2
+    export LANG=${OLD_LANG}
     LOG_INFO "Finish environment cleanup!"
 }
 

@@ -28,7 +28,7 @@ function run_test() {
     LOG_INFO "Start to run test."
     ocamldep.opt -all /usr/lib64/ocaml/filename.ml | grep -E ".o|.cmi|.cmo|.cmx"
     CHECK_RESULT $?
-    ocamldep.opt -all /usr/lib64/ocaml/filename.ml | grep -c "filename" | grep 4
+    ocamldep.opt -all /usr/lib64/ocaml/filename.ml | grep -c "filename" | grep -E "4|6"
     CHECK_RESULT $?
     ocamldep.opt -all -one-line /usr/lib64/ocaml/filename.ml | grep -c "filename" | grep 2
     CHECK_RESULT $?
