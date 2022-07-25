@@ -31,6 +31,36 @@
         },
         {
             "name": "oe_test_FSIO_chmod"
+        },
+        {
+            "name": "oe_test_FSIO_chown"
+        },
+        {
+            "name": "oe_test_FSIO_concurrency_read_file"
+        },
+        {
+            "name": "oe_test_FSIO_concurrency_write_file"
+        },
+        {
+            "name": "oe_test_FSIO_cp_file"
+        },
+        {
+            "name": "oe_test_FSIO_create_block"
+        },
+        {
+            "name": "oe_test_FSIO_create_character"
+        },
+        {
+            "name": "oe_test_FSIO_create_file"
+        },
+        {
+            "name": "oe_test_FSIO_create_hardlink_fail"
+        },
+        {
+            "name": "oe_test_FSIO_create_mv_hardlink"
+        },
+        {
+            "name": "oe_test_FSIO_create_softlink"
         }
     ]
 }
