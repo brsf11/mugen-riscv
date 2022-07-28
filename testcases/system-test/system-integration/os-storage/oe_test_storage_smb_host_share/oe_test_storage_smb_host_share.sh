@@ -24,7 +24,7 @@ function pre_test() {
 	echo  \\\"\\tpath = /home/testsamba\\\" >> /etc/samba/smb.conf;
 	echo  \\\"\\thosts allow = 127.0.0.1 client1.example.com\\\" >> /etc/samba/smb.conf;
 	echo  \\\"\\thosts deny = client2.example.com\\\" >> /etc/samba/smb.conf" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
-    SSH_CMD "systemctl disable firewalld; systemctl restart smb || systemctl start smb;systemctl enable smb;
+    SSH_CMD "systemctl stop firewalld; systemctl restart smb || systemctl start smb;systemctl enable smb;
 	setsebool -P samba_export_all_ro on;setsebool -P samba_export_all_rw on" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     DNF_INSTALL cifs-utils
     systemctl stop firewalld
@@ -46,7 +46,7 @@ function post_test() {
     umount /home/client
     rmdir /home/client
     SSH_CMD "systemctl stop smb; rm -f /etc/samba/smb.conf;mv /etc/samba/smb.conf.bak /etc/samba/smb.conf;
-    yum remove samba policycoreutils-python-utils -y; userdel -r testsamba" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    yum remove samba policycoreutils-python-utils -y; userdel -r testsamba; systemctl start firewalld" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     DNF_REMOVE
     systemctl start firewalld
     LOG_INFO "Finish environment cleanup."
