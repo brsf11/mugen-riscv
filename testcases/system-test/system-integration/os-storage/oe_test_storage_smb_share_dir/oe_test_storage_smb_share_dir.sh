@@ -35,7 +35,7 @@ function pre_test() {
     sed -i \\\"/\\[global\\]/a \\tusershare max shares = 100\\\" /etc/samba/smb.conf;
     sed -i \\\"/\\[global\\]/a \\tusershare prefix allow list = /data /srv\\\" /etc/samba/smb.conf" \
         ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
-    SSH_CMD "systemctl disable firewalld; smbcontrol all reload-config;systemctl restart smb || systemctl start smb;systemctl enable smb;
+    SSH_CMD "systemctl stop firewalld; smbcontrol all reload-config;systemctl restart smb || systemctl start smb;systemctl enable smb;
     setsebool -P samba_export_all_ro on;setsebool -p samba_export_all_rw on" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     DNF_INSTALL cifs-utils
     systemctl stop firewalld
@@ -58,7 +58,7 @@ function post_test() {
     rmdir /home/client
     SSH_CMD "systemctl stop smb; rm -f /etc/samba/smb.conf;mv /etc/samba/smb.conf.bak /etc/samba/smb.conf;
     yum remove samba policycoreutils-python-utils -y;userdel -r testsamba;groupdel example; 
-    rm -rf /tmp/testsamba;rm -rf /var/lib/samba/usershares/" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    rm -rf /tmp/testsamba;rm -rf /var/lib/samba/usershares/; systemctl start firewalld" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     DNF_REMOVE
     LOG_INFO "Finish environment cleanup."
 }

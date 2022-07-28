@@ -27,7 +27,7 @@ function pre_test() {
     SSH_CMD "cp -a /etc/samba/smb.conf /etc/samba/smb.conf.bak;echo  \\\" \\\" >> /etc/samba/smb.conf;
     echo  \\\"\\[example\\]\\\" >> /etc/samba/smb.conf;echo  \\\"\\tpath = /tmp/testsamba\\\" >> /etc/samba/smb.conf;
     echo  \\\"\\tread only = no\\\" >> /etc/samba/smb.conf" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
-    SSH_CMD "systemctl disable firewalld; systemctl restart smb || systemctl start smb;systemctl enable smb;
+    SSH_CMD "systemctl stop firewalld; systemctl restart smb || systemctl start smb;systemctl enable smb;
     setsebool -P samba_export_all_ro on;setsebool -P samba_export_all_rw on" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     DNF_INSTALL cifs-utils
     systemctl stop firewalld
@@ -49,7 +49,7 @@ function post_test() {
     umount /home/client
     rmdir /home/client
     SSH_CMD "systemctl stop smb; rm -f /etc/samba/smb.conf;mv /etc/samba/smb.conf.bak /etc/samba/smb.conf;
-    yum remove samba -y; userdel -r testsamba; rm -rf /tmp/testsamba" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    yum remove samba -y; userdel -r testsamba; rm -rf /tmp/testsamba; systemctl start firewalld" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     DNF_REMOVE
     systemctl start firewalld
     LOG_INFO "Finish environment cleanup."
