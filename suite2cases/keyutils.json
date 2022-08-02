@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/keyutils",
+    "cases": [
+        {
+            "name": "oe_test_keyutils-api"
+        },
+        {
+            "name": "oe_test_keyutils-keyctl"
+        }
+    ]
+}
