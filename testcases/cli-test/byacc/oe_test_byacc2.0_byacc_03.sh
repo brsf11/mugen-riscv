@@ -43,7 +43,7 @@ function run_test() {
     test -f ./tmp/test_lo.tab.c
     CHECK_RESULT $? 0 0 "Failed option: --output"
     
-    byacc --graph ./common/test.y -b ./tmp/test_lg -o ./tmp/test_lg.dot
+    byacc -b ./tmp/test_lg --graph ./common/test.y -o ./tmp/test_lg.dot
     test -f ./tmp/test_lg.dot
     CHECK_RESULT $? 0 0 "Failed option: --graph"
 

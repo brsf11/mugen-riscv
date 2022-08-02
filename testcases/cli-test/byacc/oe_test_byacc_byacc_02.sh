@@ -26,7 +26,7 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start testing..."
     
-    byacc -v ./common/test.y -b ./tmp/test_v 2>&1 && test -f ./tmp/test_v.output
+    byacc -b ./tmp/test_v -v ./common/test.y 2>&1 && test -f ./tmp/test_v.output
     CHECK_RESULT $? 0 0 "Failed option: -v"
 
     byacc -t ./common/test.y -o ./tmp/test_t.tab.c 2>&1 && cat ./tmp/test_t.tab.c | grep "#define YYDEBUG 1"
@@ -35,10 +35,10 @@ function run_test() {
     byacc -r ./common/test.y -o ./tmp/test_r.code.c 2>&1 && test -f ./tmp/test_r.code.c
     CHECK_RESULT $? 0 0 "Failed option: -r"
 
-    byacc -d ./common/test.y -b ./tmp/test_d -o /tmp/test_d.tab.h  2>&1 && test -f ./tmp/test_d.tab.h
+    byacc -b ./tmp/test_d -d ./common/test.y -o /tmp/test_d.tab.h 2>&1 && test -f ./tmp/test_d.tab.h
     CHECK_RESULT $? 0 0 "Failed option: -d"
 
-    byacc -i ./common/test.y -b ./tmp/test_i -o ./tmp/test_i.tab.i 2>&1 && test -f ./tmp/test_i.tab.i
+    byacc -b ./tmp/test_i -i ./common/test.y -o ./tmp/test_i.tab.i 2>&1 && test -f ./tmp/test_i.tab.i
     CHECK_RESULT $? 0 0 "Failed option: -i"
 
     byacc -s ./common/test.y -o ./tmp/test_s.tab.c 2>&1 && test -f ./tmp/test_s.tab.c

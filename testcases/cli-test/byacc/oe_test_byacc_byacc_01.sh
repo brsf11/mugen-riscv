@@ -41,7 +41,7 @@ function run_test() {
     test -f ./tmp/test_h.c
     CHECK_RESULT $? 0 0 "Failed option: -H"
 
-    byacc -g ./common/test.y -b ./tmp/test_g -o ./tmp/test_g.dot
+    byacc -b ./tmp/test_g -g ./common/test.y -o ./tmp/test_g.dot
     test -f ./tmp/test_g.dot
     CHECK_RESULT $? 0 0 "Failed option: -g"
 
