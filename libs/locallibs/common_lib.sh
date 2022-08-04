@@ -38,11 +38,13 @@ function CHECK_RESULT() {
         test "$actual_result"x != "$expect_result"x && {
             test -n "$error_log" && LOG_ERROR "$error_log"
             ((exec_result++))
+            LOG_ERROR "${BASH_SOURCE[1]} line ${BASH_LINENO[0]}"
         }
     else
         test "$actual_result"x == "$expect_result"x && {
             test -n "$error_log" && LOG_ERROR "$error_log"
             ((exec_result++))
+            LOG_ERROR "${BASH_SOURCE[1]} line ${BASH_LINENO[0]}"
         }
     fi
 
