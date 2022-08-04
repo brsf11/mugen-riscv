@@ -20,6 +20,8 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start environment preparation."
+    local_lang=$LANG
+    export LANG=en_US.utf-8
     DNF_INSTALL multipath-tools
     mpathconf --enable --with_multipathd y
     LOG_INFO "Environmental preparation is over."
@@ -45,6 +47,7 @@ function post_test() {
     systemctl reload multipathd.service
     multipath -F
     DNF_REMOVE
+    export LANG=${local_lang}
     LOG_INFO "Finish environment cleanup."
 }
 

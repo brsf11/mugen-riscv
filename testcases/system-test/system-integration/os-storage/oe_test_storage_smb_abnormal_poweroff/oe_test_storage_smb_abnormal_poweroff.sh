@@ -26,7 +26,7 @@ function pre_test() {
     SSH_CMD "cp -a /etc/samba/smb.conf /etc/samba/smb.conf.bak;echo  \\\" \\\" >> /etc/samba/smb.conf;
 	echo  \\\"\\[testsamba\\]\\\" >> /etc/samba/smb.conf;echo  \\\"\\tcomment = public stuff\\\" >> /etc/samba/smb.conf;
 	echo  \\\"\\tpath = /home/testsamba\\\" >> /etc/samba/smb.conf" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
-    SSH_CMD "systemctl start smb;systemctl enable smb;systemctl stop firewalld;
+    SSH_CMD "systemctl start smb;systemctl enable smb;systemctl disable firewalld; systemctl stop firewalld;
 	setsebool -P samba_export_all_ro on;setsebool -P samba_export_all_rw on;chmod 755 /home/testsamba" \
         ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     DNF_INSTALL cifs-utils
