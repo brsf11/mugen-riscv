@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-#!/usr/bin/bash
 
 # Copyright (c) 2022. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
@@ -23,8 +22,7 @@ source "../common/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     DNF_INSTALL lsyncd
-    mkdir /var/source_dir
-    mkdir /var/target_dir
+    mkdir -p /var/source_dir /var/target_dir
     cat >> /etc/lsyncd.conf << EOF
 settings {
     logfile = "/var/log/lsyncd/lsyncd.log",
@@ -65,8 +63,8 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     DNF_REMOVE
-    rm -rf /var/source_dir
-    rm -rf /var/target_dir
+    rm -rf /var/source_dir /var/target_dir /var/log/lsyncd /etc/lsyncd.conf
+    kill -9 $(ps -ef | grep "lsyncd" | grep -Ev "grep|bash" | awk '{print $2}')
     LOG_INFO "End to restore the test environment."
 }
 

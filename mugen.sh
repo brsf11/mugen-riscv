@@ -424,11 +424,11 @@ while getopts "c:af:r:dxb:s" option; do
         echo -e "The test script download function has been discarded."
         ;;
     a)
-        if echo "$@" | grep -q -e ' -a *-x *$\| -x *-a *$\| -ax *$\| -xa *$'; then
+        if echo "$@" | grep -q -e ' -a * -x *$\| -x * -a *$\| -ax *$\| -xa *$'; then
             COMMAND_X="yes"
-        elif echo "$@" | grep -q -e '-a *-s *$\|-s *-a *$\|-as *$\|-sa *$'; then
+        elif echo "$@" | grep -q -e ' -a * -s *$\| -s * -a *$\| -as *$\| -sa *$'; then
             COMMAND_S="yes"
-        elif echo "$@" | grep -q -e '-a *-b *$\|-b *-a *$\|-ab *$\|-ba *$'; then
+        elif echo "$@" | grep -q -e ' -a * -b *$\| -b * -a *$\| -ab *$\| -ba *$'; then
             ret=$(build_all)
             exit $ret
         elif ! echo "$@" | grep -q -e '-a *$'; then
@@ -452,7 +452,7 @@ while getopts "c:af:r:dxb:s" option; do
             fi
         done
 
-        if echo "$@" | grep -q -e ' *-a *$\|-ba *$'; then
+        if echo "$@" | grep -q -e ' * -a *$\| -ba *$'; then
             build_all
         else
             build_one_suite $test_suite
@@ -468,16 +468,16 @@ while getopts "c:af:r:dxb:s" option; do
             exit 1
         fi
 
-        echo $test_suite | grep -q -e ' -a\| -r \|-x\|-d' && {
+        echo $test_suite | grep -q -e ' -a \| -r \| -x \| -d ' && {
             usage
             exit 1
         }
 
-        echo "$@" | grep -q -e ' *-x *\| *-xf *' && {
+        echo "$@" | grep -q -e ' * -x *\| * -xf *' && {
             COMMAND_X="yes"
         }
 
-        echo "$@" | grep -q -e ' *-s *\| *-sf *' && {
+        echo "$@" | grep -q -e ' * -s *\| * -sf *' && {
             COMMAND_S="yes"
         }
 
@@ -497,16 +497,16 @@ while getopts "c:af:r:dxb:s" option; do
             exit 1
         fi
 
-        echo $test_case | grep -q -e ' -a\| -f\| -x\| -d' && {
+        echo $test_case | grep -q -e ' -a \| -f \| -x \| -d ' && {
             usage
             exit 1
         }
 
-        echo "$@" | grep -q -e ' *-x *\| *-xr *\| *-xf *' && {
+        echo "$@" | grep -q -e ' * -x *\| * -xr *\| * -xf *' && {
             COMMAND_X="yes"
         }
 
-        echo "$@" | grep -q -e ' *-s *\| *-sr *\| *-sf *' && {
+        echo "$@" | grep -q -e ' * -s *\| * -sr *\| * -sf *' && {
             COMMAND_S="yes"
         }
 

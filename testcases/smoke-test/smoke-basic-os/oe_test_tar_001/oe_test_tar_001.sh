@@ -21,6 +21,8 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
+    OLD_LANG=$LANG
+    export LANG=en_US.UTF-8
     DNF_INSTALL tar
     LOG_INFO "End of environmental preparation!"
 }
@@ -44,6 +46,7 @@ function post_test() {
     LOG_INFO "start environment cleanup."
     rm -rf /tmp/test test.tar
     DNF_REMOVE
+    export LANG=${OLD_LANG}
     LOG_INFO "Finish environment cleanup!"
 }
 

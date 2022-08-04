@@ -33,7 +33,7 @@ function pre_test() {
     SSH_CMD "cp -a /etc/samba/smb.conf /etc/samba/smb.conf.bak;echo  \\\" \\\" >> /etc/samba/smb.conf;
 	echo  \\\"\\[testsamba\\]\\\" >> /etc/samba/smb.conf;echo  \\\"\\tcomment = public stuff\\\" >> /etc/samba/smb.conf;
 	echo  \\\"\\tpath = /home/testsamba\\\" >> /etc/samba/smb.conf" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
-    SSH_CMD "systemctl start smb;systemctl enable smb;systemctl disable firewalld;
+    SSH_CMD "systemctl start smb;systemctl enable smb;systemctl stop firewalld;
 	setsebool samba_export_all_ro on;setsebool samba_export_all_rw on;chmod 755 /home/testsamba" \
         ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     DNF_INSTALL cifs-utils
@@ -62,7 +62,7 @@ function post_test() {
     rmdir /home/client
     SSH_CMD "tc qdisc del dev ${remote_eth1} root netem delay 300ms; systemctl stop smb;
     rm -f /etc/samba/smb.conf;mv /etc/samba/smb.conf.bak /etc/samba/smb.conf;yum remove samba -y;
-    userdel -r testsamba" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    userdel -r testsamba; systemctl start firewalld" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     DNF_REMOVE
     systemctl start firewalld
     LOG_INFO "Finish environment cleanup."

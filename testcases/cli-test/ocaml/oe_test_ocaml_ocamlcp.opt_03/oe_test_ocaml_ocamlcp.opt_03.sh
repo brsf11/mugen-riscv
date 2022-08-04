@@ -27,9 +27,9 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamlcp.opt -dllib /usr/lib64/libbfd-2.34.so
+    ocamlcp.opt -dllib /usr/lib64/libbfd-*.so
     CHECK_RESULT $?
-    grep -a "/usr/lib64/libbfd-2.34" a.out
+    grep -a "/usr/lib64/libbfd" a.out
     CHECK_RESULT $?
     ocamlcp.opt -dllpath ../ a.c
     CHECK_RESULT $?

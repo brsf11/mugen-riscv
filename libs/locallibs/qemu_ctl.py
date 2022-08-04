@@ -150,24 +150,31 @@ def qemu_start_make_cmd(finally_config, i, br_name):
 
     return run_cmd
 
-def qemu_start_wait_output(wait_output, one_sub, all_sub, wait_time = 60):
+def qemu_start_wait_output(wait_output, one_sub, all_sub, check_location = -1, wait_time = 60):
     global is_qemu_ok
     is_qemu_ok = False
     threading.Thread(target=qemu_start_wait_start, args=[all_sub, wait_time]).start()
 
     line = one_sub.stdout.readline()
     while one_sub.poll() is None:
-        if line.find(wait_output) >= 0:
+        localtion = line.find(wait_output)
+        if (check_location < 0 and localtion >= 0) or (check_location >= 0 and localtion == check_location):
             is_qemu_ok = True
             break
+
         line = one_sub.stdout.readline()
 
     return is_qemu_ok
 
-check_login_str=""
+check_login_str = ""
+check_sshd_start_cmd = ""
+start_sshd_cmd = ""
 
 def qemu_start_subprocess(finally_config, br_name):
     global check_login_str
+    global check_sshd_start_cmd
+    global start_sshd_cmd
+
     sub_list = []
     i = 0
     while i < finally_config["count"]:
@@ -206,15 +213,48 @@ def qemu_start_subprocess(finally_config, br_name):
         one_sub.stdin.write("ifconfig eth0 %s up\n"%finally_config["qemu_ip_list"][i] + "\n")
         one_sub.stdin.flush()
         time.sleep(1)
-
         one_sub.stdin.flush()
+
+        run_start_sshd_cmd = ""
+        if start_sshd_cmd != "" and check_sshd_start_cmd != "":
+            run_start_sshd_cmd = "%s || %s\n"%(check_sshd_start_cmd, start_sshd_cmd)
+        elif start_sshd_cmd != "":
+            run_start_sshd_cmd = "%s\n"%(start_sshd_cmd)
+
+        check_run_start_sshd_cmd = ""
+        if check_sshd_start_cmd != "":
+            check_run_start_sshd_cmd = "for i in {1..60}; "\
+                                       "do "\
+                                       "if %s; then "\
+                                       "echo 'check run sshd ok'; "\
+                                       "break; "\
+                                       "else "\
+                                       "sleep 1; "\
+                                       "fi; "\
+                                       "done\n"%(check_sshd_start_cmd)
+
+        if run_start_sshd_cmd != "":
+            mugen_log.logging("INFO", "will run cmd in qemu to start sshd: %s"%run_start_sshd_cmd)
+            one_sub.stdin.write(run_start_sshd_cmd + "\n")
+            one_sub.stdin.flush()
+            time.sleep(1)
+
+        if check_run_start_sshd_cmd != "":
+            mugen_log.logging("INFO", "will run cmd in qemu to check sshd start: %s"%check_run_start_sshd_cmd)
+            one_sub.stdin.write(check_run_start_sshd_cmd + "\n")
+            one_sub.stdin.flush()
+            check_wait = qemu_start_wait_output("check run sshd ok", one_sub, sub_list, 0)
+            if not check_wait:
+                mugen_log.logging("ERROR", "start qemu sshd %d fail"%i)
+                sys.exit(1)
+
         one_sub.stdin.write("echo 'end set qemu'" + "\n")
         one_sub.stdin.flush()
-        check_wait = qemu_start_wait_output("end set qemu", one_sub, sub_list)
+        check_wait = qemu_start_wait_output("end set qemu", one_sub, sub_list, 0)
         if not check_wait:
             mugen_log.logging("ERROR", "start qemu %d fail, check end output fail"%i)
             sys.exit(1)
-        
+
         check_sub = subprocess.Popen(["ping", finally_config["qemu_ip_list"][i], "-c", "3"],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
         check_out, check_error = check_sub.communicate()
@@ -340,7 +380,7 @@ def qemu_start_wait_ssh_connect(ip, port, user, password, wait_time = 60):
             mugen_log.logging("INFO", "wait 1 sec for ssh connect, - out %s"%e)
             time.sleep(1)
             wait_i += 1
-    
+
 def qemu_start_config_conf(finally_config, put_all):
     i = 0
     copy_string = ""
@@ -429,6 +469,9 @@ def qemu_start(qemu_config, put_all, br_name):
 
 def qemu_control(options, args):
     global check_login_str
+    global check_sshd_start_cmd
+    global start_sshd_cmd
+
     config_file = args.config_file
     check_login_str = args.login_wait_str
     if check_login_str == "":
@@ -472,6 +515,9 @@ def qemu_control(options, args):
     if qemu_config is None:
         sys.exit(1)
 
+    if args.check_sshd_start_cmd is not None: check_sshd_start_cmd = args.check_sshd_start_cmd
+    if args.start_sshd_cmd is not None: start_sshd_cmd = args.start_sshd_cmd
+
     return qemu_start(qemu_config, put_all, args.br_name)
 
 if __name__ == "__main__":
@@ -480,6 +526,8 @@ if __name__ == "__main__":
     parser.add_argument('--put_all', action="store_true", help = "config all qemu before run test copy all test case to qemu")
     parser.add_argument('--br_name', type=str, help = "config qemu use br name", default="testbr0")
     parser.add_argument('--login_wait_str', type=str, help = "start qemu wait this string to input user name ", default="login:")
+    parser.add_argument('--start_sshd_cmd', type=str, help = "start sshd commond, if set will run after ip setted")
+    parser.add_argument('--check_sshd_start_cmd', type=str, help = "check start sshd commond, if set will run after ip setted")
 
     config_file_group = parser.add_argument_group("config_file_group")
     config_file_group.add_argument('--config_file', type=str, help = "start qemu config json file", default=None)
@@ -515,6 +563,5 @@ if __name__ == "__main__":
          args.qemu_ssh_port is not None )):
         mugen_log.logging("ERROR", "had config config file, do not add other param config")
         sys.exit(1)
-
 
     qemu_control(args.option, args)

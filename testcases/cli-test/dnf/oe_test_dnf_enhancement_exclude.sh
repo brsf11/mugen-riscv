@@ -52,7 +52,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     clear_env
-    dnf -y remove tree
+    DNF_REMOVE 1 tree
     LOG_INFO "End of restore the test environment."
 }
 

@@ -1,5 +1,4 @@
-#!/usr/bin/bash
-
+#!/bin/bash
 # Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
@@ -8,7 +7,6 @@
 # EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
-
 # #############################################
 # @Author    :   liujuan
 # @Contact   :   lchutian@163.com
@@ -28,17 +26,14 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start to run test."
     netCard=$(tshark -D | awk -F '.' '{print $2}' | head -1)
-    tshark -i $netCard -a duration:5 -w tsfile7
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "tshark -i $netCard -a duration:5 -w tsfile7" 2
     capinfos tsfile7 | grep -E "Capture duration:.*seconds|File name:.*tsfile7"
     CHECK_RESULT $?
-    tshark -i $netCard -a filesize:3 -w tsfile8
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "tshark -i $netCard -a filesize:3 -w tsfile8" 2
     capinfos tsfile8 | grep -E "File size:.*bytes|File name:.*tsfile8"
     CHECK_RESULT $?
-    tshark -i $netCard -a files:3 -a filesize:2 -w tsfile9
-    CHECK_RESULT $?
-    CHECK_RESULT "$(ls | grep -c 'tsfile9_')" "3"
+    SLEEP_WAIT 5 "tshark -i $netCard -a files:3 -a filesize:2 -w tsfile9" 2
+    CHECK_RESULT "$(ls | grep -c 'tsfile9_')" 3
     capinfos tsfile9_* | grep -E "File size:.*bytes|File name:.*tsfile9_.*"
     CHECK_RESULT $?
     expect <<EOF
@@ -66,29 +61,23 @@ EOF
 EOF
     capinfos tsfile13_* | grep -E "File size:.*bytes|File name:.*tsfile13_.*"
     CHECK_RESULT $?
-    CHECK_RESULT "$(ls | grep -c 'tsfile13_')" "2"
-    tshark -i 3 -c 50 -w anyFile
-    CHECK_RESULT $?
+    CHECK_RESULT "$(ls | grep -c 'tsfile13_')" 2
+    SLEEP_WAIT 5 "tshark -i 1 -c 50 -w anyFile" 2
     capinfos anyFile | grep -E "Number of packets:.*50|File name:.*anyFile"
     CHECK_RESULT $?
     tshark -r anyFile | grep -E "SSH|TCP|STP"
     CHECK_RESULT $?
-    tshark -r anyFile -R "tcp.dstport==22" -2 -w tcpFile1
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "tshark -r anyFile -R \"tcp.dstport==22\" -2 -w tcpFile1" 2
     capinfos tcpFile1 | grep "File name:.*tcpFile1"
     CHECK_RESULT $?
-    tshark -r tcpFile1 | grep "TCP"
-    CHECK_RESULT $?
-    tshark -i $netCard -n -c 20 -w tsfile14
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "tshark -r tcpFile1 | grep \"TCP\"" 2
+    SLEEP_WAIT 5 "tshark -i $netCard -n -c 20 -w tsfile14" 2
     capinfos tsfile14 | grep -E "File name:.*tsfile14|Number of packets:.*20"
     CHECK_RESULT $?
-    tshark -i $netCard -N m -c 20 -w tsfile15
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "tshark -i $netCard -N m -c 20 -w tsfile15" 2
     capinfos tsfile15 | grep -E "File name:.*tsfile15|Number of packets:.*20"
     CHECK_RESULT $?
-    tshark -i $netCard -d "tcp.port==8888,http" -c 20 -w tsfile16
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "tshark -i $netCard -d \"tcp.port==8888,http\" -c 20 -w tsfile16" 2
     capinfos tsfile16 | grep "File name:.*tsfile16"
     CHECK_RESULT $?
     captype tsfile16 | grep "tsfile16: pcapng"
@@ -103,4 +92,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"

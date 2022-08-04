@@ -47,13 +47,9 @@ function run_test() {
     CHECK_RESULT $?
     grep -ai "unboxed" a.out && rm -rf a.out
     CHECK_RESULT $?
-    ocamlmktop.opt -unsafe-string example.ml
-    CHECK_RESULT $?
-    grep -ai "unsafe" a.out && rm -rf a.out
-    CHECK_RESULT $?
     ocamlmktop.opt -w +a-4-6-7-9-27-29-32..42-44-45-48-50-60 example.ml
     CHECK_RESULT $?
-    grep -ai "+a-4-6-7-9-27-29-32..42-44-45-48-50-60" a.out && rm -rf a.out
+    grep -aiE "+a-4-6-7-9-27-29-32..42-44-45-48-50-60|+a-4-7-9-27-29-30-32..42-44-45-48-50-60-66..70" a.out && rm -rf a.out
     CHECK_RESULT $?
     ocamlmktop.opt -warn-error -a+31 example.ml
     CHECK_RESULT $?

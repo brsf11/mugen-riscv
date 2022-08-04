@@ -24,5 +24,5 @@ function deploy_env() {
 }
 
 function clear_env() {
-    LANG=${OLD_LANG}
+    export LANG=${OLD_LANG}
 }

@@ -33,11 +33,11 @@ function run_test() {
     CHECK_RESULT $?
     ocamloptp -inline-indirect-cost 4 example.ml
     CHECK_RESULT $?
-    grep -a "directory.camlStdlib" a.out
+    grep -a "directory.caml" a.out
     CHECK_RESULT $?
     ocamloptp -inline-toplevel 100 example.ml
     CHECK_RESULT $?
-    grep -a "level.camlStdlib" a.out
+    grep -a "level.caml" a.out
     CHECK_RESULT $?
     ocamloptp -S -inline-call-cost 1 not.ml -o not.opt
     CHECK_RESULT $?

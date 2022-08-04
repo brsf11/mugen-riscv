@@ -374,6 +374,27 @@
         },
         {
             "name": "oe_test_vsftpd_conf"
+        },
+        {
+            "name": "oe_test_ip_cmd_addr"
+        },
+        {
+            "name": "oe_test_ip_cmd_route"
+        },
+        {
+            "name": "oe_test_ip_cmd_rule"
+        },
+        {
+            "name": "oe_test_ip_config_mtu"
+        },
+        {
+            "name": "oe_test_ip_config_multiple_address"
+        },
+        {
+            "name": "oe_test_ip_config_static_address"
+        },
+        {
+            "name": "oe_test_ip_config_static_route"
         }
     ]
 }

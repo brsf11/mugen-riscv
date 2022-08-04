@@ -41,10 +41,6 @@ function run_test() {
     CHECK_RESULT $?
     grep -a invariant a.out
     CHECK_RESULT $?
-    ocamloptp -davail example.ml
-    CHECK_RESULT $?
-    grep -az vail a.out
-    CHECK_RESULT $?
     ocamloptp -dtimings example.ml | grep "0.0"
     CHECK_RESULT $?
     ocamloptp -dprofile example.ml | grep "0."

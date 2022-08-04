@@ -33,7 +33,7 @@ function run_test() {
     CHECK_RESULT $?
     ./a.out | grep 6 && rm -rf a.out
     CHECK_RESULT $?
-    ocamlc.opt -dllib -l /usr/lib64/libbfd-2.34.so a.c
+    ocamlc.opt -dllib -l /usr/lib64/libbfd-*.so a.c
     CHECK_RESULT $?
     test -f a.o && rm -rf a.o
     CHECK_RESULT $?

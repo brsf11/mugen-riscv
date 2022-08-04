@@ -24,14 +24,14 @@ function pre_test() {
     cat >> /etc/lsyncd.conf << EOF
     sync{default.rsync, source="/var/www/html", target="/tmp/htmlcopy/"}
 EOF
-    mkdir -p /var/www/html/
-    mkdir -p /tmp/htmlcopy/
+    mkdir -p /var/www/html /tmp/htmlcopy /var/log/lsyncd
+    touch /var/log/lsyncd/lsyncd.{log,status}
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    lsyncd  /etc/lsyncd.conf -delay 10
+    lsyncd  /etc/lsyncd.conf -delay 25
     CHECK_RESULT $? 0 0 "Check dealy failed"
     lsyncd -insist /etc/lsyncd.conf
     CHECK_RESULT $? 0 0 "Check insist failed"
@@ -53,8 +53,8 @@ function run_test() {
 function post_test() {
     LOG_INFO "start environment cleanup."
     DNF_REMOVE
-    rm -rf /var/www/
-    rm -rf /tmp/htmlcopy/
+    rm -rf /var/www /tmp/htmlcopy /var/log/lsyncd /etc/lsyncd.conf
+    kill -9 $(ps -ef | grep "lsyncd" | grep -Ev "grep|bash" | awk '{print $2}')
     LOG_INFO "Finish environment cleanup!"
 }
 

@@ -26,7 +26,7 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ocamldep -modules /usr/lib64/ocaml/filename.ml | grep "Buffer Lazy Printf Random String Sys"
+    ocamldep -modules /usr/lib64/ocaml/filename.ml | grep "Printf Random String Sys"
     CHECK_RESULT $?
     ocamldep -native /usr/lib64/ocaml/filename.ml | grep -E ".cmo"
     CHECK_RESULT $? 1

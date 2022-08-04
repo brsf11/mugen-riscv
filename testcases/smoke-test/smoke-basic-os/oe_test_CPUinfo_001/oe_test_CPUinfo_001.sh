@@ -19,6 +19,13 @@
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
+function pre_test() {
+    LOG_INFO "Start to prepare the test environment."
+    OLD_LANG=$LANG
+    export LANG=en_US.UTF-8
+    LOG_INFO "End to prepare the test environment."
+}
+
 function run_test() {
     LOG_INFO "Start testing..."
     lscpu | grep "^CPU(s)" | egrep '[0-9]'
@@ -63,6 +70,12 @@ function run_test() {
         CHECK_RESULT $?
     fi
     LOG_INFO "Finish test!"
+}
+
+function post_test() {
+    LOG_INFO "start environment cleanup."
+    export LANG=${OLD_LANG}
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main $@

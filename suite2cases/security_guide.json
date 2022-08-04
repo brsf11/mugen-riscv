@@ -106,6 +106,42 @@
         },
         {
             "name": "oe_test_kernel_parameter_hardening"
+        },
+        {
+            "name": "oe_test_ssh_strong_encryption_algorithm"
+        },
+        {
+            "name": "oe_test_ssh_client_reinforcement_suggestions"
+        },
+        {
+            "name": "oe_test_ssh_character_page_timeout_limit",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_password_complexity"
+        },
+        {
+            "name": "oe_test_ssh_login_failed_attempts",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_umask_default"
+        },
+        {
+            "name": "oe_test_ssh_su_permission_restrictions"
+        },
+        {
+            "name": "oe_test_ssh_server_reinforcement_suggestions"
+        },
+        {
+            "name" :"oe_test_kernel_parameter_reinforcement_description"
+        },
+        {
+            "name" :"oe_test_ssh_prohibit_root_login_system_through_ssh",
+            "machine num": 2
+        },
+        {
+            "name" :"oe_test_password_validity"
         }
     ]
 }

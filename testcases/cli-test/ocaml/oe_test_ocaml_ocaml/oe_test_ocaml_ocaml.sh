@@ -40,7 +40,7 @@ function run_test() {
     CHECK_RESULT $?
     ocaml -alias-deps -app-funct -labels -open Printf -principal -rectypes example.ml | grep "6"
     CHECK_RESULT $?
-    ocaml -safe-string -strict-sequence -strict-formats -unboxed-types -unsafe -unsafe-string example.ml | grep "6"
+    ocaml -safe-string -strict-sequence -strict-formats -unboxed-types -unsafe example.ml | grep "6"
     CHECK_RESULT $?
     ocaml -version example.ml | grep "version"
     CHECK_RESULT $?

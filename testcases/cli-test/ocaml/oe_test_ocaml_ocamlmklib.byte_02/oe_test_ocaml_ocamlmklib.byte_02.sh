@@ -34,7 +34,7 @@ function run_test() {
     CHECK_RESULT $?
     ocamlmklib.byte -l example.cmo
     CHECK_RESULT $?
-    grep -a "StdlibA" a.cma
+    grep -a "Stdlib" a.cma
     CHECK_RESULT $?
     ocamlmklib.byte -verbose example.ml | grep "/usr/bin/ocaml"
     CHECK_RESULT $?
@@ -43,14 +43,6 @@ function run_test() {
     ocamlmklib.byte -oc example example.o
     CHECK_RESULT $?
     grep -ai "gcc" dllexample.so
-    CHECK_RESULT $?
-    ocamlmklib.byte -rpath /tmp example.o
-    CHECK_RESULT $?
-    strings dlla.so | grep "/tmp" && rm -rf dlla.so
-    CHECK_RESULT $?
-    ocamlmklib.byte -R /tmp example.o
-    CHECK_RESULT $?
-    strings dlla.so | grep "/tmp"
     CHECK_RESULT $?
     ocamlmklib.byte -help 2>&1 | grep "ocamlmklib"
     CHECK_RESULT $?

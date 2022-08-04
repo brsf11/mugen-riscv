@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-
 # Copyright (c) 2021. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
@@ -28,23 +27,18 @@ function pre_test() {
 function run_test() {
     LOG_INFO "Start to run test."
     netCard=$(dumpcap -D | awk -F '.' '{print $2}' | head -1)
-    dumpcap -i $netCard -c 2 -w testfile6
-    CHECK_RESULT $?
+    SLEEP_WAIT 10 "dumpcap -i $netCard -c 2 -w testfile6" 2
     capinfos testfile6 | grep "Number of packets:.*2"
     CHECK_RESULT $?
-    dumpcap -i 1 -a duration:5 -w testfile7
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "dumpcap -i 1 -a duration:5 -w testfile7" 2
     capinfos testfile7 | grep "Capture duration:.*"
     CHECK_RESULT $?
-    dumpcap -i 3 -a filesize:1 -w testfile8
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "dumpcap -i 1 -a filesize:1 -w testfile8" 2
     capinfos testfile8 | grep "File size:.*"
     CHECK_RESULT $?
-    dumpcap -i $netCard -a files:2 -a filesize:1 -w testfile9
-    CHECK_RESULT $?
-    CHECK_RESULT "$(ls | grep -c 'testfile9_.*')" "2"
-    dumpcap -i $netCard -a filesize:1 -w testfile10
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "dumpcap -i $netCard -a files:2 -a filesize:1 -w testfile9" 2
+    CHECK_RESULT "$(ls | grep -c 'testfile9_.*')" 2
+    SLEEP_WAIT 5 "dumpcap -i $netCard -a filesize:1 -w testfile10" 2
     capinfos testfile10 | grep "File name:.*testfile10"
     CHECK_RESULT $?
     expect <<EOF
@@ -79,16 +73,13 @@ EOF
 EOF
     ls | grep "testfile14_.*"
     CHECK_RESULT $?
-    dumpcap -i $netCard -n -c 20 -w testfile15
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "dumpcap -i $netCard -n -c 20 -w testfile15" 2
     captype testfile15 | grep "testfile15: pcapng"
     CHECK_RESULT $?
-    dumpcap -i $netCard -P -c 20 -w testfile16
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "dumpcap -i $netCard -P -c 20 -w testfile16" 2
     captype testfile16 | grep "testfile16: pcap"
     CHECK_RESULT $?
-    dumpcap -i $netCard --capture-comment "test dumpcap usage" -c 20 -w testfile17
-    CHECK_RESULT $?
+    SLEEP_WAIT 5 "dumpcap -i $netCard --capture-comment \"test dumpcap usage\" -c 20 -w testfile17" 2
     capinfos testfile17 | grep "Capture comment:.*test dumpcap usage"
     CHECK_RESULT $?
     LOG_INFO "End of the test."
@@ -101,4 +92,4 @@ function post_test() {
     LOG_INFO "Finish restoring the test environment."
 }
 
-main $@
+main "$@"
