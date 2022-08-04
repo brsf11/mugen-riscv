@@ -22,7 +22,7 @@ function run_test() {
     LOG_INFO "Start to run test."
     uname -a | grep GNU
     CHECK_RESULT $?
-    uname -m | grep -E "aarch64|x86_64"
+    uname -m | grep -E "aarch64|x86_64|riscv64"
     CHECK_RESULT $?
     uname -n | grep $(hostname)
     CHECK_RESULT $?
