@@ -1,0 +1,7 @@
+os-basic-riscv
+cpio
+git
+net-tools
+NetworkManager
+openslp
+util-linux
