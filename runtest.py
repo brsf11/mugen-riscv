@@ -11,18 +11,28 @@ def LogError(log_content=""):
 class TestEnv():
     """
     Test environment
+    Including testsuites in mugen
     """
 
     def __init__(self):
         self.is_cleared = 0
         self.suite_cases_path = "./suite2cases"
         self.suite_list = os.listdir(self.suite_cases_path)
+        self.suite_list_mugen = []
+        self.suite_list_riscv = []
 
         for i in range(len(self.suite_list)):
             self.suite_list[i] = self.suite_list[i].replace(".json","")
+            if self.suite_list[i].find("-riscv") is not -1:
+                self.suite_list_riscv.append(self.suite_list[i].replace("-riscv",""))
+            else:
+                self.suite_list_mugen.append(self.suite_list[i])
+
+        
 
     def PrintSuiteNum(self):
-        print("Available test suites num = "+str(len(self.suite_list)))
+        print("Available mugen test suites num = "+str(len(self.suite_list_mugen)))
+        print("Available riscv test suites num = "+str(len(self.suite_list_riscv)))
 
     def ClearEnv(self):
         os.system("rm -rf ./logs/*")
