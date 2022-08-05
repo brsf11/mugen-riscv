@@ -34,6 +34,16 @@ class TestEnv():
         print("Available mugen test suites num = "+str(len(self.suite_list_mugen)))
         print("Available riscv test suites num = "+str(len(self.suite_list_riscv)))
 
+    def PrintMugenSuiteList(self):
+        print("Available mugen test suites:")
+        for testsuite in self.suite_list_mugen:
+            print(testsuite)
+
+    def PrintRiscvSuiteList(self):
+        print("Available riscv test suites:")
+        for testsuite in self.suite_list_riscv:
+            print(testsuite)
+
     def ClearEnv(self):
         os.system("rm -rf ./logs/*")
         os.system("rm -rf ./results/*")
