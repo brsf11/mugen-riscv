@@ -75,14 +75,18 @@ class TestTarget():
     def PrintTargetNum(self):
         print("total test targets num = "+str(len(self.test_list)))
 
-    def CheckTargets(self,test_env):
+    def CheckTargets(self,suite_list_mugen,suite_list_riscv):
         self.unaval_test = []
         for test_target in self.test_list :
-            if(test_target not in test_env.suite_list):
+            if((test_target not in suite_list_riscv) and (test_target not in suite_list_mugen)):
                 self.unaval_test.append(test_target)
 
         for test_target in self.unaval_test :
             self.test_list.remove(test_target)
+
+        for i in range(len(self.test_list)):
+            if(self.test_list[i] in suite_list_riscv):
+                self.test_list[i] = self.test_list[i] + "-riscv"
 
         self.is_checked = 1
 
@@ -158,7 +162,7 @@ if __name__ == "__main__":
 
     test_target = TestTarget(list_file_name=sys.argv[1])
     test_target.PrintTargetNum()
-    test_target.CheckTargets(test_env=test_env)
+    test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv)
     test_target.PrintUnavalTargets()
     test_target.PrintAvalTargets()
     test_target.Run(detailed=1)
