@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/net-tools",
+    "cases": [
+        {
+            "name": "oe_test_service_arp-ethers"
+        }
+    ]
+}

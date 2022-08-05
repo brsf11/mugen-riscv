@@ -23,7 +23,7 @@ class TestEnv():
 
         for i in range(len(self.suite_list)):
             self.suite_list[i] = self.suite_list[i].replace(".json","")
-            if self.suite_list[i].find("-riscv") is not -1:
+            if (self.suite_list[i].find("-riscv") != -1):
                 self.suite_list_riscv.append(self.suite_list[i].replace("-riscv",""))
             else:
                 self.suite_list_mugen.append(self.suite_list[i])

@@ -1,0 +1,480 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/systemd",
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_service_console-getty"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.hostname1"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.import1"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.locale1"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.login1"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.machine1"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.portable1"
+        },
+        {
+            "name": "oe_test_service_dbus-org.freedesktop.timedate1"
+        },
+        {
+            "name": "oe_test_service_debug-shell"
+        },
+        {
+            "name": "oe_test_service_hwclock-save"
+        },
+        {
+            "name": "oe_test_service_initrd-cleanup"
+        },
+        {
+            "name": "oe_test_service_initrd-parse-etc"
+        },
+        {
+            "name": "oe_test_service_initrd-switch-root"
+        },
+        {
+            "name": "oe_test_service_initrd-udevadm-cleanup-db"
+        },
+        {
+            "name": "oe_test_service_kmod-static-nodes"
+        },
+        {
+            "name": "oe_test_service_ldconfig"
+        },
+        {
+            "name": "oe_test_service_quotaon"
+        },
+        {
+            "name": "oe_test_service_rc-local"
+        },
+        {
+            "name": "oe_test_service_rescue"
+        },
+        {
+            "name": "oe_test_service_systemd-ask-password-console"
+        },
+        {
+            "name": "oe_test_service_systemd-ask-password-wall"
+        },
+        {
+            "name": "oe_test_service_systemd-binfmt"
+        },
+        {
+            "name": "oe_test_service_systemd-bless-boot"
+        },
+        {
+            "name": "oe_test_service_systemd-boot-system-token"
+        },
+        {
+            "name": "oe_test_service_systemd-exit"
+        },
+        {
+            "name": "oe_test_service_systemd-firstboot"
+        },
+        {
+            "name": "oe_test_service_systemd-fsck-root"
+        },
+        {
+            "name": "oe_test_service_systemd-halt"
+        },
+        {
+            "name": "oe_test_service_systemd-hibernate"
+        },
+        {
+            "name": "oe_test_service_systemd-hostnamed"
+        },
+        {
+            "name": "oe_test_service_systemd-hwdb-update"
+        },
+        {
+            "name": "oe_test_service_systemd-hybrid-sleep"
+        },
+        {
+            "name": "oe_test_service_systemd-importd"
+        },
+        {
+            "name": "oe_test_service_systemd-initctl"
+        },
+        {
+            "name": "oe_test_service_systemd-journal-catalog-update"
+        },
+        {
+            "name": "oe_test_service_systemd-journald"
+        },
+        {
+            "name": "oe_test_service_systemd-journal-flush"
+        },
+        {
+            "name": "oe_test_service_systemd-journal-gatewayd"
+        },
+        {
+            "name": "oe_test_service_systemd-journal-remote"
+        },
+        {
+            "name": "oe_test_service_systemd-journal-upload"
+        },
+        {
+            "name": "oe_test_service_systemd-kexec"
+        },
+        {
+            "name": "oe_test_service_systemd-localed"
+        },
+        {
+            "name": "oe_test_service_systemd-logind"
+        },
+        {
+            "name": "oe_test_service_systemd-machined"
+        },
+        {
+            "name": "oe_test_service_systemd-machine-id-commit"
+        },
+        {
+            "name": "oe_test_service_systemd-modules-load"
+        },
+        {
+            "name": "oe_test_service_systemd-networkd"
+        },
+        {
+            "name": "oe_test_service_systemd-networkd-wait-online"
+        },
+        {
+            "name": "oe_test_service_systemd-network-generator"
+        },
+        {
+            "name": "oe_test_service_systemd-portabled"
+        },
+        {
+            "name": "oe_test_service_systemd-poweroff"
+        },
+        {
+            "name": "oe_test_service_systemd-pstore"
+        },
+        {
+            "name": "oe_test_service_systemd-quotacheck"
+        },
+        {
+            "name": "oe_test_service_systemd-random-seed"
+        },
+        {
+            "name": "oe_test_service_systemd-reboot"
+        },
+        {
+            "name": "oe_test_service_systemd-remount-fs"
+        },
+        {
+            "name": "oe_test_service_systemd-resolved"
+        },
+        {
+            "name": "oe_test_service_systemd-rfkill"
+        },
+        {
+            "name": "oe_test_service_systemd-suspend"
+        },
+        {
+            "name": "oe_test_service_systemd-suspend-then-hibernate"
+        },
+        {
+            "name": "oe_test_service_systemd-sysctl"
+        },
+        {
+            "name": "oe_test_service_systemd-sysusers"
+        },
+        {
+            "name": "oe_test_service_systemd-timedated"
+        },
+        {
+            "name": "oe_test_service_systemd-timesyncd"
+        },
+        {
+            "name": "oe_test_service_systemd-time-wait-sync"
+        },
+        {
+            "name": "oe_test_service_systemd-tmpfiles-clean"
+        },
+        {
+            "name": "oe_test_service_systemd-tmpfiles-setup-dev"
+        },
+        {
+            "name": "oe_test_service_systemd-tmpfiles-setup"
+        },
+        {
+            "name": "oe_test_service_systemd-udevd"
+        },
+        {
+            "name": "oe_test_service_systemd-udev-settle"
+        },
+        {
+            "name": "oe_test_service_systemd-udev-trigger"
+        },
+        {
+            "name": "oe_test_service_systemd-update-done"
+        },
+        {
+            "name": "oe_test_service_systemd-update-utmp-runlevel"
+        },
+        {
+            "name": "oe_test_service_systemd-update-utmp"
+        },
+        {
+            "name": "oe_test_service_systemd-user-sessions"
+        },
+        {
+            "name": "oe_test_service_systemd-vconsole-setup"
+        },
+        {
+            "name": "oe_test_service_systemd-volatile-root"
+        },
+        {
+            "name": "oe_test_socket_syslog"
+        },
+        {
+            "name": "oe_test_socket_systemd-coredump"
+        },
+        {
+            "name": "oe_test_socket_systemd-initctl"
+        },
+        {
+            "name": "oe_test_socket_systemd-journald-audit"
+        },
+        {
+            "name": "oe_test_socket_systemd-journald-dev-log"
+        },
+        {
+            "name": "oe_test_socket_systemd-journald"
+        },
+        {
+            "name": "oe_test_socket_systemd-journal-gatewayd"
+        },
+        {
+            "name": "oe_test_socket_systemd-journal-remote"
+        },
+        {
+            "name": "oe_test_socket_systemd-networkd"
+        },
+        {
+            "name": "oe_test_socket_systemd-rfkill"
+        },
+        {
+            "name": "oe_test_socket_systemd-udevd-control"
+        },
+        {
+            "name": "oe_test_socket_systemd-udevd-kernel"
+        },
+        {
+            "name": "oe_test_target_basic"
+        },
+        {
+            "name": "oe_test_target_boot-complete"
+        },
+        {
+            "name": "oe_test_target_cryptsetup-pre"
+        },
+        {
+            "name": "oe_test_target_cryptsetup"
+        },
+        {
+            "name": "oe_test_target_ctrl-alt-del"
+        },
+        {
+            "name": "oe_test_target_default"
+        },
+        {
+            "name": "oe_test_target_exit"
+        },
+        {
+            "name": "oe_test_target_final"
+        },
+        {
+            "name": "oe_test_target_getty-pre"
+        },
+        {
+            "name": "oe_test_target_getty"
+        },
+        {
+            "name": "oe_test_target_graphical"
+        },
+        {
+            "name": "oe_test_target_halt"
+        },
+        {
+            "name": "oe_test_target_hibernate"
+        },
+        {
+            "name": "oe_test_target_hybrid-sleep"
+        },
+        {
+            "name": "oe_test_target_initrd-fs"
+        },
+        {
+            "name": "oe_test_target_initrd-root-device"
+        },
+        {
+            "name": "oe_test_target_initrd-root-fs"
+        },
+        {
+            "name": "oe_test_target_initrd"
+        },
+        {
+            "name": "oe_test_target_initrd-switch-root"
+        },
+        {
+            "name": "oe_test_target_kexec"
+        },
+        {
+            "name": "oe_test_target_local-fs-pre"
+        },
+        {
+            "name": "oe_test_target_local-fs"
+        },
+        {
+            "name": "oe_test_target_machines"
+        },
+        {
+            "name": "oe_test_target_multi-user"
+        },
+        {
+            "name": "oe_test_target_network-online"
+        },
+        {
+            "name": "oe_test_target_network-pre"
+        },
+        {
+            "name": "oe_test_target_network"
+        },
+        {
+            "name": "oe_test_target_nss-lookup"
+        },
+        {
+            "name": "oe_test_target_nss-user-lookup"
+        },
+        {
+            "name": "oe_test_target_paths"
+        },
+        {
+            "name": "oe_test_target_poweroff"
+        },
+        {
+            "name": "oe_test_target_reboot"
+        },
+        {
+            "name": "oe_test_target_remote-cryptsetup"
+        },
+        {
+            "name": "oe_test_target_remote-fs-pre"
+        },
+        {
+            "name": "oe_test_target_remote-fs"
+        },
+        {
+            "name": "oe_test_target_rescue"
+        },
+        {
+            "name": "oe_test_target_rpcbind"
+        },
+        {
+            "name": "oe_test_target_runlevel0"
+        },
+        {
+            "name": "oe_test_target_runlevel1"
+        },
+        {
+            "name": "oe_test_target_runlevel2"
+        },
+        {
+            "name": "oe_test_target_runlevel3"
+        },
+        {
+            "name": "oe_test_target_runlevel4"
+        },
+        {
+            "name": "oe_test_target_runlevel5"
+        },
+        {
+            "name": "oe_test_target_runlevel6"
+        },
+        {
+            "name": "oe_test_target_shutdown"
+        },
+        {
+            "name": "oe_test_target_sigpwr"
+        },
+        {
+            "name": "oe_test_target_sleep"
+        },
+        {
+            "name": "oe_test_target_slices"
+        },
+        {
+            "name": "oe_test_target_sockets"
+        },
+	{
+            "name": "oe_test_target_suspend"
+        },
+        {
+            "name": "oe_test_target_suspend-then-hibernate"
+        },
+        {
+            "name": "oe_test_target_swap"
+        },
+        {
+            "name": "oe_test_target_sysinit"
+        },
+        {
+            "name": "oe_test_target_system-update-pre"
+        },
+        {
+            "name": "oe_test_target_system-update"
+        },
+        {
+            "name": "oe_test_target_timers"
+        },
+        {
+            "name": "oe_test_target_time-set"
+        },
+        {
+            "name": "oe_test_target_time-sync"
+        },
+        {
+            "name": "oe_test_target_umount"
+        },
+	{
+            "name": "oe_test_service_emergency"
+        },
+        {
+            "name": "oe_test_target_emergency"
+        },
+	{
+            "name": "oe_test_service_systemd-sysext"
+        },
+        {
+            "name": "oe_test_service_systemd-userdbd"
+        },
+        {
+            "name": "oe_test_socket_systemd-userdbd"
+        },
+        {
+            "name": "oe_test_target_first-boot-complete"
+        },
+        {
+            "name": "oe_test_target_remote-veritysetup"
+        },
+        {
+            "name": "oe_test_target_usb-gadget"
+        },
+        {
+            "name": "oe_test_target_veritysetup"
+        },
+        {
+            "name": "oe_test_target_veritysetup-pre"
+        }
+    ]
+}

@@ -1,0 +1,118 @@
+{
+    "path": "$OET_PATH/testcases/system-test/system-integration/os-basic",
+    "machine type": "kvm",
+    "cases": [
+        {
+            "name": "oe_test_who"
+        },
+        {
+            "name": "oe_test_versioninfo"
+        },
+        {
+            "name": "oe_test_timedatectl"
+        },
+        {
+            "name": "oe_test_system_monitor_process"
+        },
+        {
+            "name": "oe_test_system_log_security"
+        },
+        {
+            "name": "oe_test_system_log_recorded"
+        },
+        {
+            "name": "oe_test_system_log_process"
+        },
+        {
+            "name": "oe_test_system_log_device"
+        },
+        {
+            "name": "oe_test_system_log_basic"
+        },
+        {
+            "name": "oe_test_server_vsftpd_restart"
+        },
+        {
+            "name": "oe_test_server_postgresql"
+        },
+        {
+            "name": "oe_test_server_openssh_restart"
+        },
+        {
+            "name": "oe_test_server_mysql"
+        },
+        {
+            "name": "oe_test_server_mariadb_stop"
+        },
+        {
+            "name": "oe_test_server_mariadb_onlinebackup"
+        },
+        {
+            "name": "oe_test_server_mariadb_loadfile"
+        },
+        {
+            "name": "oe_test_server_mariadb_dumpMulDB"
+        },
+        {
+            "name": "oe_test_server_mariadb_dump"
+        },
+        {
+            "name": "oe_test_server_mariadb_copy"
+        },
+        {
+            "name": "oe_test_server_mariadb_backuptable"
+        },
+        {
+            "name": "oe_test_server_mariadb_backupDB"
+        },
+        {
+            "name": "oe_test_server_mariadb_backup"
+        },
+        {
+            "name": "oe_test_server_httpd_restart"
+        },
+        {
+            "name": "oe_test_server_httpd_recover"
+        },
+        {
+            "name": "oe_test_server_httpd_port"
+        },
+        {
+            "name": "oe_test_password_blank"
+        },
+        {
+            "name": "oe_test_ProcMgmt_vmstat"
+        },
+        {
+            "name": "oe_test_ProcMgmt_top"
+        },
+        {
+            "name": "oe_test_ProcMgmt_start_kill"
+        },
+        {
+            "name": "oe_test_ProcMgmt_ps"
+        },
+        {
+            "name": "oe_test_ProcMgmt_pgrep"
+        },
+        {
+            "name":"oe_test_IOaccess_500Mfile"
+        },
+        {
+            "name":"oe_test_group_access"
+        },
+        {
+            "name":"oe_test_kernel_sysctl"
+        },
+        {
+            "name":"oe_test_IOaccess_100Mfile"
+        },
+        {
+            "name":"oe_test_IOaccess_1Gfile"
+        },
+        {
+            "name":"oe_test_man"
+        }
+
+    ]
+}
