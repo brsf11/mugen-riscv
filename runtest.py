@@ -1,6 +1,6 @@
 import os
 import sys
-from tqdm import tqdm
+import json
 
 def LogInfo(log_content=""):
     print("INFO:  "+log_content)
@@ -114,36 +114,59 @@ class TestTarget():
             LogError("Targets are not checked!")
             return 1
         else:
-            for test_target in tqdm(self.test_list,file=sys.stdout,unit='case') :
-                os.system("sudo bash mugen.sh -f "+test_target+" 2>> exec.log")
-                temp_failed = []
-                try:
-                    temp_failed = os.listdir("results/"+test_target+"/failed")
-                except:
-                    failed_num = 0
-                    self.failed_test_num.append(failed_num)
-                else:
-                    failed_num = len(temp_failed)
-                    self.failed_test_num.append(failed_num)
-                    os.system("mkdir logs_failed/"+test_target)
-                    for failed_test in temp_failed :
-                        os.system("mkdir logs_failed/"+test_target+"/"+failed_test+"/")
-                        os.system("cp logs/"+test_target+"/"+failed_test+"/*.log logs_failed/"+test_target+"/"+failed_test+"/")
+            for test_target in self.test_list :
+                print("Start to test target: "+test_target)
+                if detailed == False:
+                    os.system("sudo bash mugen.sh -f "+test_target+" 2>&1 | tee -a exec.log")
+                    temp_failed = []
+                    try:
+                        temp_failed = os.listdir("results/"+test_target+"/failed")
+                    except:
+                        failed_num = 0
+                        self.failed_test_num.append(failed_num)
+                    else:
+                        failed_num = len(temp_failed)
+                        self.failed_test_num.append(failed_num)
+                        os.system("mkdir logs_failed/"+test_target)
+                        for failed_test in temp_failed :
+                            os.system("mkdir logs_failed/"+test_target+"/"+failed_test+"/")
+                            os.system("cp logs/"+test_target+"/"+failed_test+"/*.log logs_failed/"+test_target+"/"+failed_test+"/")
 
-                temp_success = []
-                try:
-                    temp_success = os.listdir("results/"+test_target+"/succeed")
-                except:
+                    temp_success = []
+                    try:
+                        temp_success = os.listdir("results/"+test_target+"/succeed")
+                    except:
+                        success_num = 0
+                        self.success_test_num.append(success_num)
+                    else:
+                        success_num = len(temp_success)
+                        self.success_test_num.append(success_num)
+                else:
+                    json_file = open("suite2cases/"+test_target+".json",'r')
+                    json_raw = json_file.read()
+                    json_data = json.loads(json_raw)
+                    temp_failed = []
                     success_num = 0
-                    self.success_test_num.append(success_num)
-                else:
-                    success_num = len(temp_success)
-                    self.success_test_num.append(success_num)
+                    failed_num = 0
+                    for testcasedict in json_data['cases']:
+                        testcase = testcasedict['name']
+                        os.system("sudo bash mugen.sh -f "+test_target+" -r "+testcase+" 2>&1 | tee -a exec.log")
+                        if(os.system("ls results/"+test_target+"/failed/"+testcase+" &> /dev/null") == 0):
+                            failed_num += 1
+                            temp_failed.append(testcase)
+                            if(os.system("ls logs_failed/"+test_target+" &> /dev/null") != 0):
+                                os.system("mkdir logs_failed/"+test_target)
+                            os.system("mkdir logs_failed/"+test_target+"/"+testcase+"/")
+                            os.system("cp logs/"+test_target+"/"+testcase+"/*.log logs_failed/"+test_target+"/"+testcase+"/")
+                        if(os.system("ls results/"+test_target+"/succeed/"+testcase+" &> /dev/null") == 0):
+                            success_num += 1
 
-                tqdm.write("Target "+test_target+" tested "+str(success_num+failed_num)+" cases, failed "+str(failed_num)+" cases")
+                        
+                    
+                print("Target "+test_target+" tested "+str(success_num+failed_num)+" cases, failed "+str(failed_num)+" cases")
                 if(detailed == 1):
                     for failed_test in temp_failed :
-                        tqdm.write("Failed test: "+failed_test)
+                        print("Failed test: "+failed_test)
 
             self.is_tested = 1
 
@@ -165,4 +188,4 @@ if __name__ == "__main__":
     test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv)
     test_target.PrintUnavalTargets()
     test_target.PrintAvalTargets()
-    test_target.Run(detailed=1)
+    test_target.Run(detailed=True)

@@ -7,16 +7,7 @@
     - 辅助测试脚本匹配测试列表和mugen中的测试套，并反馈缺失的测试和执行可用测试  
 ## 使用方法  
 - 依赖安装  
-    - 依赖 ```tqdm```  
-    - 使用 
-        ```shell  
-        pip3 install tqdm
-        ```   
-        或   
-        ```shell  
-        dnf install python3-tqdm
-        ```  
-        推荐使用后者  
+    - 依赖 ```python3```  
 - 使用  
     ```shell  
     python3 runtest.py list_file
