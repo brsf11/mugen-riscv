@@ -73,21 +73,25 @@ class TestTarget():
         self.test_list = raw.split(sep="\n")
         list_file.close()
 
+        self.test_list = [x.strip() for x in self.test_list if x.strip()!='']  #Remove empty elements
+        self.test_list = [x.replace("-riscv","") for x in self.test_list]      #Remove -riscv suffix
+
     def PrintTargetNum(self):
         print("total test targets num = "+str(len(self.test_list)))
 
-    def CheckTargets(self,suite_list_mugen,suite_list_riscv):
+    def CheckTargets(self,suite_list_mugen,suite_list_riscv,mugen_native = False):
         self.unaval_test = []
         for test_target in self.test_list :
-            if((test_target not in suite_list_riscv) and (test_target not in suite_list_mugen)):
+            if(((test_target not in suite_list_riscv) or mugen_native) and (test_target not in suite_list_mugen)):
                 self.unaval_test.append(test_target)
 
         for test_target in self.unaval_test :
             self.test_list.remove(test_target)
 
-        for i in range(len(self.test_list)):
-            if(self.test_list[i] in suite_list_riscv):
-                self.test_list[i] = self.test_list[i] + "-riscv"
+        if not mugen_native:
+            for i in range(len(self.test_list)):
+                if(self.test_list[i] in suite_list_riscv):
+                    self.test_list[i] = self.test_list[i] + "-riscv"
 
         self.is_checked = 1
 
@@ -186,7 +190,7 @@ if __name__ == "__main__":
 
     test_target = TestTarget(list_file_name=args.list_file)
     test_target.PrintTargetNum()
-    test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv)
+    test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=args.mugen)
     test_target.PrintUnavalTargets()
     test_target.PrintAvalTargets()
     test_target.Run(detailed=True)
