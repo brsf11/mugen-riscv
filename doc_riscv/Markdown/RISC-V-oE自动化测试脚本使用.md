@@ -10,7 +10,12 @@
     - 依赖 ```python3```  
 - 使用  
     ```shell  
-    python3 runtest.py list_file
+    usage: runtest.py [-h] -l list_file [-m]
+
+    optional arguments:
+    -h, --help    show this help message and exit
+    -l list_file  Specify the test targets list
+    -m, --mugen   Run native mugen test suites
     ```  
     - list_file为运行的测试套列表  
     - 对于有riscv版本的测试套，测试套列表中可用原不带riscv后缀的测试套名称，脚本会自动优先匹配有后缀的版本，若想测试原测试套，可在运行runtest.py时加上```-m```参数  

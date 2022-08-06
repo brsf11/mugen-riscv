@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import argparse
 
 def LogInfo(log_content=""):
     print("INFO:  "+log_content)
@@ -174,16 +175,16 @@ class TestTarget():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Error: need to specify test list")
-        print("Usage: python3 runtest.py test_list")
-        sys.exit(-1)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-l',required=True,metavar='list_file',help='Specify the test targets list',dest='list_file')
+    parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
+    args = parser.parse_args()
 
     test_env = TestEnv()
     test_env.ClearEnv()
     test_env.PrintSuiteNum()
 
-    test_target = TestTarget(list_file_name=sys.argv[1])
+    test_target = TestTarget(list_file_name=args.list_file)
     test_target.PrintTargetNum()
     test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv)
     test_target.PrintUnavalTargets()
