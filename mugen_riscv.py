@@ -158,6 +158,7 @@ class TestTarget():
             LogError("Targets are not checked!")
             return 1
         else:
+            test_res = []
             for test_target in self.test_list :
                 print("Start to test target: "+test_target)
                 if detailed == False:
@@ -176,20 +177,22 @@ class TestTarget():
                             os.system("mkdir logs_failed/"+test_target+"/"+failed_test+"/")
                             os.system("cp logs/"+test_target+"/"+failed_test+"/*.log logs_failed/"+test_target+"/"+failed_test+"/")
 
-                    temp_success = []
+                    temp_succeed = []
                     try:
-                        temp_success = os.listdir("results/"+test_target+"/succeed")
+                        temp_succeed = os.listdir("results/"+test_target+"/succeed")
                     except:
                         success_num = 0
                         self.success_test_num.append(success_num)
                     else:
-                        success_num = len(temp_success)
+                        success_num = len(temp_succeed)
                         self.success_test_num.append(success_num)
+                    target_res = {'suite': test_target,'failed': temp_failed,'succeeded': temp_succeed}
                 else:
                     json_file = open("suite2cases/"+test_target+".json",'r')
                     json_raw = json_file.read()
                     json_data = json.loads(json_raw)
                     temp_failed = []
+                    temp_succeed = []
                     success_num = 0
                     failed_num = 0
                     for testcasedict in json_data['cases']:
@@ -203,17 +206,41 @@ class TestTarget():
                             os.system("mkdir logs_failed/"+test_target+"/"+testcase+"/")
                             os.system("cp logs/"+test_target+"/"+testcase+"/*.log logs_failed/"+test_target+"/"+testcase+"/")
                         if(os.system("ls results/"+test_target+"/succeed/"+testcase+" &> /dev/null") == 0):
+                            temp_succeed.append(testcase)
                             success_num += 1
+                    target_res = {'suite': test_target,'failed': temp_failed,'succeed': temp_succeed}
 
-                        
+                test_res.append(target_res)
                     
                 print("Target "+test_target+" tested "+str(success_num+failed_num)+" cases, failed "+str(failed_num)+" cases")
                 if(detailed == 1):
                     for failed_test in temp_failed :
                         print("Failed test: "+failed_test)
+                
 
             self.is_tested = 1
+            return test_res
 
+class SuiteGenerator(TestEnv):
+    def __init__(self):
+        super().__init__()
+        self.output_path = 'suite2cases_out/'
+        if self.output_path.replace('/','') not in os.listdir("."):
+            os.system("mkdir "+self.output_path)
+
+    def GenJson(self,test_res):
+        print("Json file generated at "+self.output_path)
+        for target in test_res:
+            suite_file = open(self.suite_cases_path+target['suite']+'.json','r')
+            suite_json = json.loads(suite_file.read())
+            mugen_cases = suite_json['cases']
+            out_cases = [cases for cases in mugen_cases if cases['name'] in target['succeed']]
+            suite_json['cases'] = out_cases
+            out_file = open(self.output_path+target['suite']+'.json','w')
+            out_file.write(json.dumps(suite_json,indent=4))
+            print(self.output_path+target['suite']+'.json')
+        
+            
 
 
 
@@ -223,6 +250,7 @@ if __name__ == "__main__":
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
     parser.add_argument('-a','--analyze',action='store_true',help='Analyze missing testcases')
     parser.add_argument('-s',metavar='ana_suite',help='Analyze missing testcases of specific testsuite',dest='ana_suite')
+    parser.add_argument('-g','--generate',action='store_true',help='Generate testsuite json after running test')
     args = parser.parse_args()
 
     test_env = TestEnv()
@@ -241,4 +269,8 @@ if __name__ == "__main__":
         test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=args.mugen)
         test_target.PrintUnavalTargets()
         test_target.PrintAvalTargets()
-        test_target.Run(detailed=True)
+        test_res = test_target.Run(detailed=True)
+        if args.generate == True:
+            gen = SuiteGenerator()
+            gen.GenJson(test_res)
+
