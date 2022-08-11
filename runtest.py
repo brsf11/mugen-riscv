@@ -80,6 +80,11 @@ class TestTarget():
         print("total test targets num = "+str(len(self.test_list)))
 
     def CheckTargets(self,suite_list_mugen,suite_list_riscv,mugen_native = False):
+        conf_path = "./conf/env.json"
+        if not os.path.exists(conf_path):
+            print("环境配置文件不存在，请先配置环境信息.")
+            sys.exit(1)
+
         self.unaval_test = []
         for test_target in self.test_list :
             if(((test_target not in suite_list_riscv) or mugen_native) and (test_target not in suite_list_mugen)):
