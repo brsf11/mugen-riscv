@@ -62,11 +62,28 @@ class TestEnv():
                 riscv_file = open(self.suite_cases_path+riscv_suite+"-riscv.json",'r')
                 mugen_data = json.loads(mugen_file.read())
                 riscv_data = json.loads(riscv_file.read())
-                print("Test suite: "+riscv_suite+"-riscv")
                 riscv_cases = []
+                start_tag = 0
                 for testcase in riscv_data['cases']:
                     riscv_cases.append(testcase['name'])
                 for testcase in mugen_data['cases']:
+                    if testcase['name'] not in riscv_cases:
+                        if start_tag == 0:
+                            start_tag = 1
+                            print("Test suite: "+riscv_suite+"-riscv")
+                        print("Missing test case: "+testcase['name'])
+
+    def AnalyzeMissingTests(self,ana_suite):
+        if (ana_suite in self.suite_list_riscv) and (ana_suite in self.suite_list_mugen):
+            mugen_file = open(self.suite_cases_path+ana_suite+".json",'r')
+            riscv_file = open(self.suite_cases_path+ana_suite+"-riscv.json",'r')
+            mugen_data = json.loads(mugen_file.read())
+            riscv_data = json.loads(riscv_file.read())
+            riscv_cases = []
+            print("Test suite: "+ana_suite+"-riscv")
+            for testcase in riscv_data['cases']:
+                riscv_cases.append(testcase['name'])
+            for testcase in mugen_data['cases']:
                     if testcase['name'] not in riscv_cases:
                         print("Missing test case: "+testcase['name'])
 
@@ -205,6 +222,7 @@ if __name__ == "__main__":
     parser.add_argument('-l',metavar='list_file',help='Specify the test targets list',dest='list_file')
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
     parser.add_argument('-a','--analyze',action='store_true',help='Analyze missing testcases')
+    parser.add_argument('-s',metavar='ana_suite',help='Analyze missing testcases of specific testsuite',dest='ana_suite')
     args = parser.parse_args()
 
     test_env = TestEnv()
@@ -212,7 +230,10 @@ if __name__ == "__main__":
     test_env.PrintSuiteNum()
 
     if args.analyze is True:
-        test_env.AnalyzeMissingTests()
+        if args.ana_suite is not None:
+            test_env.AnalyzeMissingTests(args.ana_suite)
+        else:
+            test_env.AnalyzeMissingTests()
 
     if args.list_file is not None:
         test_target = TestTarget(list_file_name=args.list_file)
