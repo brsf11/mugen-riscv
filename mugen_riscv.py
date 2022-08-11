@@ -1,3 +1,4 @@
+from dataclasses import replace
 import os
 import sys
 import json
@@ -17,7 +18,7 @@ class TestEnv():
 
     def __init__(self):
         self.is_cleared = 0
-        self.suite_cases_path = "./suite2cases"
+        self.suite_cases_path = "./suite2cases/"
         self.suite_list = os.listdir(self.suite_cases_path)
         self.suite_list_mugen = []
         self.suite_list_riscv = []
@@ -53,6 +54,22 @@ class TestEnv():
         if "logs_failed" not in os.listdir("."):
             os.system("mkdir logs_failed")
         self.is_cleared = 1
+
+    def AnalyzeMissingTests(self):
+        for riscv_suite in self.suite_list_riscv:
+            if riscv_suite in self.suite_list_mugen:
+                mugen_file = open(self.suite_cases_path+riscv_suite+".json",'r')
+                riscv_file = open(self.suite_cases_path+riscv_suite+"-riscv.json",'r')
+                mugen_data = json.loads(mugen_file.read())
+                riscv_data = json.loads(riscv_file.read())
+                print("Test suite: "+riscv_suite+"-riscv")
+                riscv_cases = []
+                for testcase in riscv_data['cases']:
+                    riscv_cases.append(testcase['name'])
+                for testcase in mugen_data['cases']:
+                    if testcase['name'] not in riscv_cases:
+                        print("Missing test case: "+testcase['name'])
+
 
 class TestTarget():
     """
@@ -185,17 +202,22 @@ class TestTarget():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-l',required=True,metavar='list_file',help='Specify the test targets list',dest='list_file')
+    parser.add_argument('-l',metavar='list_file',help='Specify the test targets list',dest='list_file')
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
+    parser.add_argument('-a','--analyze',action='store_true',help='Analyze missing testcases')
     args = parser.parse_args()
 
     test_env = TestEnv()
     test_env.ClearEnv()
     test_env.PrintSuiteNum()
 
-    test_target = TestTarget(list_file_name=args.list_file)
-    test_target.PrintTargetNum()
-    test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=args.mugen)
-    test_target.PrintUnavalTargets()
-    test_target.PrintAvalTargets()
-    test_target.Run(detailed=True)
+    if args.analyze is True:
+        test_env.AnalyzeMissingTests()
+
+    if args.list_file is not None:
+        test_target = TestTarget(list_file_name=args.list_file)
+        test_target.PrintTargetNum()
+        test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=args.mugen)
+        test_target.PrintUnavalTargets()
+        test_target.PrintAvalTargets()
+        test_target.Run(detailed=True)
