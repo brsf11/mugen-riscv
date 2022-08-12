@@ -10,17 +10,22 @@
     - 依赖 ```python3```  
 - 使用  
     ```shell  
-    usage: runtest.py [-h] -l list_file [-m]
+    usage: mugen_riscv.py [-h] [-l list_file] [-m] [-a] [-s ana_suite] [-g]
 
     optional arguments:
-    -h, --help    show this help message and exit
-    -l list_file  Specify the test targets list
-    -m, --mugen   Run native mugen test suites
+    -h, --help      show this help message and exit
+    -l list_file    Specify the test targets list
+    -m, --mugen     Run native mugen test suites
+    -a, --analyze   Analyze missing testcases
+    -s ana_suite    Analyze missing testcases of specific testsuite
+    -g, --generate  Generate testsuite json after running test
     ```  
     例如
     ```shell
-    python3 runtest.py -l lists/list_riscv
+    python3 mugen_riscv.py -l lists/list_riscv
     ```
     - list_file为运行的测试套列表  
     - 对于有riscv版本的测试套，测试套列表中可用原不带riscv后缀的测试套名称，脚本会自动优先匹配有后缀的版本，若想测试原测试套，可在运行runtest.py时加上```-m```参数  
     - 测试套列表文件格式可参考已有的列表文件  
+    - 查找riscv测试套相比对应mugen原生测试套缺失的测试例可使用```-a```参数，```-s```用于指定测试套  
+    - ```-g```用于在运行测试后保留测试套中通过的测试用例，并以测试套配置文件的格式输出  
