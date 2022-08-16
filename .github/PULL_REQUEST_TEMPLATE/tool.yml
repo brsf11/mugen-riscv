@@ -1,0 +1,37 @@
+name: "修复测试用例"
+description: "提交一个测试用例的修复"
+title: "[TestCase Bug] "
+labels: ["TestCase Fix / 测试用例修复"]
+
+body:
+  - type: markdown
+    attributes:
+      value: 欢迎为 mugen-riscv 提出新的 Pull Request！烦请填写以下表单：
+  - type: textarea
+    id: expect
+    attributes:
+      label: 修复的问题（可以写 Issue 编号）
+      placeholder: #1
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志
+      description: 请直接粘贴你的日志，GitHub 将自动格式化输出
+      render: shell
+  - type: textarea
+    id: othors
+    attributes:
+      label: 其他有助于解决该问题的内容
+      description: 如果你了解相关的其他信息，请在此处报告
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 签署 [Code of Conduct](https://clasign.osinfra.cn/sign/Z2l0ZWUlMkZvcGVuZXVsZXI=)
+      description: 提交本 Pull Request 需要签署开源贡献协议
+      options:
+        - label: 我同意在本项目中执行上述协议
+          required: true
+        - label: 我已经签署协议
+          required: true

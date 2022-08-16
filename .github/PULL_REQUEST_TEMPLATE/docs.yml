@@ -1,0 +1,32 @@
+name: 文档内容修复
+description: 修复文档
+title: "[Fix Docs] "
+labels: ["Docs Fix / 修复文档"]
+
+body:
+- type: markdown
+  attributes:
+    value: 欢迎为 mugen-riscv 提出新的 Pull Request！烦请填写以下表单：
+- type: input
+  id: page
+  attributes:
+    label: 文档路径
+    description: 建议带上链接以更好定位问题
+  validations:
+    required: true
+- type: textarea
+  id: problem
+  attributes:
+    label: 修复的内容
+  validations:
+    required: true
+- type: checkboxes
+  id: terms
+  attributes:
+    label: 签署 [Code of Conduct](https://clasign.osinfra.cn/sign/Z2l0ZWUlMkZvcGVuZXVsZXI=)
+    description: 提交本 Pull Request 需要签署开源贡献协议
+    options:
+      - label: 我同意在本项目中执行上述协议
+        required: true
+      - label: 我已经签署协议
+        required: true
