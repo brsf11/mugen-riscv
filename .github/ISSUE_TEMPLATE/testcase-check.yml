@@ -1,0 +1,48 @@
+name: "筛选包的测试用例"
+description: "提交一个尚需验证的测试用例"
+title: "[TestCase Check] "
+labels: ["TestCase Check / 测试用例检查"]
+
+body:
+- type: markdown
+  attributes:
+    value: 欢迎为 mugen-riscv 提出新的 Issue！烦请填写以下表单：
+- type: checkboxes
+  id: confirm
+  attributes:
+    label: 请选择：
+    options:
+    - label: 我已经检查了 [Issue](https://github.com/brsf11/mugen-riscv/issues)，进行了搜索，但没有提到该测试
+      required: true
+    - label: 这是一个尚未测试的或全新的包
+      required: false
+    - label: 我正在着手测试该用例
+      required: false
+- type: input
+  id: packagename
+  attributes:
+    label: 包名
+    description: 请填写包名，如果这个软件包的所有测试套均未测试，则下列框无需填写。
+  validations:
+    required: true
+- type: input
+  id: testsuitname
+  attributes:
+    label: 测试套名称
+    description: 请填写测试套名称
+  validations:
+    required: false
+- type: input
+  id: testcasename
+  attributes:
+    label: 测试用例名称
+    description: 测试用例名称
+  validations:
+    required: false
+- type: textarea
+  id: details
+  attributes:
+    label: 该测试的其他细节
+    description: 配上截图可以更清晰地表述你的问题
+  validations:
+    required: false
