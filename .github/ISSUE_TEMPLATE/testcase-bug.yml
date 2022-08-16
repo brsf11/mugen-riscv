@@ -77,7 +77,7 @@ body:
         - 仅 openEuler-riscv 可以发生该问题
         - openEuler-riscv 和 x86-64 均可以发生该问题
         - 不确定
-        - 以上选项均不正确
+        - 以上选项均不正确（我将在其他信息处报告相关内容）
     validations:
       required: true
   - type: textarea
@@ -90,4 +90,4 @@ body:
     id: othors
     attributes:
       label: 其他有助于解决该问题的内容
-      description: 如果你了解相关的其他信息，请在此处书写
+      description: 如果你了解相关的其他信息，请在此处报告
