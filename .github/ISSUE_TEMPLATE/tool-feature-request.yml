@@ -1,0 +1,48 @@
+name: 添加新功能
+description: 申请添加某个新功能
+title: "[Feature Request] "
+labels: ["Feature Request / 功能请求"]
+
+body:
+- type: markdown
+  attributes:
+    value: 欢迎为 mugen-riscv 提出新的 Issue！烦请填写以下表单：
+- type: checkboxes
+  id: confirm
+  attributes:
+    label: 请选择：
+    options:
+    - label: 我已经检查了 [Issue](https://github.com/brsf11/mugen-riscv/issues)，进行了搜索，但没有发现类似问题
+      required: true
+    - label: 这是一个专为 RISCV 设计的功能（其他请求请去 [openEuler/mugen](https://gitee.com/openeuler/mugen/issues) 反馈）
+      required: true
+    - label: 我正在着手修复该问题
+      required: false
+    - label: 我希望接手该问题
+      required: false
+- type: textarea
+  id: feather
+  attributes:
+    label: 请求的新功能
+    description: 请简要描述新功能
+    placeholder: e.g. 自动验证所有测试用例
+  validations:
+    required: true
+- type: textarea
+  id: reason
+  attributes:
+    label: 请求的新功能的原因
+    description: 请简要描述新功能的需求原因或目的
+    placeholder: "e.g. 这个新功能简化了测试流程"
+    value: 这个新功能解决了这些问题：
+  validations:
+    required: true
+- type: textarea
+  id: solvtion
+  attributes:
+    label: 解决方案
+    description: 请简要描述解决方案
+    placeholder: "e.g. 写个脚本"
+    value: 步骤如下\n
+  validations:
+    required: false
