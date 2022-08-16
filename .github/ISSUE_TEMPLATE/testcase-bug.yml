@@ -21,7 +21,7 @@ body:
     attributes:
       label: 测试用例路径
       description: 请填写测试用例路径
-      placeholder: e.g. testcases\cli-test\abrt\oe_test_service_abrtd.sh
+      placeholder: "e.g. testcases\\cli-test\\abrt\\oe_test_service_abrtd.sh"
     validations:
       required: true
   - type: input
@@ -29,7 +29,7 @@ body:
     attributes:
       label: 包名
       description: 请填写包名，如果这个软件包的所有测试套均未测试，则下列框无需填写。
-      placeholder: e.g. watchdog
+      placeholder: "e.g. watchdog"
     validations:
       required: true
   - type: input
@@ -37,7 +37,7 @@ body:
     attributes:
       label: 测试套名称
       description: 请填写测试套名称
-      placeholder: e.g. cli-test
+      placeholder: "e.g. cli-test"
     validations:
       required: false
   - type: input
@@ -45,39 +45,39 @@ body:
     attributes:
       label: 测试用例名称
       description: 测试用例名称
-      placeholder: e.g. watchdog
+      placeholder: "e.g. watchdog"
     validations:
       required: false
   - type: textarea
-      id: expect
-      attributes:
-        label: 应该发生什么?
-        description: 请描述应该发生什么，建议配图和（或）视频。
-        placeholder: 运行该测试例后，……
-        value: 运行该测试例后，测试通过了。
-      validations:
-        required: true
+    id: expect
+    attributes:
+      label: 应该发生什么?
+      description: 请描述应该发生什么，建议配图和（或）视频。
+      placeholder: 运行该测试例后，……
+      value: 运行该测试例后，测试通过了。
+    validations:
+      required: true
   - type: textarea
-      id: happened
-      attributes:
-        label: 实际上发生了什么?
-        description: 请描述发生了什么，建议配图和（或）视频。
-        placeholder: 运行该测试例后，……
-        value: 运行该测试例后，我的办公室突然跳闸导致电脑直接黑屏。
-      validations:
-        required: true
+    id: happened
+    attributes:
+      label: 实际上发生了什么?
+      description: 请描述发生了什么，建议配图和（或）视频。
+      placeholder: 运行该测试例后，……
+      value: 运行该测试例后，我的办公室突然跳闸导致电脑直接黑屏。
+    validations:
+      required: true
   - type: dropdown
-      id: version
-      attributes:
-        label: 该问题发生的环境
-        description: 请在下列选项中选择一个适当的选项以描述**能够发生该问题**的环境
-        options:
-          - 仅 openEuler-riscv 可以发生该问题
-          - openEuler-riscv 和 x86-64 均可以发生该问题
-          - 不确定
-          - 以上选项均不正确
-      validations:
-        required: true
+    id: version
+    attributes:
+      label: 该问题发生的环境
+      description: 请在下列选项中选择一个适当的选项以描述**能够发生该问题**的环境
+      options:
+        - 仅 openEuler-riscv 可以发生该问题
+        - openEuler-riscv 和 x86-64 均可以发生该问题
+        - 不确定
+        - 以上选项均不正确
+    validations:
+      required: true
   - type: textarea
     id: logs
     attributes:
