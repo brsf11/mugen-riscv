@@ -1,0 +1,31 @@
+name: 文档内容有误
+description: 使用该模板报告文档问题
+title: "[Docs Bug] "
+labels: ["Docs Bug / 文档内容问题"]
+
+body:
+- type: markdown
+  attributes:
+    value: 欢迎为 mugen-riscv 提出新的 Issue！烦请填写以下表单：
+- type: checkboxes
+  id: confirm
+  attributes:
+    label: 请选择：
+    options:
+    - label: 该文档问题会**严重**影响阅读或理解
+      required: false
+    - label: 我正在着手修复这个问题
+      required: false
+- type: input
+  id: page
+  attributes:
+    label: 我正在访问这个页面
+    description: 建议带上链接以更好定位问题
+  validations:
+    required: true
+- type: textarea
+  id: problem
+  attributes:
+    label: 我发现页面有这样的问题
+  validations:
+    required: true
