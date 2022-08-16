@@ -1,0 +1,93 @@
+name: "测试用例 Bug"
+description: "提交一个测试用例的 Bug"
+title: "[TestCase Bug] "
+labels: ["TestCase Bug / 测试用例问题"]
+
+body:
+  - type: markdown
+    attributes:
+      value: 欢迎为 mugen-riscv 提出新的 Issue！烦请填写以下表单：
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 请选择：
+      options:
+      - label: 我已经检查了 [Issue](https://github.com/brsf11/mugen-riscv/issues)，进行了搜索，但没有发现类似问题
+        required: true
+      - label: 我正在着手修复该问题
+        required: false
+      - label: 我希望接手该问题
+        required: false
+  - type: input
+    id: testcaseURL
+    attributes:
+      label: 测试用例路径
+      description: 请填写测试用例路径
+      placeholder: "e.g. testcases\\cli-test\\abrt\\oe_test_service_abrtd.sh"
+    validations:
+      required: true
+  - type: input
+    id: packagename
+    attributes:
+      label: 包名
+      description: 请填写包名，如果这个软件包的所有测试套均未测试，则下列框无需填写。
+      placeholder: "e.g. watchdog"
+    validations:
+      required: true
+  - type: input
+    id: testsuitname
+    attributes:
+      label: 测试套名称
+      description: 请填写测试套名称
+      placeholder: "e.g. cli-test"
+    validations:
+      required: false
+  - type: input
+    id: testcasename
+    attributes:
+      label: 测试用例名称
+      description: 测试用例名称
+      placeholder: "e.g. watchdog"
+    validations:
+      required: false
+  - type: textarea
+    id: expect
+    attributes:
+      label: 应该发生什么?
+      description: 请描述应该发生什么，建议配图和（或）视频。
+      placeholder: 运行该测试例后，……
+      value: 运行该测试例后，测试通过了。
+    validations:
+      required: true
+  - type: textarea
+    id: happened
+    attributes:
+      label: 实际上发生了什么?
+      description: 请描述发生了什么，建议配图和（或）视频。
+      placeholder: 运行该测试例后，……
+      value: 运行该测试例后，我的办公室突然跳闸导致电脑直接黑屏。
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: 该问题发生的环境
+      description: 请在下列选项中选择一个适当的选项以描述**能够发生该问题**的环境
+      options:
+        - 仅 openEuler-riscv 可以发生该问题
+        - openEuler-riscv 和 x86-64 均可以发生该问题
+        - 不确定
+        - 以上选项均不正确（我将在其他信息处报告相关内容）
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志
+      description: 请直接粘贴你的日志，GitHub 将自动格式化输出
+      render: shell
+  - type: textarea
+    id: othors
+    attributes:
+      label: 其他有助于解决该问题的内容
+      description: 如果你了解相关的其他信息，请在此处报告

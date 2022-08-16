@@ -1,0 +1,39 @@
+name: 文档内容缺失
+description: 使用该模板报告文档缺失问题
+title: "[Lack of Docs] "
+labels: ["Docs Bug / 文档内容问题"]
+
+body:
+- type: markdown
+  attributes:
+    value: 欢迎为 mugen-riscv 提出新的 Issue！烦请填写以下表单：
+- type: checkboxes
+  id: confirm
+  attributes:
+    label: 请选择：
+    options:
+    - label: 该文档问题会**严重**影响阅读或理解
+      required: false
+    - label: 我正在着手修复这个问题
+      required: false
+- type: input
+  id: page
+  attributes:
+    label: 页面标题
+    description: 请给页面拟定一个适当的标题
+  validations:
+    required: true
+- type: textarea
+  id: content
+  attributes:
+    label: 该页面所包含的内容
+    description: 请简述该页面所需要包含的内容
+  validations:
+    required: true
+- type: textarea
+  id: reason
+  attributes:
+    label: 需要该页面的原因
+    description: 请简述需要该页面的原因及其作用
+  validations:
+    required: false
