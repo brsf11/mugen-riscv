@@ -58,7 +58,7 @@ body:
   validations:
     required: true
 - type: textarea
-  id: needs
+  id: introduction
   attributes:
     label: 测试用例简要描述
     description: 请简要介绍该测试用例的运作过程（如果你有思路）
