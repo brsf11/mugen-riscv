@@ -49,7 +49,7 @@ body:
     validations:
       required: false
   - type: textarea
-      id: what-should
+      id: expect
       attributes:
         label: 应该发生什么?
         description: 请描述应该发生什么，建议配图和（或）视频。
@@ -58,7 +58,7 @@ body:
       validations:
         required: true
   - type: textarea
-      id: what-happened
+      id: happened
       attributes:
         label: 实际上发生了什么?
         description: 请描述发生了什么，建议配图和（或）视频。
