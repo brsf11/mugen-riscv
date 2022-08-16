@@ -15,7 +15,8 @@ body:
       - label: 我已经检查了 [Issue](https://github.com/brsf11/mugen-riscv/issues)，进行了搜索，但没有发现类似问题
         required: true
       - label: 我正在着手修复该问题
-        description: 选中该选项以将该问题指派给您
+        required: false
+      - label: 我希望接手该问题
         required: false
   - type: input
     id: testcaseURL
