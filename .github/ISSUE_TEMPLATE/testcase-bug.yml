@@ -49,7 +49,7 @@ body:
     validations:
       required: false
   - type: textarea
-      id: what-should-happened
+      id: what-should
       attributes:
         label: 应该发生什么?
         description: 请描述应该发生什么，建议配图和（或）视频。
