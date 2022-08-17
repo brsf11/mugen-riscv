@@ -29,8 +29,6 @@ function run_test() {
     LOG_INFO "Start executing testcase!"
     pvcreate -y /dev/${local_disk}
     CHECK_RESULT $?
-    pvs | sed -n 3p | awk {'print$5'} | grep "2.00g"
-    CHECK_RESULT $?
     pvresize -y /dev/${local_disk} --setphysicalvolumesize 50MB 2>&1 | grep "Physical volume \"/dev/${local_disk}\" changed"
     CHECK_RESULT $?
     pvs | sed -n 3p | awk {'print$5'} | grep "50.00m"
