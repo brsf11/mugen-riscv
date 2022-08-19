@@ -61,6 +61,33 @@
         },
         {
             "name": "oe_test_FSIO_create_softlink"
+        },
+        {
+            "name": "oe_test_FSIO_create_softlink_diff_fs"
+        },
+        {
+            "name": "oe_test_FSIO_create_softlink_dir"
+        },
+        {
+            "name": "oe_test_FSIO_create_softlink_file"
+        },
+        {
+            "name": "oe_test_FSIO_dd_file"
+        },
+        {
+            "name": "oe_test_FSIO_filefrag"
+        },
+        {
+            "name": "oe_test_FSIO_gzip"
+        },
+        {
+            "name": "oe_test_FSIO_gzip_overfs"
+        },
+        {
+            "name": "oe_test_FSIO_modify_file"
+        },
+        {
+            "name": "oe_test_FSIO_modify_magicfile"
         }
     ]
 }
