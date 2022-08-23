@@ -47,9 +47,7 @@ class TestEnv():
             print(testsuite)
 
     def ClearEnv(self):
-        os.system("rm -rf ./logs/*")
         os.system("rm -rf ./results/*")
-        os.system("rm -rf ./logs_failed/*")
         os.system("rm -f ./exec.log")
         if "logs_failed" not in os.listdir("."):
             os.system("mkdir logs_failed")
@@ -172,10 +170,13 @@ class TestTarget():
                     else:
                         failed_num = len(temp_failed)
                         self.failed_test_num.append(failed_num)
-                        os.system("mkdir logs_failed/"+test_target)
+                        if test_target not in os.listdir('logs_failed/'):
+                            os.system("mkdir logs_failed/"+test_target)
                         for failed_test in temp_failed :
-                            os.system("mkdir logs_failed/"+test_target+"/"+failed_test+"/")
-                            os.system("cp logs/"+test_target+"/"+failed_test+"/*.log logs_failed/"+test_target+"/"+failed_test+"/")
+                            if failed_test not in os.listdir('logs_failed/'+test_target+"/"):
+                                os.system("mkdir logs_failed/"+test_target+"/"+failed_test+"/")
+                            logs = os.listdir('logs/'+test_target+"/"+failed_test+"/")
+                            os.system("cp logs/"+test_target+"/"+failed_test+"/"+logs[len(logs)-1]+" logs_failed/"+test_target+"/"+failed_test+"/")
 
                     temp_succeed = []
                     try:
@@ -201,10 +202,12 @@ class TestTarget():
                         if(os.system("ls results/"+test_target+"/failed/"+testcase+" &> /dev/null") == 0):
                             failed_num += 1
                             temp_failed.append(testcase)
-                            if(os.system("ls logs_failed/"+test_target+" &> /dev/null") != 0):
+                            if test_target not in os.listdir('logs_failed/'):
                                 os.system("mkdir logs_failed/"+test_target)
-                            os.system("mkdir logs_failed/"+test_target+"/"+testcase+"/")
-                            os.system("cp logs/"+test_target+"/"+testcase+"/*.log logs_failed/"+test_target+"/"+testcase+"/")
+                            if testcase not in os.listdir("logs_failed/"+test_target+"/"):
+                                os.system("mkdir logs_failed/"+test_target+"/"+testcase+"/")
+                            logs = os.listdir('logs/'+test_target+"/"+testcase+"/")
+                            os.system("cp logs/"+test_target+"/"+testcase+"/"+logs[len(logs)-1]+" logs_failed/"+test_target+"/"+testcase+"/")
                         if(os.system("ls results/"+test_target+"/succeed/"+testcase+" &> /dev/null") == 0):
                             temp_succeed.append(testcase)
                             success_num += 1
