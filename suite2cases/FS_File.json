@@ -88,6 +88,34 @@
         },
         {
             "name": "oe_test_FSIO_modify_magicfile"
+        },
+        {
+            "name": "oe_test_FSIO_mv_file_1"
+        },
+        {
+            "name": "oe_test_FSIO_mv_file_2"
+        },
+        {
+            "name": "oe_test_FSIO_rename_file"
+        },
+        {
+            "name": "oe_test_FSIO_rename_file_fail"
+        },
+        {
+            "name": "oe_test_FSIO_rm_file"
+        },
+        {
+            "name": "oe_test_FSIO_rm_hardlink"
+        },
+        {
+            "name": "oe_test_FSIO_rm_softlink"
+        },
+        {
+            "name": "oe_test_FSIO_sys_fs_check"
+        },
+        {
+            "name": "oe_test_FSIO_tar"
         }
+
     ]
 }
