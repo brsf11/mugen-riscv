@@ -115,6 +115,15 @@
         },
         {
             "name": "oe_test_FSIO_tar"
+        },
+        {
+            "name": "oe_test_FSIO_touch_file"
+        },
+        {
+            "name": "oe_test_FSIO_zip_unzip"
+        },
+        {
+            "name": "oe_test_FSIO_zip_unzip_overfs"
         }
 
     ]

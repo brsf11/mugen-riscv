@@ -1,0 +1,26 @@
+{
+    "path": "${OET_PATH}/testcases/system-test/fs-test/FS_Directory",
+    "add disk": [20],
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_FSIO_dir_access"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_bin"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_boot"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_dev"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_etc"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_lib64"
+        }
+    ]
+}
+
