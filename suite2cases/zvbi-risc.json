@@ -1,0 +1,9 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/zvbi",
+    "cases": [
+        {
+            "name": "oe_test_service_zvbid"
+        }
+
+    ]
+}
