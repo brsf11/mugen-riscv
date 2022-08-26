@@ -111,11 +111,12 @@ class TestTarget():
     def PrintTargetNum(self):
         print("total test targets num = "+str(len(self.test_list)))
 
-    def CheckTargets(self,suite_list_mugen,suite_list_riscv,mugen_native = False):
-        conf_path = "./conf/env.json"
-        if not os.path.exists(conf_path):
-            print("环境配置文件不存在，请先配置环境信息.")
-            sys.exit(1)
+    def CheckTargets(self,suite_list_mugen,suite_list_riscv,mugen_native = False,qemu_mode=False):
+        if not qemu_mode:
+            conf_path = "./conf/env.json"
+            if not os.path.exists(conf_path):
+                print("环境配置文件不存在，请先配置环境信息.")
+                sys.exit(1)
 
         self.unaval_test = []
         for test_target in self.test_list :
