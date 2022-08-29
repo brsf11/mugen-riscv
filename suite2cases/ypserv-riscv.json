@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/ypserv",
+    "cases": [
+        {
+            "name": "oe_test_service_yppasswdd"
+        },
+        {
+            "name": "oe_test_service_ypserv"
+        },
+        {
+            "name": "oe_test_service_ypxfrd"
+        }
+    ]
+}
