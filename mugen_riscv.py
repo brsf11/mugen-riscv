@@ -91,7 +91,7 @@ class TestTarget():
     Test targets
     """
 
-    def __init__(self,list_file_name):
+    def __init__(self,list_file_name=None):
         self.is_checked = 0
         self.is_tested = 0
         self.test_list = []
@@ -100,13 +100,16 @@ class TestTarget():
         self.success_test_num = []
         self.failed_test_num = []
 
-        list_file = open(list_file_name,'r')
-        raw = list_file.read()
-        self.test_list = raw.split(sep="\n")
-        list_file.close()
+        if list_file_name is not None:
+            list_file = open(list_file_name,'r')
+            raw = list_file.read()
+            self.test_list = raw.split(sep="\n")
+            list_file.close()
 
-        self.test_list = [x.strip() for x in self.test_list if x.strip()!='']  #Remove empty elements
-        self.test_list = [x.replace("-riscv","") for x in self.test_list]      #Remove -riscv suffix
+            self.test_list = [x.strip() for x in self.test_list if x.strip()!='']  #Remove empty elements
+            self.test_list = [x.replace("-riscv","") for x in self.test_list]      #Remove -riscv suffix
+        else:
+            self.test_list = []
 
     def PrintTargetNum(self):
         print("total test targets num = "+str(len(self.test_list)))
@@ -253,8 +256,8 @@ if __name__ == "__main__":
     parser.add_argument('-l',metavar='list_file',help='Specify the test targets list',dest='list_file')
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
     parser.add_argument('-a','--analyze',action='store_true',help='Analyze missing testcases')
-    parser.add_argument('-s',metavar='ana_suite',help='Analyze missing testcases of specific testsuite',dest='ana_suite')
     parser.add_argument('-g','--generate',action='store_true',help='Generate testsuite json after running test')
+    parser.add_argument('-f',metavar='test_suite',help='Specify testsuite',dest='test_suite')
     args = parser.parse_args()
 
     test_env = TestEnv()
@@ -262,19 +265,30 @@ if __name__ == "__main__":
     test_env.PrintSuiteNum()
 
     if args.analyze is True:
-        if args.ana_suite is not None:
-            test_env.AnalyzeMissingTests(args.ana_suite)
+        if args.test_suite is not None:
+            test_env.AnalyzeMissingTests(args.test_suite)
         else:
             test_env.AnalyzeMissingTests()
-
-    if args.list_file is not None:
-        test_target = TestTarget(list_file_name=args.list_file)
-        test_target.PrintTargetNum()
-        test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=args.mugen)
-        test_target.PrintUnavalTargets()
-        test_target.PrintAvalTargets()
-        test_res = test_target.Run(detailed=True)
-        if args.generate == True:
-            gen = SuiteGenerator()
-            gen.GenJson(test_res)
+    else:
+        if args.list_file is not None:
+            test_target = TestTarget(list_file_name=args.list_file)
+            test_target.PrintTargetNum()
+            test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=args.mugen)
+            test_target.PrintUnavalTargets()
+            test_target.PrintAvalTargets()
+            test_res = test_target.Run(detailed=True)
+            if args.generate == True:
+                gen = SuiteGenerator()
+                gen.GenJson(test_res)
+        elif args.test_suite is not None:
+            test_target = TestTarget()
+            test_target.test_list.append(args.test_suite)
+            test_target.PrintTargetNum()
+            test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=args.mugen)
+            test_target.PrintUnavalTargets()
+            test_target.PrintAvalTargets()
+            test_res = test_target.Run(detailed=True)
+            if args.generate == True:
+                gen = SuiteGenerator()
+                gen.GenJson(test_res)
 
