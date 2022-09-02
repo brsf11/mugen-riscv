@@ -56,14 +56,18 @@ class Dispatcher(Thread):
 
 
 class QemuVM(object):
-    def __init__(self,id=1,port=12055):
+    def __init__(self,id=1,port=12055,user='root',password='openEuler12#$',vcpu=4,memory=4,
+                 workingDir='/home/brsf11/Hdd/VirtualMachines/RISCVoE2203Testing20220818/',
+                 bkfile='openeuler-qemu.qcow2'):
         self.id = id
         self.port = port
         self.ip = '127.0.0.1'
-        self.user = 'root'
-        self.password = 'openEuler12#$'
-        self.workingDir = '/home/brsf11/Hdd/VirtualMachines/RISCVoE2203Testing20220818/'
-        self.bkFile = 'openeuler-qemu.qcow2'
+        self.user = user
+        self.password = password
+        self.vcpu=vcpu
+        self.memory=memory
+        self.workingDir = workingDir
+        self.bkFile = bkfile
         self.drive = 'img'+str(self.id)+'.qcow2'
 
     def start(self):
@@ -75,16 +79,14 @@ class QemuVM(object):
             print('Failed to create cow img: '+self.drive)
             return -1
         ## Configuration
-        vcpu=4
-        memory=4
-        memory_append=memory * 1024
+        memory_append=self.memory * 1024
         drive=self.workingDir+self.drive
         fw=self.workingDir+"fw_payload_oe_qemuvirt.elf"
         ssh_port=self.port
 
         cmd="qemu-system-riscv64 \
         -nographic -machine virt  \
-        -smp "+str(vcpu)+" -m "+str(memory)+"G \
+        -smp "+str(self.vcpu)+" -m "+str(self.memory)+"G \
         -audiodev pa,id=snd0 \
         -kernel "+fw+" \
         -bios none \
@@ -151,11 +153,12 @@ class QemuVM(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-l',metavar='list_file',help='Specify the test targets list',dest='list_file')
+    parser.add_argument('-x',type=int,default=1,help='Specify threads num, default is 1')
+    parser.add_argument('-c',type=int,default=4,help='Specify virtual machine cores num, default is 4')
+    parser.add_argument('-M',type=int,default=4,help='Specify virtual machine memory size(GB), default is 4 GB')
+    parser.add_argument('-w',type=str,default='/home/brsf11/Hdd/VirtualMachines/RISCVoE2203Testing20220818/',help='Specify working directory')
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
-    parser.add_argument('-a','--analyze',action='store_true',help='Analyze missing testcases')
-    parser.add_argument('-s',metavar='ana_suite',help='Analyze missing testcases of specific testsuite',dest='ana_suite')
-    parser.add_argument('-g','--generate',action='store_true',help='Generate testsuite json after running test')
-    parser.add_argument('-x',type=int,default=1,help='Specify threads num')
+    parser.add_argument('-b',type=str,default='openeuler-qemu.qcow2',help='Specify backing file name')
     args = parser.parse_args()
 
     test_env = TestEnv()
@@ -166,11 +169,6 @@ if __name__ == "__main__":
         print('Thread num should be greater than 0!')
         exit(-1)
 
-    if args.analyze is True:
-        if args.ana_suite is not None:
-            test_env.AnalyzeMissingTests(args.ana_suite)
-        else:
-            test_env.AnalyzeMissingTests()
 
     if args.list_file is not None:
         test_target = TestTarget(list_file_name=args.list_file)
@@ -193,7 +191,7 @@ if __name__ == "__main__":
 
         qemuVM = []
         for i in range(args.x):
-            qemuVM.append(QemuVM(i,ports[i]))   
+            qemuVM.append(QemuVM(i,ports[i],vcpu=args.c,memory=args.M,workingDir=args.w,bkfile=args.b))   
         targetQueue = Queue()
         for target in test_target.test_list:
             targetQueue.put(target)
