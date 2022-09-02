@@ -75,8 +75,8 @@ class QemuVM(object):
             print('Failed to create cow img: '+self.drive)
             return -1
         ## Configuration
-        vcpu=2
-        memory=2
+        vcpu=4
+        memory=4
         memory_append=memory * 1024
         drive=self.workingDir+self.drive
         fw=self.workingDir+"fw_payload_oe_qemuvirt.elf"
@@ -101,11 +101,16 @@ class QemuVM(object):
 
     def waitReady(self):
         time.sleep(1)
-        conn = paramiko.SSHClient()
-        conn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        conn.connect(self.ip,self.port,self.user,self.password,timeout=20,banner_timeout=20,auth_timeout=20,allow_agent=False,look_for_keys=False)
-        print('Yes!')
-        conn.close()
+        conn = 519
+        while conn == 519:
+            conn = paramiko.SSHClient()
+            conn.set_missing_host_key_policy(paramiko.AutoAddPolicy)
+            try:
+                conn.connect(self.ip, self.port, self.user, self.password, timeout=5)
+            except Exception as e:
+                conn = 519
+        if conn != 519:
+            conn.close()
 
 
     def runTest(self,testsuite):
@@ -117,6 +122,20 @@ class QemuVM(object):
         if lstat(self,'/root/GitRepo/mugen-riscv/suite2cases_out').st_size != 0:
             sftp_get(self,'/root/GitRepo/mugen-riscv/suite2cases_out','',self.workingDir)
         sftp_get(self,'/root/GitRepo/mugen-riscv/','exec.log',self.workingDir+'exec_log/'+testsuite)
+
+    def isBroken(self):
+        conn = 519
+        while conn == 519:
+            conn = paramiko.SSHClient()
+            conn.set_missing_host_key_policy(paramiko.AutoAddPolicy)
+            try:
+                conn.connect(self.ip, self.port, self.user, self.password, timeout=5)
+            except Exception as e:
+                conn = 519
+                return True
+        if conn != 519:
+            conn.close()
+        return False
 
     def waitPoweroff(self):
         self.process.wait()
