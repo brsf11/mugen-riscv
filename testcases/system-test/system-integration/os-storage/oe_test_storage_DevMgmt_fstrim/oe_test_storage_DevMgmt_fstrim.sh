@@ -47,6 +47,7 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to clean the test environment."
+    umount /home/sdbpoint
     rm -rf /home/sdbpoint
     DNF_REMOVE
     export LANG=${local_lang}
