@@ -180,6 +180,9 @@
         },
         {
             "name": "oe_test_wc"
+        },
+        {
+            "name": "oe_test_chroncy_001"
         }
     ]
 }
