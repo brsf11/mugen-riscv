@@ -31,14 +31,19 @@ function run_test() {
     systemctl status chronyd | grep running
     CHECK_RESULT $?
     CHECK_RESULT $(chronyc -n tracking | grep -icE 'utc|RMS offset|Last offset') 3
-    SLEEP_WAIT 10
-    ntpstat | grep "NTP server"
+    cp /etc/ntp.conf /etc/ntp.conf_bak
+    echo "server 127.127.1.0 iburst prefer minpoll 3 maxpoll 3" >> /etc/ntp.conf
+    CHECK_RESULT $?
+    systemctl restart ntpd
+    SLEEP_WAIT 3
+    ntpstat | grep "polling server"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
+    mv -f /etc/ntp.conf_bak /etc/ntp.conf
     systemctl stop chronyd
     DNF_REMOVE
     LOG_INFO "End to restore the test environment."
