@@ -29,8 +29,11 @@ function pre_test() {
 }
 function run_test() {
     LOG_INFO "Start to run test."
-
-    grep -i -B 1 umask /etc/bashrc
+    bashrcFile="/etc/bashrc"
+    if [ ! -e ${bashrcFile} ]; then 
+        bashrcFile="/etc/skel/.bashrc"
+    fi
+    grep -i -B 1 umask ${bashrcFile}
     CHECK_RESULT $? 0 0 "no umask set in bashrc"
     [ -z ${umask_1} ]
     CHECK_RESULT $? 0 1 "run umask fail"
