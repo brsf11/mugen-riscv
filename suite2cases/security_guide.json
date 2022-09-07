@@ -148,6 +148,9 @@
         },
         {
             "name" :"oe_test_passwd_ciphertext_unique"
+        },
+        {
+            "name" :"oe_test_check_default_dictionary_words"
         }
     ]
 }
