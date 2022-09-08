@@ -189,6 +189,9 @@
         },
 	{
             "name": "oe_test_rollback"
-	}   
+	},
+        {   
+	    "name": "oe_test_gcc"
+	}	
     ]
 }
