@@ -81,6 +81,9 @@
         },
         {
             "name": "oe_test_openssl_symmetric_encryption_decryption"
-        }
+        },
+	{
+	    "name": "oe_test_openssl_enc"
+	}
     ]
 }
