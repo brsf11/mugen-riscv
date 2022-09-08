@@ -20,6 +20,45 @@
         },
         {
             "name": "oe_test_FSIO_dir_access_lib64"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_lostfound"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_media"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_mnt"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_opt"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_proc"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_root"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_run"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_sbin"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_srv"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_sys"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_tmp"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_usr"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_var"
         }
     ]
 }
