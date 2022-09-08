@@ -151,6 +151,9 @@
         },
         {
             "name" :"oe_test_check_default_dictionary_words"
+        },
+        {
+            "name" :"oe_test_check_custom_dictionary_words"
         }
     ]
 }
