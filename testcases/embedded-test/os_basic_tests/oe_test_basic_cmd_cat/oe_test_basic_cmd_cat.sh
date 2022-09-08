@@ -22,9 +22,9 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start to run test."
 
-    grep "root:x:0:0:root:/root:/bin/bash" /etc/passwd
+    grep "root:x:0:0:root:/root:/bin/" /etc/passwd
     CHECK_RESULT $? 0 0 "check passwd output fail"
-    cat /etc/passwd | grep "root:x:0:0:root:/root:/bin/bash"
+    cat /etc/passwd | grep "root:x:0:0:root:/root:/bin/"
     CHECK_RESULT $? 0 0 "check cat commond fail"
 
     cat --help 2>&1 | grep -i "Usage"

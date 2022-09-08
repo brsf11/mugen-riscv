@@ -46,7 +46,7 @@ function run_test() {
     CHECK_RESULT $res aa 0 "sort faild"
     sort -c sort_test.txt
     CHECK_RESULT $? 1 0 "sort -c faild"
-    sort -d sort_test.txt | head -3 | grep "aa"
+    sort -d sort_test.txt | head -1 | grep "aa"
     CHECK_RESULT $? 0 0 "sort -d faild"
     sort -g sort_test.txt | head -3 | grep "Yx"
     CHECK_RESULT $? 0 0 "sort -g faild"

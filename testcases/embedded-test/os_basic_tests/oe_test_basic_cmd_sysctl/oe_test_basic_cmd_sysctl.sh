@@ -22,6 +22,12 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start to run test."
 
+    if [ ! -e /proc/sys/net/ipv6 ]; then
+        LOG_WARN "No /proc/sys/net/ipv6 test not run."
+        LOG_INFO "End to run test."
+        exit 0
+    fi
+
     CHECK_RESULT "$(sysctl -a | grep -ioE 'dev|kernel|net' | sort -u | wc -l)" 3 0 "run sysctl -a | grep -ioE 'dev|kernel|net' fail"
     sysctl net.ipv6.conf.lo.disable_ipv6=1
     CHECK_RESULT $? 0 0 "run sysctl enable fail"
