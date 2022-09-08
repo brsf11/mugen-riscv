@@ -18,6 +18,7 @@
 # ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
+
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     OLD_LANG=$LANG
@@ -25,6 +26,7 @@ function pre_test() {
     DNF_INSTALL ntp
     LOG_INFO "End to prepare the test environment."
 }
+
 function run_test() {
     LOG_INFO "Start to run test."
     tail_value1= $(tail -n 1 /var/log/dnf.log)
@@ -34,6 +36,7 @@ function run_test() {
     CHECK_RESULT $? 0 0 "check Tail's help manual fail"
     LOG_INFO "End to run test."
 }
+
 function post_test() {
     LOG_INFO "start environment cleanup."
     export LANG=${OLD_LANG}
