@@ -186,6 +186,9 @@
         },
 	{
             "name": "oe_test_diffstat_001"
-        }
+        },
+	{
+            "name": "oe_test_rollback"
+	}   
     ]
 }
