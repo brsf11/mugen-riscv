@@ -192,6 +192,9 @@
 	},
         {   
 	    "name": "oe_test_gcc"
-	}	
+	},
+	{
+            "name":"oe_test_cmp"
+	}
     ]
 }
