@@ -21,7 +21,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     OLD_LANG=$LANG
-#    export LANG=en_US.UTF-8    
+    export LANG=en_US.UTF-8    
     DNF_INSTALL ntp
     LOG_INFO "End to prepare the test environment."
 }
