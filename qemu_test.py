@@ -1,12 +1,14 @@
 from dataclasses import replace
 import os
 import argparse
+from socket import timeout
 import time
 import paramiko
 from mugen_riscv import TestEnv,TestTarget
 from queue import Queue
 from libs.locallibs import sftp,ssh_cmd
 from threading import Thread
+import threading
 import subprocess
 
 def ssh_exec(qemuVM,cmd,timeout=5):
@@ -41,23 +43,38 @@ def findAvalPort(num=1):
     return port_list
 
 class Dispatcher(Thread):
-    def __init__(self,qemuVM,targetQueue):
+    def __init__(self,qemuVM,targetQueue,initTarget=None):
         super(Dispatcher,self).__init__()
         self.qemuVM = qemuVM
         self.targetQueue = targetQueue
+        self.initTarget = initTarget
 
     def run(self):
-        while self.targetQueue.empty() == False:
-            self.qemuVM.start()
-            self.qemuVM.waitReady()
-            self.qemuVM.runTest(self.targetQueue.get())
-            self.qemuVM.destroy()
-            self.qemuVM.waitPoweroff()
+        notEmpty = True
+        while notEmpty:
+            if self.initTarget is not None:
+                self.qemuVM.start()
+                self.qemuVM.waitReady()
+                self.qemuVM.runTest(self.initTarget)
+                self.qemuVM.destroy()
+                self.qemuVM.waitPoweroff()
+                self.initTarget = None
+            else:
+                try:
+                    target = self.targetQueue.get(block=True,timeout=2)
+                except:
+                    notEmpty = False
+                else:
+                    self.qemuVM.start()
+                    self.qemuVM.waitReady()
+                    self.qemuVM.runTest(target)
+                    self.qemuVM.destroy()
+                    self.qemuVM.waitPoweroff()
 
 
 class QemuVM(object):
     def __init__(self,id=1,port=12055,user='root',password='openEuler12#$',vcpu=4,memory=4,
-                 workingDir='/home/brsf11/Hdd/VirtualMachines/RISCVoE2203Testing20220818/',
+                 workingDir='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220818/',
                  bkfile='openeuler-qemu.qcow2'):
         self.id = id
         self.port = port
@@ -156,7 +173,7 @@ if __name__ == "__main__":
     parser.add_argument('-x',type=int,default=1,help='Specify threads num, default is 1')
     parser.add_argument('-c',type=int,default=4,help='Specify virtual machine cores num, default is 4')
     parser.add_argument('-M',type=int,default=4,help='Specify virtual machine memory size(GB), default is 4 GB')
-    parser.add_argument('-w',type=str,default='/home/brsf11/Hdd/VirtualMachines/RISCVoE2203Testing20220818/',help='Specify working directory')
+    parser.add_argument('-w',type=str,default='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220818/',help='Specify working directory')
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
     parser.add_argument('-b',type=str,default='openeuler-qemu.qcow2',help='Specify backing file name')
     args = parser.parse_args()
@@ -177,15 +194,6 @@ if __name__ == "__main__":
         test_target.PrintUnavalTargets()
         test_target.PrintAvalTargets()
 
-        # qemuvm = QemuVM()
-        # qemuvm.start()
-        # qemuvm.waitReady()
-        # qemuvm.destroy()
-        # # qemuvm.waitPoweroff()
-        # # qemuvm.start()
-        # # qemuvm.waitReady()
-        # # qemuvm.destroy()
-
         ports = findAvalPort(args.x)
         print(ports)
 
@@ -200,3 +208,29 @@ if __name__ == "__main__":
         for i in range(args.x):
             dispathcers.append(Dispatcher(qemuVM[i],targetQueue))
             dispathcers[i].start()
+            time.sleep(0.5)
+
+        isAlive = True
+        isEnd = False
+        while isAlive:
+            tempAlive = []
+            for i in range(args.x):
+                if dispathcers[i].is_alive():
+                    print('Thread '+str(i)+' is alive')
+                    tempAlive.append(True)
+                else:
+                    print('Thread '+str(i)+' is dead')
+                    tempAlive.append(False)
+                    if not isEnd:
+                        try:
+                            target = targetQueue.get(block=True,timeout=2)
+                        except:
+                            isEnd = True
+                        else:
+                            dispathcers[i] = Dispatcher(qemuVM[i],targetQueue,initTarget=target)
+                            dispathcers[i].start()
+            isAlive = False
+            for i in range(args.x):
+                isAlive |= tempAlive[i]
+            time.sleep(5)
+            
