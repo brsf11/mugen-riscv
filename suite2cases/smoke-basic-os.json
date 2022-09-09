@@ -195,6 +195,9 @@
 	},
 	{
             "name":"oe_test_cmp"
+	},
+	{
+	    "name": "oe_test_umask_002"
 	}
     ]
 }
