@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/atune",
+    "cases": [
+        {
+            "name": "oe_test_service_atune-engine"
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/freeradius",
+    "cases": [
+        {
+            "name": "oe_test_freeradius_freeradius_raddebugAndCheckrad"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius_radiusd"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius_radiusdAndRadmin"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radclient"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_rad_counter"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radcryptAndRadeapclient"
+        },
+        {
+            "name": "oe_test_freeradius_freeradius-utils_radlastAndRadsniff"
+        }
+    ]
+}

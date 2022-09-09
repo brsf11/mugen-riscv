@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/haproxy",
+    "cases": [
+        {
+            "name": "oe_test_service_haproxy"
+        }
+    ]
+}

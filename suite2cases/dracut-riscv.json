@@ -1,0 +1,26 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/dracut",
+    "cases": [
+        {
+            "name": "oe_test_service_dracut-cmdline"
+        },
+        {
+            "name": "oe_test_service_dracut-initqueue"
+        },
+        {
+            "name": "oe_test_service_dracut-mount"
+        },
+        {
+            "name": "oe_test_service_dracut-pre-mount"
+        },
+        {
+            "name": "oe_test_service_dracut-pre-pivot"
+        },
+        {
+            "name": "oe_test_service_dracut-pre-trigger"
+        },
+        {
+            "name": "oe_test_service_dracut-pre-udev"
+        }
+    ]
+}

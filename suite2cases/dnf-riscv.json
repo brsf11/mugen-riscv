@@ -1,0 +1,29 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/dnf",
+    "cases": [
+        {
+            "name": "oe_test_dnf_alias"
+        },
+        {
+            "name": "oe_test_dnf_automatic"
+        },
+        {
+            "name": "oe_test_dnf_distro-sync_dnf-3"
+        },
+        {
+            "name": "oe_test_service_dnf-automatic-download"
+        },
+        {
+            "name": "oe_test_service_dnf-automatic-install"
+        },
+        {
+            "name": "oe_test_service_dnf-automatic-notifyonly"
+        },
+        {
+            "name": "oe_test_service_dnf-automatic"
+        },
+        {
+            "name": "oe_test_service_dnf-makecache"
+        }
+    ]
+}

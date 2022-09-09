@@ -1,0 +1,5 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/ipvsadm",
+    "machine num": 4,
+    "cases": []
+}

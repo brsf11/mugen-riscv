@@ -1,0 +1,32 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/libcap",
+    "cases": [
+        {
+            "name": "oe_test_libcap"
+        },
+        {
+            "name": "oe_test_acl_ignore_dal_across"
+        },
+        {
+            "name": "oe_test_acl_verwrite_previous_rules"
+        },
+        {
+            "name": "oe_test_acl_allow_change_ownership"
+        },
+        {
+            "name": "oe_test_acl_allow_change_nochange"
+        },
+        {
+            "name": "oe_test_acl_send_kill_notbelong"
+        },
+        {
+            "name": "oe_test_acl_ordinary_users_setgid"
+        },
+        {
+            "name": "oe_test_acl_bind_port"
+        },
+        {
+            "name": "oe_test_acl_manage_net"
+        }
+    ]
+}

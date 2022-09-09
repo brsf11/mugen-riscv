@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/haveged",
+    "cases": [
+        {
+            "name": "oe_test_service_haveged"
+        }
+    ]
+}

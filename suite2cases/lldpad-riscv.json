@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/lldpad",
+    "cases": [
+        {
+            "name": "oe_test_socket_lldpad"
+        }
+    ]
+}

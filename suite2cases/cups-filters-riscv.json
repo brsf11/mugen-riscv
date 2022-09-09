@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/cups-filters",
+    "cases": [
+        {
+            "name": "oe_test_service_cups-browsed"
+        }
+    ]
+}

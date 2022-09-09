@@ -1,0 +1,16 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/firewalld",
+    "machine num": 3,
+    "add network interface": 1,
+    "cases": [
+        {
+            "name": "oe_test_firewalld_block_all_icmp"
+        },
+        {
+            "name": "oe_test_firewalld_manage_icmp"
+        },
+        {
+            "name": "oe_test_firewalld_set_priority"
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/initscripts",
+    "cases": [
+        {
+            "name": "oe_test_service_network"
+        },
+        {
+            "name": "oe_test_service_readonly-root"
+        }
+    ]
+}

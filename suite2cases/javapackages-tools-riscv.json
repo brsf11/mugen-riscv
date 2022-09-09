@@ -1,0 +1,20 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/javapackages-tools",
+    "cases": [
+        {
+            "name": "oe_test_binary_files_operation"
+        },
+        {
+            "name": "oe_test_build-classpath"
+        },
+        {
+            "name": "oe_test_build-jar-repository"
+        },
+        {
+            "name": "oe_test_find-shade-jar"
+        },
+        {
+            "name": "oe_test_javapackages-local"
+        }
+    ]
+}

@@ -1,0 +1,7 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/cryptsetup",
+    "add disk": [
+        10
+    ],
+    "cases": []
+}

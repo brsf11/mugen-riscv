@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/cups",
+    "cases": [
+        {
+            "name": "oe_test_service_cups"
+        },
+        {
+            "name": "oe_test_socket_cups"
+        }
+    ]
+}

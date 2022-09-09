@@ -1,0 +1,6 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/corosync-qdevice",
+    "machine num": 3,
+    "machine type": "physical",
+    "cases": []
+}

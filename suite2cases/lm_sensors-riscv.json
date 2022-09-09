@@ -1,0 +1,9 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/lm_sensors",
+    "machine type": "physical",
+    "cases": [
+        {
+            "name": "oe_test_service_sensord"
+        }
+    ]
+}

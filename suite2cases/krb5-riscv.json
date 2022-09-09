@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/krb5",
+    "cases": [
+        {
+            "name": "oe_test_service_kprop"
+        },
+        {
+            "name": "oe_test_service_krb5kdc"
+        }
+    ]
+}

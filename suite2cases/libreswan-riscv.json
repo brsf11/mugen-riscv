@@ -1,0 +1,12 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/libreswan",
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_libreswan_ipsec_algparse"
+        },
+        {
+            "name": "oe_test_libreswan_ipsec_pluto"
+        }
+    ]
+}

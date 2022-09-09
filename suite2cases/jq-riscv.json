@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/jq",
+    "cases": [
+        {
+            "name": "oe_test_jq"
+        }
+    ]
+}

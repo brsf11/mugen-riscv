@@ -1,0 +1,38 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/easymock",
+    "cases": [
+        {
+            "name": "oe_test_easymock_junit4"
+        },
+        {
+            "name": "oe_test_easymock_order_abnormal"
+        },
+        {
+            "name": "oe_test_easymock_set_parms"
+        },
+        {
+            "name": "oe_test_easymock_createNiceMock"
+        },
+        {
+            "name": "oe_test_easymock_junit5"
+        },
+        {
+            "name": "oe_test_easymock_parms_abnormal"
+        },
+        {
+            "name": "oe_test_easymock_simulate_interface"
+        },
+        {
+            "name": "oe_test_easymock_frequency_abnormal"
+        },
+        {
+            "name": "oe_test_easymock_mock_abnormal"
+        },
+        {
+            "name": "oe_test_easymock_parms_match"
+        },
+        {
+            "name": "oe_test_easymock_simulate_object"
+        }
+    ]
+}

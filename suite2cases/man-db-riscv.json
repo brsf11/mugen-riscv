@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/man-db",
+    "cases": [
+        {
+            "name": "oe_test_service_man-db-cache-update"
+        },
+        {
+            "name": "oe_test_service_man-db"
+        }
+    ]
+}

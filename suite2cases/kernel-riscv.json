@@ -1,0 +1,14 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/kernel",
+    "machine type": "physical",
+    "cases": [
+        {
+            "name": "oe_test_kernel_cmd_02",
+            "machine type": "physical"
+        },
+        {
+            "name": "oe_test_kernel_cmd_03",
+            "machine type": "physical"
+        }
+    ]
+}

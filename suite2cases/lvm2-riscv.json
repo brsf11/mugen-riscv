@@ -1,0 +1,26 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/lvm2",
+    "cases": [
+        {
+            "name": "oe_test_service_blk-availability"
+        },
+        {
+            "name": "oe_test_service_dm-event"
+        },
+        {
+            "name": "oe_test_service_lvm2-lvmdbusd"
+        },
+        {
+            "name": "oe_test_service_lvm2-lvmpolld"
+        },
+        {
+            "name": "oe_test_service_lvm2-monitor"
+        },
+        {
+            "name": "oe_test_socket_dm-event"
+        },
+        {
+            "name": "oe_test_socket_lvm2-lvmpolld"
+        }
+    ]
+}

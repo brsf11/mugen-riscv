@@ -1,0 +1,29 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/java-1.8.0-openjdk",
+    "cases": [
+        {
+            "name": "oe_test_openjdk_javadoc_javah"
+        },
+        {
+            "name": "oe_test_openjdk_java_javac"
+        },
+        {
+            "name": "oe_test_openjdk_javap_jcmd"
+        },
+        {
+            "name": "oe_test_openjdk_jjs_jmap"
+        },
+        {
+            "name": "oe_test_openjdk_jsadebugd_jstack"
+        },
+        {
+            "name": "oe_test_openjdk_native2ascii_pack200"
+        },
+        {
+            "name": "oe_test_openjdk_rmic_rmid"
+        },
+        {
+            "name": "oe_test_openjdk_servertool_unpack200"
+        }
+    ]
+}

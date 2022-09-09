@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/erlang",
+    "cases": [
+        {
+            "name": "oe_test_service_epmd"
+        },
+        {
+            "name": "oe_test_socket_epmd"
+        }
+    ]
+}

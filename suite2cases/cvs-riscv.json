@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/cvs",
+    "cases": [
+        {
+            "name": "oe_test_socket_cvs"
+        },
+        {
+            "name": "oe_test_target_cvs"
+        }
+    ]
+}

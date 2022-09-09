@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/avahi",
+    "cases": [
+        {
+            "name": "oe_test_service_avahi-daemon"
+        },
+        {
+            "name": "oe_test_service_avahi-dnsconfd"
+        },
+        {
+            "name": "oe_test_socket_avahi-daemon"
+        }
+    ]
+}

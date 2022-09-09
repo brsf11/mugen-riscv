@@ -1,0 +1,38 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/clamav",
+    "cases": [
+        {
+            "name": "oe_test_service_clamav-milter"
+        },
+        {
+            "name": "oe_test_clamav_clamav-milter"
+        },
+        {
+            "name": "oe_test_clamav_clambc"
+        },
+        {
+            "name": "oe_test_clamav_clamconf"
+        },
+        {
+            "name": "oe_test_clamav_clamdscan_scan"
+        },
+        {
+            "name": "oe_test_clamav_clamdscan_service"
+        },
+        {
+            "name": "oe_test_clamav_clamscan_1"
+        },
+        {
+            "name": "oe_test_clamav_clamsubmit"
+        },
+        {
+            "name": "oe_test_clamav_freshclam"
+        },
+        {
+            "name": "oe_test_clamav_sigtool_1"
+        },
+        {
+            "name": "oe_test_clamav_sigtool_2"
+        }
+    ]
+}

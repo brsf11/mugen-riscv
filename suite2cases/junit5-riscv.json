@@ -1,0 +1,41 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/junit5",
+    "cases": [
+        {
+            "name": "oe_test_junit5_abnormal_removejar"
+        },
+        {
+            "name": "oe_test_junit5_annotation_tag"
+        },
+        {
+            "name": "oe_test_junit5_annotation_timeout"
+        },
+        {
+            "name": "oe_test_junit5_ant"
+        },
+        {
+            "name": "oe_test_junit5_assert"
+        },
+        {
+            "name": "oe_test_junit5_epeat"
+        },
+        {
+            "name": "oe_test_junit5_junit4"
+        },
+        {
+            "name": "oe_test_junit5_kotlin_maven"
+        },
+        {
+            "name": "oe_test_junit5_maven"
+        },
+        {
+            "name": "oe_test_junit5_noimport"
+        },
+        {
+            "name": "oe_test_junit5_parametric"
+        },
+        {
+            "name": "oe_test_junit5_spring_maven"
+        }
+    ]
+}

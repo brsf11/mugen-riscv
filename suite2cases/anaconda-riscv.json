@@ -1,0 +1,29 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/anaconda",
+    "cases": [
+        {
+            "name": "oe_test_service_anaconda-direct"
+        },
+        {
+            "name": "oe_test_service_anaconda-nm-config"
+        },
+        {
+            "name": "oe_test_service_anaconda-noshell"
+        },
+        {
+            "name": "oe_test_service_anaconda-pre"
+        },
+        {
+            "name": "oe_test_service_anaconda"
+        },
+        {
+            "name": "oe_test_service_anaconda-sshd"
+        },
+        {
+            "name": "oe_test_service_instperf"
+        },
+        {
+            "name": "oe_test_target_anaconda"
+        }
+    ]
+}

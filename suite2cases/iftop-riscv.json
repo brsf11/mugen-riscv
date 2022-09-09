@@ -1,0 +1,6 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/iftop",
+    "machine num": 1,
+    "add network interface": 1,
+    "cases": []
+}

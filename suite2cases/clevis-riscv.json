@@ -1,0 +1,12 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/clevis",
+    "machine num": 2,
+    "add disk": [
+        10
+    ],
+    "cases": [
+        {
+            "name": "oe_test_tang_encrypt"
+        }
+    ]
+}

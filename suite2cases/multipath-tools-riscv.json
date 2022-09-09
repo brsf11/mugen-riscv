@@ -1,0 +1,12 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/multipath-tools",
+    "machine num": 2,
+    "add disk": [
+        4
+    ],
+    "cases": [
+        {
+            "name": "oe_test_socket_multipathd"
+        }
+    ]
+}

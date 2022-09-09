@@ -1,0 +1,20 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/acpid",
+    "cases": [
+        {
+            "name": "oe_test_service_acpid"
+        },
+        {
+            "name": "oe_test_socket_acpid"
+        },
+        {
+            "name": "oe_test_acpid_01"
+        },
+        {
+            "name": "oe_test_acpid_02"
+        },
+        {
+            "name": "oe_test_acpid_03"
+        }
+    ]
+}
