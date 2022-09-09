@@ -53,37 +53,37 @@ class TestEnv():
             os.system("mkdir logs_failed")
         self.is_cleared = 1
 
-    def AnalyzeMissingTests(self):
-        for riscv_suite in self.suite_list_riscv:
-            if riscv_suite in self.suite_list_mugen:
-                mugen_file = open(self.suite_cases_path+riscv_suite+".json",'r')
-                riscv_file = open(self.suite_cases_path+riscv_suite+"-riscv.json",'r')
+    def AnalyzeMissingTests(self,ana_suite):
+        if ana_suite is not None:
+            if (ana_suite in self.suite_list_riscv) and (ana_suite in self.suite_list_mugen):
+                mugen_file = open(self.suite_cases_path+ana_suite+".json",'r')
+                riscv_file = open(self.suite_cases_path+ana_suite+"-riscv.json",'r')
                 mugen_data = json.loads(mugen_file.read())
                 riscv_data = json.loads(riscv_file.read())
                 riscv_cases = []
-                start_tag = 0
+                print("Test suite: "+ana_suite+"-riscv")
                 for testcase in riscv_data['cases']:
                     riscv_cases.append(testcase['name'])
                 for testcase in mugen_data['cases']:
-                    if testcase['name'] not in riscv_cases:
-                        if start_tag == 0:
-                            start_tag = 1
-                            print("Test suite: "+riscv_suite+"-riscv")
-                        print("Missing test case: "+testcase['name'])
-
-    def AnalyzeMissingTests(self,ana_suite):
-        if (ana_suite in self.suite_list_riscv) and (ana_suite in self.suite_list_mugen):
-            mugen_file = open(self.suite_cases_path+ana_suite+".json",'r')
-            riscv_file = open(self.suite_cases_path+ana_suite+"-riscv.json",'r')
-            mugen_data = json.loads(mugen_file.read())
-            riscv_data = json.loads(riscv_file.read())
-            riscv_cases = []
-            print("Test suite: "+ana_suite+"-riscv")
-            for testcase in riscv_data['cases']:
-                riscv_cases.append(testcase['name'])
-            for testcase in mugen_data['cases']:
-                    if testcase['name'] not in riscv_cases:
-                        print("Missing test case: "+testcase['name'])
+                        if testcase['name'] not in riscv_cases:
+                            print("Missing test case: "+testcase['name'])
+        else:
+            for riscv_suite in self.suite_list_riscv:
+                if riscv_suite in self.suite_list_mugen:
+                    mugen_file = open(self.suite_cases_path+riscv_suite+".json",'r')
+                    riscv_file = open(self.suite_cases_path+riscv_suite+"-riscv.json",'r')
+                    mugen_data = json.loads(mugen_file.read())
+                    riscv_data = json.loads(riscv_file.read())
+                    riscv_cases = []
+                    start_tag = 0
+                    for testcase in riscv_data['cases']:
+                        riscv_cases.append(testcase['name'])
+                    for testcase in mugen_data['cases']:
+                        if testcase['name'] not in riscv_cases:
+                            if start_tag == 0:
+                                start_tag = 1
+                                print("Test suite: "+riscv_suite+"-riscv")
+                            print("Missing test case: "+testcase['name'])
 
 
 class TestTarget():
@@ -257,7 +257,7 @@ if __name__ == "__main__":
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
     parser.add_argument('-a','--analyze',action='store_true',help='Analyze missing testcases')
     parser.add_argument('-g','--generate',action='store_true',help='Generate testsuite json after running test')
-    parser.add_argument('-f',metavar='test_suite',help='Specify testsuite',dest='test_suite')
+    parser.add_argument('-f',metavar='test_suite',help='Specify testsuite',dest='test_suite',default=None)
     args = parser.parse_args()
 
     test_env = TestEnv()
@@ -268,7 +268,7 @@ if __name__ == "__main__":
         if args.test_suite is not None:
             test_env.AnalyzeMissingTests(args.test_suite)
         else:
-            test_env.AnalyzeMissingTests()
+            test_env.AnalyzeMissingTests(None)
     else:
         if args.list_file is not None:
             test_target = TestTarget(list_file_name=args.list_file)
