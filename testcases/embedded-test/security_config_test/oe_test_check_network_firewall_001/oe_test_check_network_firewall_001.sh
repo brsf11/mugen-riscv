@@ -28,13 +28,6 @@ function run_test()
 {
     LOG_INFO "Start to run test."
 
-    # check log_martians set
-    sysctl net.ipv4.conf.default.log_martians | awk -F "=" '{print $2}' | grep "1"
-    CHECK_RESULT $? 0 0 "check net.ipv4.conf.default.log_martians set fail"
-
-    sysctl net.ipv4.conf.all.log_martians | awk -F "=" '{print $2}' | grep "1"
-    CHECK_RESULT $? 0 0 "check net.ipv4.conf.all.log_martians set fail"
-
     # check net.ipv4.tcp_syncookies
     sysctl net.ipv4.tcp_syncookies | awk -F "=" '{print $2}' | grep "1"
     CHECK_RESULT $? 0 0 "check net.ipv4.tcp_syncookies set fail"
@@ -43,19 +36,17 @@ function run_test()
     sysctl net.ipv4.ip_forward | awk -F "=" '{print $2}' | grep "0"
     CHECK_RESULT $? 0 0 "check net.ipv4.ip_forward set fail"
 
-    # check send_redirects
-    sysctl net.ipv4.conf.all.send_redirects | awk -F "=" '{print $2}' | grep "0"
-    CHECK_RESULT $? 0 0 "check net.ipv4.conf.all.send_redirects set fail"
+    # check icmp_echo_ignore_broadcasts
+    sysctl net.ipv4.icmp_echo_ignore_broadcasts | awk -F "=" '{print $2}' | grep "1"
+    CHECK_RESULT $? 0 0 "check net.ipv4.icmp_echo_ignore_broadcasts set fail"
 
-    sysctl net.ipv4.conf.default.send_redirects | awk -F "=" '{print $2}' | grep "0"
-    CHECK_RESULT $? 0 0 "check sysctl net.ipv4.conf.default.send_redirects set fail"
+    # check icmp_ignore_bogus_error_responses
+    sysctl net.ipv4.icmp_ignore_bogus_error_responses | awk -F "=" '{print $2}' | grep "1"
+    CHECK_RESULT $? 0 0 "check net.ipv4.icmp_ignore_bogus_error_responses set fail"
 
-    # check accept_source_route
-    sysctl net.ipv4.conf.all.accept_source_route | awk -F "=" '{print $2}' | grep "0"
-    CHECK_RESULT $? 0 0 "check net.ipv4.conf.all.accept_source_route set fail"
-
-    sysctl net.ipv4.conf.default.accept_source_route | awk -F "=" '{print $2}' | grep "0"
-    CHECK_RESULT $? 0 0 "check sysctl net.ipv4.conf.default.accept_source_route set fail"
+    # check rp_filter
+    sysctl net.ipv4.icmp_ignore_bogus_error_responses | awk -F "=" '{print $2}' | grep "1"
+    CHECK_RESULT $? 0 0 "check net.ipv4.icmp_ignore_bogus_error_responses set fail"
 
     LOG_INFO "End to run test."
 }
