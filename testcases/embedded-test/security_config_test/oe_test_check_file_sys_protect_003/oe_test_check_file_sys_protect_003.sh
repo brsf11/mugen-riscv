@@ -29,7 +29,7 @@ function run_test() {
     find /etc/sysctl.conf -type f -user root -group root -perm 600
     CHECK_RESULT $? 0 0 "check /etc/sysctl.conf file right fail"
 
-    find /lib/modules/ -type d -user root -group root -perm 750
+    find /lib/ -name modules -type d -user root -group root -perm 750
     CHECK_RESULT $? 0 0 "check /lib/modules/ file right fail"
 
     find /root/ -type f -user root -group root -perm 700
@@ -41,13 +41,13 @@ function run_test() {
     find /dev/shm -type f -user root -group root -perm 1777
     CHECK_RESULT $? 0 0 "check /dev/shm file right fail"
 
-    find /var/log/audit/ -type d -user root -group root -perm 750
+    find /var/log/ -name audit -type d -user root -group root -perm 750
     CHECK_RESULT $? 0 0 "check /var/log/audit/ file right fail"
 
     find /var/log/audit/audit.log -type f -user root -group root -perm 600
     CHECK_RESULT $? 0 0 "check /var/log/audit/audit.log file right fail"
 
-    find /var/log/ -type f -user root -group root -perm 750
+    find /var/ -name log -type d -user root -group root -perm 750
     CHECK_RESULT $? 0 0 "check /var/log/ file right fail"
 
     getFileNum=$("find /var/log/* -type f -user root -group root -perm 640 | wc -l")
@@ -55,8 +55,13 @@ function run_test() {
     test "$getFileNum" -eq "$allFileNum"
     CHECK_RESULT $? 0 1 "check /var/log/* file right fail"
 
-    find /var/log/secure -type f -user root -group root -perm 640
-    CHECK_RESULT $? 0 0 "check /var/log/secure file right fail"
+    if [ -e /var/log/secure ]; then
+        find /var/log/secure -type f -user root -group root -perm 640
+        CHECK_RESULT $? 0 0 "check /var/log/secure file right fail"
+    else
+        find /var/log/auth.log -type f -user root -group root -perm 640
+        CHECK_RESULT $? 0 0 "check /var/log/secure file right fail"
+    fi
 
     find /var/log/wtmp -type f -user root -group root -perm 640
     CHECK_RESULT $? 0 0 "check /var/log/wtmp file right fail"

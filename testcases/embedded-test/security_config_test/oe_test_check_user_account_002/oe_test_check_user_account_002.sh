@@ -29,7 +29,7 @@ function run_test()
     test $getNum -gt 1
     CHECK_RESULT $? 0 1 "one more uid 0 user have, check fail"
 
-    echo $getValue | grep "root:x:0:0:root:/root:/bin/bash"
+    echo $getValue | grep "root:x:0:0:root:/root:/bin/"
     CHECK_RESULT $? 0 0 "check uid 0 user fail"
 
     LOG_INFO "End to run test."

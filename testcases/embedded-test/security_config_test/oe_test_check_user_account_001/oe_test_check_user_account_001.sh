@@ -27,7 +27,7 @@ function run_test()
     LOG_INFO "Start to run test."
     
     # check system account
-    getValue=$(cat /etc/passwd | awk -F: '($1!="root" && $3<500 && $7!="/sbin/nologin" && $7!="/bin/false") {print}')
+    getValue=$(cat /etc/passwd | awk -F: '($1!="root" && $3<500 && $7!="/sbin/nologin" && $7!="/bin/false" && $7!="/bin/sync") {print}')
     echo $getValue | grep '[^\n]'
     CHECK_RESULT $? 0 1 "Check system account fail"
 

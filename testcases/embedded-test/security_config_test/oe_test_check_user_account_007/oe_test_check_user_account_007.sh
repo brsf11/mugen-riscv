@@ -31,10 +31,15 @@ function run_test()
     test $getValue -eq 0
     CHECK_RESULT $? 0 1 "set TMOUT is 0"
 
-    egrep "^\s*(export\s+)?TMOUT=" /etc/bashrc
-    CHECK_RESULT $? 0 0 "not set TMOUT in /etc/bashrc"
+    bashrcFile="/etc/bashrc"
+    if [ ! -e ${bashrcFile} ]; then 
+        bashrcFile="/etc/skel/.bashrc"
+    fi
 
-    getValue=$(egrep "^\s*(export\s+)?TMOUT=" /etc/bashrc | awk -F '=' '{print $2}')
+    egrep "^\s*(export\s+)?TMOUT=" ${bashrcFile}
+    CHECK_RESULT $? 0 0 "not set TMOUT in ${bashrcFile}"
+
+    getValue=$(egrep "^\s*(export\s+)?TMOUT=" ${bashrcFile} | awk -F '=' '{print $2}')
     test $getValue -eq 0
     CHECK_RESULT $? 0 1 "set TMOUT is 0"
 
