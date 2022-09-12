@@ -11,31 +11,19 @@
 ####################################
 #@Author    	:   @meitingli
 #@Contact   	:   bubble_mt@outlook.com
-#@Date      	:   2020-11-18
+#@Date      	:   2020-11-19
 #@License   	:   Mulan PSL v2
-#@Desc      	:   Take the test access of /media
+#@Desc      	:   Take the test access of /root
 #####################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function pre_test() {
-    LOG_INFO "Start environment preparation."
-    cur_lang=$LANG
-    export LANG=en_US.UTF-8
-    LOG_INFO "End of environmental preparation!"
-}
-
 function run_test() {
     LOG_INFO "Start to run test."
-    ls -l /media | grep "total 0"
-    CHECK_RESULT $? 0 0 "check /media directory failed."
+    ls /root | grep "anaconda-ks.cfg"
+    CHECK_RESULT $? 0 0 "check /root directory failed."
     LOG_INFO "End to run test."
 }
 
-function post_test() {
-    LOG_INFO "Start to restore the test environment."
-    export LANG=$cur_lang
-    LOG_INFO "End to restore the test environment."
-}
-
 main "$@"
+
