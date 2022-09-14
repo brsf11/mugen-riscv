@@ -23,9 +23,6 @@ send "openEuler@456\r"
 expect "$ "
 send "su tester2\r"
 expect "The account is locked due to"
-send "openEuler@456\r"
-expect "$ "
-send "exit\r"
 
 puts "\nSUCCESS"
 exit 0
