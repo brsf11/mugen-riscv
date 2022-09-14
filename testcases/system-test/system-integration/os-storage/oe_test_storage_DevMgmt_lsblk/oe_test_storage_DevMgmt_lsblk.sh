@@ -23,6 +23,7 @@ function config_params() {
     DISK_A="/dev/${local_disk}"
     ADD_DISK="/dev/${local_disk1}"
     new_uuid=12d59867-ff81-40d8-a7e7-45e971d31255
+    value=`lsblk | grep openeuler | sed -n '$p' |  awk -F "└─" {'print $2'} | awk -F " " {'print $1'}`
     LOG_INFO "Loading data is complete!"
 }
 
@@ -53,14 +54,14 @@ function run_test() {
     mkfs.xfs -f "${ADD_DISK}"
     CHECK_RESULT $?
 
-    disk_uuid=$(lsblk --fs /dev/mapper/openeuler_openeuler-swap | grep "openeuler-swap" | awk '{print$4}')
-    swapoff /dev/mapper/openeuler_openeuler-swap
-    swaplabel -U ${new_uuid} -L new-label /dev/mapper/openeuler_openeuler-swap
+    disk_uuid=$(lsblk --fs /dev/mapper/${value} | grep "openeuler-swap" | awk '{print$4}')
+    swapoff /dev/mapper/${value}
+    swaplabel -U ${new_uuid} -L new-label /dev/mapper/${value}
     SLEEP_WAIT 2
-    modify_uuid=$(lsblk --fs /dev/mapper/openeuler_openeuler-swap | grep "openeuler-swap" | awk '{print$5}')
+    modify_uuid=$(lsblk --fs /dev/mapper/${value} | grep "openeuler-swap" | awk '{print$5}')
     [ ${modify_uuid}X == ${new_uuid}X ]
     CHECK_RESULT $?
-    swaplabel -U ${disk_uuid} -L '' /dev/mapper/openeuler_openeuler-swap
+    swaplabel -U ${disk_uuid} -L '' /dev/mapper/${value}
     CHECK_RESULT $?
     swapon -a
     LOG_INFO "End of testcase execution."
