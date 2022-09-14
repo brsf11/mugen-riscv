@@ -68,6 +68,9 @@
             "name": "oe_test_ln_001"
         },
         {
+            "name": "oe_test_less_001"
+        },
+        {
             "name": "oe_test_localectl_001"
         },
         {
