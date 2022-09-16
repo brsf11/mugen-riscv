@@ -1,15 +1,23 @@
 {
     "path": "$OET_PATH/testcases/system-test/system-integration/os-basic",
     "machine type": "kvm",
+    "add network interface": 2,
+    "add disk": [
+        2,
+        2,
+        2,
+        2
+    ],
+    "machine num": 2,
     "cases": [
         {
             "name": "oe_test_who"
         },
         {
-            "name": "oe_test_uname"
+            "name": "oe_test_versioninfo"
         },
         {
-            "name": "oe_test_versioninfo"
+            "name": "oe_test_uname"
         },
         {
             "name": "oe_test_timedatectl"
@@ -27,64 +35,49 @@
             "name": "oe_test_system_log_process"
         },
         {
+            "name": "oe_test_system_log_dmesg"
+        },
+        {
             "name": "oe_test_system_log_device"
         },
         {
             "name": "oe_test_system_log_basic"
         },
         {
-            "name": "oe_test_system_log_dmesg"
-        },
-        {
             "name": "oe_test_server_vsftpd_restart"
-        },
-        {
-            "name": "oe_test_server_postgresql"
         },
         {
             "name": "oe_test_server_openssh_restart"
         },
         {
-            "name": "oe_test_server_mysql"
+            "name": "oe_test_server_git_install"
         },
         {
-            "name": "oe_test_server_mariadb_stop"
+            "name": "oe_test_power_powertop_startup"
         },
         {
-            "name": "oe_test_server_mariadb_onlinebackup"
+            "name": "oe_test_power_powertop_powerup"
         },
         {
-            "name": "oe_test_server_mariadb_loadfile"
+            "name": "oe_test_power_powertop_calibrate"
         },
         {
-            "name": "oe_test_server_mariadb_dumpMulDB"
+            "name": "oe_test_power_output_HTML"
         },
         {
-            "name": "oe_test_server_mariadb_dump"
+            "name": "oe_test_power_measurement_internal"
         },
         {
-            "name": "oe_test_server_mariadb_copy"
+            "name": "oe_test_performance_monitor_pcp"
         },
         {
-            "name": "oe_test_server_mariadb_backuptable"
-        },
-        {
-            "name": "oe_test_server_mariadb_backupDB"
-        },
-        {
-            "name": "oe_test_server_mariadb_backup"
-        },
-        {
-            "name": "oe_test_server_httpd_restart"
-        },
-        {
-            "name": "oe_test_server_httpd_recover"
-        },
-        {
-            "name": "oe_test_server_httpd_port"
+            "name": "oe_test_password_change"
         },
         {
             "name": "oe_test_password_blank"
+        },
+        {
+            "name": "oe_test_USBinfo"
         },
         {
             "name": "oe_test_ProcMgmt_vmstat"
@@ -96,29 +89,94 @@
             "name": "oe_test_ProcMgmt_start_kill"
         },
         {
+            "name": "oe_test_ProcMgmt_sar"
+        },
+        {
             "name": "oe_test_ProcMgmt_ps"
         },
         {
             "name": "oe_test_ProcMgmt_pgrep"
         },
         {
-            "name":"oe_test_IOaccess_500Mfile"
+            "name": "oe_test_ProcMgmt_iostat"
         },
         {
-            "name":"oe_test_group_access"
+            "name": "oe_test_ProcMgmt_crontab_cronfile"
         },
         {
-            "name":"oe_test_kernel_sysctl"
+            "name": "oe_test_ProcMgmt_crontab_cmd"
         },
         {
-            "name":"oe_test_IOaccess_100Mfile"
+            "name": "oe_test_ProcMgmt_at"
         },
         {
-            "name":"oe_test_IOaccess_1Gfile"
+            "name": "oe_test_date"
         },
         {
-            "name":"oe_test_man"
+            "name": "oe_test_cmd_su_user"
+        },
+        {
+            "name": "oe_test_basic_create_group"
+        },
+        {
+            "name": "oe_test_basic_modify_group"
+        },
+        {
+            "name": "oe_test_basic_modify_user"
+        },
+        {
+            "name": "oe_test_chrony_chronyc_cmd"
+        },
+        {
+            "name": "oe_test_chrony_chronyc_hardwaretime"
+        },
+        {
+            "name": "oe_test_chrony_chronyc_ntpstat"
+        },
+        {
+            "name": "oe_test_chrony_chronyd"
+        },
+        {
+            "name": "oe_test_chrony_Manuall"
+        },
+        {
+            "name": "oe_test_cmd_id"
+        },
+        {
+            "name": "oe_test_cmd_sudo"
+        },
+        {
+            "name": "oe_test_hwclock"
+        },
+        {
+            "name": "oe_test_IOaccess_500Mfile"
+        },
+        {
+            "name": "oe_test_group_access"
+        },
+        {
+            "name": "oe_test_kernel_sysctl"
+        },
+        {
+            "name": "oe_test_IOaccess_100Mfile"
+        },
+        {
+            "name": "oe_test_home_directory"
+        },
+        {
+            "name": "oe_test_groupdel"
+        },
+        {
+            "name": "oe_test_localectl"
+        },
+        {
+            "name": "oe_test_man"
+        },
+        {
+            "name": "oe_test_basic_UserMgmt_permission"
+        },
+        {
+            "name": "oe_test_basic_set_permissions"
         }
-
     ]
 }
