@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/rrdtool",
+    "cases": [
+        {
+            "name": "oe_test_service_rrdcached"
+        },
+        {
+            "name": "oe_test_socket_rrdcached"
+        }
+    ]
+}

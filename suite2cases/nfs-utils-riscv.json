@@ -1,0 +1,29 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/nfs-utils",
+    "cases": [
+        {
+            "name": "oe_test_service_nfs-lock"
+        },
+        {
+            "name": "oe_test_service_nfs-secure"
+        },
+        {
+            "name": "oe_test_service_nfs-utils"
+        },
+        {
+            "name": "oe_test_service_rpc-gssd"
+        },
+        {
+            "name": "oe_test_service_rpc-statd-notify"
+        },
+        {
+            "name": "oe_test_service_rpc-statd"
+        },
+        {
+            "name": "oe_test_target_nfs-client"
+        },
+        {
+            "name": "oe_test_target_rpc_pipefs"
+        }
+    ]
+}

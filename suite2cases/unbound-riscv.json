@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/unbound",
+    "cases": [
+        {
+            "name": "oe_test_service_unbound-anchor"
+        },
+        {
+            "name": "oe_test_service_unbound"
+        }
+    ]
+}

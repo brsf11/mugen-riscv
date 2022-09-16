@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/python-wheel",
+    "cases": [
+        {
+            "name": "oe_test_python-wheel_python3-wheel_command"
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/varnish",
+    "cases": [
+        {
+            "name": "oe_test_service_varnishncsa"
+        },
+        {
+            "name": "oe_test_service_varnish"
+        }
+    ]
+}

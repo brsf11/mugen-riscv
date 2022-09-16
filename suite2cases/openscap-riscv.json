@@ -1,0 +1,17 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/openscap",
+    "cases": [
+        {
+            "name": "oe_test_openscap_01"
+        },
+        {
+            "name": "oe_test_scanning_system"
+        },
+        {
+            "name": "oe_test_ensure_security_compliance"
+        },
+        {
+            "name": "oe_test_fix_anisible"
+        }
+    ]
+}

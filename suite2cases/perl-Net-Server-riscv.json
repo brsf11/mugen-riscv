@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/perl-Net-Server",
+    "cases": [
+        {
+            "name": "oe_test_perl-Net-Server"
+        }
+    ]
+}

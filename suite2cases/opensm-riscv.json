@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/opensm",
+    "cases": [
+        {
+            "name": "oe_test_service_opensm"
+        }
+    ]
+}

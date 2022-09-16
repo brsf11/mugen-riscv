@@ -1,0 +1,8 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/ntfs-3g",
+    "add disk": [
+        5,
+        5
+    ],
+    "cases": []
+}

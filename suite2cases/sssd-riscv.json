@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/sssd",
+    "cases": [
+        {
+            "name": "oe_test_socket_sssd-nss"
+        },
+        {
+            "name": "oe_test_socket_sssd-pam-priv"
+        }
+    ]
+}

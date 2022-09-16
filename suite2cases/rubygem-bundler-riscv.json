@@ -1,0 +1,44 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/rubygem-bundler",
+    "cases": [
+        {
+            "name": "oe_test_rubygem-bundler_bundle_01"
+        },
+        {
+            "name": "oe_test_rubygem-bundler_bundle_03"
+        },
+        {
+            "name": "oe_test_rubygem-bundler_bundle_04"
+        },
+        {
+            "name": "oe_test_rubygem-bundler_bundle_05"
+        },
+        {
+            "name": "oe_test_rubygem-bundler_bundle_06"
+        },
+        {
+            "name": "oe_test_rubygem-bundler_bundle_07"
+        },
+        {
+            "name": "oe_test_rubygem-bundler_bundle_08"
+        },
+        {
+            "name": "oe_test_rubygem-bundler_bundle_09"
+        },
+        {
+            "name": "oe_test_rubygem-bundler_bundle_10"
+        },
+        {
+            "name": "oe_test_rubygem-bundler_bundle_11"
+        },
+        {
+            "name": "oe_test_rubygem-bundler_bundle_12"
+        },
+        {
+            "name": "oe_test_rubygem-bundler_bundle_13"
+        },
+        {
+            "name": "oe_test_rubygem-bundler_bundle_14"
+        }
+    ]
+}

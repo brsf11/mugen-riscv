@@ -1,0 +1,32 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/qt5-qttools",
+    "cases": [
+        {
+            "name": "oe_test_qt5-qttools_lconvert-qt5"
+        },
+        {
+            "name": "oe_test_qt5-qttools_lrelease-qt5"
+        },
+        {
+            "name": "oe_test_qt5-qttools_lupdate-qt5_01"
+        },
+        {
+            "name": "oe_test_qt5-qttools_lupdate-qt5_02"
+        },
+        {
+            "name": "oe_test_qt5-qttools_qdoc_01"
+        },
+        {
+            "name": "oe_test_qt5-qttools_qhelpgenerator-qt5"
+        },
+        {
+            "name": "oe_test_qt5-qttools_qt5-qttools-devel"
+        },
+        {
+            "name": "oe_test_qt5-qttools_qtattributionsscanner-qt5"
+        },
+        {
+            "name": "oe_test_qt5-qttools_qtpaths"
+        }
+    ]
+}
