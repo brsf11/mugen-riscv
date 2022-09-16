@@ -1,0 +1,17 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/ntp",
+    "cases": [
+        {
+            "name": "oe_test_service_ntpdate"
+        },
+        {
+            "name": "oe_test_service_ntpd"
+        },
+        {
+            "name": "oe_test_service_ntp-wait"
+        },
+        {
+            "name": "oe_test_service_sntp"
+        }
+    ]
+}

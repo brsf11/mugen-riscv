@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/nodejs",
+    "cases": [
+        {
+            "name": "oe_test_nodejs_01"
+        },
+        {
+            "name": "oe_test_nodejs_02"
+        },
+        {
+            "name": "oe_test_nodejs_03"
+        }
+    ]
+}

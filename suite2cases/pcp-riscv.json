@@ -1,0 +1,90 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/pcp",
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_dbpmda"
+        },
+        {
+            "name": "oe_test_pcp"
+        },
+        {
+            "name": "oe_test_pmdate"
+        },
+        {
+            "name": "oe_test_pmdumplog_01"
+        },
+        {
+            "name": "oe_test_pmdumplog_02"
+        },
+        {
+            "name": "oe_test_pmevent_01"
+        },
+        {
+            "name": "oe_test_pmfind_pmgenmap_pmie2col_pminfo_01"
+        },
+        {
+            "name": "oe_test_pminfo_03"
+        },
+        {
+            "name": "oe_test_pmjson"
+        },
+        {
+            "name": "oe_test_pmlogconf_pmlogsize"
+        },
+        {
+            "name": "oe_test_pmloglabel"
+        },
+        {
+            "name": "oe_test_pmlogsummary_01"
+        },
+        {
+            "name": "oe_test_pmlogsummary_02"
+        },
+        {
+            "name": "oe_test_pmprobe_02"
+        },
+        {
+            "name": "oe_test_pmpython_mkaf_pcp-python"
+        },
+        {
+            "name": "oe_test_pmstat"
+        },
+        {
+            "name": "oe_test_pmstore_install-sh"
+        },
+        {
+            "name": "oe_test_pmval_01"
+        },
+        {
+            "name": "oe_test_pcp-summary_pcp-vmstat_pmcd_wait"
+        },
+        {
+            "name": "oe_test_pmconfig_pmie_check"
+        },
+        {
+            "name": "oe_test_pmlogger_merge_pmlogger_rewrite"
+        },
+        {
+            "name": "oe_test_pmlogreduce_pmpause_pmpost_pmsleep"
+        },
+        {
+            "name": "oe_test_pcp_pcp-import-iostat2pcp"
+        },
+        {
+            "name": "oe_test_pcp_pcp-import-mrtg2pcp"
+        },
+        {
+            "name": "oe_test_pcp_pcp-import-sar2pcp"
+        },
+        {
+            "name": "oe_test_service_pmcd"
+        },
+        {
+            "name": "oe_test_service_pmlogger"
+        },
+        {
+            "name": "oe_test_service_pmproxy"
+        }
+    ]
+}

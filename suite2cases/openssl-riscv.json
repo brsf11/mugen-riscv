@@ -1,0 +1,68 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/openssl",
+    "cases": [
+        {
+            "name": "oe_test_openssl_concurrent_operations"
+        },
+        {
+            "name": "oe_test_openssl_create_CA_applying_certificate"
+        },
+        {
+            "name": "oe_test_openssl_Diffie_Hellman"
+        },
+        {
+            "name": "oe_test_openssl_DSA_algorithm"
+        },
+        {
+            "name": "oe_test_openssl_empty_private_key"
+        },
+        {
+            "name": "oe_test_openssl_empty_public_key"
+        },
+        {
+            "name": "oe_test_openssl_encrypt_decrypt_file_asymmetrically"
+        },
+        {
+            "name": "oe_test_openssl_encrypte_decrypte_emails"
+        },
+        {
+            "name": "oe_test_openssl_encrypting_character_string"
+        },
+        {
+            "name": "oe_test_openssl_file_signature_verification"
+        },
+        {
+            "name": "oe_test_openssl_generate_key_pair"
+        },
+        {
+            "name": "oe_test_openssl_generate_password"
+        },
+        {
+            "name": "oe_test_openssl_generate_random_number"
+        },
+        {
+            "name": "oe_test_openssl_incorrect_public_private_key"
+        },
+        {
+            "name": "oe_test_openssl_message_digest"
+        },
+        {
+            "name": "oe_test_openssl_one_way_encryption"
+        },
+        {
+            "name": "oe_test_openssl_related_concurrent_operations"
+        },
+        {
+            "name": "oe_test_openssl_repeated_execution"
+        },
+        {
+            "name": "oe_test_openssl_RSA_algorithm"
+        },
+        {
+            "name": "oe_test_openssl_symmetrically_encrypts_decrypts_files"
+        },
+        {
+            "name": "oe_test_openssl_symmetric_encryption_decryption"
+        }
+    ]
+}

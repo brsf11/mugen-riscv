@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/sysstat",
+    "cases": [
+        {
+            "name": "oe_test_service_sysstat-collect"
+        },
+        {
+            "name": "oe_test_service_sysstat"
+        },
+        {
+            "name": "oe_test_service_sysstat-summary"
+        }
+    ]
+}

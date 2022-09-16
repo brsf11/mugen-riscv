@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/rpmdevtools",
+    "cases": [
+        {
+            "name": "oe_test_rpmdevtools_rpmdev-rmdevelrpms"
+        },
+        {
+            "name": "oe_test_rpmdevtools_rpmdev-bumpspec"
+        }
+    ]
+}

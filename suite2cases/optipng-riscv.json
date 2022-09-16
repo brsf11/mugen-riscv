@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/optipng",
+    "cases": [
+        {
+            "name": "oe_test_optipng_01"
+        },
+        {
+            "name": "oe_test_optipng_02"
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/pcsc-lite",
+    "cases": [
+        {
+            "name": "oe_test_service_pcscd"
+        },
+        {
+            "name": "oe_test_socket_pcscd"
+        }
+    ]
+}

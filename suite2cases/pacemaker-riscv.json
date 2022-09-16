@@ -1,0 +1,9 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/pacemaker",
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_service_crm_mon"
+        }
+    ]
+}

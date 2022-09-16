@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/policycoreutils",
+    "cases": [
+        {
+            "name": "oe_test_service_selinux-autorelabel-mark"
+        },
+        {
+            "name": "oe_test_service_selinux-autorelabel"
+        },
+        {
+            "name": "oe_test_target_selinux-autorelabel"
+        }
+    ]
+}

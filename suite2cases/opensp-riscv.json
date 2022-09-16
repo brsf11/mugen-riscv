@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/opensp",
+    "cases": [
+        {
+            "name": "oe_test_opensp_ospcat"
+        },
+        {
+            "name": "oe_test_opensp_ospent_spent"
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/sendmail",
+    "cases": [
+        {
+            "name": "oe_test_service_sendmail"
+        },
+        {
+            "name": "oe_test_service_sm-client"
+        }
+    ]
+}

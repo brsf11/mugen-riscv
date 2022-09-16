@@ -1,0 +1,11 @@
+{
+    "path": "${OET_PATH}/testcases/cli-test/rpmlint",
+    "cases": [
+        {
+            "name": "oe_test_rpmdiff"
+        },
+        {
+            "name": "oe_test_rpmlint"
+        }
+    ]
+}

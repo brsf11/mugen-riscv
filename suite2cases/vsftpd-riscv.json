@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/vsftpd",
+    "cases": [
+        {
+            "name": "oe_test_service_vsftpd"
+        },
+        {
+            "name": "oe_test_target_vsftpd"
+        }
+    ]
+}

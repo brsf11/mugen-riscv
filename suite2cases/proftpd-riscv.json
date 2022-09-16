@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/proftpd",
+    "cases": [
+        {
+            "name": "oe_test_service_proftpd"
+        },
+        {
+            "name": "oe_test_socket_proftpd"
+        }
+    ]
+}

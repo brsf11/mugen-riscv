@@ -1,0 +1,12 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/rabbitmq-server",
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_rabbitmq-server"
+        },
+        {
+            "name": "oe_test_service_rabbitmq-server"
+        }
+    ]
+}

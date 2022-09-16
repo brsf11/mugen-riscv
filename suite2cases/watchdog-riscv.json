@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/watchdog",
+    "cases": [
+        {
+            "name": "oe_test_service_watchdog"
+        },
+        {
+            "name": "oe_test_service_watchdog-ping"
+        },
+        {
+            "name": "oe_test_watchdog_001"
+        }
+    ]
+}

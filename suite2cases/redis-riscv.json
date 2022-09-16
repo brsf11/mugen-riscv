@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/redis",
+    "cases": [
+        {
+            "name": "oe_test_service_redis"
+        },
+        {
+            "name": "oe_test_service_redis-sentinel"
+        },
+        {
+            "name": "oe_test_redis_01"
+        }
+    ]
+}
