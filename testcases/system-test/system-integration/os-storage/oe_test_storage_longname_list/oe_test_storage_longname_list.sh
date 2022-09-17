@@ -26,14 +26,14 @@ function config_params() {
 
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    lsblk --fs "/dev/${local_disk}" | awk '{if (NR>1){print$NF}}' | grep [a-z,-,0-9]*-[a-z,-,0-9]*
+    lsblk --fs "/dev/${local_disk}" | awk '{if (NR>1){print$NF}}' | grep -E '[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}'
     CHECK_RESULT $?
     echo -e "n\np\n1\n\n\nw" | fdisk "/dev/${local_disk}"
     CHECK_RESULT $?
     mkfs.ext4 -F "/dev/${local_disk1}"
     CHECK_RESULT $?
     lsblk --output +PARTUUID "/dev/${local_disk1}"
-    lsblk --fs "/dev/${local_disk1}" | awk '{if (NR>1){print$NF}}' | grep [a-z,-,0-9]*-[a-z,-,0-9]*
+    lsblk --fs "/dev/${local_disk1}" | awk '{if (NR>1){print$NF}}' | grep -E '[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}'
     CHECK_RESULT $?
     file /dev/disk/by-id/* | grep "/dev/disk/by-id/dm-name-openeuler"
     CHECK_RESULT $?
