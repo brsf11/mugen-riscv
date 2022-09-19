@@ -1,0 +1,8 @@
+{
+  "path": "$OET_PATH/testcases/cli-test/ksh",
+  "cases": [
+      {
+          "name": "oe_test_ksh"
+      }
+  ]
+}
