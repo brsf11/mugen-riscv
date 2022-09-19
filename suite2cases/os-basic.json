@@ -479,10 +479,13 @@
         },
         {
             "name": "oe_test_basic_set_permissions"
-        }
-	,
+        },
         {
             "name": "oe_test_patch"
-        }
+        },
+	{
+	    "name": "oe_test_exiv2"
+	}
+
     ]
 }
