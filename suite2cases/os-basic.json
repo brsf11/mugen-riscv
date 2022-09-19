@@ -482,6 +482,9 @@
         },
 	{
 	    "name": "oe_test_exiv2"
+	},
+	{
+	    "name": "oe_test_json-c"
 	}
 
     ]
