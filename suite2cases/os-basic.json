@@ -488,7 +488,9 @@
 	},
 	{
 	    "name": "oe_test_json-c"
-	}
-
+	},
+        {
+            "name": "oe_test_whoami"
+        }
     ]
 }
