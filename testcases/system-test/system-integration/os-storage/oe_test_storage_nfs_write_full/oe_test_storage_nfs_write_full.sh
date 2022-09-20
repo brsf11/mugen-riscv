@@ -48,9 +48,9 @@ function run_test() {
     CHECK_RESULT $?
     df -h | grep ${NODE2_IPV4}
     CHECK_RESULT $?
-    SSH_CMD "dd if=/dev/zero of=/home/nfs/test bs=1k" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
+    SSH_CMD "dd if=/dev/zero of=/home/nfs/test bs=1k count=1" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     dd if=/dev/zero of=/home/client/test1 bs=1M count=1
-    CHECK_RESULT $? 1
+    CHECK_RESULT $? 
     SSH_CMD "rm -rf /home/nfs/*" ${NODE2_IPV4} ${NODE2_PASSWORD} ${NODE2_USER}
     SLEEP_WAIT 2
     dd if=/dev/zero of=/home/client/test1 bs=1M count=1
