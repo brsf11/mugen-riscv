@@ -494,6 +494,9 @@
         },
 	{
 	    "name": "oe_test_lz4"
+	},
+	{
+	    "name": "oe_test_zlib"
 	}
     ]
 }
