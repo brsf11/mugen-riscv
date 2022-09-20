@@ -491,6 +491,9 @@
 	},
         {
             "name": "oe_test_whoami"
-        }
+        },
+	{
+	    "name": "oe_test_lz4"
+	}
     ]
 }
