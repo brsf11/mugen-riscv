@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Copyright (c) 2022 Huawei Technologies Co.,Ltd.ALL rights reserved.
+# Copyright (c) 2022. Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
 #          http://license.coscl.org.cn/MulanPSL2
@@ -10,39 +10,37 @@
 # See the Mulan PSL v2 for more details.
 
 # #############################################
-# @Author    :   sunqingwei
-# @Contact   :   sunqingwei@uniontech.com
-# @Date      :   2022-08-29
+# @Author    :   liujingjing
+# @Contact   :   liujingjing25812@163.com
+# @Date      :   2022/06/07
 # @License   :   Mulan PSL v2
-# @Desc      :   diffstat function verification
+# @Desc      :   Test the basic functions of chkconfig
 # ############################################
 
-source "$OET_PATH/libs/locallibs/common_lib.sh"
+source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    DNF_INSTALL diffstat
-    mkdir diff_test1 diff_test2
+    OLD_LANG=$LANG
+    export LANG=en_US.UTF-8
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
-    LOG_INFO "Start testing..."
-    echo -e "abc\n123\ndef" >diff_test1/test.txt
-    echo -e "abc\n123\ndef" >diff_test2/test.txt
-    diff diff_test1 diff_test2 | diffstat | grep "0 files changed"
-    CHECK_RESULT $? 0 0 "The file content is abnormal"
-    echo -e "abc\n456\njqk" >./diff_test2/test.txt
-    diff diff_test1 diff_test2 | diffstat | grep "2 insertions(+), 2 deletions(-)"
-    CHECK_RESULT $? 0 0 "The file content is abnormal"
-    LOG_INFO "Finish test!"
+    LOG_INFO "Start to run test."
+    rpm -qa chkconfig | grep chkconfig
+    CHECK_RESULT $? 0 0 "chkconfig package does not exist"
+    chkconfig --help 2>&1 | grep "usage:   chkconfig"
+    CHECK_RESULT $? 0 0 "chkconfig command does not exist"
+    alternatives --help | grep "usage: alternatives"
+    CHECK_RESULT $? 0 0 "alternatives command does not exist"
+    LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    DNF_REMOVE
-    rm -rf diff_test1 diff_test2
+    export LANG=${OLD_LANG}
     LOG_INFO "End to restore the test environment."
 }
 
-main $@
+main "$@"
