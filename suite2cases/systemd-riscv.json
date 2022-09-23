@@ -3,13 +3,7 @@
     "machine num": 2,
     "cases": [
         {
-            "name": "oe_test_service_console-getty"
-        },
-        {
             "name": "oe_test_service_dbus-org.freedesktop.hostname1"
-        },
-        {
-            "name": "oe_test_service_dbus-org.freedesktop.import1"
         },
         {
             "name": "oe_test_service_dbus-org.freedesktop.locale1"
@@ -19,9 +13,6 @@
         },
         {
             "name": "oe_test_service_dbus-org.freedesktop.machine1"
-        },
-        {
-            "name": "oe_test_service_dbus-org.freedesktop.portable1"
         },
         {
             "name": "oe_test_service_dbus-org.freedesktop.timedate1"
@@ -39,19 +30,10 @@
             "name": "oe_test_service_initrd-parse-etc"
         },
         {
-            "name": "oe_test_service_initrd-switch-root"
-        },
-        {
             "name": "oe_test_service_initrd-udevadm-cleanup-db"
         },
         {
-            "name": "oe_test_service_kmod-static-nodes"
-        },
-        {
             "name": "oe_test_service_ldconfig"
-        },
-        {
-            "name": "oe_test_service_quotaon"
         },
         {
             "name": "oe_test_service_rc-local"
@@ -61,9 +43,6 @@
         },
         {
             "name": "oe_test_service_systemd-ask-password-console"
-        },
-        {
-            "name": "oe_test_service_systemd-ask-password-wall"
         },
         {
             "name": "oe_test_service_systemd-binfmt"
@@ -81,9 +60,6 @@
             "name": "oe_test_service_systemd-firstboot"
         },
         {
-            "name": "oe_test_service_systemd-fsck-root"
-        },
-        {
             "name": "oe_test_service_systemd-halt"
         },
         {
@@ -99,12 +75,6 @@
             "name": "oe_test_service_systemd-hybrid-sleep"
         },
         {
-            "name": "oe_test_service_systemd-importd"
-        },
-        {
-            "name": "oe_test_service_systemd-initctl"
-        },
-        {
             "name": "oe_test_service_systemd-journal-catalog-update"
         },
         {
@@ -112,15 +82,6 @@
         },
         {
             "name": "oe_test_service_systemd-journal-flush"
-        },
-        {
-            "name": "oe_test_service_systemd-journal-gatewayd"
-        },
-        {
-            "name": "oe_test_service_systemd-journal-remote"
-        },
-        {
-            "name": "oe_test_service_systemd-journal-upload"
         },
         {
             "name": "oe_test_service_systemd-kexec"
@@ -141,25 +102,10 @@
             "name": "oe_test_service_systemd-modules-load"
         },
         {
-            "name": "oe_test_service_systemd-networkd"
-        },
-        {
-            "name": "oe_test_service_systemd-networkd-wait-online"
-        },
-        {
-            "name": "oe_test_service_systemd-network-generator"
-        },
-        {
-            "name": "oe_test_service_systemd-portabled"
-        },
-        {
             "name": "oe_test_service_systemd-poweroff"
         },
         {
             "name": "oe_test_service_systemd-pstore"
-        },
-        {
-            "name": "oe_test_service_systemd-quotacheck"
         },
         {
             "name": "oe_test_service_systemd-random-seed"
@@ -169,9 +115,6 @@
         },
         {
             "name": "oe_test_service_systemd-remount-fs"
-        },
-        {
-            "name": "oe_test_service_systemd-resolved"
         },
         {
             "name": "oe_test_service_systemd-rfkill"
@@ -207,9 +150,6 @@
             "name": "oe_test_service_systemd-tmpfiles-setup"
         },
         {
-            "name": "oe_test_service_systemd-udevd"
-        },
-        {
             "name": "oe_test_service_systemd-udev-settle"
         },
         {
@@ -234,34 +174,16 @@
             "name": "oe_test_service_systemd-volatile-root"
         },
         {
-            "name": "oe_test_socket_syslog"
-        },
-        {
             "name": "oe_test_socket_systemd-coredump"
         },
         {
             "name": "oe_test_socket_systemd-initctl"
         },
         {
-            "name": "oe_test_socket_systemd-journald-audit"
-        },
-        {
             "name": "oe_test_socket_systemd-journald-dev-log"
         },
         {
             "name": "oe_test_socket_systemd-journald"
-        },
-        {
-            "name": "oe_test_socket_systemd-journal-gatewayd"
-        },
-        {
-            "name": "oe_test_socket_systemd-journal-remote"
-        },
-        {
-            "name": "oe_test_socket_systemd-networkd"
-        },
-        {
-            "name": "oe_test_socket_systemd-rfkill"
         },
         {
             "name": "oe_test_socket_systemd-udevd-control"
@@ -274,12 +196,6 @@
         },
         {
             "name": "oe_test_target_boot-complete"
-        },
-        {
-            "name": "oe_test_target_cryptsetup-pre"
-        },
-        {
-            "name": "oe_test_target_cryptsetup"
         },
         {
             "name": "oe_test_target_ctrl-alt-del"
@@ -324,9 +240,6 @@
             "name": "oe_test_target_initrd"
         },
         {
-            "name": "oe_test_target_initrd-switch-root"
-        },
-        {
             "name": "oe_test_target_kexec"
         },
         {
@@ -334,9 +247,6 @@
         },
         {
             "name": "oe_test_target_local-fs"
-        },
-        {
-            "name": "oe_test_target_machines"
         },
         {
             "name": "oe_test_target_multi-user"
@@ -364,9 +274,6 @@
         },
         {
             "name": "oe_test_target_reboot"
-        },
-        {
-            "name": "oe_test_target_remote-cryptsetup"
         },
         {
             "name": "oe_test_target_remote-fs-pre"
@@ -416,7 +323,7 @@
         {
             "name": "oe_test_target_sockets"
         },
-	{
+        {
             "name": "oe_test_target_suspend"
         },
         {
@@ -446,35 +353,14 @@
         {
             "name": "oe_test_target_umount"
         },
-	{
+        {
             "name": "oe_test_service_emergency"
         },
         {
             "name": "oe_test_target_emergency"
         },
-	{
-            "name": "oe_test_service_systemd-sysext"
-        },
-        {
-            "name": "oe_test_service_systemd-userdbd"
-        },
-        {
-            "name": "oe_test_socket_systemd-userdbd"
-        },
         {
             "name": "oe_test_target_first-boot-complete"
-        },
-        {
-            "name": "oe_test_target_remote-veritysetup"
-        },
-        {
-            "name": "oe_test_target_usb-gadget"
-        },
-        {
-            "name": "oe_test_target_veritysetup"
-        },
-        {
-            "name": "oe_test_target_veritysetup-pre"
         }
     ]
 }
