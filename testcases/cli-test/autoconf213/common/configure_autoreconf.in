@@ -1,0 +1,4 @@
+AC_PREREQ([2.13])
+AC_INIT([autoreconf-test], [1.0], [test@example.com])
+AC_PROG_CC
+AC_OUTPUT(Makefile)
