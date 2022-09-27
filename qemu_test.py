@@ -10,6 +10,7 @@ from libs.locallibs import sftp,ssh_cmd
 from threading import Thread
 import threading
 import subprocess
+import json
 
 def ssh_exec(qemuVM,cmd,timeout=5):
     conn = paramiko.SSHClient()
@@ -74,8 +75,8 @@ class Dispatcher(Thread):
 
 class QemuVM(object):
     def __init__(self,id=1,port=12055,user='root',password='openEuler12#$',vcpu=4,memory=4,
-                 workingDir='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220818/',
-                 bkfile='openeuler-qemu.qcow2'):
+                 workingDir='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220926/',
+                 bkfile='img-base.qcow2'):
         self.id = id
         self.port = port
         self.ip = '127.0.0.1'
@@ -173,9 +174,9 @@ if __name__ == "__main__":
     parser.add_argument('-x',type=int,default=1,help='Specify threads num, default is 1')
     parser.add_argument('-c',type=int,default=4,help='Specify virtual machine cores num, default is 4')
     parser.add_argument('-M',type=int,default=4,help='Specify virtual machine memory size(GB), default is 4 GB')
-    parser.add_argument('-w',type=str,default='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220818/',help='Specify working directory')
+    parser.add_argument('-w',type=str,default='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220926/',help='Specify working directory')
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
-    parser.add_argument('-b',type=str,default='openeuler-qemu.qcow2',help='Specify backing file name')
+    parser.add_argument('-b',type=str,default='img-base.qcow2',help='Specify backing file name')
     args = parser.parse_args()
 
     test_env = TestEnv()
@@ -202,7 +203,9 @@ if __name__ == "__main__":
             qemuVM.append(QemuVM(i,ports[i],vcpu=args.c,memory=args.M,workingDir=args.w,bkfile=args.b))   
         targetQueue = Queue()
         for target in test_target.test_list:
-            targetQueue.put(target)
+            jsondata = json.loads(open('suite2cases/'+target+'.json','r').read())
+            if len(jsondata['cases']) != 0:
+                targetQueue.put(target)
 
         dispathcers = []
         for i in range(args.x):
