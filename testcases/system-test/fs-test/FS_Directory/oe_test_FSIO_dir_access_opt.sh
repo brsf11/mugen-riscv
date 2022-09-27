@@ -20,7 +20,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test() {
     LOG_INFO "Start environment preparation."
-    cur_lang=$(echo $LANG)
+    cur_lang=$LANG
     export LANG=en_US.UTF-8
     LOG_INFO "End of environmental preparation!"
 }

@@ -11,31 +11,40 @@
 ####################################
 #@Author    	:   @meitingli
 #@Contact   	:   bubble_mt@outlook.com
-#@Date      	:   2020-11-18
+#@Date      	:   2020-11-19
 #@License   	:   Mulan PSL v2
-#@Desc      	:   Take the test access of /media
+#@Desc      	:   Take the test mkdir without inode
 #####################################
 
-source ${OET_PATH}/libs/locallibs/common_lib.sh
+source ../common_lib/fsio_lib.sh
 
 function pre_test() {
-    LOG_INFO "Start environment preparation."
-    cur_lang=$LANG
-    export LANG=en_US.UTF-8
-    LOG_INFO "End of environmental preparation!"
+    LOG_INFO "Start to prepare the database config."
+    point_list=($(CREATE_FS))
+    LOG_INFO "Finish to prepare the database config."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    ls -l /media | grep "total 0"
-    CHECK_RESULT $? 0 0 "check /media directory failed."
+    for i in $(seq 1 $((${#point_list[@]} - 1))); do
+        point=${point_list[$i]}
+        free_space=$(($(df -i | grep $point | awk '{print $4}') + 1000))
+        for n in $(seq 1 $free_space); do
+            echo $n >$point/test_inode$n &>/dev/null
+        done
+        mkdir $point/test_dir 2>&1 | grep "cannot create directory" | grep "No space left on device"
+        CHECK_RESULT $? 0 0 "The error msg of $point is false."
+    done
+
     LOG_INFO "End to run test."
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    export LANG=$cur_lang
+    list=$(echo ${point_list[@]})
+    REMOVE_FS "$list"
     LOG_INFO "End to restore the test environment."
 }
 
 main "$@"
+
