@@ -21,7 +21,7 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function pre_test(){
     LOG_INFO "Start environment preparation."
-    DNF_INSTALL "llvm"
+    DNF_INSTALL "llvm clang"
     mkdir /tmp/test_llvm
     path=/tmp/test_llvm
     cat > /tmp/test_llvm/llvm_test.c   <<EOF
