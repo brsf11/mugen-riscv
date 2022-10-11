@@ -187,7 +187,7 @@ class TestTarget():
                 else:
                     failed_num = len(temp_failed)
                     self.failed_test_num.append(failed_num)
-                    if test_target not in os.listdir('logs_failed/'):
+                    if self.test_suite not in os.listdir('logs_failed/'):
                         os.system("mkdir logs_failed/"+self.test_suite)
                     for failed_test in temp_failed :
                         if failed_test not in os.listdir('logs_failed/'+self.test_suite+"/"):
