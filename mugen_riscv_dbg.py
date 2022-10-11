@@ -93,8 +93,8 @@ class TestEnv():
             mugen_data = json.loads(mugen_file.read())
             riscv_file = open(self.suite_cases_path+test_suite+"-riscv.json",'r')
             riscv_data = json.loads(riscv_file.read())
-            self.list_in_suite_mugen = [testcase["name"] for testcase in mugen_data["case"]]
-            self.list_in_suite_riscv = [testcase["name"] for testcase in riscv_data["case"]]
+            self.list_in_suite_mugen = [testcase["name"] for testcase in mugen_data["cases"]]
+            self.list_in_suite_riscv = [testcase["name"] for testcase in riscv_data["cases"]]
 
 
 
@@ -180,7 +180,7 @@ class TestTarget():
             if detailed == False:
                 temp_failed = []
                 try:
-                    temp_failed = os.listdir("results/"+test_target+"/failed")
+                    temp_failed = os.listdir("results/"+self.test_suite+"/failed")
                 except:
                     failed_num = 0
                     self.failed_test_num.append(failed_num)
@@ -188,12 +188,12 @@ class TestTarget():
                     failed_num = len(temp_failed)
                     self.failed_test_num.append(failed_num)
                     if test_target not in os.listdir('logs_failed/'):
-                        os.system("mkdir logs_failed/"+test_target)
+                        os.system("mkdir logs_failed/"+self.test_suite)
                     for failed_test in temp_failed :
-                        if failed_test not in os.listdir('logs_failed/'+test_target+"/"):
-                            os.system("mkdir logs_failed/"+test_target+"/"+failed_test+"/")
-                        logs = os.listdir('logs/'+test_target+"/"+failed_test+"/")
-                        os.system("cp logs/"+test_target+"/"+failed_test+"/"+logs[len(logs)-1]+" logs_failed/"+test_target+"/"+failed_test+"/")
+                        if failed_test not in os.listdir('logs_failed/'+self.test_suite+"/"):
+                            os.system("mkdir logs_failed/"+self.test_suite+"/"+failed_test+"/")
+                        logs = os.listdir('logs/'+self.test_suite+"/"+failed_test+"/")
+                        os.system("cp logs/"+self.test_suite+"/"+failed_test+"/"+logs[len(logs)-1]+" logs_failed/"+self.test_suite+"/"+failed_test+"/")
 
                 temp_succeed = []
                 try:
@@ -211,16 +211,16 @@ class TestTarget():
                 success_num = 0
                 failed_num = 0
                 for testcase in self.test_list:
-                    if(os.system("ls results/"+test_target+"/failed/"+testcase+" &> /dev/null") == 0):
+                    if(os.system("ls results/"+self.test_suite+"/failed/"+testcase+" &> /dev/null") == 0):
                         failed_num += 1
                         temp_failed.append(testcase)
                         if test_target not in os.listdir('logs_failed/'):
-                            os.system("mkdir logs_failed/"+test_target)
-                        if testcase not in os.listdir("logs_failed/"+test_target+"/"):
-                            os.system("mkdir logs_failed/"+test_target+"/"+testcase+"/")
-                        logs = os.listdir('logs/'+test_target+"/"+testcase+"/")
-                        os.system("cp logs/"+test_target+"/"+testcase+"/"+logs[len(logs)-1]+" logs_failed/"+test_target+"/"+testcase+"/")
-                    if(os.system("ls results/"+test_target+"/succeed/"+testcase+" &> /dev/null") == 0):
+                            os.system("mkdir logs_failed/"+self.test_suite)
+                        if testcase not in os.listdir("logs_failed/"+self.test_suite+"/"):
+                            os.system("mkdir logs_failed/"+self.test_suite+"/"+testcase+"/")
+                        logs = os.listdir('logs/'+self.test_suite+"/"+testcase+"/")
+                        os.system("cp logs/"+self.test_suite+"/"+testcase+"/"+logs[len(logs)-1]+" logs_failed/"+self.test_suite+"/"+testcase+"/")
+                    if(os.system("ls results/"+self.test_suite+"/succeed/"+testcase+" &> /dev/null") == 0):
                         temp_succeed.append(testcase)
                         success_num += 1
                 target_res = {'suite': test_target,'failed': temp_failed,'succeed': temp_succeed}
