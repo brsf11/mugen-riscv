@@ -174,9 +174,9 @@ class TestTarget():
             return 1
         elif self.test_suite is not None:
             test_res = []
-            for test_target in self.test_list :
-                print("Start to test target: "+test_target)
-                os.system("sudo bash mugen.sh -f "+self.test_suite+" -r "+test_target+" 2>&1 | tee -a exec.log")
+            for testTarget in self.test_list :
+                print("Start to test target: "+testTarget)
+                os.system("sudo bash mugen.sh -f "+self.test_suite+" -r "+testTarget+" 2>&1 | tee -a exec.log")
             if detailed == False:
                 temp_failed = []
                 try:
@@ -204,7 +204,7 @@ class TestTarget():
                 else:
                     success_num = len(temp_succeed)
                     self.success_test_num.append(success_num)
-                target_res = {'suite': test_target,'failed': temp_failed,'succeeded': temp_succeed}
+                target_res = {'suite': testTarget,'failed': temp_failed,'succeeded': temp_succeed}
             else:
                 temp_failed = []
                 temp_succeed = []
