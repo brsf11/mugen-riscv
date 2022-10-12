@@ -95,6 +95,8 @@ class QemuVM(object):
         self.drive = 'img'+str(self.id)+'.qcow2'
         self.path = path
         self.gene = gene
+        if self.workingDir[-1] != '/':
+            self.workingDir += '/'
 
     def start(self):
         if self.drive in os.listdir(self.workingDir):
@@ -146,7 +148,7 @@ class QemuVM(object):
             g = " -g"
         else:
             g = ''
-        print(ssh_exec(self,'cd /root/GitRepo/mugen-riscv \n echo \''+testsuite+'\' > list_temp \n python3 mugen_riscv.py -l list_temp'+g,timeout=60)[1])
+        print(ssh_exec(self,'cd '+self.path+' \n echo \''+testsuite+'\' > list_temp \n python3 mugen_riscv.py -l list_temp'+g,timeout=60)[1])
         if lstat(self,self.path+'/logs_failed') is not None:
             sftp_get(self,self.path+'/logs_failed','',self.workingDir)
         if lstat(self,self.path+'/logs') is not None:
@@ -191,7 +193,7 @@ if __name__ == "__main__":
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
     parser.add_argument('-b',type=str,default='openeuler-qemu.qcow2',help='Specify backing file name')
     parser.add_argument('-d',type=str,default='/root/GitRepo/mugen-riscv',help='Specity mugen installed directory')
-    parser.add_argument('-g','--generate',action='store_true',help='Generate testsuite json after running test')
+    parser.add_argument('-g','--generate',action='store_true',default=False,help='Generate testsuite json after running test')
     args = parser.parse_args()
 
     test_env = TestEnv()
@@ -215,7 +217,7 @@ if __name__ == "__main__":
 
         qemuVM = []
         for i in range(args.x):
-            qemuVM.append(QemuVM(i,ports[i],vcpu=args.c,memory=args.M,workingDir=args.w,bkfile=args.b,path=args.d,gene=args.g))   
+            qemuVM.append(QemuVM(i,ports[i],vcpu=args.c,memory=args.M,workingDir=args.w,bkfile=args.b,path=args.d.rstrip('/'),gene=args.generate))   
         targetQueue = Queue()
         for target in test_target.test_list:
             targetQueue.put(target)
