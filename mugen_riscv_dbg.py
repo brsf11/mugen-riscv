@@ -204,7 +204,7 @@ class TestTarget():
                 else:
                     success_num = len(temp_succeed)
                     self.success_test_num.append(success_num)
-                target_res = {'suite': testTarget,'failed': temp_failed,'succeeded': temp_succeed}
+                target_res = {'suite': self.testsuite,'failed': temp_failed,'succeeded': temp_succeed}
             else:
                 temp_failed = []
                 temp_succeed = []
