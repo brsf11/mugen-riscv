@@ -32,8 +32,10 @@ function run_test() {
     CHECK_RESULT $?
     hdparm -r /dev/"${disk}" | grep readonly
     CHECK_RESULT $?
-    hdparm -F /dev/"${disk}"
-    CHECK_RESULT $?
+    if lsblk | grep sd; then
+        hdparm -F /dev/"${disk}"
+        CHECK_RESULT $?
+    fi
     LOG_INFO "Finish test!"
 }
 
