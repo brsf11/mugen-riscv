@@ -10,7 +10,6 @@ from libs.locallibs import sftp,ssh_cmd
 from threading import Thread
 import threading
 import subprocess
-import json
 
 def ssh_exec(qemuVM,cmd,timeout=5):
     conn = paramiko.SSHClient()
@@ -30,8 +29,15 @@ def lstat(qemuVM,remotepath,timeout=5):
     conn = paramiko.SSHClient()
     conn.set_missing_host_key_policy(paramiko.AutoAddPolicy)
     conn.connect(qemuVM.ip,qemuVM.port,qemuVM.user,qemuVM.password,timeout=timeout,allow_agent=False,look_for_keys=False)
-    stat = paramiko.SFTPClient.from_transport(conn.get_transport()).lstat(remotepath)
-    ssh_cmd.pssh_close(conn)
+    try:
+        stat = paramiko.SFTPClient.from_transport(conn.get_transport()).lstat(remotepath)
+    except:
+        stat = None
+    else:
+        if stat.st_size == 0:
+            stat = None
+    finally:
+        ssh_cmd.pssh_close(conn)
     return stat
 
 def findAvalPort(num=1):
@@ -75,8 +81,8 @@ class Dispatcher(Thread):
 
 class QemuVM(object):
     def __init__(self,id=1,port=12055,user='root',password='openEuler12#$',vcpu=4,memory=4,
-                 workingDir='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220926/',
-                 bkfile='img-base.qcow2'):
+                 workingDir='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220818/',
+                 bkfile='openeuler-qemu.qcow2' , path='/root/GitRepo/mugen-riscv' , gene=False):
         self.id = id
         self.port = port
         self.ip = '127.0.0.1'
@@ -87,6 +93,10 @@ class QemuVM(object):
         self.workingDir = workingDir
         self.bkFile = bkfile
         self.drive = 'img'+str(self.id)+'.qcow2'
+        self.path = path
+        self.gene = gene
+        if self.workingDir[-1] != '/':
+            self.workingDir += '/'
 
     def start(self):
         if self.drive in os.listdir(self.workingDir):
@@ -134,14 +144,19 @@ class QemuVM(object):
 
 
     def runTest(self,testsuite):
-        print(ssh_exec(self,'cd /root/GitRepo/mugen-riscv \n echo \''+testsuite+'\' > list_temp \n python3 mugen_riscv.py -l list_temp -g',timeout=60)[1])
-        if lstat(self,'/root/GitRepo/mugen-riscv/logs_failed').st_size != 0:
-            sftp_get(self,'/root/GitRepo/mugen-riscv/logs_failed','',self.workingDir)
-        if lstat(self,'/root/GitRepo/mugen-riscv/logs').st_size != 0:
-            sftp_get(self,'/root/GitRepo/mugen-riscv/logs','',self.workingDir)
-        if lstat(self,'/root/GitRepo/mugen-riscv/suite2cases_out').st_size != 0:
-            sftp_get(self,'/root/GitRepo/mugen-riscv/suite2cases_out','',self.workingDir)
-        sftp_get(self,'/root/GitRepo/mugen-riscv/','exec.log',self.workingDir+'exec_log/'+testsuite)
+        if self.gene:
+            g = " -g"
+        else:
+            g = ''
+        print(ssh_exec(self,'cd '+self.path+' \n echo \''+testsuite+'\' > list_temp \n python3 mugen_riscv.py -l list_temp'+g,timeout=60)[1])
+        if lstat(self,self.path+'/logs_failed') is not None:
+            sftp_get(self,self.path+'/logs_failed','',self.workingDir)
+        if lstat(self,self.path+'/logs') is not None:
+            sftp_get(self,self.path+'/logs','',self.workingDir)
+        if lstat(self , self.path+'/suite2cases_out') is not None:
+            sftp_get(self,self.path+'/suite2cases_out','',self.workingDir)
+        sftp_get(self,self.path,'exec.log',self.workingDir+'exec_log/'+testsuite)
+
 
     def isBroken(self):
         conn = 519
@@ -174,9 +189,11 @@ if __name__ == "__main__":
     parser.add_argument('-x',type=int,default=1,help='Specify threads num, default is 1')
     parser.add_argument('-c',type=int,default=4,help='Specify virtual machine cores num, default is 4')
     parser.add_argument('-M',type=int,default=4,help='Specify virtual machine memory size(GB), default is 4 GB')
-    parser.add_argument('-w',type=str,default='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220926/',help='Specify working directory')
+    parser.add_argument('-w',type=str,default='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220818/',help='Specify working directory')
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
-    parser.add_argument('-b',type=str,default='img-base.qcow2',help='Specify backing file name')
+    parser.add_argument('-b',type=str,default='openeuler-qemu.qcow2',help='Specify backing file name')
+    parser.add_argument('-d',type=str,default='/root/GitRepo/mugen-riscv',help='Specity mugen installed directory')
+    parser.add_argument('-g','--generate',action='store_true',default=False,help='Generate testsuite json after running test')
     args = parser.parse_args()
 
     test_env = TestEnv()
@@ -200,12 +217,10 @@ if __name__ == "__main__":
 
         qemuVM = []
         for i in range(args.x):
-            qemuVM.append(QemuVM(i,ports[i],vcpu=args.c,memory=args.M,workingDir=args.w,bkfile=args.b))   
+            qemuVM.append(QemuVM(i,ports[i],vcpu=args.c,memory=args.M,workingDir=args.w,bkfile=args.b,path=args.d.rstrip('/'),gene=args.generate))   
         targetQueue = Queue()
         for target in test_target.test_list:
-            jsondata = json.loads(open('suite2cases/'+target+'.json','r').read())
-            if len(jsondata['cases']) != 0:
-                targetQueue.put(target)
+            targetQueue.put(target)
 
         dispathcers = []
         for i in range(args.x):
