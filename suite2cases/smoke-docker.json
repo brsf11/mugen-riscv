@@ -39,6 +39,9 @@
         },
         {
             "name": "oe_test_docker_save_load_001"
-        }
+        },
+	{
+	    "name": "oe_test_docker_custom_image"
+	}
     ]
 }

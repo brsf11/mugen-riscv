@@ -3,6 +3,12 @@
     "cases": [
         {
             "name": "oe_test_service_mariadb"
+        },
+        {
+            "name": "oe_test_mariadb-db"
+        },
+        {
+            "name": "oe_test_mariadb-table"
         }
     ]
 }

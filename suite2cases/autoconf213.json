@@ -1,0 +1,35 @@
+{
+  "path": "$OET_PATH/testcases/cli-test/autoconf213",
+  "cases": [
+    {
+      "name": "oe_test_autoconf213_autoconf-2.13"
+    },
+    {
+      "name": "oe_test_autoconf213_autoheader-2.13"
+    },
+    {
+      "name": "oe_test_autoconf213_autoreconf-2.13_01"
+    },
+    {
+      "name": "oe_test_autoconf213_autoreconf-2.13_02"
+    },
+    {
+      "name": "oe_test_autoconf213_autoreconf-2.13_03"
+    },
+    {
+      "name": "oe_test_autoconf213_autoreconf-2.13_04"
+    },
+    {
+      "name": "oe_test_autoconf213_autoreconf-2.13_05"
+    },
+    {
+      "name": "oe_test_autoconf213_autoreconf-2.13_06"
+    },
+    {
+      "name": "oe_test_autoconf213_autoupdate-2.13"
+    },
+    {
+      "name": "oe_test_autoconf213_ifnames-2.13"
+    }
+  ]
+}

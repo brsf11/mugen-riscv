@@ -41,6 +41,14 @@ function run_test()
     cat /etc/pam.d/common-auth | grep "deny" | grep "unlock_time"
     CHECK_RESULT $? 0 0 "check deny and unlock time fail"
 
+    expect -v
+    if [ $? -eq 0 ]; then
+
+    expect ./check_passwd_three_times_fail.exp
+    CHECK_RESULT $? 0 0 "check login fail 3 time lock fail"
+
+    else
+
     su tester1 -c "su tester2" <<EOF
 openEuler@456
 EOF
@@ -58,6 +66,7 @@ EOF
 
     echo $getValue | grep "The account is locked due to "
     CHECK_RESULT $? 0 0 "check login fail 3 time lock fail"
+fi
 
     LOG_INFO "End to run test."
 }

@@ -14,6 +14,12 @@
             "name": "oe_test_who"
         },
         {
+            "name": "oe_test_tail"
+        },
+        {
+            "name": "oe_test_awk"
+        },
+        {
             "name": "oe_test_versioninfo"
         },
         {
@@ -476,6 +482,27 @@
         },
         {
             "name": "oe_test_basic_set_permissions"
-        }
+        },
+        {
+            "name": "oe_test_patch"
+        },
+	{
+	    "name": "oe_test_exiv2"
+	},
+	{
+	    "name": "oe_test_json-c"
+	},
+        {
+            "name": "oe_test_whoami"
+        },
+	{
+	    "name": "oe_test_lz4"
+	},
+	{
+	    "name": "oe_test_zlib"
+	},
+	{
+	    "name": "oe_test_brotli"
+	}
     ]
 }

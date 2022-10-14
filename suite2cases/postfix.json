@@ -3,6 +3,9 @@
     "cases": [
         {
             "name": "oe_test_service_postfix"
-        }
+        },
+	{
+	    "name": "oe_test_postfix_configuration"
+	}
     ]
 }

@@ -33,17 +33,24 @@ function run_test()
 {
     LOG_INFO "Start to run test."
 
+    source /etc/profile
+
     umaskValue=$(umask)
     test "$umaskValue" == "0077"
     CHECK_RESULT $? 0 0  "check umask default value fail"
 
-    grep -iE "^\s*umask\s+" /etc/login.defs | grep "UMASK 077"
+    grep -iE "^\s*umask\s+" /etc/login.defs | grep "UMASK[[:space:]]\+077"
     CHECK_RESULT $? 0 0 "check /etc/login.defs set umask value fail"
 
-    grep -iE "^\s*umask\s+" /etc/profile | grep "umask 077"
+    grep -iE "^\s*umask\s+" /etc/profile | grep "[umaskUMASK][[:space:]]\+077" 
     CHECK_RESULT $? 0 0 "check /etc/profile set umask value fail"
 
-    grep -iE "^\s*umask\s+" /etc/bashrc | grep "umask 077"
+    bashrcFile="/etc/bashrc"
+    if [ ! -e ${bashrcFile} ]; then 
+        bashrcFile="/etc/skel/.bashrc"
+    fi
+
+    grep -iE "^\s*umask\s+" ${bashrcFile} | grep "[umaskUMASK][[:space:]]\+077"
     CHECK_RESULT $? 0 0 "check /etc/bashrc set umask value fail"
 
     touch test

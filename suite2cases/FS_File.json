@@ -61,6 +61,70 @@
         },
         {
             "name": "oe_test_FSIO_create_softlink"
+        },
+        {
+            "name": "oe_test_FSIO_create_softlink_diff_fs"
+        },
+        {
+            "name": "oe_test_FSIO_create_softlink_dir"
+        },
+        {
+            "name": "oe_test_FSIO_create_softlink_file"
+        },
+        {
+            "name": "oe_test_FSIO_dd_file"
+        },
+        {
+            "name": "oe_test_FSIO_filefrag"
+        },
+        {
+            "name": "oe_test_FSIO_gzip"
+        },
+        {
+            "name": "oe_test_FSIO_gzip_overfs"
+        },
+        {
+            "name": "oe_test_FSIO_modify_file"
+        },
+        {
+            "name": "oe_test_FSIO_modify_magicfile"
+        },
+        {
+            "name": "oe_test_FSIO_mv_file_1"
+        },
+        {
+            "name": "oe_test_FSIO_mv_file_2"
+        },
+        {
+            "name": "oe_test_FSIO_rename_file"
+        },
+        {
+            "name": "oe_test_FSIO_rename_file_fail"
+        },
+        {
+            "name": "oe_test_FSIO_rm_file"
+        },
+        {
+            "name": "oe_test_FSIO_rm_hardlink"
+        },
+        {
+            "name": "oe_test_FSIO_rm_softlink"
+        },
+        {
+            "name": "oe_test_FSIO_sys_fs_check"
+        },
+        {
+            "name": "oe_test_FSIO_tar"
+        },
+        {
+            "name": "oe_test_FSIO_touch_file"
+        },
+        {
+            "name": "oe_test_FSIO_zip_unzip"
+        },
+        {
+            "name": "oe_test_FSIO_zip_unzip_overfs"
         }
+
     ]
 }

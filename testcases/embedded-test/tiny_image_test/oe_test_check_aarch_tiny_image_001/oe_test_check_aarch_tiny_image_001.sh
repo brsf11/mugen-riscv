@@ -31,13 +31,23 @@ function run_test() {
         outputdir="/usr1/output"
     fi
 
+    machineName="${RUN_QEMU_MACHINE}"
+    if [ -z ${machineName} ]; then
+        machineName="virt-4.0"
+    fi
+
+    cpuName="${RUN_QEMU_CPU}"
+    if [ -z ${cpuName} ]; then
+        cpuName="cortex-a57"
+    fi
+
     zImage_path=$(find ${outputdir} -name "zImage")
     initrd_path=$(find ${outputdir} -name "openeuler-image-*qemu-*.rootfs.cpio.gz")
 
     expect <<-EOF
         set timeout 30
 
-        spawn qemu-system-aarch64 -M virt-4.0 -cpu cortex-a57 -m 2048M -nographic -kernel ${zImage_path} -initrd ${initrd_path}
+        spawn qemu-system-aarch64 -M ${machineName} -cpu ${cpuName} -m 2048M -nographic -kernel ${zImage_path} -initrd ${initrd_path}
 
         expect {
             "login:" {
@@ -50,7 +60,13 @@ function run_test() {
                 }
             }
             timeout {
-                exit 1
+                send "\n"
+                expect "# "
+                send "busybox\n"
+                expect {
+                    "BusyBox v*" { exit 0 }
+                    timeout { exit 1 }
+                }
             }
             eof {
                 catch wait result

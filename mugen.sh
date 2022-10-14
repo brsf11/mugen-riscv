@@ -244,13 +244,13 @@ function run_test_case() {
 
     if [[ $COMMAND_S == "yes" ]]; then
         remote_case_path=$(echo -e ${case_path} | sed -e "s#${OET_PATH}#/mugen_re#")
-        remote_cmd=". /mugen_re/conf/mugen.env &&
+        remote_cmd="bash -c '. /mugen_re/conf/mugen.env &&
                  export OET_PATH=/mugen_re &&
                  pushd \"$remote_case_path\" >/dev/null || exit 1 &&
                  $run_cmd > /tmp/mugen_re.log 2>&1 &&
                  (cat /tmp/mugen_re.log && rm -rf /tmp/mugen_re.log && popd >/dev/null || exit 1) ||
                  (cat /tmp/mugen_re.log 1>&2 && rm -rf /tmp/mugen_re.log && popd >/dev/null && exit 1)
-                "
+                '"
         run_cmd="python3 ${OET_PATH}/libs/locallibs/ssh_cmd.py --node 1 --cmd \"${remote_cmd}\""
     fi
 

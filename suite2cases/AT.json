@@ -276,6 +276,36 @@
         },
         {
             "name": "oe_test_module"
+        },
+	{
+            "name": "oe_test_acpid"
+        },
+        {
+            "name": "oe_test_aide_compare_database"
+        },
+        {
+            "name": "oe_test_aide_update_database"
+        },
+        {
+            "name": "oe_test_arping"
+        },
+        {
+            "name": "oe_test_atd"
+        },
+        {
+            "name": "oe_test_augeas_augtool"
+        },
+        {
+            "name": "oe_test_bc"
+        },
+        {
+            "name": "oe_test_bridge-utils_01"
+        },
+        {
+            "name": "oe_test_chkconfig"
+        },
+        {
+            "name": "oe_test_chrt"
         }
     ]
 }

@@ -1,0 +1,20 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/discount",
+    "cases": [
+        {
+            "name": "oe_test_discount_markdown_01"
+        },
+        {
+            "name": "oe_test_discount_markdown_02"
+        },
+        {
+            "name": "oe_test_discount-makepage_01"
+        },
+        {
+            "name": "oe_test_discount-mkd2html_01"
+        },
+        {
+            "name": "oe_test_discount-theme_01"
+        }
+    ]
+}

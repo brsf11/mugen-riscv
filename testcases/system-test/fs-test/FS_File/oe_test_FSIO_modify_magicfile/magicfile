@@ -1,0 +1,2 @@
+0       search/8192     #include
+>0      regex   \^#include                      TESTC

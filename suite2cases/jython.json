@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/jython",
+    "cases": [
+        {
+            "name": "oe_test_jython_01"
+        },
+        {
+            "name": "oe_test_jython_02"
+        },
+        {
+            "name": "oe_test_jython_03"
+        }
+    ]
+}
