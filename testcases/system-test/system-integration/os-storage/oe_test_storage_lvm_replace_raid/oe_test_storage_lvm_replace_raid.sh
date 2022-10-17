@@ -38,6 +38,7 @@ function run_test() {
 "
     grep -iE "fail|error" testlog
     CHECK_RESULT $? 1
+    SLEEP_WAIT 6
     lvchange --syncaction check openeulertest/test -y
     CHECK_RESULT $?
     lvs -a -o name,copy_percent,devices openeulertest

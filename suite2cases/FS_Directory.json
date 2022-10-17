@@ -1,0 +1,86 @@
+{
+    "path": "${OET_PATH}/testcases/system-test/fs-test/FS_Directory",
+    "add disk": [20],
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_FSIO_dir_access"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_bin"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_boot"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_dev"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_etc"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_lib64"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_lostfound"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_media"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_mnt"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_opt"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_proc"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_root"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_run"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_sbin"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_srv"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_sys"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_tmp"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_usr"
+        },
+        {
+            "name": "oe_test_FSIO_dir_access_var"
+        },
+        {
+            "name": "oe_test_FSIO_dir_bash_umask"
+        },
+        {
+            "name": "oe_test_FSIO_dir_check_basic_info"
+        },
+        {
+            "name": "oe_test_FSIO_dir_chmod"
+        },
+        {
+            "name": "oe_test_FSIO_dir_chown"
+        },
+        {
+            "name": "oe_test_FSIO_dir_create"
+        },
+        {
+            "name": "oe_test_FSIO_dir_create_infs"
+        },
+        {
+            "name": "oe_test_FSIO_dir_create_lack_inode"
+        }
+    ]
+}
+

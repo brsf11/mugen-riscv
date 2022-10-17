@@ -1,17 +1,37 @@
 {
     "path": "$OET_PATH/testcases/cli-test/fio",
+    "add disk": [
+        2,
+        2
+    ],
     "cases": [
         {
-            "name": "oe_test_fio_001"
+            "name": "oe_test_fio_001",
+            "add disk": [
+                2,
+                2
+            ]
         },
         {
-            "name": "oe_test_fio_002"
+            "name": "oe_test_fio_002",
+            "add disk": [
+                2,
+                2
+            ]
         },
-	{
-	    "name": "oe_test_fio_003"
-	},
-	{
-	    "name": "oe_test_fio_004"
-	}
+        {
+            "name": "oe_test_fio_003",
+            "add disk": [
+                2,
+                2
+            ]
+        },
+        {
+            "name": "oe_test_fio_004",
+            "add disk": [
+                2,
+                2
+            ]
+        }
     ]
 }

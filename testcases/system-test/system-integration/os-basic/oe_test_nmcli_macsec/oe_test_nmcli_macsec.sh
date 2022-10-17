@@ -18,6 +18,12 @@
 # ############################################
 
 source ../common/net_lib.sh
+function pre_test() {
+    LOG_INFO "start to pre the test env"
+    DNF_INSTALL "NetworkManager-wifi"
+    LOG_INFO "end to pre the test"
+}
+
 function config_params() {
     LOG_INFO "Start to config params of the case."
     get_free_eth 1
@@ -44,6 +50,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     nmcli con delete ${con_name}
+    DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
 

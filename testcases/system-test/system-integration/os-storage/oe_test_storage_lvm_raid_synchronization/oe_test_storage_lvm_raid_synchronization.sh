@@ -37,6 +37,7 @@ function run_test() {
 "
     grep -iE "fail|error" testlog
     CHECK_RESULT $? 1
+    SLEEP_WAIT 10
     lvchange -y --syncaction repair openeulertest/test
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"

@@ -1,0 +1,5 @@
+#!/bin/ksh
+var="hello world"
+if [ -n "$var" ];then
+echo $var
+fi

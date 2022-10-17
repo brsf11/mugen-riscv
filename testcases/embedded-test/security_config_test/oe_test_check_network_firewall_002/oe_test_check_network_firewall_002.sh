@@ -24,36 +24,54 @@
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
 
+function check_version()
+{
+    grep "VERSION_ID" /etc/os-release | grep -q "22.03"
+    if [ $? -eq 0 ]; then
+        LOG_WARN "check $2 set fail"
+    else
+        CHECK_RESULT $1 0 0 "check $2 set fail"
+    fi
+}
+
 function run_test()
 {
     LOG_INFO "Start to run test."
 
     # check accept_redirects
     sysctl net.ipv4.conf.all.accept_redirects | awk -F "=" '{print $2}' | grep "0"
-    CHECK_RESULT $? 0 0 "check net.ipv4.conf.all.accept_redirects set fail"
+    check_version $? "net.ipv4.conf.all.accept_redirects"
 
     sysctl net.ipv4.conf.default.accept_redirects | awk -F "=" '{print $2}' | grep "0"
-    CHECK_RESULT $? 0 0 "check net.ipv4.conf.default.accept_redirects set fail"
+    check_version $? "net.ipv4.conf.default.accept_redirects"
 
     # check secure_redirects
     sysctl net.ipv4.conf.all.secure_redirects | awk -F "=" '{print $2}' | grep "0"
-    CHECK_RESULT $? 0 0 "check net.ipv4.conf.all.secure_redirects set fail"
+    check_version $? "net.ipv4.conf.all.secure_redirects"
 
     sysctl net.ipv4.conf.default.secure_redirects | awk -F "=" '{print $2}' | grep "0"
-    CHECK_RESULT $? 0 0 "check net.ipv4.conf.default.secure_redirects set fail"
+    check_version $? "net.ipv4.conf.default.secure_redirects"
 
-    # check icmp_echo_ignore_broadcasts
-    sysctl net.ipv4.icmp_echo_ignore_broadcasts | awk -F "=" '{print $2}' | grep "1"
-    CHECK_RESULT $? 0 0 "check net.ipv4.icmp_echo_ignore_broadcasts set fail"
+    # check log_martians set
+    sysctl net.ipv4.conf.default.log_martians | awk -F "=" '{print $2}' | grep "1"
+    check_version $? "net.ipv4.conf.default.log_martians"
 
-    # check icmp_ignore_bogus_error_responses
-    sysctl net.ipv4.icmp_ignore_bogus_error_responses | awk -F "=" '{print $2}' | grep "1"
-    CHECK_RESULT $? 0 0 "check net.ipv4.icmp_ignore_bogus_error_responses set fail"
+    sysctl net.ipv4.conf.all.log_martians | awk -F "=" '{print $2}' | grep "1"
+    check_version $? "net.ipv4.conf.all.log_martians"
 
-    # check rp_filter
-    sysctl net.ipv4.icmp_ignore_bogus_error_responses | awk -F "=" '{print $2}' | grep "1"
-    CHECK_RESULT $? 0 0 "check net.ipv4.icmp_ignore_bogus_error_responses set fail"
+    # check send_redirects
+    sysctl net.ipv4.conf.all.send_redirects | awk -F "=" '{print $2}' | grep "0"
+    check_version $? "net.ipv4.conf.all.send_redirects"
 
+    sysctl net.ipv4.conf.default.send_redirects | awk -F "=" '{print $2}' | grep "0"
+    check_version $? "sysctl net.ipv4.conf.default.send_redirects"
+
+    # check accept_source_route
+    sysctl net.ipv4.conf.all.accept_source_route | awk -F "=" '{print $2}' | grep "0"
+    check_version $? "net.ipv4.conf.all.accept_source_route"
+
+    sysctl net.ipv4.conf.default.accept_source_route | awk -F "=" '{print $2}' | grep "0"
+    check_version $? "sysctl net.ipv4.conf.default.accept_source_route"
 
     LOG_INFO "End to run test."
 }

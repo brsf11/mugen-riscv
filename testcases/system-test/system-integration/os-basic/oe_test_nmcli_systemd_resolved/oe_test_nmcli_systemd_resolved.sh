@@ -20,13 +20,14 @@
 source ../common/net_lib.sh
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    DNF_INSTALL net-tools
+    DNF_INSTALL "net-tools systemd-resolved"
     cp -r /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf_bak
     LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
+    SLEEP_WAIT 6
     systemctl --now enable systemd-resolved
     CHECK_RESULT $?
     sed -i /main]/a\dns=systemd-resolved /etc/NetworkManager/NetworkManager.conf
@@ -40,9 +41,9 @@ function run_test() {
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    rm -f /etc/NetworkManager/NetworkManager.conf
-    mv /etc/NetworkManager/NetworkManager.conf_bak /etc/NetworkManager/NetworkManager.conf
+    mv -f /etc/NetworkManager/NetworkManager.conf_bak /etc/NetworkManager/NetworkManager.conf
     systemctl reload NetworkManager
+    DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
 

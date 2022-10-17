@@ -1,0 +1,14 @@
+{
+    "path": "$OET_PATH/testcases/cli-test/dejagnu",
+    "cases": [
+        {
+            "name": "oe_test_dejagnu_runtest_01"
+        },
+        {
+            "name": "oe_test_dejagnu_runtest_02"
+        },
+        {
+            "name": "oe_test_dejagnu_runtest_03"
+        }
+    ]
+}

@@ -68,6 +68,9 @@
             "name": "oe_test_ln_001"
         },
         {
+            "name": "oe_test_less_001"
+        },
+        {
             "name": "oe_test_localectl_001"
         },
         {
@@ -124,7 +127,7 @@
         {
             "name": "oe_test_sevice_001"
         },
-	{
+        {
             "name": "oe_test_sort"
         },
         {
@@ -166,9 +169,9 @@
         {
             "name": "oe_test_rm_001"
         },
-	{
-	    "name":"oe_test_which"
-	},
+        {
+            "name": "oe_test_which"
+        },
         {
             "name": "oe_test_yumgroup_001"
         },
@@ -177,6 +180,90 @@
         },
         {
             "name": "oe_test_uname"
+        },
+        {
+            "name": "oe_test_wc"
+        },
+        {
+            "name": "oe_test_chroncy_001"
+        },
+        {
+            "name": "oe_test_diffstat_001"
+        },
+        {
+            "name": "oe_test_rollback"
+        },
+        {
+            "name": "oe_test_gcc"
+        },
+        {
+            "name": "oe_test_cmp"
+        },
+        {
+            "name": "oe_test_umask_002"
+        },
+        {
+            "name": "oe_test_llvm"
+        },
+        {
+            "name": "oe_test_acpid"
+        },
+        {
+            "name": "oe_test_aide_compare_database"
+        },
+        {
+            "name": "oe_test_aide_update_database"
+        },
+        {
+            "name": "oe_test_arping"
+        },
+        {
+            "name": "oe_test_atd"
+        },
+        {
+            "name": "oe_test_augeas_augtool"
+        },
+        {
+            "name": "oe_test_bc"
+        },
+        {
+            "name": "oe_test_bridge-utils_01"
+        },
+        {
+            "name": "oe_test_chkconfig"
+        },
+        {
+            "name": "oe_test_chrt"
+        },
+        {
+            "name": "oe_test_cifsclient"
+        },
+        {
+            "name": "oe_test_cpio"
+        },
+        {
+            "name": "oe_test_curl_01"
+        },
+        {
+            "name": "oe_test_curl_02"
+        },
+        {
+            "name": "oe_test_curl_03"
+        },
+        {
+            "name": "oe_test_dbus-binging-tool"
+        },
+        {
+            "name": "oe_test_dbus-cleanup-sockets"
+        },
+        {
+            "name": "oe_test_dbus-daemon"
+        },
+        {
+            "name": "oe_test_dbus-monitor"
+        },
+        {
+            "name": "oe_test_dbus-send"
         }
     ]
 }

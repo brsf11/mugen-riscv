@@ -35,22 +35,24 @@ w
 HGG
     mkfs.ext4 -F /dev/${local_disk1}
     SLEEP_WAIT 3
+    value=`lsblk | grep openeuler | sed -n '$p' |  awk -F "└─" {'print $2'} | awk -F " " {'print $1'}`
+    openeuler=`lsblk | grep openeuler | sed -n '$p' |  awk -F "└─" {'print $2'} | awk -F " " {'print $1'} | awk -F "-" {'print  $1'}`
     LOG_INFO "Environmental preparation is over."
 }
 
 function run_test() {
     LOG_INFO "Start executing testcase."
-    swapon /dev/mapper/openeuler_openeuler-swap
-    swapoff -v /dev/mapper/openeuler_openeuler-swap
+    swapon /dev/mapper/${value}
+    swapoff -v /dev/mapper/${value}
     CHECK_RESULT $?
-    lvresize -f /dev/openeuler_openeuler/swap -L -100M
+    lvresize -f /dev/${openeuler}/swap -L -100M
     CHECK_RESULT $?
-    lsblk | grep openeuler-swap | awk '{print$4}' | grep G
+    lsblk | grep ${value} | awk '{print$4}' | grep G
     CHECK_RESULT $?
-    mkswap /dev/mapper/openeuler_openeuler-swap
+    mkswap /dev/mapper/${value}
     CHECK_RESULT $?
-    swapon -v /dev/mapper/openeuler_openeuler-swap
-    CHECK_RESULT $?
+    swapon -v /dev/mapper/${value}
+
     CHECK_RESULT $(grep -c dm /proc/swaps) 1
 
     pvcreate -y "/dev/${local_disk1}"
@@ -118,7 +120,7 @@ function post_test() {
     vgremove -y /dev/vg0
     SLEEP_WAIT 2
     pvremove -y "/dev/${local_disk1}"
-    SLEEP_WAIT 1   
+    SLEEP_WAIT 1
     fdisk "/dev/${local_disk}" <<HEE
 d
 w

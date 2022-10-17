@@ -21,7 +21,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
-    id -u testuser || useradd testuser
+    grep -w testuser /etc/passwd || useradd testuser
     LOG_INFO "End to prepare the test environment."
 }
 
@@ -39,7 +39,8 @@ function run_test() {
     CHECK_RESULT $?
     usermod -e 04/01/2023 testuser
     CHECK_RESULT $?
-    sudo chage -l testuser | grep "Password expires" | grep "Jul 24, 2022"
+    expire_date=$(date -d"+4 day" "+%b %d, %Y") 
+    sudo chage -l testuser | grep "Password expires" | grep "$expire_date"   
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

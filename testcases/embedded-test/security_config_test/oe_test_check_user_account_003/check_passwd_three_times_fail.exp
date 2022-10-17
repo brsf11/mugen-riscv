@@ -1,0 +1,28 @@
+#!/usr/bin/expect
+
+set timeout 10
+expect_after default {puts "\nFAIL"; exit 1}
+
+spawn /bin/sh
+expect "# "
+
+send "su tester1\r"
+expect "$ "
+
+send "su tester2\r"
+expect "Password:"
+send "openEuler@456\r"
+expect "$ "
+send "su tester2\r"
+expect "Password:"
+send "openEuler@456\r"
+expect "$ "
+send "su tester2\r"
+expect "Password:"
+send "openEuler@456\r"
+expect "$ "
+send "su tester2\r"
+expect "The account is locked due to"
+
+puts "\nSUCCESS"
+exit 0
