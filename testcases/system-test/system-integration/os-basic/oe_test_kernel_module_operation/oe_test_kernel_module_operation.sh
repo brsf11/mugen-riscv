@@ -20,6 +20,7 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function config_params() {
     LOG_INFO "Start to config params of the case."
+    depmod
     raw=($(depmod -n | grep -v '[/#]'))
     len=${#raw[@]}
     for ((i=2;i<len;i+=3))
