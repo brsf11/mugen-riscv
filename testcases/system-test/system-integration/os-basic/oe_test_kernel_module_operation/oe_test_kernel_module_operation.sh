@@ -18,23 +18,37 @@
 # ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
+function config_params() {
+    LOG_INFO "Start to config params of the case."
+    raw=($(depmod -n | grep -v '[/#]'))
+    len=${#raw[@]}
+    for ((i=2;i<len;i+=3))
+    do  
+        mod=${raw[i]}
+        cmd="modprobe "${raw[i]}
+        res=$(eval $cmd)
+        if [ $? -eq 0 ]; then break; fi
+    done
+    LOG_INFO "End to config params of the case."
+}
+
 function run_test() {
     LOG_INFO "Start executing testcase."
-    modprobe -r raid0
+    modprobe -r $mod
     CHECK_RESULT $?
-    modprobe raid0
+    modprobe $mod
     CHECK_RESULT $?
-    lsmod | grep raid0
+    lsmod | grep $mod
     CHECK_RESULT $?
-    modprobe -r raid0
-    lsmod | grep raid0
+    modprobe -r $mod
+    lsmod | grep $mod
     CHECK_RESULT $? 1
     LOG_INFO "End of testcase execution."
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    modprobe raid0
+    modprobe $mod
     LOG_INFO "Finish environment cleanup."
 }
 
