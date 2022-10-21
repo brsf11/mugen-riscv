@@ -26,6 +26,9 @@
             "name": "oe_test_system_monitor_process"
         },
         {
+            "name": "oe_test_system_log_view"
+        },
+        {
             "name": "oe_test_system_log_security"
         },
         {
@@ -158,6 +161,9 @@
             "name": "oe_test_kernel_sysctl"
         },
         {
+            "name": "oe_test_kernel_module_operation"
+        },
+        {
             "name": "oe_test_IOaccess_100Mfile"
         },
         {
@@ -178,5 +184,8 @@
         {
             "name": "oe_test_basic_set_permissions"
         }
+        {
+	        "name": "oe_test_lz4"
+	    },
     ]
 }
