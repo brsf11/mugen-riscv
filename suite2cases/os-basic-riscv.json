@@ -163,6 +163,9 @@
         {
             "name": "oe_test_kernel_module_operation"
         },
+	{
+            "name": "oe_test_kernel_cgroup"
+        },
         {
             "name": "oe_test_IOaccess_100Mfile"
         },
