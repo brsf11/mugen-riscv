@@ -28,6 +28,15 @@ common_dep(){
     yum install expect psmisc make iputils python3-six python3-paramiko -y
 }
 
+anolis_dep(){
+    yum install expect psmisc make iputils gcc -y
+    yum install python39 -y
+    ln -s -f /usr/bin/pip3.9 /etc/alternatives/pip3
+    ln -s -f /usr/bin/pip-3.9 /etc/alternatives/pip-3
+    ln -s -f /usr/bin/python3.9 /etc/alternatives/python3
+    pip3 install paramiko -i https://pypi.tuna.tsinghua.edu.cn/simple
+}
+
 qemu_dep(){
     echo "install qemu"
     yum install bridge-utils -y
@@ -83,10 +92,22 @@ main(){
         return 1
     fi
 
-    common_dep
-    if [ $? -ne 0 ]; then
-        return 1
+    uname -r | grep 'oe'
+    if [ $? -eq 0 ]; then
+        common_dep
+        if [ $? -ne 0 ]; then
+            return 1
+        fi
     fi
+
+    uname -r | grep 'an'
+    if [ $? -eq 0 ]; then
+        anolis_dep
+        if [ $? -ne 0 ]; then
+            return 1
+        fi
+    fi
+
 
     if [ $in_qemu -eq 1 ]; then
         qemu_dep
