@@ -20,6 +20,7 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function run_test() {
     LOG_INFO "Start to run test."
+    DNF_INSTALL rsyslog
     cat >/etc/rsyslog.d/test.conf <<EOF
     \$EscapeControlCharactersOnReceive off 
     \$template test-template,"%timestamp:::date-rfc3339%  %HOSTNAME% %msgid% %msg%\n"

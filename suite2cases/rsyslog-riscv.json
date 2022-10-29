@@ -2,7 +2,52 @@
     "path": "$OET_PATH/testcases/cli-test/rsyslog",
     "cases": [
         {
+            "name": "oe_test_rsyslog_abnormal_config"
+        },
+        {
+            "name": "oe_test_rsyslog_function_discard"
+        },
+        {
+            "name": "oe_test_rsyslog_function_facility"
+        },
+        {
+            "name": "oe_test_rsyslog_function_imfile"
+        },
+        {
+            "name": "oe_test_rsyslog_function_priority"
+        },
+        {
+            "name": "oe_test_rsyslog_function_rainerscript"
+        },
+        {
+            "name": "oe_test_rsyslog_function_shell"
+        },
+        {
+            "name": "oe_test_rsyslog_function_template"
+        },
+        {
+            "name": "oe_test_rsyslog_function_wildcard"
+        },
+        {
+            "name": "oe_test_rsyslog_parameter01"
+        },
+        {
+            "name": "oe_test_rsyslog_parameter02"
+        },
+        {
+            "name": "oe_test_rsyslog_parameter03"
+        },
+        {
+            "name": "oe_test_rsyslog_parameter04"
+        },
+        {
             "name": "oe_test_rsyslog_reliability_operation"
+        },
+        {
+            "name": "oe_test_rsyslog_reliability_restart"
+        },
+        {
+            "name": "oe_test_service_rsyslog"
         }
     ]
 }
