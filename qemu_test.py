@@ -10,6 +10,7 @@ from libs.locallibs import sftp,ssh_cmd
 from threading import Thread
 import threading
 import subprocess
+import json
 
 def ssh_exec(qemuVM,cmd,timeout=5):
     conn = paramiko.SSHClient()
@@ -220,7 +221,9 @@ if __name__ == "__main__":
             qemuVM.append(QemuVM(i,ports[i],vcpu=args.c,memory=args.M,workingDir=args.w,bkfile=args.b,path=args.d.rstrip('/'),gene=args.generate))   
         targetQueue = Queue()
         for target in test_target.test_list:
-            targetQueue.put(target)
+            jsondata = json.loads(open('suite2cases/'+target+'.json','r').read())
+            if len(jsondata['cases']) != 0:
+                targetQueue.put(target)
 
         dispathcers = []
         for i in range(args.x):

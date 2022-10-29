@@ -76,6 +76,14 @@ def rpm_install(pkgs, node=1, tmpfile=""):
         mugen_log.logging("info", "pkgs:(%s) is already installed" % pkgs)
         return 0, None
 
+    if "Error: Unable to find a match:" in result:
+        split_result = result.split('\n')
+        for row in split_result:
+            if "Error: Unable to find a match:" in row:
+                lost_pkgs = row.replace("Error: Unable to find a match: ",'')
+        mugen_log.logging("Error", "pkgs:(%s) not found" % lost_pkgs)
+        return 0, None
+
     repoCode, repoList = func(
         conn=conn,
         cmd="dnf repolist | awk '{print $NF}' | sed -e '1d;:a;N;$!ba;s/\\n/ /g'",
