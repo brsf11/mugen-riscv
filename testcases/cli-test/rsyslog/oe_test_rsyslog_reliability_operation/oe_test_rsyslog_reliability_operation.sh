@@ -17,6 +17,12 @@
 # ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
+function pre_test() {
+	LOG_INFO "Start to prepare the test environment."
+    DNF_INSTALL rsyslog
+    LOG_INFO "End to prepare the test environment."
+}
+
 
 function run_test() {
     LOG_INFO "Start to run test."
