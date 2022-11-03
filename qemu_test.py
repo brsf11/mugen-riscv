@@ -83,7 +83,7 @@ class Dispatcher(Thread):
 class QemuVM(object):
     def __init__(self,id=1,port=12055,user='root',password='openEuler12#$',vcpu=4,memory=4,
                  workingDir='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220818/',
-                 bkfile='openeuler-qemu.qcow2' , path='/root/GitRepo/mugen-riscv' , gene=False):
+                 bkfile='openeuler-qemu.qcow2' , path='/root/GitRepo/mugen-riscv' , gene=False , restore=True):
         self.id = id
         self.port = port
         self.ip = '127.0.0.1'
@@ -96,20 +96,25 @@ class QemuVM(object):
         self.drive = 'img'+str(self.id)+'.qcow2'
         self.path = path
         self.gene = gene
+        self.restore = restore
         if self.workingDir[-1] != '/':
             self.workingDir += '/'
 
     def start(self):
         if self.drive in os.listdir(self.workingDir):
             os.system('rm -f '+self.workingDir+self.drive)
-        cmd = 'qemu-img create -f qcow2 -F qcow2 -b '+self.workingDir+self.bkFile+' '+self.workingDir+self.drive
-        res = os.system(cmd)
-        if res != 0:
-            print('Failed to create cow img: '+self.drive)
-            return -1
+        if self.restore:
+            cmd = 'qemu-img create -f qcow2 -F qcow2 -b '+self.workingDir+self.bkFile+' '+self.workingDir+self.drive
+            res = os.system(cmd)
+            if res != 0:
+                print('Failed to create cow img: '+self.drive)
+                return -1
         ## Configuration
         memory_append=self.memory * 1024
-        drive=self.workingDir+self.drive
+        if self.restore:
+            drive=self.workingDir+self.drive
+        else:
+            drive=self.workingDir+self.bkFile
         fw=self.workingDir+"fw_payload_oe_qemuvirt.elf"
         ssh_port=self.port
 
@@ -180,7 +185,8 @@ class QemuVM(object):
 
     def destroy(self):
         ssh_exec(self,'poweroff')
-        os.system('rm -f '+self.workingDir+self.drive)
+        if self.restore:
+            os.system('rm -f '+self.workingDir+self.drive)
 
         
 
@@ -190,11 +196,12 @@ if __name__ == "__main__":
     parser.add_argument('-x',type=int,default=1,help='Specify threads num, default is 1')
     parser.add_argument('-c',type=int,default=4,help='Specify virtual machine cores num, default is 4')
     parser.add_argument('-M',type=int,default=4,help='Specify virtual machine memory size(GB), default is 4 GB')
-    parser.add_argument('-w',type=str,default='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220818/',help='Specify working directory')
+    parser.add_argument('-w',type=str,default='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220926/',help='Specify working directory')
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
     parser.add_argument('-b',type=str,default='openeuler-qemu.qcow2',help='Specify backing file name')
     parser.add_argument('-d',type=str,default='/root/GitRepo/mugen-riscv',help='Specity mugen installed directory')
     parser.add_argument('-g','--generate',action='store_true',default=False,help='Generate testsuite json after running test')
+    parser.add_argument('-A','--Auto',action='store_true',default=False,help='Generate test list and run test automatically')
     args = parser.parse_args()
 
     test_env = TestEnv()
@@ -205,9 +212,48 @@ if __name__ == "__main__":
         print('Thread num should be greater than 0!')
         exit(-1)
 
+    list_file = args.list_file
+    workingDir = args.w
+    bkFile = args.b
+    img_base = 'img_base.qcow2'
 
-    if args.list_file is not None:
-        test_target = TestTarget(list_file_name=args.list_file)
+    if os.system('ls '+workingDir+img_base) != 0:
+        res = os.system('qemu-img create -f qcow2 -F qcow2 -b '+workingDir+bkFile+' '+workingDir+img_base)
+        if res != 0:
+            print('Failed to create ing-base')
+            exit(-1)
+
+    preVM = QemuVM(id=1,port=findAvalPort(1)[0],user='root',password='openEuler12#$',vcpu=args.c,memory=args.M,workingDir=workingDir,bkfile=img_base, gene=False,restore=False)
+    preVM.start()
+    preVM.waitReady()
+    print(ssh_exec(preVM,'dnf install git',timeout=120)[1])
+    print(ssh_exec(preVM,'cd /root \n mkdir GitRepo \n cd GitRepo \n git clone https://github.com/brsf11/mugen-riscv.git',timeout=600)[1])
+    print(ssh_exec(preVM,'cd /root/GitRepo/mugen-riscv \n bash dep_install.sh',timeout=300)[1])
+    print(ssh_exec(preVM,'cd /root/GitRepo/mugen-riscv \n bash mugen.sh -c --port 22 --user root --password openEuler12#$ --ip 127.0.0.1 2>&1',timeout=300)[1])
+    if args.Auto is True:
+        ssh_exec(preVM,'dnf list | grep -E \'riscv64|noarch\' > pkgs.txt',timeout=120)
+        sftp_get(preVM,'.','pkgs.txt','.',timeout=5)
+        pkgfile = open('pkgs.txt','r')
+        raw = pkgfile.read()
+        pkgfile.close()
+        os.system('rm -f pkgs.txt')
+        colums = raw.split('\n')
+        pkgs = []
+        for colum in colums:
+            witharch = colum.split(' ')[0]
+            witharch = witharch.replace('.riscv64','')
+            pkgs.append(witharch.replace('.noarch',''))
+        outputfile = open('list','w')
+        for pkg in pkgs:
+            outputfile.write(pkg+'\n')
+        outputfile.close()
+        list_file = 'list'
+    preVM.destroy()
+    preVM.waitPoweroff()
+
+
+    if list_file is not None:
+        test_target = TestTarget(list_file_name=list_file)
         test_target.PrintTargetNum()
         test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=args.mugen,qemu_mode=True)
         test_target.PrintUnavalTargets()
@@ -218,7 +264,7 @@ if __name__ == "__main__":
 
         qemuVM = []
         for i in range(args.x):
-            qemuVM.append(QemuVM(i,ports[i],vcpu=args.c,memory=args.M,workingDir=args.w,bkfile=args.b,path=args.d.rstrip('/'),gene=args.generate))   
+            qemuVM.append(QemuVM(i,ports[i],vcpu=args.c,memory=args.M,workingDir=args.w,bkfile=img_base,path=args.d.rstrip('/'),gene=args.generate))   
         targetQueue = Queue()
         for target in test_target.test_list:
             jsondata = json.loads(open('suite2cases/'+target+'.json','r').read())
