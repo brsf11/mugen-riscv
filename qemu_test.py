@@ -196,66 +196,178 @@ if __name__ == "__main__":
     parser.add_argument('-x',type=int,default=1,help='Specify threads num, default is 1')
     parser.add_argument('-c',type=int,default=4,help='Specify virtual machine cores num, default is 4')
     parser.add_argument('-M',type=int,default=4,help='Specify virtual machine memory size(GB), default is 4 GB')
-    parser.add_argument('-w',type=str,default='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220926/',help='Specify working directory')
+    parser.add_argument('-w',type=str,help='Specify working directory')
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
-    parser.add_argument('-b',type=str,default='openeuler-qemu.qcow2',help='Specify backing file name')
-    parser.add_argument('-d',type=str,default='/root/GitRepo/mugen-riscv',help='Specity mugen installed directory')
+    parser.add_argument('-B',type=str,help='Specify bios')
+    parser.add_argument('-K',type=str,help='Specify kernel')
+    parser.add_argument('-D',type=str,help='Specify backing file name')
+    parser.add_argument('-d',type=str,help='Specity mugen installed directory')
     parser.add_argument('-g','--generate',action='store_true',default=False,help='Generate testsuite json after running test')
-    parser.add_argument('-A','--Auto',action='store_true',default=False,help='Generate test list and run test automatically')
+    parser.add_argument('-F',type=str,help='Specify test config file')
     args = parser.parse_args()
 
     test_env = TestEnv()
     test_env.ClearEnv()
     test_env.PrintSuiteNum()
 
-    if args.x <= 0 :
-        print('Thread num should be greater than 0!')
-        exit(-1)
-
-    list_file = args.list_file
-    workingDir = args.w
-    bkFile = args.b
+    # set default values
+    threadNum = 1
+    coreNum = 4
+    memSize = 4
+    mugenNative = False
+    generateJson = False
+    list_file = None
+    workingDir = None
+    bkFile = None
+    orgDrive = None
     img_base = 'img_base.qcow2'
+    preImg = False
+    genList = False
+    mugenPath = None
 
-    if os.system('ls '+workingDir+img_base) != 0:
-        res = os.system('qemu-img create -f qcow2 -F qcow2 -b '+workingDir+bkFile+' '+workingDir+img_base)
-        if res != 0:
-            print('Failed to create ing-base')
+    # parse arguments
+    if args.F is not None:
+        configFile = open(args.F,'r')
+        configData = json.loads(configFile.read())
+        if configData.__contains__('threads'):
+            if type(configData['threads']) == int and configData['threads'] > 0:
+                threadNum = configData['threads']
+            else:
+                print('Thread number is invalid!')
+                exit(-1)
+        if configData.__contains__('cores'):
+            if type(configData['cores']) == int and configData['cores'] > 0:
+                coreNum = configData['cores']
+            else:
+                print('Core number is invalid!')
+                exit(-1)
+        if configData.__contains__('memory'):
+            if type(configData['memory']) == int and configData['memory'] > 0:
+                memSize = configData['memory']
+            else:
+                print('Memory size is invalid!')
+                exit(-1)
+        if configData.__contains__('mugenNative') and configData['mugenNative'] == 1:
+            mugenNative = True
+        if configData.__contains__('generate') and configData['generate'] == 1:
+            generateJson = True
+        if configData.__contains__('workingDir') and (configData.__contains__('bios') or configData.__contains__('kernel')) and configData.__contains__('drive'):
+            if type(configData['workingDir']) == str:
+                workingDir = configData['workingDir']
+            else:
+                print('Invalid working directory!')
+                exit(-1)
+            if type(configData['drive']) == str:
+                orgDrive = configData['drive']
+            else:
+                print('Invalid drive file!')
+                exit(-1)
+            if configData.__contains__('mugenDir'):
+                preImg = False
+                bkFile = orgDrive
+                mugenPath = configData['mugenDir'].rstrip('/')
+                if configData.__contains__('listFile') and type(configData['listFile']) == str:
+                    list_file = configData['listFile']
+                    genList = False
+                else:
+                    genList = True
+            else:
+                preImg = True
+                bkFile = img_base
+                mugenPath = "/root/GitRepo/mugen-riscv"
+                if configData.__contains__('listFile') and type(configData['listFile']) == str:
+                    list_file = configData['listFile']
+                    genList = False
+                else:
+                    genList = True
+        else:
+            print('Please specify working directory and bios or kernel and drive file!')
+            exit(-1)
+    else:
+        if args.x > 0:
+            threadNum = args.x
+        else:
+            print('Thread number is invalid!')
+            exit(-1)
+        if args.c > 0:
+            coreNum = args.c
+        else:
+            print('Core number is invalid!')
+            exit(-1)
+        if args.M > 0:
+            memSize = args.M
+        else:
+            print('Memory size is invalid!')
+            exit(-1)
+        mugenNative = args.mugen
+        generateJson = args.generate
+        if args.w != None and (args.B != None or args.K !=None) and args.D != None:
+            workingDir = args.w
+            orgDrive = args.D
+            if args.d != None:
+                preImg = False
+                bkFile = orgDrive
+                mugenPath = args.d.rstrip('/')
+                if args.list_file != None:
+                    list_file = args.list_file
+                    genList = False
+                else:
+                    genList = True
+            else:
+                preImg = True
+                bkFile = img_base
+                mugenPath = "/root/GitRepo/mugen-riscv"
+                if args.list_file != None:
+                    list_file = args.list_file
+                    genList = False
+                else:
+                    genList = True
+        else:
+            print('Please specify working directory and bios or kernel and drive file!')
             exit(-1)
 
-    preVM = QemuVM(id=1,port=findAvalPort(1)[0],user='root',password='openEuler12#$',vcpu=args.c,memory=args.M,workingDir=workingDir,bkfile=img_base, gene=False,restore=False)
-    preVM.start()
-    preVM.waitReady()
-    print(ssh_exec(preVM,'dnf install git',timeout=120)[1])
-    print(ssh_exec(preVM,'cd /root \n mkdir GitRepo \n cd GitRepo \n git clone https://github.com/brsf11/mugen-riscv.git',timeout=600)[1])
-    print(ssh_exec(preVM,'cd /root/GitRepo/mugen-riscv \n bash dep_install.sh',timeout=300)[1])
-    print(ssh_exec(preVM,'cd /root/GitRepo/mugen-riscv \n bash mugen.sh -c --port 22 --user root --password openEuler12#$ --ip 127.0.0.1 2>&1',timeout=300)[1])
-    if args.Auto is True:
-        ssh_exec(preVM,'dnf list | grep -E \'riscv64|noarch\' > pkgs.txt',timeout=120)
-        sftp_get(preVM,'.','pkgs.txt','.',timeout=5)
-        pkgfile = open('pkgs.txt','r')
-        raw = pkgfile.read()
-        pkgfile.close()
-        os.system('rm -f pkgs.txt')
-        colums = raw.split('\n')
-        pkgs = []
-        for colum in colums:
-            witharch = colum.split(' ')[0]
-            witharch = witharch.replace('.riscv64','')
-            pkgs.append(witharch.replace('.noarch',''))
-        outputfile = open('list','w')
-        for pkg in pkgs:
-            outputfile.write(pkg+'\n')
-        outputfile.close()
-        list_file = 'list'
-    preVM.destroy()
-    preVM.waitPoweroff()
+    if preImg == True or genList == True:
+        if preImg == True and os.system('ls '+workingDir+img_base+' &> /dev/null') != 0:
+            res = os.system('qemu-img create -f qcow2 -F qcow2 -b '+workingDir+orgDrive+' '+workingDir+bkFile)
+            if res != 0:
+                print('Failed to create img-base')
+                exit(-1)
+
+        preVM = QemuVM(id=1,port=findAvalPort(1)[0],user='root',password='openEuler12#$',vcpu=coreNum,memory=memSize,workingDir=workingDir,bkfile=bkFile, gene=False,restore=False)
+        preVM.start()
+        preVM.waitReady()
+        if preImg == True:
+            print(ssh_exec(preVM,'dnf install git',timeout=120)[1])
+            print(ssh_exec(preVM,'cd /root \n mkdir GitRepo \n cd GitRepo \n git clone https://github.com/brsf11/mugen-riscv.git',timeout=600)[1])
+            print(ssh_exec(preVM,'cd /root/GitRepo/mugen-riscv \n bash dep_install.sh',timeout=300)[1])
+            print(ssh_exec(preVM,'cd /root/GitRepo/mugen-riscv \n bash mugen.sh -c --port 22 --user root --password openEuler12#$ --ip 127.0.0.1 2>&1',timeout=300)[1])
+        if genList is True:
+            ssh_exec(preVM,'dnf list | grep -E \'riscv64|noarch\' > pkgs.txt',timeout=120)
+            sftp_get(preVM,'.','pkgs.txt','.',timeout=5)
+            pkgfile = open('pkgs.txt','r')
+            raw = pkgfile.read()
+            pkgfile.close()
+            os.system('rm -f pkgs.txt')
+            colums = raw.split('\n')
+            pkgs = []
+            for colum in colums:
+                witharch = colum.split(' ')[0]
+                witharch = witharch.replace('.riscv64','')
+                pkgs.append(witharch.replace('.noarch',''))
+            outputfile = open('list','w')
+            for pkg in pkgs:
+                outputfile.write(pkg+'\n')
+            outputfile.close()
+            list_file = 'list'
+        preVM.destroy()
+        preVM.waitPoweroff()
+
 
 
     if list_file is not None:
         test_target = TestTarget(list_file_name=list_file)
         test_target.PrintTargetNum()
-        test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=args.mugen,qemu_mode=True)
+        test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=mugenNative,qemu_mode=True)
         test_target.PrintUnavalTargets()
         test_target.PrintAvalTargets()
 
@@ -264,7 +376,7 @@ if __name__ == "__main__":
 
         qemuVM = []
         for i in range(args.x):
-            qemuVM.append(QemuVM(i,ports[i],vcpu=args.c,memory=args.M,workingDir=args.w,bkfile=img_base,path=args.d.rstrip('/'),gene=args.generate))   
+            qemuVM.append(QemuVM(i,ports[i],vcpu=coreNum,memory=memSize,workingDir=workingDir,bkfile=bkFile,path=mugenPath,gene=generateJson))   
         targetQueue = Queue()
         for target in test_target.test_list:
             jsondata = json.loads(open('suite2cases/'+target+'.json','r').read())
@@ -300,4 +412,7 @@ if __name__ == "__main__":
             for i in range(args.x):
                 isAlive |= tempAlive[i]
             time.sleep(5)
+    
+    if genList is True:
+        os.system('rm -f list')
             
