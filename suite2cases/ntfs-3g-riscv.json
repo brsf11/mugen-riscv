@@ -4,5 +4,69 @@
         5,
         5
     ],
-    "cases": []
+    "cases": [
+        {
+            "name": "oe_test_ntfs-3g_ntfscat",
+            "add disk": [
+                5,
+                5
+            ]
+        },
+        {
+            "name": "oe_test_ntfs-3g_mkntfs",
+            "add disk": [
+                5,
+                5
+            ]
+        },
+        {
+            "name": "oe_test_ntfs-3g_mkfs.ntfs",
+            "add disk": [
+                5,
+                5
+            ]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfsclone_01",
+            "add disk": [
+                5,
+                5
+            ]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfsclone_02",
+            "add disk": [
+                5,
+                5
+            ]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfslabel",
+            "add disk": [
+                5,
+                5
+            ]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfswipe_01",
+            "add disk": [
+                5,
+                5
+            ]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfswipe_02",
+            "add disk": [
+                5,
+                5
+            ]
+        },
+        {
+            "name": "oe_test_ntfs-3g_ntfstruncate",
+            "add disk": [
+                5,
+                5
+            ]
+        }
+    ]
 }

@@ -3,6 +3,12 @@
     "cases": [
         {
             "name": "oe_test_service_lxc"
+        },
+        {
+            "name": "oe_test_lxc_checkconfig_console"
+        },
+        {
+            "name": "oe_test_lxc_execute_freeze"
         }
     ]
 }
