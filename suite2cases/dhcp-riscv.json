@@ -1,4 +1,11 @@
 {
     "path": "$OET_PATH/testcases/cli-test/dhcp",
-    "cases": []
+    "cases": [
+        {
+            "name": "oe_test_allocate_ipv4_addresses_dhcpd"
+        },
+        {
+            "name": "oe_test_allocate_ipv6_addresses_dhcpd"
+        }
+    ]
 }

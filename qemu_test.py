@@ -61,9 +61,9 @@ class Dispatcher(Thread):
         notEmpty = True
         while notEmpty:
             if self.initTarget is not None:
-                self.qemuVM.start()
+                self.qemuVM.start(disk=self.initTarget[1])
                 self.qemuVM.waitReady()
-                self.qemuVM.runTest(self.initTarget)
+                self.qemuVM.runTest(self.initTarget[0])
                 self.qemuVM.destroy()
                 self.qemuVM.waitPoweroff()
                 self.initTarget = None
@@ -73,9 +73,9 @@ class Dispatcher(Thread):
                 except:
                     notEmpty = False
                 else:
-                    self.qemuVM.start()
+                    self.qemuVM.start(target[1])
                     self.qemuVM.waitReady()
-                    self.qemuVM.runTest(target)
+                    self.qemuVM.runTest(target[0])
                     self.qemuVM.destroy()
                     self.qemuVM.waitPoweroff()
 
@@ -85,14 +85,9 @@ class QemuVM(object):
                  workingDir='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220818/',
                  bkfile='openeuler-qemu.qcow2' , path='/root/GitRepo/mugen-riscv' , gene=False , restore=True):
         self.id = id
-        self.port = port
-        self.ip = '127.0.0.1'
-        self.user = user
-        self.password = password
-        self.vcpu=vcpu
-        self.memory=memory
-        self.workingDir = workingDir
-        self.bkFile = bkfile
+        self.port , self.ip , self.user , self.password  = port , '127.0.0.1' , user , password
+        self.vcpu , self.memory= vcpu , memory
+        self.workingDir , self.bkFile = workingDir , bkfile
         self.drive = 'img'+str(self.id)+'.qcow2'
         self.path = path
         self.gene = gene
@@ -100,7 +95,7 @@ class QemuVM(object):
         if self.workingDir[-1] != '/':
             self.workingDir += '/'
 
-    def start(self):
+    def start(self , disk=1):
         if self.drive in os.listdir(self.workingDir):
             os.system('rm -f '+self.workingDir+self.drive)
         if self.restore:
@@ -109,6 +104,14 @@ class QemuVM(object):
             if res != 0:
                 print('Failed to create cow img: '+self.drive)
                 return -1
+        os.system('rm -f '+self.workingDir+'disk'+str(self.id)+'-*')
+        if disk > 1:
+            for i in range(1 , disk):
+                cmd = 'qemu-img create -f qcow2 '+self.workingDir+"disk"+str(self.id)+'-'+str(i)+'.qcow2 500M'
+                res = os.system(cmd)
+                if res != 0:
+                    print('Failed to create img: disk'+str(id)+'-'+str(i))
+                    exit(-1)
         ## Configuration
         memory_append=self.memory * 1024
         if self.restore:
@@ -133,15 +136,19 @@ class QemuVM(object):
         -device qemu-xhci -usb -device usb-kbd -device usb-tablet -device usb-audio,audiodev=snd0 \
         -append 'root=/dev/vda1 rw console=ttyS0 swiotlb=1 loglevel=3 systemd.default_timeout_start_sec=600 selinux=0 highres=off mem="+str(memory_append)+"M earlycon' "
 
+        if disk > 1:
+            for i in range(1 ,disk):
+                cmd += "-drive file="+self.workingDir+"disk"+str(self.id)+'-'+str(i)+".qcow2,format=qcow2,id=hd"+str(i)+" -device virtio-blk-device,drive=hd"+str(i)+" "
+
         self.process = subprocess.Popen(args=cmd,stderr=subprocess.PIPE,stdout=subprocess.PIPE,stdin=subprocess.PIPE,encoding='utf-8',shell=True)
 
     def waitReady(self):
-        time.sleep(1)
         conn = 519
         while conn == 519:
             conn = paramiko.SSHClient()
             conn.set_missing_host_key_policy(paramiko.AutoAddPolicy)
             try:
+                time.sleep(5)
                 conn.connect(self.ip, self.port, self.user, self.password, timeout=5)
             except Exception as e:
                 conn = 519
@@ -150,11 +157,13 @@ class QemuVM(object):
 
 
     def runTest(self,testsuite):
+        g , m = '' , ''
         if self.gene:
             g = " -g"
-        else:
-            g = ''
-        print(ssh_exec(self,'cd '+self.path+' \n echo \''+testsuite+'\' > list_temp \n python3 mugen_riscv.py -l list_temp'+g,timeout=60)[1])
+        if testsuite.endswith("-riscv") is False:
+            m = " -m"
+            
+        print(ssh_exec(self,'cd '+self.path+' \n echo \''+testsuite+'\' > list_temp \n python3 mugen_riscv.py -l list_temp '+m+g,timeout=60)[1])
         if lstat(self,self.path+'/logs_failed') is not None:
             sftp_get(self,self.path+'/logs_failed','',self.workingDir)
         if lstat(self,self.path+'/logs') is not None:
@@ -187,6 +196,7 @@ class QemuVM(object):
         ssh_exec(self,'poweroff')
         if self.restore:
             os.system('rm -f '+self.workingDir+self.drive)
+        os.system('rm -f '+self.workingDir+'disk'+str(self.id)+'-*')
 
         
 
@@ -212,18 +222,11 @@ if __name__ == "__main__":
 
     # set default values
     threadNum = 1
-    coreNum = 4
-    memSize = 4
-    mugenNative = False
-    generateJson = False
-    list_file = None
-    workingDir = None
-    bkFile = None
-    orgDrive = None
+    coreNum , memSize = 4 , 4
+    mugenNative , generateJson , preImg , genList = False , False , False , False
+    list_file , workingDir , bkFile , orgDrive , mugenPath = None , None , None , None , None
     img_base = 'img_base.qcow2'
-    preImg = False
-    genList = False
-    mugenPath = None
+    
 
     # parse arguments
     if args.F is not None:
@@ -327,7 +330,7 @@ if __name__ == "__main__":
             exit(-1)
 
     if preImg == True or genList == True:
-        if preImg == True and os.system('ls '+workingDir+img_base+' &> /dev/null') != 0:
+        if preImg == True and (bkFile not in os.listdir(workingDir)):
             res = os.system('qemu-img create -f qcow2 -F qcow2 -b '+workingDir+orgDrive+' '+workingDir+bkFile)
             if res != 0:
                 print('Failed to create img-base')
@@ -341,6 +344,21 @@ if __name__ == "__main__":
             print(ssh_exec(preVM,'cd /root \n mkdir GitRepo \n cd GitRepo \n git clone https://github.com/brsf11/mugen-riscv.git',timeout=600)[1])
             print(ssh_exec(preVM,'cd /root/GitRepo/mugen-riscv \n bash dep_install.sh',timeout=300)[1])
             print(ssh_exec(preVM,'cd /root/GitRepo/mugen-riscv \n bash mugen.sh -c --port 22 --user root --password openEuler12#$ --ip 127.0.0.1 2>&1',timeout=300)[1])
+            sshd_config = ssh_exec(preVM, 'cat /etc/ssh/sshd_config' , timeout=100)[1]
+            try:
+                ssh_exec(preVM , 'echo \'test ssh\' > /root/temp.txt')
+                sftp_get(preVM , '/root' , 'temp.txt' , '.' , timeout=5)
+            except:
+                print("config ssh")
+                sshd_config = sshd_config.replace("/usr/libexec/openssh/openssh/sftp-server" , "/usr/libexec/openssh/sftp-server")
+                #print(sshd_config)
+                ssh_exec(preVM, 'echo "'+sshd_config+'" > /etc/ssh/sshd_config')
+                print(ssh_exec(preVM,"sudo systemctl restart sshd" , timeout=100)[1])
+            else:
+                os.system('rm -f ./temp.txt')
+            finally:
+                ssh_exec(preVM , 'rm -f /root/temp.txt')
+
         if genList is True:
             ssh_exec(preVM,'dnf list | grep -E \'riscv64|noarch\' > pkgs.txt',timeout=120)
             sftp_get(preVM,'.','pkgs.txt','.',timeout=5)
@@ -371,20 +389,20 @@ if __name__ == "__main__":
         test_target.PrintUnavalTargets()
         test_target.PrintAvalTargets()
 
-        ports = findAvalPort(args.x)
+        ports = findAvalPort(threadNum)
         print(ports)
 
         qemuVM = []
-        for i in range(args.x):
+        for i in range(threadNum):
             qemuVM.append(QemuVM(i,ports[i],vcpu=coreNum,memory=memSize,workingDir=workingDir,bkfile=bkFile,path=mugenPath,gene=generateJson))   
         targetQueue = Queue()
         for target in test_target.test_list:
             jsondata = json.loads(open('suite2cases/'+target+'.json','r').read())
             if len(jsondata['cases']) != 0:
-                targetQueue.put(target)
+                targetQueue.put((target , max(jsondata.get('add disk' , [1]))))
 
         dispathcers = []
-        for i in range(args.x):
+        for i in range(threadNum):
             dispathcers.append(Dispatcher(qemuVM[i],targetQueue))
             dispathcers[i].start()
             time.sleep(0.5)
@@ -393,7 +411,7 @@ if __name__ == "__main__":
         isEnd = False
         while isAlive:
             tempAlive = []
-            for i in range(args.x):
+            for i in range(threadNum):
                 if dispathcers[i].is_alive():
                     print('Thread '+str(i)+' is alive')
                     tempAlive.append(True)
@@ -409,7 +427,7 @@ if __name__ == "__main__":
                             dispathcers[i] = Dispatcher(qemuVM[i],targetQueue,initTarget=target)
                             dispathcers[i].start()
             isAlive = False
-            for i in range(args.x):
+            for i in range(threadNum):
                 isAlive |= tempAlive[i]
             time.sleep(5)
     
