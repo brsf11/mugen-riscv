@@ -81,13 +81,13 @@ class Dispatcher(Thread):
 
 
 class QemuVM(object):
-    def __init__(self,id=1,port=12055,user='root',password='openEuler12#$',vcpu=4,memory=4,
-                 workingDir='/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220818/',
-                 bkfile='openeuler-qemu.qcow2' , path='/root/GitRepo/mugen-riscv' , gene=False , restore=True):
+    def __init__(self, vcpu,memory,workingDir,bkfile ,kernel,bios,id=1,port=12055,user='root',password='openEuler12#$',
+                  path='/root/GitRepo/mugen-riscv' ,gene=False , restore=True):
         self.id = id
         self.port , self.ip , self.user , self.password  = port , '127.0.0.1' , user , password
         self.vcpu , self.memory= vcpu , memory
         self.workingDir , self.bkFile = workingDir , bkfile
+        self.kernel , self.bios = kernel , bios
         self.drive = 'img'+str(self.id)+'.qcow2'
         self.path = path
         self.gene = gene
@@ -118,15 +118,28 @@ class QemuVM(object):
             drive=self.workingDir+self.drive
         else:
             drive=self.workingDir+self.bkFile
-        fw=self.workingDir+"fw_payload_oe_qemuvirt.elf"
+        if self.kernel is not None:
+            kernelArg=" -kernel "+self.workingDir+self.kernel
+            print("kernel argument is: "+kernelArg)
+        else:
+            kernelArg=" "
+        if self.bios is not None:
+            if self.bios == 'none':
+                biosArg=" -bios none"
+            else:
+                biosArg=" -bios "+self.workingDir+self.bios
+            print("bios argument is: "+biosArg)
+        else:
+            biosArg=" "
+
         ssh_port=self.port
 
         cmd="qemu-system-riscv64 \
         -nographic -machine virt  \
         -smp "+str(self.vcpu)+" -m "+str(self.memory)+"G \
         -audiodev pa,id=snd0 \
-        -kernel "+fw+" \
-        -bios none \
+        "+kernelArg+" \
+        "+biosArg+" \
         -drive file="+drive+",format=qcow2,id=hd0 \
         -object rng-random,filename=/dev/urandom,id=rng0 \
         -device virtio-rng-device,rng=rng0 \
@@ -225,6 +238,7 @@ if __name__ == "__main__":
     coreNum , memSize = 4 , 4
     mugenNative , generateJson , preImg , genList = False , False , False , False
     list_file , workingDir , bkFile , orgDrive , mugenPath = None , None , None , None , None
+    kernel , bios = None , None
     img_base = 'img_base.qcow2'
     
 
@@ -265,6 +279,10 @@ if __name__ == "__main__":
             else:
                 print('Invalid drive file!')
                 exit(-1)
+            if configData.__contains__('bios') and type(configData['bios']) == str:
+                bios = configData['bios']
+            if configData.__contains__('kernel') and type(configData['kernel']) == str:
+                kernel = configData['kernel']
             if configData.__contains__('mugenDir'):
                 preImg = False
                 bkFile = orgDrive
@@ -307,6 +325,8 @@ if __name__ == "__main__":
         if args.w != None and (args.B != None or args.K !=None) and args.D != None:
             workingDir = args.w
             orgDrive = args.D
+            bios = args.B
+            kernel = args.K
             if args.d != None:
                 preImg = False
                 bkFile = orgDrive
@@ -336,7 +356,7 @@ if __name__ == "__main__":
                 print('Failed to create img-base')
                 exit(-1)
 
-        preVM = QemuVM(id=1,port=findAvalPort(1)[0],user='root',password='openEuler12#$',vcpu=coreNum,memory=memSize,workingDir=workingDir,bkfile=bkFile, gene=False,restore=False)
+        preVM = QemuVM(id=1,port=findAvalPort(1)[0],user='root',password='openEuler12#$',kernel=kernel,bios=bios,vcpu=coreNum,memory=memSize,path=mugenPath,workingDir=workingDir,bkfile=bkFile, gene=False,restore=False)
         preVM.start()
         preVM.waitReady()
         if preImg == True:
@@ -373,6 +393,8 @@ if __name__ == "__main__":
                 witharch = witharch.replace('.riscv64','')
                 pkgs.append(witharch.replace('.noarch',''))
             outputfile = open('list','w')
+            pkgs.append('os-basic')
+            pkgs.append('os-storage')
             for pkg in pkgs:
                 outputfile.write(pkg+'\n')
             outputfile.close()
@@ -394,7 +416,7 @@ if __name__ == "__main__":
 
         qemuVM = []
         for i in range(threadNum):
-            qemuVM.append(QemuVM(i,ports[i],vcpu=coreNum,memory=memSize,workingDir=workingDir,bkfile=bkFile,path=mugenPath,gene=generateJson))   
+            qemuVM.append(QemuVM(id=i,port=ports[i],vcpu=coreNum,memory=memSize,kernel=kernel,bios=bios,workingDir=workingDir,bkfile=bkFile,path=mugenPath,gene=generateJson))   
         targetQueue = Queue()
         for target in test_target.test_list:
             jsondata = json.loads(open('suite2cases/'+target+'.json','r').read())
