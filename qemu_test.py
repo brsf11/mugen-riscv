@@ -224,7 +224,7 @@ if __name__ == "__main__":
     parser.add_argument('-B',type=str,help='Specify bios')
     parser.add_argument('-K',type=str,help='Specify kernel')
     parser.add_argument('-D',type=str,help='Specify backing file name')
-    parser.add_argument('-d',type=str,help='Specity mugen installed directory')
+    parser.add_argument('-d',type=str,help='Specity mugen installed directory',dest='mugenDir')
     parser.add_argument('-g','--generate',action='store_true',default=False,help='Generate testsuite json after running test')
     parser.add_argument('-F',type=str,help='Specify test config file')
     args = parser.parse_args()
@@ -327,10 +327,10 @@ if __name__ == "__main__":
             orgDrive = args.D
             bios = args.B
             kernel = args.K
-            if args.d != None:
+            if args.mugenDir != None:
                 preImg = False
                 bkFile = orgDrive
-                mugenPath = args.d.rstrip('/')
+                mugenPath = args.mugenDir.rstrip('/')
                 if args.list_file != None:
                     list_file = args.list_file
                     genList = False
