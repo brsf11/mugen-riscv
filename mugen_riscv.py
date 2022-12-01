@@ -155,7 +155,7 @@ class TestTarget():
             for test_target in self.test_list :
                 print(test_target)
 
-    def Run(self,detailed = 0):
+    def Run(self,detailed = 0,xpara = False):
         if(self.is_checked != 1):
             LogError("Targets are not checked!")
             return 1
@@ -164,7 +164,10 @@ class TestTarget():
             for test_target in self.test_list :
                 print("Start to test target: "+test_target)
                 if detailed == False:
-                    os.system("sudo bash mugen.sh -f "+test_target+" 2>&1 | tee -a exec.log")
+                    if xpara:
+                        os.system("sudo bash mugen.sh -f "+test_target+" -x 2>&1 | tee -a exec.log")
+                    else:
+                        os.system("sudo bash mugen.sh -f "+test_target+" 2>&1 | tee -a exec.log")
                     temp_failed = []
                     try:
                         temp_failed = os.listdir("results/"+test_target+"/failed")
@@ -202,7 +205,10 @@ class TestTarget():
                     failed_num = 0
                     for testcasedict in json_data['cases']:
                         testcase = testcasedict['name']
-                        os.system("sudo bash mugen.sh -f "+test_target+" -r "+testcase+" 2>&1 | tee -a exec.log")
+                        if xpara:
+                            os.system("sudo bash mugen.sh -f "+test_target+" -r "+testcase+" -x 2>&1 | tee -a exec.log")
+                        else:
+                            os.system("sudo bash mugen.sh -f "+test_target+" -r "+testcase+" 2>&1 | tee -a exec.log")
                         if(os.system("ls results/"+test_target+"/failed/"+testcase+" &> /dev/null") == 0):
                             failed_num += 1
                             temp_failed.append(testcase)
@@ -258,6 +264,7 @@ if __name__ == "__main__":
     parser.add_argument('-a','--analyze',action='store_true',help='Analyze missing testcases')
     parser.add_argument('-g','--generate',action='store_true',help='Generate testsuite json after running test')
     parser.add_argument('-f',metavar='test_suite',help='Specify testsuite',dest='test_suite',default=None)
+    parser.add_argument('-x',action='store_true',help='-x parameter')
     args = parser.parse_args()
 
     test_env = TestEnv()
@@ -276,7 +283,7 @@ if __name__ == "__main__":
             test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=args.mugen)
             test_target.PrintUnavalTargets()
             test_target.PrintAvalTargets()
-            test_res = test_target.Run(detailed=True)
+            test_res = test_target.Run(detailed=True,xpara=args.x)
             if args.generate == True:
                 gen = SuiteGenerator()
                 gen.GenJson(test_res)
@@ -287,7 +294,7 @@ if __name__ == "__main__":
             test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=args.mugen)
             test_target.PrintUnavalTargets()
             test_target.PrintAvalTargets()
-            test_res = test_target.Run(detailed=True)
+            test_res = test_target.Run(detailed=True,xpara=args.x)
             if args.generate == True:
                 gen = SuiteGenerator()
                 gen.GenJson(test_res)
