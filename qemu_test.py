@@ -81,8 +81,8 @@ class Dispatcher(Thread):
 
 
 class QemuVM(object):
-    def __init__(self, vcpu,memory,workingDir,bkfile ,kernel,bios,id=1,port=12055,user='root',password='openEuler12#$',
-                  path='/root/GitRepo/mugen-riscv' ,gene=False , restore=True):
+    def __init__(self, vcpu,memory,workingDir,bkfile ,kernel,bios,id=1,port=12055,user='root',password='anolisos',
+                  path='/root/GitRepo/mugen-riscv' ,gene=False , restore=True, detailed = False):
         self.id = id
         self.port , self.ip , self.user , self.password  = port , '127.0.0.1' , user , password
         self.vcpu , self.memory= vcpu , memory
@@ -92,6 +92,7 @@ class QemuVM(object):
         self.path = path
         self.gene = gene
         self.restore = restore
+        self.detailed = detailed
         if self.workingDir[-1] != '/':
             self.workingDir += '/'
 
@@ -170,13 +171,15 @@ class QemuVM(object):
 
 
     def runTest(self,testsuite):
-        g , m = '' , ''
+        g , m , x= '' , '' , ''
         if self.gene:
             g = " -g"
         if testsuite.endswith("-riscv") is False:
             m = " -m"
-            
-        print(ssh_exec(self,'cd '+self.path+' \n echo \''+testsuite+'\' > list_temp \n python3 mugen_riscv.py -l list_temp '+m+g,timeout=60)[1])
+        if self.detailed:
+            x = " -x"
+
+        print(ssh_exec(self,'cd '+self.path+' \n echo \''+testsuite+'\' > list_temp \n python3 mugen_riscv.py -l list_temp '+m+g+x,timeout=60)[1])
         if lstat(self,self.path+'/logs_failed') is not None:
             sftp_get(self,self.path+'/logs_failed','',self.workingDir)
         if lstat(self,self.path+'/logs') is not None:
@@ -226,6 +229,7 @@ if __name__ == "__main__":
     parser.add_argument('-D',type=str,help='Specify backing file name')
     parser.add_argument('-d',type=str,help='Specity mugen installed directory',dest='mugenDir')
     parser.add_argument('-g','--generate',action='store_true',default=False,help='Generate testsuite json after running test')
+    parser.add_argument('--detailed',action='store_true',default=False,help='Print detailed log')
     parser.add_argument('-F',type=str,help='Specify test config file')
     args = parser.parse_args()
 
@@ -240,6 +244,7 @@ if __name__ == "__main__":
     list_file , workingDir , bkFile , orgDrive , mugenPath = None , None , None , None , None
     kernel , bios = None , None
     img_base = 'img_base.qcow2'
+    detailed = False
     
 
     # parse arguments
@@ -264,6 +269,8 @@ if __name__ == "__main__":
             else:
                 print('Memory size is invalid!')
                 exit(-1)
+        if configData.__contains__('detailed') and configData['detailed'] == 1:
+            detailed = True
         if configData.__contains__('mugenNative') and configData['mugenNative'] == 1:
             mugenNative = True
         if configData.__contains__('generate') and configData['generate'] == 1:
@@ -320,6 +327,7 @@ if __name__ == "__main__":
         else:
             print('Memory size is invalid!')
             exit(-1)
+        detailed = args.detailed
         mugenNative = args.mugen
         generateJson = args.generate
         if args.w != None and (args.B != None or args.K !=None) and args.D != None:
@@ -416,7 +424,7 @@ if __name__ == "__main__":
 
         qemuVM = []
         for i in range(threadNum):
-            qemuVM.append(QemuVM(id=i,port=ports[i],vcpu=coreNum,memory=memSize,kernel=kernel,bios=bios,workingDir=workingDir,bkfile=bkFile,path=mugenPath,gene=generateJson))   
+            qemuVM.append(QemuVM(id=i,port=ports[i],vcpu=coreNum,memory=memSize,kernel=kernel,bios=bios,workingDir=workingDir,bkfile=bkFile,path=mugenPath,gene=generateJson,detailed=detailed))   
         targetQueue = Queue()
         for target in test_target.test_list:
             jsondata = json.loads(open('suite2cases/'+target+'.json','r').read())
