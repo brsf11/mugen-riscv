@@ -81,7 +81,7 @@ class Dispatcher(Thread):
 
 
 class QemuVM(object):
-    def __init__(self, vcpu,memory,workingDir,bkfile ,kernel,bios,id=1,port=12055,user='root',password='anolisos',
+    def __init__(self, vcpu,memory,workingDir,bkfile ,kernel,bios,id=1,port=12055,user='root',password='openEuler12#$',
                   path='/root/GitRepo/mugen-riscv' ,gene=False , restore=True, detailed = False):
         self.id = id
         self.port , self.ip , self.user , self.password  = port , '127.0.0.1' , user , password
@@ -224,6 +224,8 @@ if __name__ == "__main__":
     parser.add_argument('-M',type=int,default=4,help='Specify virtual machine memory size(GB), default is 4 GB')
     parser.add_argument('-w',type=str,help='Specify working directory')
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
+    parser.add_argument('--user',type=str,default=None,help='Specify user')
+    parser.add_argument('--password',type=str,default=None,help='Specify password')
     parser.add_argument('-B',type=str,help='Specify bios')
     parser.add_argument('-K',type=str,help='Specify kernel')
     parser.add_argument('-D',type=str,help='Specify backing file name')
@@ -245,6 +247,7 @@ if __name__ == "__main__":
     kernel , bios = None , None
     img_base = 'img_base.qcow2'
     detailed = False
+    user , password = "root","openEuler12#$"
     
 
     # parse arguments
@@ -268,6 +271,18 @@ if __name__ == "__main__":
                 memSize = configData['memory']
             else:
                 print('Memory size is invalid!')
+                exit(-1)
+        if configData.__contains__('user'):
+            if type(configData['user']) == str:
+                user = configData['user']
+            else:
+                print('user is invalid!')
+                exit(-1)
+        if configData.__contains__('password'):
+            if type(configData['password']) == str:
+                password = configData['password']
+            else:
+                print('password is invalid!')
                 exit(-1)
         if configData.__contains__('detailed') and configData['detailed'] == 1:
             detailed = True
@@ -327,6 +342,10 @@ if __name__ == "__main__":
         else:
             print('Memory size is invalid!')
             exit(-1)
+        if args.user is not None:
+            user = args.user
+        if args.password is not None:
+            password = args.password
         detailed = args.detailed
         mugenNative = args.mugen
         generateJson = args.generate
@@ -364,7 +383,7 @@ if __name__ == "__main__":
                 print('Failed to create img-base')
                 exit(-1)
 
-        preVM = QemuVM(id=1,port=findAvalPort(1)[0],user='root',password='openEuler12#$',kernel=kernel,bios=bios,vcpu=coreNum,memory=memSize,path=mugenPath,workingDir=workingDir,bkfile=bkFile, gene=False,restore=False)
+        preVM = QemuVM(id=1,port=findAvalPort(1)[0],user=user,password=password,kernel=kernel,bios=bios,vcpu=coreNum,memory=memSize,path=mugenPath,workingDir=workingDir,bkfile=bkFile, gene=False,restore=False)
         preVM.start()
         preVM.waitReady()
         if preImg == True:
@@ -424,7 +443,7 @@ if __name__ == "__main__":
 
         qemuVM = []
         for i in range(threadNum):
-            qemuVM.append(QemuVM(id=i,port=ports[i],vcpu=coreNum,memory=memSize,kernel=kernel,bios=bios,workingDir=workingDir,bkfile=bkFile,path=mugenPath,gene=generateJson,detailed=detailed))   
+            qemuVM.append(QemuVM(id=i,port=ports[i],vcpu=coreNum,memory=memSize,user=user,password=password,kernel=kernel,bios=bios,workingDir=workingDir,bkfile=bkFile,path=mugenPath,gene=generateJson,detailed=detailed))   
         targetQueue = Queue()
         for target in test_target.test_list:
             jsondata = json.loads(open('suite2cases/'+target+'.json','r').read())
