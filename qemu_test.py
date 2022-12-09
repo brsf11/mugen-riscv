@@ -152,8 +152,8 @@ class QemuVM(object):
 
         if disk > 1:
             for i in range(1 ,disk):
-                cmd += "-drive file="+self.workingDir+"disk"+str(self.id)+'-'+str(i)+".qcow2,format=qcow2,id=hd"+str(i)+" -device virtio-blk-device,drive=hd"+str(i)+" "
-
+                cmd += "-drive file="+self.workingDir+"disk"+str(self.id)+'-'+str(i)+".qcow2,format=qcow2,id=hd"+str(i)+" -device virtio-blk-pci,drive=hd"+str(i)+" "
+        print(cmd)
         self.process = subprocess.Popen(args=cmd,stderr=subprocess.PIPE,stdout=subprocess.PIPE,stdin=subprocess.PIPE,encoding='utf-8',shell=True)
 
     def waitReady(self):
