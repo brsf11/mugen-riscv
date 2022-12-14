@@ -155,7 +155,7 @@ class TestTarget():
             for test_target in self.test_list :
                 print(test_target)
 
-    def Run(self,detailed = 0):
+    def Run(self,xpara = False,addDisk = False,multiMachine = False,addNic = False):
         if(self.is_checked != 1):
             LogError("Targets are not checked!")
             return 1
@@ -163,66 +163,45 @@ class TestTarget():
             test_res = []
             for test_target in self.test_list :
                 print("Start to test target: "+test_target)
-                if detailed == False:
-                    os.system("sudo bash mugen.sh -f "+test_target+" 2>&1 | tee -a exec.log")
-                    temp_failed = []
-                    try:
-                        temp_failed = os.listdir("results/"+test_target+"/failed")
-                    except:
-                        failed_num = 0
-                        self.failed_test_num.append(failed_num)
+                json_file = open("suite2cases/"+test_target+".json",'r')
+                json_raw = json_file.read()
+                json_data = json.loads(json_raw)
+                temp_failed = []
+                temp_succeed = []
+                success_num = 0
+                failed_num = 0
+                for testcasedict in json_data['cases']:
+                    if not addDisk and testcasedict.__contains__('add disk'):
+                        continue
+                    if not multiMachine and testcasedict.__contains__('machine num'):
+                        continue
+                    if not addNic and testcasedict.__contains__('add network interface'):
+                        continue
+                    
+                    testcase = testcasedict['name']
+                    if xpara:
+                        os.system("sudo bash mugen.sh -f "+test_target+" -r "+testcase+" -x 2>&1 | tee -a exec.log")
                     else:
-                        failed_num = len(temp_failed)
-                        self.failed_test_num.append(failed_num)
+                        os.system("sudo bash mugen.sh -f "+test_target+" -r "+testcase+" 2>&1 | tee -a exec.log")
+                    if(os.system("ls results/"+test_target+"/failed/"+testcase+" &> /dev/null") == 0):
+                        failed_num += 1
+                        temp_failed.append(testcase)
                         if test_target not in os.listdir('logs_failed/'):
                             os.system("mkdir logs_failed/"+test_target)
-                        for failed_test in temp_failed :
-                            if failed_test not in os.listdir('logs_failed/'+test_target+"/"):
-                                os.system("mkdir logs_failed/"+test_target+"/"+failed_test+"/")
-                            logs = os.listdir('logs/'+test_target+"/"+failed_test+"/")
-                            os.system("cp logs/"+test_target+"/"+failed_test+"/"+logs[len(logs)-1]+" logs_failed/"+test_target+"/"+failed_test+"/")
-
-                    temp_succeed = []
-                    try:
-                        temp_succeed = os.listdir("results/"+test_target+"/succeed")
-                    except:
-                        success_num = 0
-                        self.success_test_num.append(success_num)
-                    else:
-                        success_num = len(temp_succeed)
-                        self.success_test_num.append(success_num)
-                    target_res = {'suite': test_target,'failed': temp_failed,'succeeded': temp_succeed}
-                else:
-                    json_file = open("suite2cases/"+test_target+".json",'r')
-                    json_raw = json_file.read()
-                    json_data = json.loads(json_raw)
-                    temp_failed = []
-                    temp_succeed = []
-                    success_num = 0
-                    failed_num = 0
-                    for testcasedict in json_data['cases']:
-                        testcase = testcasedict['name']
-                        os.system("sudo bash mugen.sh -f "+test_target+" -r "+testcase+" 2>&1 | tee -a exec.log")
-                        if(os.system("ls results/"+test_target+"/failed/"+testcase+" &> /dev/null") == 0):
-                            failed_num += 1
-                            temp_failed.append(testcase)
-                            if test_target not in os.listdir('logs_failed/'):
-                                os.system("mkdir logs_failed/"+test_target)
-                            if testcase not in os.listdir("logs_failed/"+test_target+"/"):
-                                os.system("mkdir logs_failed/"+test_target+"/"+testcase+"/")
-                            logs = os.listdir('logs/'+test_target+"/"+testcase+"/")
-                            os.system("cp logs/"+test_target+"/"+testcase+"/"+logs[len(logs)-1]+" logs_failed/"+test_target+"/"+testcase+"/")
-                        if(os.system("ls results/"+test_target+"/succeed/"+testcase+" &> /dev/null") == 0):
-                            temp_succeed.append(testcase)
-                            success_num += 1
-                    target_res = {'suite': test_target,'failed': temp_failed,'succeed': temp_succeed}
+                        if testcase not in os.listdir("logs_failed/"+test_target+"/"):
+                            os.system("mkdir logs_failed/"+test_target+"/"+testcase+"/")
+                        logs = os.listdir('logs/'+test_target+"/"+testcase+"/")
+                        os.system("cp logs/"+test_target+"/"+testcase+"/"+logs[len(logs)-1]+" logs_failed/"+test_target+"/"+testcase+"/")
+                    if(os.system("ls results/"+test_target+"/succeed/"+testcase+" &> /dev/null") == 0):
+                        temp_succeed.append(testcase)
+                        success_num += 1
+                target_res = {'suite': test_target,'failed': temp_failed,'succeed': temp_succeed}
 
                 test_res.append(target_res)
                     
                 print("Target "+test_target+" tested "+str(success_num+failed_num)+" cases, failed "+str(failed_num)+" cases")
-                if(detailed == 1):
-                    for failed_test in temp_failed :
-                        print("Failed test: "+failed_test)
+                for failed_test in temp_failed :
+                    print("Failed test: "+failed_test)
                 
 
             self.is_tested = 1
@@ -258,6 +237,10 @@ if __name__ == "__main__":
     parser.add_argument('-a','--analyze',action='store_true',help='Analyze missing testcases')
     parser.add_argument('-g','--generate',action='store_true',help='Generate testsuite json after running test')
     parser.add_argument('-f',metavar='test_suite',help='Specify testsuite',dest='test_suite',default=None)
+    parser.add_argument('-x',action='store_true',help='-x parameter')
+    parser.add_argument('--addDisk',action='store_true')
+    parser.add_argument('--multiMachine',action='store_true')
+    parser.add_argument('--addNic',action='store_true')
     args = parser.parse_args()
 
     test_env = TestEnv()
@@ -276,7 +259,7 @@ if __name__ == "__main__":
             test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=args.mugen)
             test_target.PrintUnavalTargets()
             test_target.PrintAvalTargets()
-            test_res = test_target.Run(detailed=True)
+            test_res = test_target.Run(xpara=args.x,addDisk=args.addDisk,multiMachine=args.multiMachine,addNic=args.addNic)
             if args.generate == True:
                 gen = SuiteGenerator()
                 gen.GenJson(test_res)
@@ -287,7 +270,7 @@ if __name__ == "__main__":
             test_target.CheckTargets(suite_list_mugen=test_env.suite_list_mugen,suite_list_riscv=test_env.suite_list_riscv,mugen_native=args.mugen)
             test_target.PrintUnavalTargets()
             test_target.PrintAvalTargets()
-            test_res = test_target.Run(detailed=True)
+            test_res = test_target.Run(xpara=args.x,addDisk=args.addDisk,multiMachine=args.multiMachine,addNic=args.addNic)
             if args.generate == True:
                 gen = SuiteGenerator()
                 gen.GenJson(test_res)
