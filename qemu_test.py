@@ -82,7 +82,7 @@ class Dispatcher(Thread):
 
 class QemuVM(object):
     def __init__(self, vcpu,memory,workingDir,bkfile ,kernel,bios,id=1,port=12055,user='root',password='openEuler12#$',
-                  path='/root/GitRepo/mugen-riscv' ,gene=False , restore=True, detailed = False):
+                  path='/root/GitRepo/mugen-riscv' ,gene=False , restore=True, detailed = False,addDisk = False,multiMachine = False,addNic = False):
         self.id = id
         self.port , self.ip , self.user , self.password  = port , '127.0.0.1' , user , password
         self.vcpu , self.memory= vcpu , memory
@@ -93,6 +93,7 @@ class QemuVM(object):
         self.gene = gene
         self.restore = restore
         self.detailed = detailed
+        self.addDisk, self.multiMachine, self.addNic = addDisk, multiMachine, addNic
         if self.workingDir[-1] != '/':
             self.workingDir += '/'
 
@@ -121,7 +122,6 @@ class QemuVM(object):
             drive=self.workingDir+self.bkFile
         if self.kernel is not None:
             kernelArg=" -kernel "+self.workingDir+self.kernel
-            print("kernel argument is: "+kernelArg)
         else:
             kernelArg=" "
         if self.bios is not None:
@@ -129,7 +129,6 @@ class QemuVM(object):
                 biosArg=" -bios none"
             else:
                 biosArg=" -bios "+self.workingDir+self.bios
-            print("bios argument is: "+biosArg)
         else:
             biosArg=" "
 
@@ -153,7 +152,6 @@ class QemuVM(object):
         if disk > 1:
             for i in range(1 ,disk):
                 cmd += "-drive file="+self.workingDir+"disk"+str(self.id)+'-'+str(i)+".qcow2,format=qcow2,id=hd"+str(i)+" -device virtio-blk-pci,drive=hd"+str(i)+" "
-        print(cmd)
         self.process = subprocess.Popen(args=cmd,stderr=subprocess.PIPE,stdout=subprocess.PIPE,stdin=subprocess.PIPE,encoding='utf-8',shell=True)
 
     def waitReady(self):
@@ -178,8 +176,14 @@ class QemuVM(object):
             m = " -m"
         if self.detailed:
             x = " -x"
-
-        print(ssh_exec(self,'cd '+self.path+' \n echo \''+testsuite+'\' > list_temp \n python3 mugen_riscv.py -l list_temp '+m+g+x,timeout=60)[1])
+        addDisk , multiMachine , addNic = '' , '' , ''
+        if self.addDisk:
+            addDisk = " --addDisk"
+        if self.multiMachine:
+            multiMachine = " --multiMachine"
+        if self.addNic:
+            addNic = " --addNic"
+        print(ssh_exec(self,'cd '+self.path+' \n echo \''+testsuite+'\' > list_temp \n python3 mugen_riscv.py -l list_temp '+addDisk+multiMachine+addNic+m+g+x,timeout=60)[1])
         if lstat(self,self.path+'/logs_failed') is not None:
             sftp_get(self,self.path+'/logs_failed','',self.workingDir)
         if lstat(self,self.path+'/logs') is not None:
@@ -232,6 +236,9 @@ if __name__ == "__main__":
     parser.add_argument('-d',type=str,help='Specity mugen installed directory',dest='mugenDir')
     parser.add_argument('-g','--generate',action='store_true',default=False,help='Generate testsuite json after running test')
     parser.add_argument('--detailed',action='store_true',default=False,help='Print detailed log')
+    parser.add_argument('--addDisk',action='store_true',default=False)
+    parser.add_argument('--multiMachine',action='store_true',default=False)
+    parser.add_argument('--addNic',action='store_true',default=False)
     parser.add_argument('-F',type=str,help='Specify test config file')
     args = parser.parse_args()
 
@@ -248,6 +255,7 @@ if __name__ == "__main__":
     img_base = 'img_base.qcow2'
     detailed = False
     user , password = "root","openEuler12#$"
+    addDisk, multiMachine, addNic = False,False,False
     
 
     # parse arguments
@@ -290,6 +298,12 @@ if __name__ == "__main__":
             mugenNative = True
         if configData.__contains__('generate') and configData['generate'] == 1:
             generateJson = True
+        if configData.__contains__('addDisk') and configData['addDisk'] == 1:
+            addDisk = True
+        if configData.__contains__('multiMachine') and configData['multiMachine'] == 1:
+            multiMachine = True
+        if configData.__contains__('addNic') and configData['addNic'] == 1:
+            addNic = True
         if configData.__contains__('workingDir') and (configData.__contains__('bios') or configData.__contains__('kernel')) and configData.__contains__('drive'):
             if type(configData['workingDir']) == str:
                 workingDir = configData['workingDir']
@@ -349,6 +363,9 @@ if __name__ == "__main__":
         detailed = args.detailed
         mugenNative = args.mugen
         generateJson = args.generate
+        addDisk = args.addDisk
+        multiMachine = args.multiMachine
+        addNic = args.addNic
         if args.w != None and (args.B != None or args.K !=None) and args.D != None:
             workingDir = args.w
             orgDrive = args.D
@@ -443,7 +460,7 @@ if __name__ == "__main__":
 
         qemuVM = []
         for i in range(threadNum):
-            qemuVM.append(QemuVM(id=i,port=ports[i],vcpu=coreNum,memory=memSize,user=user,password=password,kernel=kernel,bios=bios,workingDir=workingDir,bkfile=bkFile,path=mugenPath,gene=generateJson,detailed=detailed))   
+            qemuVM.append(QemuVM(id=i,port=ports[i],vcpu=coreNum,memory=memSize,user=user,password=password,kernel=kernel,bios=bios,workingDir=workingDir,bkfile=bkFile,path=mugenPath,gene=generateJson,detailed=detailed,addDisk=addDisk,multiMachine=multiMachine,addNic=addNic))   
         targetQueue = Queue()
         for target in test_target.test_list:
             jsondata = json.loads(open('suite2cases/'+target+'.json','r').read())
