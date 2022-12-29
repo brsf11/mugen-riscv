@@ -18,6 +18,12 @@
 # ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
+function pre_test() {
+    LOG_INFO "Start to pre test."
+    DNF_INSTALL kexec-tools
+    LOG_INFO "End to pre test."
+}
+
 function run_test() {
     LOG_INFO "Start executing testcase."
     rpm -q kexec-tools

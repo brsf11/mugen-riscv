@@ -78,7 +78,7 @@ def write_conf(ip, password, port=22, user="root", run_remote=False, copy_all=Tr
     else:
         ENV_DATA = {"NODE": []}
 
-    if subprocess.getstatusoutput("ip a | grep " + ip)[0] == 0:
+    if subprocess.getstatusoutput("ip a | grep " + ip+'/')[0] == 0:
         NODE_DATA["LOCALTION"] = "local"
     elif run_remote:
         NODE_DATA["LOCALTION"] = "local"
@@ -117,7 +117,7 @@ def write_conf(ip, password, port=22, user="root", run_remote=False, copy_all=Tr
     NODE_DATA["FRAME"] = stdout.read().decode("utf-8").strip("\n")
 
     stdin, stdout, stderr = ssh.exec_command(
-        " ip route | grep " + ip + " | awk '{print $3}' | sort -u"
+        " ip route | grep " + ip + " | awk '{print $3}' |grep -v "+ ip +"| sort -u"
     )
     NODE_DATA["NIC"] = stdout.read().decode("utf-8").strip("\n")
 
