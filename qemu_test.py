@@ -620,7 +620,7 @@ if __name__ == "__main__":
                 print('Failed to create img-base')
                 exit(-1)
 
-        preVM = QemuVM(id=1,port=findAvalPort(1)[0],user=user,password=password,kernel=kernel,bios=bios,vcpu=coreNum,memory=memSize,path=mugenPath,workingDir=workingDir,bkfile=bkFile, gene=False,restore=False)
+        preVM = QemuVM(id=1,port=findAvalPort(1)[0],user=user,password=password,kernel=kernel,bios=bios,vcpu=coreNum,memory=memSize,path=mugenPath,workingDir=workingDir,bkfile=bkFile,restore=False)
         preVM.start()
         preVM.waitReady()
         if preImg == True:
