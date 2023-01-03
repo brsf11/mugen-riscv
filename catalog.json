@@ -1,0 +1,122 @@
+{
+    "catalog":
+    [
+        {
+            "name":"Broken testcase",
+            "desciption":"测试用例未执行或未完全执行",
+            "pattern":[
+                [
+                    {"type":false,"section":
+                    [[{"type":true,"key":"+ run_test"}]]
+                    }
+                ]
+            ]
+        },
+        {
+            "name":"pkg not found",
+            "pattern":[
+                [
+                    {"type":true,"section":
+                    [[{"type":true,"key":"pkgs:"},{"type":true,"key":"not found"}]]
+                    }
+                ]
+            ]
+        },
+        {
+            "name":"preinstall absent",
+            "pattern":[
+                [
+                    {"type":true,"section":
+                    [[{"type":true,"key":"command not found"}],[{"type":true,"key":".service not found"}],[{"type":true,"key":"No such file or directory"}]]
+                    },
+                    {"type":false,"section":
+                    [[{"type":true,"key":"+ DNF_INSTALL"}]]
+                    }
+                ]
+            ]
+        },
+        {
+            "name":"kernel module absent",
+            "pattern":[
+                [
+                    {"type":true,"section":
+                    [[{"type":true,"key":"modprobe"},{"type":true,"key":"Module"},{"type":true,"key":"not found"}]]
+                    }
+                ]
+            ]
+        },
+        {
+            "name":"file missing",
+            "pattern":[
+                [
+                    {"type":true,"section":
+                    [[{"type":true,"key":"command not found"}],[{"type":true,"key":".service not found"}],[{"type":true,"key":"No such file or directory"}]]
+                    },
+                    {"type":true,"section":
+                    [[{"type":true,"key":"+ DNF_INSTALL"}]]
+                    }
+                ]
+            ]
+        },
+        {
+            "name":"systemd unit restart failure",
+            "pattern":[
+                [
+                    {"type":true,"section":
+                    [[{"type":true,"key":".service restart failed"}]]
+                    }
+                ],
+                [
+                    {"type":true,"section":
+                    [[{"type":true,"key":".service stop failed"}]]
+                    }
+                ],
+                [
+                    {"type":true,"section":
+                    [[{"type":true,"key":".service start failed"}]]
+                    }
+                ]
+            ]
+        },
+        {
+            "name":"systemd unit runtime error",
+            "pattern":[
+                [
+                    {"type":true,"section":
+                    [[{"type":true,"key":"There is an error for the status of"},{"type":true,"key":".service"}]]
+                    }
+                ],
+                [
+                    {"type":true,"section":
+                    [[{"type":true,"key":"There is an error message for the log of"},{"type":true,"key":".service"}]]
+                    }
+                ]
+            ]
+        },
+        {
+            "name":"systemd unit enable failure",
+            "pattern":[
+                [
+                    {"type":true,"section":
+                    [[{"type":true,"key":".service enable failed"}]]
+                    }
+                ],
+                [
+                    {"type":true,"section":
+                    [[{"type":true,"key":".service disable failed"}]]
+                    }
+                ]
+            ]
+        },
+        {
+            "name":"timeout",
+            "pattern":[
+                [
+                    {"type":true,"section":
+                    [[{"type":true,"key":"timeout"}],[{"type":true,"key":"Timeout"}],[{"type":true,"key":"TIMEOUT"}]]
+                    }
+                ]
+            ]
+        }
+    ]
+}
