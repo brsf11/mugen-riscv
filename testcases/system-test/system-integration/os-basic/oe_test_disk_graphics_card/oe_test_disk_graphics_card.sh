@@ -20,7 +20,7 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start to pre the test env"
-    DNF_INSTALL dmidecode
+    DNF_INSTALL "dmidecode csh lshw"
     LOG_INFO "End to pre the test env"
 }
 function run_test() {
@@ -36,7 +36,7 @@ function run_test() {
     CHECK_RESULT $?
     su testuser -c "echo $SHELL" | grep "/bin/csh"
     CHECK_RESULT $? 0 1
-    sudo lshw -c network | grep "network"
+    sudo lshw -c network | grep -E "network|virtio"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

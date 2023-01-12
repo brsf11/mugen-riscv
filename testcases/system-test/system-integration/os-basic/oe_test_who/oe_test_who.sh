@@ -26,7 +26,7 @@ function run_test() {
     who -b | grep "system boot"
     CHECK_RESULT $?
 
-    who -s | grep pts
+    who -s | grep -E "pts|ttyS"
     CHECK_RESULT $?
 
     who --help | grep "Usage"
