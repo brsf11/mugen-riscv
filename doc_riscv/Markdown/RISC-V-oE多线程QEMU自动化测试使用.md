@@ -5,23 +5,35 @@
     - 依赖 ```python3``` ```python-paramiko```  
 - 使用  
     ```shell  
-    usage: qemu_test.py [-h] [-l list_file] [-x X] [-c C] [-M M] [-w W] [-m]
-                        [-B B] [-K K] [-D D] [-d MUGENDIR] [-g] [-F F]
+        usage: qemu_test.py [-h] [-l list_file] [-x X] [-c C] [-M M] [-w W] [-m]
+                        [--user USER] [--password PASSWORD] [-B B] [-K K] [-D D]
+                        [-d MUGENDIR] [-g] [--detailed] [--addDisk]
+                        [--multiMachine] [--addNic] [--bridge_ip BRIDGE_IP] [-t T]
+                        [-F F]
 
-    options:
-    -h, --help      show this help message and exit
-    -l list_file    Specify the test targets list
-    -x X            Specify threads num, default is 1
-    -c C            Specify virtual machine cores num, default is 4
-    -M M            Specify virtual machine memory size(GB), default is 4 GB
-    -w W            Specify working directory
-    -m, --mugen     Run native mugen test suites
-    -B B            Specify bios
-    -K K            Specify kernel
-    -D D            Specify backing file name
-    -d MUGENDIR     Specity mugen installed directory
-    -g, --generate  Generate testsuite json after running test
-    -F F            Specify test config file
+        options:
+        -h, --help            show this help message and exit
+        -l list_file          Specify the test targets list
+        -x X                  Specify threads num, default is 1
+        -c C                  Specify virtual machine cores num, default is 4
+        -M M                  Specify virtual machine memory size(GB), default is 4GB
+        -w W                  Specify working directory
+        -m, --mugen           Run native mugen test suites
+        --user USER           Specify user
+        --password PASSWORD   Specify password
+        -B B                  Specify bios
+        -K K                  Specify kernel
+        -D D                  Specify backing file name
+        -d MUGENDIR           Specity mugen installed directory
+        -g, --generate        Generate testsuite json after running test
+        --detailed            Print detailed log
+        --addDisk
+        --multiMachine
+        --addNic
+        --bridge_ip BRIDGE_IP
+                                Specity the network bridge ip
+        -t T                  Specity the number of generated free tap
+        -F F                  Specify test config file
     ```  
     例如
     ```shell
@@ -43,17 +55,23 @@
 - 配置文件  
     ```json
         {
-            "workingDir":"/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220926/", 
+            "workingDir":"/run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/oE-RISCV-preview-22.03-v2", 
             "bios":"none",
             "kernel":"fw_payload_oe_qemuvirt.elf",
-            "drive":"openeuler-qemu.qcow2",
+            "drive":"mugen_ready.qcow2",
+            "user":"root",
+            "password":"openEuler12#$",
             "threads":4,
             "cores":4,
             "memory":4,
             "mugenNative":1,
-            "listFile":"lists/list_git",
+            "detailed":1,
+            "addDisk":1,
+            "mugenDir":"/root/mugen-riscv/",
+            "listFile":"lists/previewV2part1remain3",
             "generate":1
         }
+
     ```
 - 运行测试  
     ```shell
