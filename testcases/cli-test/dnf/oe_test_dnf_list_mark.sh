@@ -29,7 +29,7 @@ function run_test() {
     LOG_INFO "Start to run test."
     dnf list --all | grep "${NODE1_FRAME}"
     CHECK_RESULT $?
-    dnf list --installed | grep "@anaconda"
+    dnf list --installed | grep "@mainline"
     CHECK_RESULT $?
     dnf list --available | grep "${NODE1_FRAME}"
     CHECK_RESULT $?
@@ -45,15 +45,16 @@ function run_test() {
     CHECK_RESULT $?
     dnf list --autoremove
     CHECK_RESULT $?
-    dnf -y install vim | grep "vim-common"
-    CHECK_RESULT $?
     dnf mark install vim-common | grep "marked as user installed"
     CHECK_RESULT $?
-    dnf -y remove vim | grep -v "vim-common"
-    CHECK_RESULT $?
+    dnf -y remove vim | grep "vim-common"
+    CHECK_RESULT $? 1 0
     dnf list installed | grep vim-common
     CHECK_RESULT $?
     dnf mark remove vim-common | grep "unmarked as user installed"
+    CHECK_RESULT $?
+    dnf -y remove vim-common
+    dnf -y install vim | grep "vim-common"
     CHECK_RESULT $?
     LOG_INFO "End of the test."
 }

@@ -22,9 +22,9 @@ source "common/common_dnf.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
-    dnf list --installed | grep "@anaconda" | grep "arch\|x86_64" | awk '{print $1}' | awk -F. 'OFS="."{$NF="";print}' | awk '{print substr($0, 1, length($0)-1)}' >anaconda_list
-    if dnf repolist | grep update; then
-        dnf list --available --repo=update | grep "arch\|x86_64" | awk '{print $1}' | awk -F . 'OFS="."{$NF="";print}' | awk '{print substr($0, 1, length($0)-1)}' >update_pkg_list
+    dnf list --installed | grep "@mainline" | grep "arch\|" | grep -E "x86_64|riscv" | awk -F. 'OFS="."{$NF="";print}' | awk '{print substr($0, 1, length($0)-1)}' >anaconda_list
+    if dnf repolist | grep mainline; then
+        dnf list --available --repo=mainline | grep "arch\|" | grep -E "x86_64|riscv" | awk '{print $1}' | awk -F . 'OFS="."{$NF="";print}' | awk '{print substr($0, 1, length($0)-1)}' >update_pkg_list
         update_pkg_name=$(shuf -n1 update_pkg_list)
         if ! dnf list installed | grep $update_pkg_name; then
             dnf install -y $update_pkg_name | tee install_log
@@ -37,7 +37,7 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    if dnf repolist | grep update; then
+    if dnf repolist | grep mainline; then
         for ((i = 0; i < 50; i++)); do
             dnf -y upgrade $update_pkg_name | grep "Upgraded\|Nothing to do"
             CHECK_RESULT $?

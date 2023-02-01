@@ -42,7 +42,7 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Check dovecot all config failed."
     doveconf | grep -q "service"
     CHECK_RESULT $? 0 0 "Check doveconf failed."
-    dovecot --hostdomain | grep -q "localhost"
+    dovecot --hostdomain | grep -q $(hostname)
     CHECK_RESULT $? 0 0 "Check dovecot hostdomain failed."
     grep -q "dovecot" /etc/passwd
     CHECK_RESULT $? 0 0 "Check dovecot user created failed."

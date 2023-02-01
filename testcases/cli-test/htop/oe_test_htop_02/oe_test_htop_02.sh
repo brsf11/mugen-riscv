@@ -87,8 +87,8 @@ EOF
 EOF
 	CHECK_RESULT $? 0 0 "Option test -m fails"
 
-	htop -v | grep "htop"
-	CHECK_RESULT $? 0 0 "Option test -v fails"
+	htop -V | grep "htop"
+	CHECK_RESULT $? 0 0 "Option test -V fails"
 
 	htop -h | grep "See 'man htop' for more information"
 	CHECK_RESULT $? 0 0 "Option test -h fails"

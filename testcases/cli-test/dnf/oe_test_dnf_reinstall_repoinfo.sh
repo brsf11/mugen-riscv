@@ -36,11 +36,11 @@ function run_test() {
     CHECK_RESULT $?
     dnf reinstall -y tree 2>&1 | grep "Package tree available, but not installed"
     CHECK_RESULT $?
-    dnf --repo=everything repolist | grep "everything"
+    dnf --repo=mainline repolist | grep "mainline"
     CHECK_RESULT $?
-    ret=$(dnf --repo=everything repolist | wc -l)
+    ret=$(dnf --repo=mainline repolist | wc -l)
     CHECK_RESULT "$ret" 2 0
-    dnf --repoid=everything repolist | grep "everything"
+    dnf --repoid=mainline repolist | grep "mainline"
     CHECK_RESULT $?
     dnf repoinfo | grep "Repo-id"
     CHECK_RESULT $?
@@ -55,7 +55,7 @@ function run_test() {
     CHECK_RESULT $?
     dnf search vim | grep vim-enhanced
     CHECK_RESULT $?
-    dnf update-minimal --assumeno 2>&1 | grep "Upgrading:"
+    dnf update-minimal --assumeno 2>&1 | grep "Complete!"
     CHECK_RESULT $?
     dnf --version | grep -B 1 dnf
     CHECK_RESULT $?

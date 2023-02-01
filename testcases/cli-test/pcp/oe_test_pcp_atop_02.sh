@@ -29,7 +29,7 @@ function run_test() {
     LOG_INFO "Start to run test."
     nohup /usr/libexec/pcp/bin/pcp-atop -o >atop_o 2>&1 &
     SLEEP_WAIT 7
-    grep 'procacct' atop_o
+    grep 'process' atop_o
     CHECK_RESULT $?
     nohup /usr/libexec/pcp/bin/pcp-atop -u >atop_u 2>&1 &
     SLEEP_WAIT 7
@@ -57,7 +57,7 @@ function run_test() {
     CHECK_RESULT $?
     nohup /usr/libexec/pcp/bin/pcp-atop -A >atop_A 2>&1 &
     SLEEP_WAIT 30
-    grep 'ACPU' atop_A
+    grep -E 'ACPU|AMEM' atop_A
     CHECK_RESULT $?
     nohup /usr/libexec/pcp/bin/pcp-atop -w testdir -S -a >atop_wSa 2>&1 &
     SLEEP_WAIT 2

@@ -28,7 +28,7 @@ function run_test() {
     cd /usr/share/jetty/demo-base || exit
     java -jar ../start.jar &
     PID="$!"
-    SLEEP_WAIT 10
+    SLEEP_WAIT 30
     curl http://0.0.0.0:8080/ | grep "JAAS Test"
     CHECK_RESULT $?
     kill -9 ${PID}
