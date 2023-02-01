@@ -51,7 +51,7 @@ function run_test() {
     CHECK_RESULT $?
     nohup /usr/libexec/pcp/bin/pcp-atop -s >atop_s 2>&1 &
     SLEEP_WAIT 7
-    grep 'TRUN' atop_s
+    grep 'TSLPI' atop_s
     CHECK_RESULT $?
     nohup /usr/libexec/pcp/bin/pcp-atop -v >atop_v 2>&1 &
     SLEEP_WAIT 7

@@ -41,7 +41,7 @@ function run_test() {
     CHECK_RESULT $?
     pmlogcheck -z $archive_data | grep 'local timezone'
     CHECK_RESULT $?
-    pmlogmv -NV $archive_data /var/log/pcp/pmlogger_new/$host_name/ 2>&1 | grep 'link'
+    pmlogmv -NV $archive_data /var/log/pcp/pmlogger_new/$host_name/ 2>&1 | grep 'ln'
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

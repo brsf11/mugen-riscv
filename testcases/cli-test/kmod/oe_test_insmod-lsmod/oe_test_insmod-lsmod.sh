@@ -18,6 +18,32 @@
 # ############################################
 
 source "$OET_PATH/libs/locallibs/common_lib.sh"
+function config_params() {
+    LOG_INFO "Start to config params of the case."
+    depmod
+    raw=($(depmod -n | grep -v '[/#]' | awk '{print$3}'))
+    len=${#raw[@]}
+    mod1='null'
+    mod2='null'
+    for ((i=1;i<len;i+=1))
+    do  
+        mod=${raw[i]}
+        cmd="modprobe "${raw[i]}
+        res=$(eval $cmd)
+        if [ $? -eq 0 ]; then
+            if [ $mod1 -eq 'null' ]; then
+                mod1=$mod
+            elif [ $mod2 -eq 'null' ]; then
+                mod2=$mod
+                break;
+            else
+                break;
+            fi
+            modprobe -r $mod
+        fi
+    done
+    LOG_INFO "End to config params of the case."
+}
 
 function run_test() {
     LOG_INFO "Start to run test."
@@ -25,23 +51,23 @@ function run_test() {
     CHECK_RESULT $?
     insmod -V | grep "kmod version"
     CHECK_RESULT $?
-    raid0Path=$(find /usr/lib/modules/ -name raid0.ko)
-    faultyPath=$(find /usr/lib/modules/ -name faulty.ko)
-    SLEEP_WAIT 5 "lsmod | grep raid0 && modprobe -r raid0" 2    
+    mod1Path=$(find /usr/lib/modules/ -name $mod1.ko)
+    mod2Path=$(find /usr/lib/modules/ -name $mod2.ko)
+    SLEEP_WAIT 5 "lsmod | grep raid0 && modprobe -r $mod1" 2    
     CHECK_RESULT $?
-    SLEEP_WAIT 5 "lsmod | grep faulty && modprobe -r faulty" 2
+    SLEEP_WAIT 5 "lsmod | grep faulty && modprobe -r $mod2" 2
     CHECK_RESULT $?
-    insmod -p $raid0Path
+    insmod -p $mod1Path
     CHECK_RESULT $?
-    lsmod | grep raid0
+    lsmod | grep $mod1
     CHECK_RESULT $?
-    insmod -p $faultyPath
+    insmod -p $mod2Path
     CHECK_RESULT $?
-    lsmod | grep faulty
+    lsmod | grep $mod2
     CHECK_RESULT $?
-    insmod $raid0Path
+    insmod $mod1Path
     CHECK_RESULT $? 1
-    insmod $faultyPath
+    insmod $mod2Path
     CHECK_RESULT $? 1
     LOG_INFO "End of the test."
 }

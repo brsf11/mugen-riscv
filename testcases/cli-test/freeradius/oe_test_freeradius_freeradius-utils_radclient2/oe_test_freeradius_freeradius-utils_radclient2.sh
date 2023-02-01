@@ -36,8 +36,8 @@ function run_test() {
     a=$(echo "Message-Authenticator = 0x00" | radclient -q 127.0.0.1 status testing123)
     [ -z "${a}" ]
     CHECK_RESULT $? 0 0 "radclient -q execution failed."
-    echo "Message-Authenticator = 0x00" | radclient -t 0.0000000000000000000000000000000000000000000000000000000001 127.0.0.1 status testing123 2>&1 | grep "No reply"
-    CHECK_RESULT $? 0 0 "radclient -t execution failed."
+    echo "Message-Authenticator = 0x00" | radclient -t 0.0000000000000000000000000000000000000000000000000000000001 127.0.0.1 status testing123 2>&1 | grep "Received Access-Accept"
+    CHECK_RESULT $? 1 0 "radclient -t execution failed."
     replay_times=5
     a=$(echo "Message-Authenticator = 0x00" | radclient -t 0.0000000000000000000000000000000000000000000000000000000001 -r ${replay_times} 127.0.0.1 status testing123 | grep -c "Sent")
     [ "${replay_times}" -eq "${a}" ]

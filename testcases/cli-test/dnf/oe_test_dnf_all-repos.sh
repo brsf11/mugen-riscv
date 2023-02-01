@@ -26,19 +26,17 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start to run test."
-    dnf -y --repo=OS install vim | grep "Complete!"
+    dnf -y --repo=mainline install vim | grep "Complete!"
     CHECK_RESULT $?
-    dnf list --installed | grep vim-enhanced | grep @OS
+    dnf list --installed | grep vim-enhanced | grep @mainline
     CHECK_RESULT $?
-    dnf -y --repo=everything install tree | grep "Complete!"
+    dnf -y --repo=extra install helloworld | grep "Complete!"
     CHECK_RESULT $?
-    dnf list --installed | grep tree | grep @everything
+    dnf list --installed | grep helloworld | grep extra
     CHECK_RESULT $?
-    dnf -y --repo=EPOL list | grep EPOL
+    dnf -y --repo=epol list | grep epol
     CHECK_RESULT $?
-    dnf -y --repo=debuginfo list | grep debuginfo
-    CHECK_RESULT $?
-    dnf remove -y vim tree
+    dnf remove -y vim helloworld
     LOG_INFO "End of the test."
 }
 

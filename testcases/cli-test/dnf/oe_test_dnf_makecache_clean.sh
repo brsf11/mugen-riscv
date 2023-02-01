@@ -28,7 +28,7 @@ function run_test() {
     LOG_INFO "Start to run test."
     dnf makecache | grep "Metadata cache created"
     CHECK_RESULT $?
-    ls /var/cache/dnf/*.solv | grep "OS\|everything"
+    ls /var/cache/dnf/*.solv | grep "mainline\|extra"
     CHECK_RESULT $?
     dnf clean dbcache | grep "files removed"
     CHECK_RESULT $?
@@ -53,7 +53,7 @@ function run_test() {
     dnf --downloadonly install -y tree | grep "Downloading Packages"
     find /var/cache/dnf -name 'tree*' | grep tree
     dnf makecache | grep "Metadata cache created"
-    ls /var/cache/dnf/*.solv | grep "OS\|everything"
+    ls /var/cache/dnf/*.solv | grep "mainline\|extra"
     CHECK_RESULT $?
     dnf clean all | grep "files removed"
     CHECK_RESULT $?

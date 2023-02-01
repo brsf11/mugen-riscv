@@ -33,7 +33,7 @@ function run_test() {
     CHECK_RESULT $?
     node --use-openssl-ca my.js | grep 'Hello,Kitty'
     CHECK_RESULT $?
-    node --v8-options | grep 'Synopsis'
+    node --v8-options | grep 'Options:'
     CHECK_RESULT $?
     node --zero-fill-buffers my.js | grep 'Hello,Kitty'
     CHECK_RESULT $?
