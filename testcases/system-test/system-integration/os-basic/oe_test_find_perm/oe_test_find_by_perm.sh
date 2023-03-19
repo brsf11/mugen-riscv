@@ -9,40 +9,39 @@
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
 
-# #############################################
-# @Author    :   wangpeng
-# @Contact   :   wangpengb@uniontech.com
-# @Date      :   2021-09-07
-# @License   :   Mulan PSL v2
-# @Desc      :   File system common command test-chattr
-# ############################################
-source "$OET_PATH/libs/locallibs/common_lib.sh"
+source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function pre_test(){
+function pre_test() {
     LOG_INFO "Start environment preparation."
-    touch ./test.txt
+    OLD_LANG=$LANG
+    export LANG=en_US.UTF-8
+    ls /tmp/test1 && rm -rf /tmp/test1
+    ls /tmp/test2 && rm -rf /tmp/test2
     LOG_INFO "End of environmental preparation!"
 }
 
 function run_test() {
     LOG_INFO "Start testing..."
-    lsattr ./test.txt | grep '\-'
-    CHECK_RESULT $? 0 0 "lsattr failed" 
-    chattr +i ./test.txt
-    lsattr ./test.txt | grep '\-i\-'
-    CHECK_RESULT $? 0 0 "lsattr failed"
-    rm ./test.txt
-    CHECK_RESULT $? 1 0 "rm success"
-    mv ./test.txt ./test1.txt
-    CHECK_RESULT $? 1 0 "mv success"
+    ls /tmp/test1 || touch /tmp/test1
+    chmod 644 /tmp/test1
+    ls /tmp/test2 || touch /tmp/test2
+    chmod 777 /tmp/test2
+    find /tmp -type f -perm 644 | grep test1
+    CHECK_RESULT $? 0 0 "find by perm failed"
+    find /tmp -type f -perm 644 | grep test2
+    CHECK_RESULT $? 1 0 "found other perm file"
+
+    find --help | grep "Usage"
+    CHECK_RESULT $?
     LOG_INFO "Finish test!"
 }
 
-function post_test(){
+function post_test() {
     LOG_INFO "start environment cleanup."
-    chattr -i test.txt
-    rm -f ./test.txt
+    rm -rf /tmp/test1
+    rm -rf /tmp/test2
+    export LANG=${OLD_LANG}
     LOG_INFO "Finish environment cleanup!"
-
 }
+
 main $@

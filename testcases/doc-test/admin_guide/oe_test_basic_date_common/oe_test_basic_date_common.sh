@@ -28,13 +28,13 @@ function run_test() {
     date | grep ${year} | grep -i 'cst'
     CHECK_RESULT $?
     date01=$(date | awk -F ' ' '{print $1,$2,$3}')
-    date -d 2020.01-01 | grep "Wed Jan  1 00:00:00 CST 2020."
+    date -d 2020-01-01 | grep "Wed Jan  1 00:00:00 CST 2020."
     date02=$(date | awk -F ' ' '{print $1,$2,$3}')
     [ "$date01" == "$date02" ]
-    CHECK_RESULT $? $date01 $date02
+    CHECK_RESULT $? 
     date -s "10:30:00" | grep "10:30:00"
     CHECK_RESULT $?
-    date -s "2015-02-04 10:30:00" | grep "10:30:00" | grep 2015 | grep -i feb | grep -i wed
+    date -s "2015-02-04 10:30:00" | grep "10:30:00" | grep 2015 | grep -i Feb | grep -i Wed
     CHECK_RESULT $?
     hwclock -w
     CHECK_RESULT $?
@@ -42,8 +42,10 @@ function run_test() {
     CHECK_RESULT $?
     date -s "$time"
     CHECK_RESULT $?
+    date --utc | grep "UTC"
+    CHECK_RESULT $? 0 0 "date --utc failed"
     hwclock -w
-    CHECK_RESULT $?
+    CHECK_RESULT $?    
     LOG_INFO "End of testcase execution!"
 }
 

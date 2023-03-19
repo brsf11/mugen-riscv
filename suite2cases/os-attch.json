@@ -1,0 +1,147 @@
+{
+    "path": "$OET_PATH/testcases/system-test/system-integration/os-basic",
+    "machine type": "kvm",
+    "add network interface": 2,
+    "add disk": [
+        2,
+        2,
+        2,
+        2
+    ],
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_shutdown",
+            "machine num": 2
+        },
+        {
+            "name": "oe_test_ntp_set_date_time"
+        },
+        {
+            "name": "oe_test_find_by_perm"
+        },
+        {
+            "name": "oe_test_more"
+        },
+        {
+            "name": "oe_test_sed"
+        },
+        {
+            "name": "oe_test_updatedb"
+        },
+        {
+            "name": "oe_test_tee"
+        },
+        {
+            "name": "oe_test_dircolors"
+        },
+        {
+            "name": "oe_test_declare"
+        },
+        {
+            "name": "oe_test_enable"
+        },
+        {
+            "name": "oe_test_set"
+        },
+        {
+            "name": "oe_test_unset"
+        },
+        {
+            "name": "oe_test_unalias"
+        },
+        {
+            "name": "oe_test_logname"
+        },
+        {
+            "name": "oe_test_last"
+        },
+        {
+            "name": "oe_test_lastb"
+        },
+        {
+            "name": "oe_test_nice"
+        },
+        {
+            "name": "oe_test_renice"
+        },
+        {
+            "name": "oe_test_w"
+        },
+        {
+            "name": "oe_test_ar"
+        },
+        {
+            "name": "oe_test_chgrp"
+        },
+        {
+            "name": "oe_test_ln_002"
+        },
+        {
+            "name": "oe_test_umask"
+        },
+        {
+            "name": "oe_test_mktemp"
+        },
+        {
+            "name": "oe_test_split"
+        },
+        {
+            "name": "oe_test_file_002"
+        },
+        {
+            "name": "oe_test_cksum"
+        },
+        {
+            "name": "oe_test_colrm"
+        },
+        {
+            "name": "oe_test_cat_002"
+        },
+        {
+            "name": "oe_test_csplit"
+        },
+        {
+            "name": "oe_test_ed"
+        },
+        {
+            "name": "oe_test_look"
+        },
+        {
+            "name": "oe_test_grep_002"
+        },
+        {
+            "name": "oe_test_sort_001"
+        },
+        {
+            "name": "oe_test_expr"
+        },
+        {
+            "name": "oe_test_uniq"
+        },
+        {
+            "name": "oe_test_dir"
+        },
+        {
+            "name": "oe_test_du"
+        },
+        {
+            "name": "oe_test_sfdisk"
+        },
+        {
+            "name": "oe_test_fsck",
+            "add disk":[
+                2,
+                2,
+                2,
+                2
+            ]  
+        },
+        {
+            "name": "oe_test_badblocks"
+        },
+        {
+            "name": "oe_test_basic_package"
+        }
+    ]
+}
