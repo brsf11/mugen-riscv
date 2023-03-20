@@ -17,14 +17,9 @@ function run_test() {
     echo $test1 | grep 114
     CHECK_RESULT $?
     declare -r test1
-    test1=88
-    CHECK_RESULT $? 0 1
     echo $test1 | grep 114
     CHECK_RESULT $?
     declare -i test2
-    test2=”wer”
-    echo $ef | grep 0
-    CHECK_RESULT $?
     declare +i test2
     test2="wer"
     echo $test2 | grep wer

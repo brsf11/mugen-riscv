@@ -12,7 +12,7 @@
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function post_test() {
+function pre_test() {
     LOG_INFO "Start environment preparation."
     ls /tmp/test && rm -rf /tmp/test
     for ((i=1;i<=10;i+=1))
@@ -27,7 +27,7 @@ function run_test() {
     sed -i 3a\newLine /tmp/test
     grep newLine /tmp/test
     CHECK_RESULT $? 0 0 "append new line failed"
-    nl /tmp/test | sed '3d' | grep "newLine"
+    nl /tmp/test | sed '4d' | grep "newLine"
     CHECK_RESULT $? 0 1 "delete line failed"
     nl /tmp/test | sed '2i this is add_word' | grep "this"
     CHECK_RESULT $? 0 0 "add word when display failed"

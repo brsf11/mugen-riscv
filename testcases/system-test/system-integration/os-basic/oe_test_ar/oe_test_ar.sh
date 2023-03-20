@@ -13,13 +13,13 @@ source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start executing testcase!"
     touch test1.c test2.c
-    ar rv test1.bak *.c | grep creating
+    ar rv test1.bak *.c 2>&1 | grep creating
     CHECK_RESULT $?
     ar t test1.bak | grep c
     CHECK_RESULT $?
     ar d test1.bak test1.c
     ar t test1.bak | grep test1
-    CHECK_RESULT $?
+    CHECK_RESULT $? 0 1
     LOG_INFO "End of testcase execution!"
 }
 

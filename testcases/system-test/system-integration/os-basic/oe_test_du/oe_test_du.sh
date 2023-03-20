@@ -22,7 +22,7 @@ function run_test() {
     LOG_INFO "Start testing..."
     du test | grep -E "[0-9]"
     CHECK_RESULT $?
-    du test | grep -E "[BbKkGg]"
+    du -h test | grep -E "[BbKkGg]"
     CHECK_RESULT $?
     du -s /home | grep -E "[0-9]"
     CHECK_RESULT $?

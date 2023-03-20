@@ -12,7 +12,7 @@
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
-function post_test() {
+function pre_test() {
     LOG_INFO "Start environment preparation."
     ls test && rm -rf test
     for ((i=1;i<=100;i+=1))

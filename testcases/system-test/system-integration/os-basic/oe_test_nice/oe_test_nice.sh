@@ -16,7 +16,7 @@ function run_test() {
     CHECK_RESULT $?
     nice nice | grep 10
     CHECK_RESULT $?
-    nice -n -21 nice | grep -20
+    nice -n -21 nice | grep "20"
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"
 }

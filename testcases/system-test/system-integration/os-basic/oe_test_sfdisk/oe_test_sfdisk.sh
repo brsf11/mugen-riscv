@@ -12,12 +12,8 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    alias lx=ls
-    lx -lh | grep total
+    sfdisk -l | grep Disk
     CHECK_RESULT $?
-    unalias lx
-    lx
-    CHECK_RESULT $? 0 1
     LOG_INFO "End of testcase execution!"
 }
 

@@ -12,17 +12,17 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    enable | grep passwd
+    enable | grep pwd
     CHECK_RESULT $?
-    enable -n passwd
-    enable | grep passwd
+    enable -n pwd
+    enable | grep pwd
     CHECK_RESULT $? 0 1
     LOG_INFO "End of testcase execution!"
 }
 
 function post_test() {
     LOG_INFO "Start to restore the test environment."
-    enable -a passwd
+    enable -a pwd
     LOG_INFO "End to restore the test environment."
 }
 

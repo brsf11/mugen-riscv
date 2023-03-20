@@ -23,19 +23,18 @@ function run_test() {
     grep --help | grep "Usage"
     CHECK_RESULT $?
 
-    ls /tmp/test && rm -rf /tmp/test
-    echo 'abc' >/tmp/test1
-    echo 'acd' >/tmp/test2
-    echo 'ace' >/tmp/test3
-    echo 'bcf' >/tmp/test4
-    grep -l a /tmp/*
+    echo 'abc' >test1
+    echo 'acd' >test2
+    echo 'ace' >test3
+    echo 'bcf' >test4
+    grep -l a ./*
     CHECK_RESULT $?
     LOG_INFO "Finish test!"
 }
 
 function post_test() {
     LOG_INFO "start environment cleanup."
-    rm -rf /tmp/test*
+    rm -rf test*
     export LANG=${OLD_LANG}
     LOG_INFO "Finish environment cleanup!"
 }

@@ -17,7 +17,7 @@ function run_test() {
     colrm 1 5 <<EOF > test
 123456789
 EOF
-    grep 2346789 test
+    grep 6789 test
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

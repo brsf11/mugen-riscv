@@ -43,7 +43,7 @@ function run_test() {
     res=$(sort -m sort_test.txt sort_test1.txt | grep -E "peach|hello" | head -1)
     [ "$res" == "apple peach" ]
     CHECK_RESULT $? 0 0 "sort -m failed"
-    res=res=$(sort -m sort_test.txt sort_test1.txt | grep -E "peach|hello" | tail -1)
+    res=$(sort -m sort_test.txt sort_test1.txt | grep -E "peach|hello" | tail -1)
     [ "$res" == "hello" ]
     CHECK_RESULT $? 0 0 "sort -m failed"
     sort --help > /dev/null 2>&1

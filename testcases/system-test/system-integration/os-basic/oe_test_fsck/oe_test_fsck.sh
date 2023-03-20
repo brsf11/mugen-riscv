@@ -28,7 +28,7 @@ function run_test() {
     LOG_INFO "Start executing testcase."
     fsck -t msdos -a "${TEST_DISK}1" | grep fsck
     CHECK_RESULT $?
-    fsck.minix "${TEST_DISK}1" | grep fsck.minix
+    fsck.minix "${TEST_DISK}1" 2>&1 | grep fsck.minix
     CHECK_RESULT $?
     LOG_INFO "Finish testcase execution."
 }

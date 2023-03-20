@@ -12,6 +12,12 @@
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
+function pre_test() {
+    LOG_INFO "Start environment preparation."
+    DNF_INSTALL ed
+    LOG_INFO "End of environmental preparation!"
+}
+
 function run_test() {
     LOG_INFO "Start to run test."
     echo -e "a\nLove\nLive\n.\ni\nmuse\n.\nw read.txt" | ed
@@ -23,6 +29,7 @@ function run_test() {
 function post_test() {
     LOG_INFO "Start to restore the test environment."
     rm -rf read.txt
+    DNF_REMOVE
     LOG_INFO "End to restore the test environment."
 }
 
