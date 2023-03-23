@@ -24,7 +24,7 @@ function run_test() {
     dbus-send --system --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus.ListActivatableNames | grep array
     CHECK_RESULT $? 0 0 "Failed to execute dbus-send"
     dbus-send --system --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus.ListActivatableNames | grep org.freedesktop
-    CHECK_RESULT $? 0 0 "Failed to execute dbus-send"
+    CHECK_RESULT $? 0 0 "Failed to check dbus-send"
     LOG_INFO "End to run test."
 }
 

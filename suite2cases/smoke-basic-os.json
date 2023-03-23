@@ -44,6 +44,9 @@
             "name": "oe_test_file_001"
         },
         {
+            "name": "oe_test_golang"
+        },
+        {
             "name": "oe_test_grep_001"
         },
         {
@@ -65,6 +68,9 @@
             "name": "oe_test_iscsi"
         },
         {
+            "name": "oe_test_krb5"
+        },
+        {
             "name": "oe_test_ln_001"
         },
         {
@@ -74,7 +80,13 @@
             "name": "oe_test_localectl_001"
         },
         {
+            "name": "oe_test_logrotate_002"
+        },
+        {
             "name": "oe_test_log_001"
+        },
+        {
+            "name": "oe_test_logrotate_001"
         },
         {
             "name": "oe_test_ls_001"
@@ -264,6 +276,484 @@
         },
         {
             "name": "oe_test_dbus-send"
+        },
+        {
+            "name": "oe_test_dbus"
+        },
+        {
+            "name": "oe_test_dbus-uuidgen"
+        },
+        {
+            "name": "oe_test_dhclient_01"
+        },
+        {
+            "name": "oe_test_dracut"
+        },
+        {
+            "name": "oe_test_ebtables"
+        },
+        {
+            "name": "oe_test_ethtool_01"
+        },
+        {
+            "name": "oe_test_firewalld_server"
+        },
+        {
+            "name": "oe_test_glibc_getaddrinfo_01"
+        },
+        {
+            "name": "oe_test_glibc_getaddrinfo_02"
+        },
+        {
+            "name": "oe_test_grub2_mkconfig"
+        },
+        {
+            "name": "oe_test_gzip"
+        },
+        {
+            "name": "oe_test_hwclock"
+        },
+        {
+            "name": "oe_test_hwdata"
+        },
+        {
+            "name": "oe_test_ifconfig_ipv6_01"
+        },
+        {
+            "name": "oe_test_ip6tables_01"
+        },
+        {
+            "name": "oe_test_ip6tables_02"
+        },
+        {
+            "name": "oe_test_ip_ipv6_01"
+        },
+        {
+            "name": "oe_test_ip_ipv6_02"
+        },
+        {
+            "name": "oe_test_ip_ipv6_03"
+        },
+        {
+            "name": "oe_test_ip_ipv6_04"
+        },
+        {
+            "name": "oe_test_iproute_ipv6_01"
+        },
+        {
+            "name": "oe_test_iproute"
+        },
+        {
+            "name": "oe_test_ip_rule_01"
+        },
+        {
+            "name": "oe_test_ip_rule_02"
+        },
+        {
+            "name": "oe_test_iptables-save"
+        },
+        {
+            "name": "oe_test_iptables"
+        },
+        {
+            "name": "oe_test_ipv6_BRIDGE"
+        },
+        {
+            "name": "oe_test_ipv6_dnsmasq"
+        },
+        {
+            "name": "oe_test_IPV6_traceroute6_01"
+        },
+        {
+            "name": "oe_test_IPV6_traceroute6_02"
+        },
+        {
+            "name": "oe_test_IPV6_traceroute6_tracepath6"
+        },
+        {
+            "name": "oe_test_ipv6_VLAN_01"
+        },
+        {
+            "name": "oe_test_ipv6_VLAN_02"
+        },
+        {
+            "name": "oe_test_lldpad"
+        },
+        {
+            "name": "oe_test_iscsid"
+        },
+        {
+            "name": "oe_test_less"
+        },
+        {
+            "name": "oe_test_libcgroup_01"
+        },
+        {
+            "name": "oe_test_libcgroup_02"
+        },
+        {
+            "name": "oe_test_libcgroup_03"
+        },
+        {
+            "name": "oe_test_libcgroup_04"
+        },
+        {
+            "name": "oe_test_libuser_sm"
+        },
+        {
+            "name": "oe_test_losetup"
+        },
+        {
+            "name": "oe_test_lsof"
+        },
+        {
+            "name": "oe_test_lz4_01"
+        },
+        {
+            "name": "oe_test_lz4_02"
+        },
+        {
+            "name": "oe_test_maildrop_delivery_agent"
+        },
+        {
+            "name": "oe_test_mktemp"
+        },
+        {
+            "name": "oe_test_ncurses"
+        },
+        {
+            "name": "oe_test_nfs_01"
+        },
+        {
+            "name": "oe_test_nfs_02"
+        },
+        {
+            "name": "oe_test_nfs_03"
+        },
+        {
+            "name": "oe_test_pcre_001"
+        },
+        {
+            "name": "oe_test_nmap"
+        },
+        {
+            "name": "oe_test_normal_tcpdump_03"
+        },
+        {
+            "name": "oe_test_ntp_01"
+        },
+        {
+            "name": "oe_test_ntp_02"
+        },
+        {
+            "name": "oe_test_os-prober_01"
+        },
+        {
+            "name": "oe_test_os-prober_02"
+        },
+        {
+            "name": "oe_test_perl"
+        },
+        {
+            "name": "oe_test_python_01"
+        },
+        {
+            "name": "oe_test_python_pip_install"
+        },
+        {
+            "name": "oe_test_python_subprocess_01"
+        },
+        {
+            "name": "oe_test_python_subprocess_02"
+        },
+        {
+            "name": "oe_test_python_subprocess_03"
+        },
+        {
+            "name": "oe_test_gettext"
+        },
+        {
+            "name": "oe_test_python_urllib3_urlopen_01"
+        },
+        {
+            "name": "oe_test_python_urllib3_urlopen_02"
+        },
+        {
+            "name": "oe_test_python_urllib3_urlopen_03"
+        },
+        {
+            "name": "oe_test_route_ipv4"
+        },
+        {
+            "name": "oe_test_route_ipv6"
+        },
+        {
+            "name": "oe_test_rpcbind"
+        },
+        {
+            "name": "oe_test_rpm_cmd"
+        },
+        {
+            "name": "oe_test_rpmrebuild"
+        },
+        {
+            "name": "oe_test_rsyslog_01"
+        },
+        {
+            "name": "oe_test_rsyslog_02"
+        },
+        {
+            "name": "oe_test_rsyslog_03"
+        },
+        {
+            "name": "oe_test_rsyslog_04"
+        },
+        {
+            "name": "oe_test_rsyslog_05"
+        },
+        {
+            "name": "oe_test_rsyslog_06"
+        },
+        {
+            "name": "oe_test_rsyslog_07"
+        },
+        {
+            "name": "oe_test_rsyslog_08"
+        },
+        {
+            "name": "oe_test_rsyslog_09"
+        },
+        {
+            "name": "oe_test_rsyslog_10"
+        },
+        {
+            "name": "oe_test_rule_ipv6"
+        },
+        {
+            "name": "oe_test_service"
+        },
+        {
+            "name": "oe_test_setools"
+        },
+        {
+            "name": "oe_test_shadow"
+        },
+        {
+            "name": "oe_test_sshd"
+        },
+        {
+            "name": "oe_test_stat"
+        },
+        {
+            "name": "oe_test_sudo_E"
+        },
+        {
+            "name": "oe_test_sudo_maxseq"
+        },
+        {
+            "name": "oe_test_sudo"
+        },
+        {
+            "name": "oe_test_sudo_U"
+        },
+        {
+            "name": "oe_test_systemd_journald"
+        },
+        {
+            "name": "oe_test_systemd-update-utmp"
+        },
+        {
+            "name": "oe_test_tcpdump"
+        },
+        {
+            "name": "oe_test_tftp_ipv6"
+        },
+        {
+            "name": "oe_test_expat"
+        },
+        {
+            "name": "oe_test_attr_001"
+        },
+        {
+            "name": "oe_test_procps-ng-uptime"
+        },
+        {
+            "name": "oe_test_procps-ng-sysctl"
+        },
+        {
+            "name": "oe_test_unalias_001"
+        },
+        {
+            "name": "oe_test_procps-ng-uptime"
+        },
+        {
+            "name": "oe_test_time_01"
+        },
+        {
+            "name": "oe_test_time_02"
+        },
+        {
+            "name": "oe_test_wget"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_01"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_02"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_03"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_04"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_05"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_06"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_07"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_08"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_09"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_10"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_11"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_12"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_13"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_14"
+        },
+        {
+            "name": "oe_test_systemd_SCEN_15"
+        },
+	{
+	    "name": "oe_test_find"
+	},
+	{
+	    "name": "oe_test_source"
+	},
+	{
+	    "name": "oe_test_pwd_002"
+	},
+	{
+	    "name": "oe_test_mtr"
+	},
+	{
+	    "name": "oe_test_sadf_001"
+	},
+	{
+	    "name": "oe_test_pstree"
+	},
+	{
+	    "name": "oe_test_vmstat"
+	},
+	{
+	    "name": "oe_test_let"
+	},
+	{
+	    "name": "oe_test_unset_001"
+	},
+        {
+            "name": "oe_test_aide_config_cfgfile"
+        },
+        {
+            "name": "oe_test_aide_config_check"
+        },
+        {
+            "name": "oe_test_aide_basic_info"
+        },
+        {
+            "name": "oe_test_aide_init_database"
+        },
+        {
+            "name": "oe_test_aide_security"
+        },
+        {
+            "name": "oe_test_audit_abnormal_kill"
+        },
+        {
+            "name": "oe_test_audit_fixed_memory_01"
+        },
+        {
+            "name": "oe_test_audit_fixed_memory_02"
+        },
+        {
+            "name": "oe_test_bbr_02"
+        },
+        {
+            "name": "oe_test_bbr_04"
+        },
+        {
+            "name": "oe_test_bonding_SCEN_05"
+        },
+        {
+            "name": "oe_test_ima_v2_manual_gen_digest_01"
+        },
+        {
+            "name": "oe_test_ipv6_sysctl_01"
+        },
+        {
+            "name": "oe_test_ipv6_sysctl_02"
+        },
+        {
+            "name": "oe_test_IPVLAN_07"
+        },
+        {
+            "name": "oe_test_mpstat_01"
+        },
+        {
+            "name": "oe_test_mtr_01"
+        },
+        {
+            "name": "oe_test_Netlink_ip_01"
+        },
+        {
+            "name": "oe_test_netstat_01"
+        },
+        {
+            "name": "oe_test_normal_tcpdump_02"
+        },
+        {
+            "name": "oe_test_normal_tcpdump_04"
+        },
+        {
+            "name": "oe_test_Numad_01"
+        },
+        {
+            "name": "oe_test_perf_top_01"
+        },
+        {
+            "name": "oe_test_sar_01"
+        },
+        {
+            "name": "oe_test_user_debug_iotop_03"
+        },
+	{
+            "name": "oe_test_user_debug_iotop_SCEN_01"
+        },
+        {
+	     "name": "oe_test_sed_001"
+        },
+        {
+	     "name": "oe_test_xz"
+        },
+	 {
+	     "name": "oe_test_tr"
         }
     ]
 }
+

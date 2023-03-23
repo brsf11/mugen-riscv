@@ -45,7 +45,7 @@ function run_test() {
     getenforce | grep Enforcing && setenforce 0
     systemctl restart rsyncd
     CHECK_RESULT $?
-    rsync -a $0 localhost::test
+    rsync -a $0 $(hostname)::test
     CHECK_RESULT $?
     diff $0 "${des_dir}"/$0
     CHECK_RESULT $?

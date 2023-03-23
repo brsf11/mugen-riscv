@@ -24,6 +24,7 @@ function pre_test() {
     DNF_INSTALL "diffutils"
     local=$(localectl status | grep System | awk -F "=" '{print $2}')
     localectl set-locale LANG=zh_CN.utf8    
+    source /etc/locale.conf
     LOG_INFO "End of environmental preparation!"
 
 }
@@ -56,6 +57,7 @@ function post_test() {
     rm -rf /opt/file{1,2,3}
     DNF_REMOVE
     localectl set-locale LANG=${local}
+    source /etc/locale.conf
     LOG_INFO "Finish environment cleanup!"
 }
 

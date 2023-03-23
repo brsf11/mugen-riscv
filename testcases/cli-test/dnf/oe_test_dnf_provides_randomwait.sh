@@ -23,7 +23,7 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
     DNF_INSTALL time
-    dnf list --available | grep "arch\|"| grep -E "x86_64|riscv" | awk '{print $1}' | awk -F . 'OFS="."{$NF="";print}' | awk '{print substr($0, 1, length($0)-1)}' >pkg_list
+    dnf list --available | grep "arch\|x86_64" | awk '{print $1}' | awk -F . 'OFS="."{$NF="";print}' | awk '{print substr($0, 1, length($0)-1)}' >pkg_list
     LOG_INFO "Finish preparing the test environment."
 }
 

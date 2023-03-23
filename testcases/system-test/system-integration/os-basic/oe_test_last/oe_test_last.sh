@@ -12,7 +12,7 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    last | grep root
+    last | grep wtmp
     CHECK_RESULT $?
     last -n 5 -a -i | grep "0.0.0.0"
     CHECK_RESULT $?

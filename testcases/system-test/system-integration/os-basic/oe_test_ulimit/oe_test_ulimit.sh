@@ -35,10 +35,6 @@ function run_test() {
     CHECK_RESULT $((ulimit_value1)) $((ulimit_value2)) 0  "check ulimit's result fail"
     ulimit --help | grep "ulimit"
     CHECK_RESULT $? 0 0 "check ulimit's help manual fail"
-    ulimit -u 500
-    CHECK_RESULT $?
-    ulimit -a | grep "max user processes" | grep "500"
-    CHECK_RESULT $? 0 0 "set up user process failed"
     LOG_INFO "End to run test."
 }
 

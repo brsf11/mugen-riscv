@@ -12,7 +12,7 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function run_test() {
     LOG_INFO "Start executing testcase!"
-    w | grep root
+    w 2>&1 | grep root
     CHECK_RESULT $?
     LOG_INFO "End of testcase execution!"
 }

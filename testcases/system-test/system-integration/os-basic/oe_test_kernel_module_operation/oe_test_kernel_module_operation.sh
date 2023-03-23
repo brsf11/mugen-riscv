@@ -18,6 +18,7 @@
 # ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
+
 function config_params() {
     LOG_INFO "Start to config params of the case."
     depmod

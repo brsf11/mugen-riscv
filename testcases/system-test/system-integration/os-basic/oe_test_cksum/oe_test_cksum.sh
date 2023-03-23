@@ -9,27 +9,49 @@
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
 
+# #############################################
+# @Author    :   deepin12
+# @Contact   :   chenyia@uniontech.com
+# @Date      :   2022-11-14
+# @License   :   Mulan PSL v2
+# @Desc      :   Command test-cksum 
+# ############################################
 
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 
 function pre_test() {
-    LOG_INFO "Start environment preparation."
-    ls test && rm -rf test
-    echo 'LoveLive' > test
-    LOG_INFO "End of environmental preparation!"
+    LOG_INFO "Start to prepare the test environment."
+    OLD_LANG=$LANG
+    export LANG=en_US.UTF-8    
+    LOG_INFO "End to prepare the test environment."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."
-    cksum test | grep test
-    CHECK_RESULT $?
+    echo "111" >testfile1
+    CHECK_RESULT $? 0 0 "check create file fail"
+    sum=`cksum testfile1 |awk '{print$1}'`
+    CHECK_RESULT $? 0 0  "check integrity of file fail"
+    echo "222" >testfile1
+    CHECK_RESULT $? 0 0 "check modify file fail"
+    cksum testfile1 |awk '{print$1}'|grep $sum
+    CHECK_RESULT $? 0 1 
+    cksum --help|grep cksum
+    CHECK_RESULT $? 0 0  "check command fail"
+    cksum --version|grep "[0-9].[0-9]"
+    CHECK_RESULT $? 0 0  "check command fail"
+    rm -rf testfile1
+    CHECK_RESULT $? 0 0 "check delete file fail"
     LOG_INFO "End to run test."
 }
 
 function post_test() {
-    LOG_INFO "Start to restore the test environment."
-    rm -rf test
-    LOG_INFO "End to restore the test environment."
+    LOG_INFO "start environment cleanup."
+    export LANG=${OLD_LANG}
+    LOG_INFO "Finish environment cleanup!"
 }
 
 main "$@"
+
+
+

@@ -36,10 +36,10 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start testing..."
-    curl -o index.html localhost && return 1
+    curl -o index.html $(hostname) && return 1
     systemctl restart haproxy
     CHECK_RESULT $?
-    curl -o index.html localhost
+    curl -o index.html $(hostname)
     CHECK_RESULT $?
     grep -q "openEuler" index.html
     CHECK_RESULT $?
@@ -50,7 +50,7 @@ function post_test() {
     LOG_INFO "start environment cleanup."
     systemctl stop haproxy
     systemctl stop httpd
-    mv httpd.conf $conf
+    mv -f httpd.conf $conf
     setenforce "$se_stat"
     rm -rf index.html
     DNF_REMOVE
