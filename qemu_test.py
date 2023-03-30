@@ -629,7 +629,7 @@ if __name__ == "__main__":
         preVM.waitReady()
         if preImg == True:
             print(ssh_exec(preVM,'dnf install git',timeout=120)[1])
-            print(ssh_exec(preVM,'cd /root \n mkdir GitRepo \n cd GitRepo \n git clone https://github.com/KotorinMinami/mugen-riscv.git',timeout=600)[1])
+            print(ssh_exec(preVM,'cd /root \n mkdir GitRepo \n cd GitRepo \n git clone https://github.com/brsf11/mugen-riscv.git',timeout=600)[1])
             print(ssh_exec(preVM,'cd /root/GitRepo/mugen-riscv \n bash dep_install.sh',timeout=300)[1])
             print(ssh_exec(preVM,'cd /root/GitRepo/mugen-riscv \n bash mugen.sh -c --port 22 --user root --password openEuler12#$ --ip 127.0.0.1 2>&1',timeout=300)[1])
             sshd_config = ssh_exec(preVM, 'cat /etc/ssh/sshd_config' , timeout=100)[1]
