@@ -19,6 +19,10 @@
 source ${OET_PATH}/libs/locallibs/common_lib.sh
 function pre_test() {
     LOG_INFO "Start environment preparation."
+    rmpck=$(yum list --installed | grep -E "mysql|mariadb" | grep server | awk -F ' ' '{print $1}')
+    if [ "${rmpck}x" != "x" ] ; then
+        DNF_REMOVE 1 "${rmpck}"
+    fi
     systemctl stop firewalld
     systemctl disable firewalld
     setenforce 0
@@ -149,6 +153,13 @@ expect eof
     userdel -r mysql
     groupdel mysql
     rm -rf db1.sql db1tb1.sql alldb.sql data tmp run testlog*
+    if [ "${rmpck}x" != "x" ] ; then
+        installedpck=$(yum list --installed | grep -E "mysql|mariadb" | grep server | awk -F ' ' '{print $1}')
+        if [ "${installedpck}x" != "x" ]; then
+            yum remove -y ${installedpck}
+        fi
+        yum install -y ${rmpck}
+    fi
     LOG_INFO "Finish environment cleanup."
 }
 

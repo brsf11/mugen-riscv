@@ -66,7 +66,7 @@ function run_test() {
     CHECK_RESULT $? 0 0 "failed to create VG"
     vgextend test /dev/${local_disk1} | grep "successfully extended"
     CHECK_RESULT $? 0 0 "failed to extend VG"
-    vgreduce test /dev/${local_disk1} -q | grep '{'
+    vgreduce test /dev/${local_disk1} -q | grep 'Removed'
     CHECK_RESULT $? 0 0 "failed to reduce VG -q"    
     vgremove -f test
     vgcreate test /dev/${local_disk} | grep "successfully created"

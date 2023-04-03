@@ -22,7 +22,7 @@ function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
     dnf list available | grep extra | awk '{print$1}' | awk -F. '{print$1}' > pkgs_extra
-    pkgs=$(shuf -n1 pkg_extra)
+    pkgs=$(shuf -n1 pkgs_extra)
     LOG_INFO "Finish preparing the test environment."
 }
 

@@ -31,7 +31,7 @@ function run_test() {
     pvdisplay | grep "PV UUID"
     pvcreate -y /dev/${local_disk} --setphysicalvolumesize 30MB | grep "successfully created"
     CHECK_RESULT $?
-    pvs | sed -n 3p | awk {'print$4'} | grep "30.00m"
+    pvs | awk {'print$4'} | grep "30.00m"
     CHECK_RESULT $?
     pvcreate -y /dev/${local_disk} --dataalignment 10MB | grep "successfully created"
     CHECK_RESULT $?
