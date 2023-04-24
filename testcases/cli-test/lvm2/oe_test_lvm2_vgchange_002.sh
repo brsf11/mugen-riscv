@@ -36,6 +36,8 @@ function run_test() {
     CHECK_RESULT $? 0 0 "create VG failed"
     vgchange --longhelp | grep "Change volume group attributes"
     CHECK_RESULT $? 0 0 "vgchange --longhelp failed"
+    vgchange -ay test | grep "active"
+    CHECK_RESULT $? 0 0 "vgchange -ay failed"
     vgchange --help | grep "Change volume group attributes"
     CHECK_RESULT $? 0 0 "vgchange --help failed"
     vgchange --version | grep "LVM version"

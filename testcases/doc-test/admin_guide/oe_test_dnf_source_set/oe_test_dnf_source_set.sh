@@ -25,7 +25,7 @@ function run_test() {
     CHECK_RESULT $(grep ${reponame} -A 4 /etc/yum.repos.d/openEuler.repo | grep "enabled=" | awk -F '=' '{print$2}') 0
     dnf config-manager --set-enable "${reponame}"
     CHECK_RESULT $?
-    CHECK_RESULT $(grep ${reponame} -A 4 /etc/yum.repos.d/openEuler.repo | grep "enabled=" | awk -F '=' '{print$2}') 0
+    CHECK_RESULT $(grep ${reponame} -A 4 /etc/yum.repos.d/openEuler.repo | grep "enabled=" | awk -F '=' '{print$2}') 1
     LOG_INFO "End of testcase execution."
 }
 

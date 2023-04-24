@@ -26,6 +26,8 @@ function pre_test(){
 
 function run_test() {
     LOG_INFO "Start testing..."
+    lsattr ./test.txt | grep '\-'
+    CHECK_RESULT $? 0 0 "lsattr failed" 
     chattr +i ./test.txt
     lsattr ./test.txt | grep '\-i\-'
     CHECK_RESULT $? 0 0 "lsattr failed"

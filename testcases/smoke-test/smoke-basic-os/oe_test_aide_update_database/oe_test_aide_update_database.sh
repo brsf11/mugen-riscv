@@ -36,7 +36,7 @@ function run_test() {
     test -f /var/lib/aide/aide.db.new.gz
     CHECK_RESULT $? 0 0 "Update execution failed"
     mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
-    aide --check | grep Changed entries:
+    aide --check | grep "Changed entries:"
     CHECK_RESULT $? 0 1 "Check execution failed"
     LOG_INFO "End to run test."
 }

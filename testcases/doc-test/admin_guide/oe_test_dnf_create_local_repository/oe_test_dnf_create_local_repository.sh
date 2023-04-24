@@ -25,9 +25,11 @@ function pre_test() {
 
 function run_test() {
 	LOG_INFO "Start executing testcase."
-	mount /dev/cdrom /mnt
 	mkdir -p /srv/repo/
-	cp -r /mnt/Packages /srv/repo/
+	dnf download vim
+	ls | grep vim
+	CHECK_RESULT $?
+	mv ./vim* /srv/repo/
 	createrepo --database /srv/repo/
 	CHECK_RESULT $?
 	find /srv/repo/repodata

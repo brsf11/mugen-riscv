@@ -22,9 +22,13 @@ function pre_test() {
     LOG_INFO "Start environment preparation."
     yum list | grep mysql.*-server
     if [ $? -eq 0 ]; then
+        rmpck=$(yum list --installed | grep mysql.*-server | awk -F ' ' '{print $1}')
+        if [ "${rmpck}x" != "x" ] ; then
+            DNF_REMOVE 1 "${rmpck}"
+        fi
         rm -rf /var/lib/mysql/*
-	pck=`yum list | grep mysql.*-server | awk -F ' ' '{print $1}'`
-        DNF_INSTALL ${pck}
+	    pck=`yum list | grep mysql.*-server | awk -F ' ' '{print $1}'`
+        DNF_INSTALL "${pck}"
         systemctl start mysqld
     else
         mysql_flag=1
@@ -152,6 +156,14 @@ expect eof
     test -z ${mysql_flag} || clean_mysql
     rm -rf log testlog* db1.sql db1tb1.sql alldb.sql
     DNF_REMOVE
+    if [ "${rmpck}x" != "x" ] ; then
+        installedpck=$(yum list --installed | grep mysql.*-server | awk -F ' ' '{print $1}')
+        if [ "${installedpck}x" != "x" ]; then
+            yum reinstall -y ${installedpck}
+        else
+            yum install -y ${rmpck}
+        fi
+    fi
     LOG_INFO "Finish environment cleanup."
 }
 

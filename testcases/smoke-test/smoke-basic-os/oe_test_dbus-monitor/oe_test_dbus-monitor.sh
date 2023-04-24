@@ -25,7 +25,7 @@ function run_test() {
     CHECK_RESULT $? 0 0 "Failed to execute dbus-monitor"
     SLEEP_WAIT 3
     grep signal testlog | grep "sender=org.freedesktop.DBus"
-    CHECK_RESULT $? 0 0 "Failed to execute dbus-monitor"
+    CHECK_RESULT $? 0 0 "Failed to check dbus-monitor"
     LOG_INFO "End to run test."
 }
 

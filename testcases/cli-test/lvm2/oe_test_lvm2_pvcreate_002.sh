@@ -31,7 +31,7 @@ function run_test() {
     CHECK_RESULT $?
     pvcreate /dev/${local_disk} -y --setphysicalvolumesize 50MB | grep "successfully created"
     CHECK_RESULT $?
-    pvs | sed -n 3p | awk {'print$4'} | grep "50.00m"
+    pvs | awk {'print$4'} | grep "50.00m"
     CHECK_RESULT $?
     pvcreate /dev/${local_disk} -y --setphysicalvolumesize 50MB --reportformat basic | grep "successfully created"
     CHECK_RESULT $?

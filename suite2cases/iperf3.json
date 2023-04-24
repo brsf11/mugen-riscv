@@ -14,8 +14,8 @@
             "name": "oe_test_iperf3_command_serverAndBase",
 	    "machine num": 2
         },
-	{
-	    "name": "oe_test_iperf3_client"
-	}
+        {
+            "name": "oe_test_iperf3_client"
+        }
     ]
 }

@@ -36,7 +36,7 @@ function run_test() {
     CHECK_RESULT $?
     su testuser -c "echo $SHELL" | grep "/bin/csh"
     CHECK_RESULT $? 0 1
-    sudo lshw -c network | grep -E "network|virtio"
+    sudo lshw -c network | grep "network"
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

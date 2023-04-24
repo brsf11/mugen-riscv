@@ -22,9 +22,13 @@ function pre_test() {
     LOG_INFO "Start environment preparation."
     yum list | grep mysql.*-server
     if [ $? -eq 0 ]; then
+        rmpck=$(yum list --installed | grep -E "mysql|mariadb" | grep server | awk -F ' ' '{print $1}')
+        if [ "${rmpck}x" != "x" ] ; then
+            DNF_REMOVE 1 "${rmpck}"
+        fi
         rm -rf /var/lib/mysql/*
-	pkgs=`yum list | grep mysql.*-server | awk -F ' ' '{print $1}'`
-        DNF_INSTALL ${pkgs}
+	    pkgs=`yum list | grep mysql.*-server | awk -F ' ' '{print $1}'`
+        DNF_INSTALL "${pkgs}"
 	CHECK_RESULT $?
         systemctl start mysqld
 	CHECK_RESULT $?
@@ -82,6 +86,13 @@ expect eof
     rm -rf log
     test -z ${mysql_flag} || clean_mysql
     DNF_REMOVE
+    if [ "${rmpck}x" != "x" ] ; then
+        installedpck=$(yum list --installed | grep -E "mysql|mariadb" | grep server | awk -F ' ' '{print $1}')
+        if [ "${installedpck}x" != "x" ]; then
+            yum remove -y ${installedpck}
+        fi
+        yum install -y ${rmpck}
+    fi
     LOG_INFO "Finish environment cleanup."
 }
 

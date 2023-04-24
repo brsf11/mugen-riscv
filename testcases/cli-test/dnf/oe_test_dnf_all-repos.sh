@@ -21,6 +21,8 @@ source "common/common_dnf.sh"
 function pre_test() {
     LOG_INFO "Start to prepare the test environment."
     deploy_env
+    dnf list available | grep extra | awk '{print$1}' | awk -F. '{print$1}' > pkgs_extra
+    pkgs=$(shuf -n1 pkgs_extra)
     LOG_INFO "Finish preparing the test environment."
 }
 
@@ -30,13 +32,13 @@ function run_test() {
     CHECK_RESULT $?
     dnf list --installed | grep vim-enhanced | grep @mainline
     CHECK_RESULT $?
-    dnf -y --repo=extra install helloworld | grep "Complete!"
+    dnf -y --repo=extra install $pkg | grep "Complete!"
     CHECK_RESULT $?
-    dnf list --installed | grep helloworld | grep extra
+    dnf list --installed | grep $pkg | grep extra
     CHECK_RESULT $?
     dnf -y --repo=epol list | grep epol
     CHECK_RESULT $?
-    dnf remove -y vim helloworld
+    dnf remove -y vim $pkg
     LOG_INFO "End of the test."
 }
 

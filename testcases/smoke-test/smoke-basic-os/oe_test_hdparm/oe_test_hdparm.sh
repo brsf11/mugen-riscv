@@ -22,7 +22,7 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 function pre_test() {
     LOG_INFO "Start environment preparation."
     DNF_INSTALL "hdparm util-linux"
-    disk=$(lsblk -a -o NAME,TYPE | grep -v NAME | head -1 | awk '{print $1}')
+    disk=$(lsblk -a -o NAME,TYPE | grep -v NAME | grep disk |  head -1 | awk '{print $1}')
     LOG_INFO "End of environmental preparation!"
 }
 

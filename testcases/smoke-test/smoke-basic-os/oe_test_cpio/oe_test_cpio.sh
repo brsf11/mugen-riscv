@@ -26,9 +26,9 @@ function run_test() {
     find . -depth -print | cpio -o >dir.cpio 2>&1
     CHECK_RESULT $? 0 0 "Failed to execute cpio"
     grep -a "Hello" dir.cpio
-    CHECK_RESULT $? 0 0 "Failed to execute cpio"
+    CHECK_RESULT $? 0 0 "Failed to find Hello"
     grep -a "block" dir.cpio
-    CHECK_RESULT $? 0 0 "Failed to execute cpio"
+    CHECK_RESULT $? 0 0 "Failed to find block"
     LOG_INFO "End to run test."
 }
 

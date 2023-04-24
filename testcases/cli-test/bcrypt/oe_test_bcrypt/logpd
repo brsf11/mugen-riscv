@@ -1,0 +1,4 @@
+spawn bcrypt -o test1
+couldn't execute "bcrypt": no such file or directory
+    while executing
+"spawn bcrypt -o test1"

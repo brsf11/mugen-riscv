@@ -3,6 +3,7 @@ import os
 import sys
 import json
 import argparse
+import re
 
 def LogInfo(log_content=""):
     print("INFO:  "+log_content)
@@ -183,6 +184,13 @@ class TestTarget():
                         os.system("sudo bash mugen.sh -f "+test_target+" -r "+testcase+" -x 2>&1 | tee -a exec.log")
                     else:
                         os.system("sudo bash mugen.sh -f "+test_target+" -r "+testcase+" 2>&1 | tee -a exec.log")
+                    for log in  os.listdir('logs/'+test_target+'/'+testcase):
+                        with open('logs/'+test_target+'/'+testcase+'/'+log , "r") as log_data:
+                            log_found = re.search(r'See "systemctl status (.*)" and "journalctl -xe(.*)" for details.' , log_data.read())
+                            if log_found is not None:
+                                os.system("sudo journalctl -xe --no-pager > logs/"+test_target+'/'+testcase+"/journelctl_for_"+log)
+                                os.system("sudo systemctl status "+log_found.group(1)+" --no-pager > logs/"+test_target+'/'+testcase+"/systemctl_for_"+log)
+
                     if(os.system("ls results/"+test_target+"/failed/"+testcase+" &> /dev/null") == 0):
                         failed_num += 1
                         temp_failed.append(testcase)

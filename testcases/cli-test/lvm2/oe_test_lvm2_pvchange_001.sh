@@ -32,6 +32,8 @@ function run_test() {
     CHECK_RESULT $?
     pvchange -x n /dev/${local_disk} 2>&1 | grep "Physical volume \"/dev/${local_disk}\" changed"
     CHECK_RESULT $?
+    pvchange -u /dev/${local_disk} 2>&1 | grep "Physical volume \"/dev/${local_disk}\" changed"
+    CHECK_RESULT $?
     pvchange --addtag gh /dev/${local_disk} 2>&1 | grep "Physical volume \"/dev/${local_disk}\" changed"
     CHECK_RESULT $?
     pvchange --deltag gh /dev/${local_disk} 2>&1 | grep "Physical volume \"/dev/${local_disk}\" changed"

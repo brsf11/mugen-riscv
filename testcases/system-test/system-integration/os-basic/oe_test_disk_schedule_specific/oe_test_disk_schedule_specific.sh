@@ -20,14 +20,13 @@ function config_params() {
     LOG_INFO "Start to config params of the case."
     check_free_disk
     old_scheduler=$(awk -F '[' '{print$2}' /sys/block/"${local_disk}"/queue/scheduler | awk -F ']' '{print$1}')
-    test_scheduler=$(awk '{print$2}' /sys/block/"${local_disk}"/queue/scheduler)
-    echo "$test_scheduler" >/sys/block/"${local_disk}"/queue/scheduler
+    echo bfq >/sys/block/"${local_disk}"/queue/scheduler
     LOG_INFO "End to config params of the case."
 }
 
 function run_test() {
     LOG_INFO "Start to run test."  
-    awk -F '[' '{print$2}' /sys/block/"${local_disk}"/queue/scheduler | awk -F ']' '{print$1}' | grep "$test_scheduler"
+    awk -F '[' '{print$2}' /sys/block/"${local_disk}"/queue/scheduler | awk -F ']' '{print$1}' | grep bfq
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

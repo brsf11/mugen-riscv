@@ -15,9 +15,13 @@ import json
 def ssh_exec(qemuVM,cmd,timeout=5):
     conn = paramiko.SSHClient()
     conn.set_missing_host_key_policy(paramiko.AutoAddPolicy)
-    conn.connect(qemuVM.ip,qemuVM.port,qemuVM.user,qemuVM.password,timeout=timeout,allow_agent=False,look_for_keys=False)
-    exitcode,output = ssh_cmd.pssh_cmd(conn,cmd)
-    ssh_cmd.pssh_close(conn)
+    try:
+        conn.connect(qemuVM.ip,qemuVM.port,qemuVM.user,qemuVM.password,timeout=timeout,allow_agent=False,look_for_keys=False)
+        exitcode,output = ssh_cmd.pssh_cmd(conn,cmd)
+        ssh_cmd.pssh_close(conn)
+    except :
+        print("ssh execute "+cmd+" failed")
+        exitcode , output = None , None
     return exitcode,output
 
 def sftp_get(qemuVM,remotedir,remotefile,localdir,timeout=5):
@@ -66,8 +70,8 @@ class Dispatcher(Thread):
         while notEmpty:
             if self.initTarget is not None:
                 tapnum = 0
-                if self.initTarget[2] > 1:
-                    if self.initTarget[3] > 1:
+                if self.initTarget[2] > 1 and self.qemuVM.runArgs.find('multiMachine') != -1:
+                    if self.initTarget[3] > 1 and self.qemuVM.runArgs.find('addNic') != -1:
                         tapnum = self.initTarget[2]*(self.initTarget[3]+1)
                         if tapnum > self.tapQueue.qsize():
                             self.targetQueue.put(self.initTarget)
@@ -136,7 +140,7 @@ class Dispatcher(Thread):
                                     self.tapQueue.put(self.attachVM[-1].tapls.pop())
                                 self.attachVM.pop()
                 else:
-                    if self.initTarget[3] > 1:
+                    if self.initTarget[3] > 1 and self.qemuVM.runArgs.find('addNic') != -1:
                         tapnum = self.initTarget[3]
                         if tapnum > self.tapQueue.qsize():
                             self.targetQueue.put(self.initTarget)
@@ -169,8 +173,8 @@ class Dispatcher(Thread):
                 except:
                     notEmpty = False
                 else:
-                    if target[2] > 1:
-                        if target[3] > 1:
+                    if target[2] > 1 and self.qemuVM.runArgs.find('multiMachine') != -1:
+                        if target[3] > 1 and self.qemuVM.runArgs.find('addNic') != -1:
                             tapnum = target[2]*(target[3]+1)
                             if tapnum > self.tapQueue.qsize():
                                 self.targetQueue.put(target)
@@ -237,7 +241,7 @@ class Dispatcher(Thread):
                                 while len(self.qemuVM.tapls) > 0:
                                     self.tapQueue.put(self.qemuVM.tapls.pop())
                     else:
-                        if target[3] > 1:
+                        if target[3] > 1 and self.qemuVM.runArgs.find('addNic') != -1:
                             tapnum = target[3]
                             if tapnum > self.tapQueue.qsize():
                                 self.targetQueue.put(target)

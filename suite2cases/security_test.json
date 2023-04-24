@@ -33,7 +33,7 @@
         },
         {
             "name": "oe_test_encrypt_data",
-	    "add disk": [10]
+	        "add disk": [10]
         },
         {
             "name": "oe_test_check_passwd_shadow"

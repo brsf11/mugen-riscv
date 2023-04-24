@@ -1,0 +1,11 @@
+{
+    "path": "$OET_PATH/testcases/system-test/system-integration/os-basic-shutdown",
+    "machine type": "kvm",
+    "machine num": 2,
+    "cases": [
+        {
+            "name": "oe_test_shutdown",
+            "machine num": 2
+        }
+    ]
+}

@@ -32,14 +32,14 @@ function pre_test() {
 
 function run_test() {
     LOG_INFO "Start testing..."
-    groupmod -g 88 testgroup1
+    groupmod -g 99 testgroup1
     CHECK_RESULT $?
-    grep testgroup1 /etc/group | grep 88
+    grep testgroup1 /etc/group | grep 99
     CHECK_RESULT $?
 
     groupmod -n testgroup2 testgroup1
     CHECK_RESULT $?
-    grep testgroup2 /etc/group | grep 88
+    grep testgroup2 /etc/group | grep 99
     CHECK_RESULT $?
 
     grep testgroup1 /etc/group

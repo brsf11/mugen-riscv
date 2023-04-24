@@ -21,7 +21,10 @@ function pre_test() {
     LOG_INFO "Start environment preparation."
     systemctl stop firewalld
     systemctl disable firewalld
-
+    rmpck=$(yum list --installed | grep -E "mysql|mariadb" | grep server | awk -F ' ' '{print $1}')
+    if [ "${rmpck}x" != "x" ] ; then
+        DNF_REMOVE 1 "${rmpck}"
+    fi
     setenforce 0
     groupadd mysql
     useradd -g mysql mysql
@@ -90,6 +93,13 @@ function post_test() {
     groupdel mysql
     rm -rf testlog
     DNF_REMOVE
+    if [ "${rmpck}x" != "x" ] ; then
+        installedpck=$(yum list --installed | grep -E "mysql|mariadb" | grep server | awk -F ' ' '{print $1}')
+        if [ "${installedpck}x" != "x" ]; then
+            yum remove -y ${installedpck}
+        fi
+        yum install -y ${rmpck}
+    fi
     LOG_INFO "Finish environment cleanup."
 }
 

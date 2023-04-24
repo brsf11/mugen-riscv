@@ -29,11 +29,7 @@ function run_test() {
     CHECK_RESULT $?
     ps -eo 'pmem,pid,comm,args' | sort -rk1 | sed -n 1p | awk -F " " {'print$1'} | grep "%MEM"
     CHECK_RESULT $?
-    grep '\[mq-deadline\]' /sys/block/vda/queue/scheduler
-    CHECK_RESULT $?
-    grep 'none' /sys/block/vda/queue/scheduler
-    CHECK_RESULT $?
-    grep -E 'kyber|bfq' /sys/block/vda/queue/scheduler
+    grep  '\[mq-deadline\] kyber bfq none' /sys/block/vda/queue/scheduler
     CHECK_RESULT $?
     LOG_INFO "End to run test."
 }

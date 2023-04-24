@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-  
+
 # Copyright (c) 2021 Huawei Technologies Co.,Ltd.ALL rights reserved.
 # This program is licensed under Mulan PSL v2.
 # You can use it according to the terms and conditions of the Mulan PSL v2.
@@ -20,7 +20,7 @@ source "$OET_PATH/libs/locallibs/common_lib.sh"
 
 function run_test() {
     LOG_INFO "Start testing..."
-    df | grep '/boot/efi'
+    df | grep '/boot'
     CHECK_RESULT $? 0 0 "df display error"
     df | grep 'G'
     CHECK_RESULT $? 1 0 "df default display error"
@@ -32,4 +32,3 @@ function run_test() {
 }
 
 main $@
-

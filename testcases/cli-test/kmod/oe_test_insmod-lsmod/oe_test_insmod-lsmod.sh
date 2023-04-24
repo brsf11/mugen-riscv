@@ -31,9 +31,9 @@ function config_params() {
         cmd="modprobe "${raw[i]}
         res=$(eval $cmd)
         if [ $? -eq 0 ]; then
-            if [ $mod1 -eq 'null' ]; then
+            if [ "$mod1" = "nul" ]; then
                 mod1=$mod
-            elif [ $mod2 -eq 'null' ]; then
+            elif [ "$mod2" = "null" ]; then
                 mod2=$mod
                 break;
             else

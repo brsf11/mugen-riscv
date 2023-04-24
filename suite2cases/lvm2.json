@@ -1,5 +1,6 @@
 {
     "path": "$OET_PATH/testcases/cli-test/lvm2",
+    "add disk":[5],
     "cases": [
         {
             "name": "oe_test_service_blk-availability"
@@ -45,6 +46,9 @@
         },
         {
             "name": "oe_test_lvm2_vgcreate_001"
+        },
+        {
+            "name": "oe_test_lvm2_vgreduce_001"
         },
         {
             "name": "oe_test_lvm2_pvdisplay_002"

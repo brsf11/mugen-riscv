@@ -28,7 +28,7 @@ done" >testcgroup.sh
     sh testcgroup.sh &
     pid=$(pgrep -f "sh testcgroup.sh")
     mkdir /sys/fs/cgroup/memory/example
-    LOG_INFO "End to pre test."
+    LOG_INFO "Start to pre test."
 }
 
 function run_test() {

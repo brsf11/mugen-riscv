@@ -11,6 +11,9 @@
     "machine num": 2,
     "cases": [
         {
+            "name": "oe_test_basic_date_common"
+        },
+        {
             "name": "oe_test_basic_del_user"
         },
         {
