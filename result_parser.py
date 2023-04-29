@@ -179,7 +179,25 @@ class classifier(object):
             value = value | andvalue
         return value
 
+def convertfile(dir):
+    suites = os.listdir(dir)
+    for suite in suites:
+        testcases = os.listdir(dir+'/'+suite)
+        for testcase in testcases:
+            logs = os.listdir(dir+'/'+suite+'/'+testcase)
+            for log in logs:
+                if log.find(':') == -1:
+                    continue
+                newlog = log.replace(':','_')
+                oldpath = dir+'/'+suite+'/'+testcase+'/'+log
+                newpath = dir+'/'+suite+'/'+testcase+'/'+newlog
+                os.system('cp '+oldpath+' '+newpath)
+                os.system('rm -f '+oldpath)
+
+
 if __name__ == "__main__":
+    convertfile('logs')
+    convertfile('logs_failed')
     result = TestResults('.')
     result.parseResults()
     result.parseUnsupportedCase(addDisk=True)
