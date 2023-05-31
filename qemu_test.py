@@ -48,8 +48,13 @@ def lstat(qemuVM,remotepath,timeout=5):
 def findAvalPort(num=1):
     port_list = []
     port = 12055
+    platform=sys.platform
+    if platform == 'darwin':
+        pre_cmd='lsof -i :'
+    else:
+        pre_cmd='netstat -anp 2>&1 | grep '
     while(len(port_list) != num):
-        if os.system('netstat -anp 2>&1 | grep '+str(port)+' > /dev/null') != 0:
+        if os.system(pre_cmd+str(port)+' > /dev/null') != 0:
             port_list.append(port)
         port += 1
     return port_list
