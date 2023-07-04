@@ -185,7 +185,7 @@ class TestTarget():
                     else:
                         os.system("sudo bash mugen.sh -f "+test_target+" -r "+testcase+" 2>&1 | tee -a exec.log")
                     for log in  os.listdir('logs/'+test_target+'/'+testcase):
-                        with open('logs/'+test_target+'/'+testcase+'/'+log , "r") as log_data:
+                        with open('logs/'+test_target+'/'+testcase+'/'+log, "r", encoding='utf-8', errors='ignore') as log_data:
                             log_found = re.search(r'See "systemctl status (.*)" and "journalctl -xe(.*)" for details.' , log_data.read())
                             if log_found is not None:
                                 os.system("sudo journalctl -xe --no-pager > logs/"+test_target+'/'+testcase+"/journelctl_for_"+log)
