@@ -1,5 +1,6 @@
 from dataclasses import replace
 import os
+import sys
 import argparse
 from socket import timeout
 import time
@@ -59,6 +60,7 @@ def findAvalPort(num=1):
         port += 1
     return port_list
 
+
 class Dispatcher(Thread):
     def __init__(self,qemuVM,targetQueue,tapQueue,br_ip,step,initTarget=None):
         super(Dispatcher,self).__init__()
@@ -86,6 +88,7 @@ class Dispatcher(Thread):
                             for i in range(1 , self.initTarget[2]):
                                 self.attachVM.append(QemuVM(id= i*self.step+self.qemuVM.id, vcpu=self.qemuVM.vcpu , memory=self.qemuVM.memory,
                                                             user=self.qemuVM.user , password=self.qemuVM.password,
+                                                            arch=self.qemuVM.arch, initrd=self.qemuVM.initrd,
                                                             kernel=self.qemuVM.kernel , bios=self.qemuVM.bios,
                                                             workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path,
                                                             ))
@@ -121,6 +124,7 @@ class Dispatcher(Thread):
                             for i in range(1 , self.initTarget[2]):
                                 self.attachVM.append(QemuVM(id= i*self.step+self.qemuVM.id, vcpu=self.qemuVM.vcpu , memory=self.qemuVM.memory,
                                                             user=self.qemuVM.user , password=self.qemuVM.password,
+                                                            arch=self.qemuVM.arch, initrd=self.qemuVM.initrd,
                                                             kernel=self.qemuVM.kernel , bios=self.qemuVM.bios,
                                                             workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path,
                                                             ))
@@ -191,6 +195,7 @@ class Dispatcher(Thread):
                                 for i in range(1 , target[2]):
                                     self.attachVM.append(QemuVM(id= i*self.step+self.qemuVM.id, vcpu=self.qemuVM.vcpu , memory=self.qemuVM.memory,
                                                                 user=self.qemuVM.user , password=self.qemuVM.password,
+                                                                arch=self.qemuVM.arch, initrd=self.qemuVM.initrd,
                                                                 kernel=self.qemuVM.kernel , bios=self.qemuVM.bios,
                                                                 workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path,
                                                                 ))
@@ -223,6 +228,7 @@ class Dispatcher(Thread):
                                 for i in range(1 , target[2]):
                                     self.attachVM.append(QemuVM(id= i*self.step+self.qemuVM.id, vcpu=self.qemuVM.vcpu , memory=self.qemuVM.memory,
                                                                 user=self.qemuVM.user , password=self.qemuVM.password,
+                                                                arch=self.qemuVM.arch, initrd=self.qemuVM.initrd,
                                                                 kernel=self.qemuVM.kernel , bios=self.qemuVM.bios,
                                                                 workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path,
                                                                 ))
@@ -274,13 +280,14 @@ class Dispatcher(Thread):
 
 
 class QemuVM(object):
-    def __init__(self, vcpu,memory,workingDir,bkfile ,kernel,bios,id=1,port=12055,user='root',password='openEuler12#$',
+    def __init__(self, arch, vcpu, memory, workingDir, bkfile, kernel, initrd, bios, id=1, port=12055, user='root',password='openEuler12#$',
                   path='/root/GitRepo/mugen-riscv' , restore=True, runArgs=''):
+        self.arch = arch
         self.id = id
         self.port , self.ip , self.user , self.password  = port , '127.0.0.1' , user , password
         self.vcpu , self.memory= vcpu , memory
         self.workingDir , self.bkFile = workingDir , bkfile
-        self.kernel , self.bios = kernel , bios
+        self.kernel, self.initrd, self.bios = kernel, initrd, bios
         self.drive = 'img'+str(self.id)+'.qcow2'
         self.path = path
         self.restore = restore
@@ -317,8 +324,14 @@ class QemuVM(object):
             drive=self.workingDir+self.bkFile
         if self.kernel is not None:
             kernelArg=" -kernel "+self.workingDir+self.kernel
+            kernelArg += " -append 'root=/dev/vda2 rw console=ttyS0 swiotlb=1 loglevel=3 systemd.default_timeout_start_sec=600 selinux=0 highres=off mem=" + \
+                         str(memory_append) + "M earlycon'"
         else:
             kernelArg=" "
+        if self.initrd is not None:
+            initrdArg = "-initrd " + self.workingDir + self.initrd
+        else:
+            initrdArg = " "
         if self.bios is not None:
             if self.bios == 'none':
                 biosArg=" -bios none"
@@ -328,36 +341,56 @@ class QemuVM(object):
             biosArg=" "
 
         ssh_port=self.port
+        if self.arch == 'riscv64':
+            cmd = "qemu-system-riscv64 \
+                  -nographic -machine virt \
+                  -cpu rv64,sv39=on "
+        elif self.arch == 'x86_64':
+            cmd = "qemu-system-x86_64 \
+                  -nographic -machine pc -accel kvm "
+        else:
+            print('Unsupported qemu architecture ' + self.arch)
+            return
 
-        cmd="qemu-system-riscv64 \
-        -nographic -machine virt  \
-        -smp "+str(self.vcpu)+" -m "+str(self.memory)+"G \
+        cmd += "-smp " + str(self.vcpu) + " -m " + str(self.memory) + "G \
         -audiodev pa,id=snd0 \
-        "+kernelArg+" \
-        "+biosArg+" \
-        -drive file="+drive+",format=qcow2,id=hd0 \
+        " + kernelArg + " \
+        " + initrdArg + " \
+        " + biosArg + " \
+        -drive file=" + drive + ",format=qcow2,id=hd0,if=none \
         -object rng-random,filename=/dev/urandom,id=rng0 \
-        -device virtio-rng-device,rng=rng0 \
-        -device virtio-blk-device,drive=hd0 \
-        -device qemu-xhci -usb -device usb-kbd -device usb-tablet -device usb-audio,audiodev=snd0 \
-        -append 'root=/dev/vda1 rw console=ttyS0 swiotlb=1 loglevel=3 systemd.default_timeout_start_sec=600 selinux=0 highres=off mem="+str(memory_append)+"M earlycon' "
+        -device qemu-xhci -usb -device usb-kbd -device usb-tablet -device usb-audio,audiodev=snd0 "
+
+        if self.arch == 'riscv64':
+            cmd += "-device virtio-rng-device,rng=rng0 \
+                   -device virtio-blk-device,drive=hd0 "
+        elif self.arch == 'x86_64':
+            cmd += "-device virtio-rng,rng=rng0 \
+                   -device virtio-blk,drive=hd0 "
 
         if disk > 1:
             for i in range(1 ,disk):
-                cmd += "-drive file="+self.workingDir+"disk"+str(self.id)+'-'+str(i)+".qcow2,format=qcow2,id=hd"+str(i)+" -device virtio-blk-pci,drive=hd"+str(i)+" "
+                cmd += "-drive file=" + self.workingDir + "disk" + str(self.id) + '-' + str(i) + ".qcow2,format=qcow2,id=hd" + str(i) + ",if=none -device virtio-blk-pci,drive=hd" + str(i) + " "
 
         if tap_number > 0:
             for i in range(tap_number-1):
                 used_tap = taplist[i]
-                cmd += "-netdev tap,id=net"+used_tap+",ifname="+used_tap+",script=no,downscript=no -device virtio-net-device,netdev=net"+used_tap+",mac=52:54:00:11:45:{:0>2d}".format(self.mac)+" "
+                cmd += "-netdev tap,id=net" + used_tap + ",ifname=" + used_tap + ",script=no,downscript=no -device virtio-net-pci,netdev=net" + used_tap + ",mac=52:54:00:11:45:{:0>2d}".format(self.mac) + " "
                 self.mac+=1
             if machine > 1:
                 used_tap = taplist[-1]
-                cmd += "-netdev tap,id=net"+used_tap+",ifname="+used_tap+",script=no,downscript=no -device virtio-net-device,netdev=net"+used_tap+",mac=52:54:00:11:45:{:0>2d}".format(self.mac)+" "
+                cmd += "-netdev tap,id=net" + used_tap + ",ifname=" + used_tap + ",script=no,downscript=no -device virtio-net-pci,netdev=net" + used_tap + ",mac=52:54:00:11:45:{:0>2d}".format(self.mac) + " "
                 self.mac += 1
 
-        cmd += "-netdev user,id=usernet,hostfwd=tcp::"+str(ssh_port)+"-:22 -device virtio-net-device,netdev=usernet,mac=52:54:00:11:45:{:0>2d}".format(self.mac)
+        cmd += "-netdev user,id=usernet,hostfwd=tcp::" + str(ssh_port) + "-:22 -device virtio-net-pci,netdev=usernet,mac=52:54:00:11:45:{:0>2d}".format(self.mac)
         self.process = subprocess.Popen(args=cmd,stderr=subprocess.PIPE,stdout=subprocess.PIPE,stdin=subprocess.PIPE,encoding='utf-8',shell=True)
+        time.sleep(1)
+        ret = self.process.poll()
+        if ret is not None:
+            print("Qemu process terminate unexpectedly " + str(ret))
+            print(self.process.communicate())
+        else:
+            print("Qemu process is running with cmdline " + cmd)
 
     def waitReady(self):
         conn = 519
@@ -398,7 +431,6 @@ class QemuVM(object):
             sftp_get(self,self.path+'/suite2cases_out','',self.workingDir)
         sftp_get(self,self.path,'exec.log',self.workingDir+'exec_log/'+testsuite)
 
-
     def isBroken(self):
         conn = 519
         while conn == 519:
@@ -424,7 +456,6 @@ class QemuVM(object):
             os.system('rm -f '+self.workingDir+self.drive)
         os.system('rm -f '+self.workingDir+'disk'+str(self.id)+'-*')
 
-        
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -436,17 +467,20 @@ if __name__ == "__main__":
     parser.add_argument('-m','--mugen',action='store_true',help='Run native mugen test suites')
     parser.add_argument('--user',type=str,default=None,help='Specify user')
     parser.add_argument('--password',type=str,default=None,help='Specify password')
+    parser.add_argument('-A', type=str, choices=['riscv64', 'x86_64'], default='riscv64',
+                        help='Specify the qemu architecture', dest='qemuArch')
     parser.add_argument('-B',type=str,help='Specify bios')
     parser.add_argument('-K',type=str,help='Specify kernel')
+    parser.add_argument('-I',type=str,help='Specify initrd')
     parser.add_argument('-D',type=str,help='Specify backing file name')
-    parser.add_argument('-d',type=str,help='Specity mugen installed directory',dest='mugenDir')
+    parser.add_argument('-d',type=str,help='Specify mugen installed directory',dest='mugenDir')
     parser.add_argument('-g','--generate',action='store_true',default=False,help='Generate testsuite json after running test')
     parser.add_argument('--detailed',action='store_true',default=False,help='Print detailed log')
     parser.add_argument('--addDisk',action='store_true',default=False)
     parser.add_argument('--multiMachine',action='store_true',default=False)
     parser.add_argument('--addNic',action='store_true',default=False)
-    parser.add_argument('--bridge_ip' , type=str , help='Specity the network bridge ip')
-    parser.add_argument('-t',type=int,default=0,help='Specity the number of generated free tap')
+    parser.add_argument('--bridge_ip', type=str, help='Specify the network bridge ip')
+    parser.add_argument('-t', type=int, default=0, help='Specify the number of generated free tap')
     parser.add_argument('-F',type=str,help='Specify test config file')
     args = parser.parse_args()
 
@@ -460,7 +494,8 @@ if __name__ == "__main__":
     runningArg = ''
     mugenNative , generateJson , preImg , genList = False , False , False , False
     list_file , workingDir , bkFile , orgDrive , mugenPath = None , None , None , None , None
-    kernel , bios = None , None
+    arch = 'riscv64'
+    kernel, initrd, bios = None, None, None
     img_base = 'img_base.qcow2'
     detailed = False
     user , password = "root","openEuler12#$"
@@ -521,6 +556,11 @@ if __name__ == "__main__":
         if configData.__contains__('tap num'):
             for i in range(configData['tap num']):
                 tap.put('tap'+str(i))
+        if configData.__contains__('qemuArch') and type(configData['qemuArch']) == str:
+            arch = configData['qemuArch']
+            if arch not in ['riscv64', 'x86_64']:
+                print("Unsupported qemu architecture " + arch)
+                exit(-1)
         if configData.__contains__('workingDir') and (configData.__contains__('bios') or configData.__contains__('kernel')) and configData.__contains__('drive'):
             if type(configData['workingDir']) == str:
                 workingDir = configData['workingDir']
@@ -536,6 +576,8 @@ if __name__ == "__main__":
                 bios = configData['bios']
             if configData.__contains__('kernel') and type(configData['kernel']) == str:
                 kernel = configData['kernel']
+            if configData.__contains__('initrd') and type(configData['initrd']) == str:
+                initrd = configData['initrd']
             if configData.__contains__('mugenDir'):
                 preImg = False
                 bkFile = orgDrive
@@ -600,6 +642,7 @@ if __name__ == "__main__":
             orgDrive = args.D
             bios = args.B
             kernel = args.K
+            initrd = args.I
             if args.mugenDir != None:
                 preImg = False
                 bkFile = orgDrive
@@ -629,7 +672,9 @@ if __name__ == "__main__":
                 print('Failed to create img-base')
                 exit(-1)
 
-        preVM = QemuVM(id=1,port=findAvalPort(1)[0],user=user,password=password,kernel=kernel,bios=bios,vcpu=coreNum,memory=memSize,path=mugenPath,workingDir=workingDir,bkfile=bkFile,restore=False)
+        preVM = QemuVM(id=1, port=findAvalPort(1)[0], user=user, password=password, arch=arch, kernel=kernel, initrd=initrd, bios=bios,
+                       vcpu=coreNum, memory=memSize, path=mugenPath, workingDir=workingDir, bkfile=bkFile,
+                       restore=False)
         preVM.start()
         preVM.waitReady()
         if preImg == True:
@@ -688,7 +733,7 @@ if __name__ == "__main__":
         for i in range(threadNum):
             qemuVM.append(QemuVM(id=i , vcpu=coreNum , memory=memSize,
                                  user=user , password=password,
-                                 kernel=kernel , bios=bios,
+                                 arch=arch, initrd=initrd, kernel=kernel, bios=bios,
                                  workingDir=workingDir , bkfile=bkFile , path=mugenPath,
                                  runArgs=runningArg))   
         targetQueue = Queue()
