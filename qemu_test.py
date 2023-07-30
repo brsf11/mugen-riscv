@@ -347,7 +347,8 @@ class QemuVM(object):
                   -cpu rv64,sv39=on "
         elif self.arch == 'x86_64':
             cmd = "qemu-system-x86_64 \
-                  -nographic -machine pc -accel kvm "
+                  -nographic -machine pc -accel kvm \
+                  -cpu qemu64,+rdrand "
         else:
             print('Unsupported qemu architecture ' + self.arch)
             return
