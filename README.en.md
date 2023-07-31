@@ -296,7 +296,7 @@ When testing software packages on non x86-64 processor architectures like RISC-V
 
 Download the image of the system to be tested (`.qcow2.zst` file) and use the `unzstd` command to extract it into a `.qcow2` file. Also, download the bootloader (e.g., `fw_payload_oe_uboot_*.bin`) and the startup script (`start_vm.sh`). Save all these files in the same directory.
 
-Start the virtual machine using the startup script and clone the mugen repository into a directory inside the virtual machine (e.g., `/root/mugen`). Then, use the `dep_install.sh` script to install dependencies. If necessary, you can make modifications to the virtual machine, such as installing the `lshw` package for network testing.
+Start the virtual machine using the startup script and clone the mugen repository into a directory inside the virtual machine (e.g., `/root/mugen`). Then, use the `dep_install.sh` script to install dependencies. If necessary, you can make extra modifications to the virtual machine, such as installing the `lshw` package for network-dependent testing.
 
 Once the virtual machine is prepared, shut it down using the `poweroff` command, and take note of the name of the `.qcow2` image file.
 
@@ -398,7 +398,7 @@ You can also skip using the configuration file and directly provide configuratio
 
 #### Troubleshooting
 
-If, during the test, the script doesn't output test logs and results but continuously outputs thread information (e.g., `Thread 0 is alive`) for an extended period, try connecting to the SSH port specified in the configuration file (e.g., `12055`). You can also use tools like `top` to check if QEMU is running. If everything seems abnormal, it indicates a script failure.
+If, during the test, the script doesn't output test logs and results but continuously outputs thread information (e.g., `Thread 0 is alive`) for an extended period, try connecting to the SSH port specified in the configuration file (e.g., `12055`). You can also use tools like `top` to check if QEMU is running. If everything seems abnormal, it indicates a failure.
 
 In such a case, you can use <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop the script, check the `logs` directory in the working directory to identify which test suites have completed, remove the already tested test suites from the list file, and then rerun the script to start testing again.
 
