@@ -296,7 +296,7 @@ import xxx
 
 下载待测试的系统的镜像（`.qcow2.zst` 文件，需要使用 `unzstd` 命令解压为 `.qcow2` 文件）、引导加载程序（`fw_payload_oe_uboot_*.bin`）和启动脚本（`start_vm.sh`），保存到同一个目录中。
 
-用启动脚本启动虚拟机，使用 Git 克隆 mugen 的 repo 到虚拟机下的一个目录（如 `/root/mugen`），再使用 `dep_install.sh` 脚本安装依赖。如果有需要，可以根据具体情况对虚拟机进行一些修改，比如进行网络测试时需要安装 `lshw` 包。
+用启动脚本启动虚拟机，使用 Git 克隆 mugen 的 repo 到虚拟机下的一个目录（如 `/root/mugen`），再使用 `dep_install.sh` 脚本安装依赖。如果有需要，可以根据具体情况对虚拟机进行一些修改，比如进行需要网络的测试时需要安装 `lshw` 包。
 
 将虚拟机准备完成后，使用 `poweroff` 命令关闭虚拟机，记下 `.qcow2` 镜像文件的名字。
 
