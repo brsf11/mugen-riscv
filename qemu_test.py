@@ -12,6 +12,7 @@ from threading import Thread
 import threading
 import subprocess
 import json
+import sys
 
 def ssh_exec(qemuVM,cmd,timeout=5):
     conn = paramiko.SSHClient()
@@ -46,18 +47,27 @@ def lstat(qemuVM,remotepath,timeout=5):
         ssh_cmd.pssh_close(conn)
     return stat
 
+def isCommandExist(cmd):
+    from shutil import which
+    return which(cmd) is not None
+
 def findAvalPort(num=1):
     port_list = []
     port = 12055
-    platform=sys.platform
-    if platform == 'darwin':
-        pre_cmd='lsof -i :'
+
+    if isCommandExist('lsof'):
+        pre_cmd = 'lsof -i :'
+    elif isCommandExist('netstat') and sys.platform == 'linux':
+        pre_cmd = 'netstat -anp 2>&1 | grep '
     else:
-        pre_cmd='netstat -anp 2>&1 | grep '
-    while(len(port_list) != num):
-        if os.system(pre_cmd+str(port)+' > /dev/null') != 0:
+        sys.exit('Cannot find lsof or netstat command!')
+
+    while len(port_list) != num:
+        if os.system(pre_cmd + str(port) + ' > /dev/null') != 0:
             port_list.append(port)
+
         port += 1
+
     return port_list
 
 
