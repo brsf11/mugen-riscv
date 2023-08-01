@@ -11,6 +11,7 @@ from threading import Thread
 import threading
 import subprocess
 import json
+import sys
 
 def ssh_exec(qemuVM,cmd,timeout=5):
     conn = paramiko.SSHClient()
