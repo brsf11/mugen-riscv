@@ -287,3 +287,115 @@ import xxx
 - 远程后台执行命令时，用例执行卡住，导致用例超时失败
   - 原因：ssh远程执行命令不会自动退出，会一直等待命令的控制台标准输出，直至命令运行信号结束
   - 解决方案：可以将标准输出与标准错误输出重定向到/dev/null，如此ssh就不会一直等待`cmd > /dev/nul 2>&1 &`
+
+### 调用 QEMU 进行测试
+
+在对 RISC-V 等非 x86-64 处理器架构上的软件包进行测试时，可以使用 `qemu_test.py` 脚本调用 QEMU 进行测试。
+
+#### 准备虚拟机
+
+下载待测试的系统的镜像（`.qcow2.zst` 文件，需要使用 `unzstd` 命令解压为 `.qcow2` 文件）、引导加载程序（`fw_payload_oe_uboot_*.bin`）和启动脚本（`start_vm.sh`），保存到同一个目录中。
+
+用启动脚本启动虚拟机，使用 Git 克隆 mugen 的 repo 到虚拟机下的一个目录（如 `/root/mugen`），再使用 `dep_install.sh` 脚本安装依赖。如果有需要，可以根据具体情况对虚拟机进行一些修改，比如进行需要网络的测试时需要安装 `lshw` 包。
+
+将虚拟机准备完成后，使用 `poweroff` 命令关闭虚拟机，记下 `.qcow2` 镜像文件的名字。
+
+#### 准备物理机
+
+在物理机（不一定要运行 openEuler）上使用 Git 克隆 mugen 的 repo。这里不需要使用 `dep_install.sh` 安装依赖。
+
+`qemu_test.py` 依赖 `paramiko` 这个 Python 库，可以使用 pip 安装，也可以直接使用操作系统上的包管理器安装。如 Arch Linux 可以使用 pacman 安装 `python-paramiko` 包。
+
+如果进行网络相关的测试，需要配置好网桥和 TAP 网卡。
+
+首先，安装 `bridge-utils` 包，使用以下命令添加 `br0` 网桥：
+
+```shell-session
+# brctl addbr br0
+````
+
+再添加 TAP 网卡，需要安装 `uml-utilities` 包并开启 `tun` 内核模块。可以使用 `tapsetup.sh` 脚本批量添加：
+
+```shell-session
+$ sudo bash tapsetup.sh 10.198.101.1 50 br0 $(whoami)
+```
+
+其中，`10.198.101.1` 为网桥的 IP（脚本会自动为 IP 添加 `/24`），`50` 为 TAP 网卡个数，`br0` 为网桥的网卡名称，最后一个参数为允许使用该 TAP 网卡的用户名，这里使用 `$(whoami)` 获取当前用户名。
+
+#### 编写配置文件
+
+`qemu_test.py` 脚本的配置文件使用 JSON 格式。以下是一份范例：
+
+```json
+{
+    "workingDir": ".",                      // 工作目录，即虚拟机文件保存的目录
+    "bios": "fw_payload_oe_uboot_2304.bin", // 引导加载程序的文件名
+    "drive": "mugen_ready.qcow2",           // 准备好的虚拟机镜像的文件名
+    "user": "root",                         // 虚拟机的用户名
+    "password": "openEuler12#$",            // 虚拟机的密码
+    "threads": 4,                           // 测试线程数
+    "cores": 4,                             // 为虚拟机分配的核心数
+    "memory": 4,                            // 为虚拟机分配的内存容量，单位为 GB
+    "mugenNative": 1,                       // 是否使用虚拟机上的测试套
+    "detailed": 1,                          // 是否在屏幕上打印详细日志
+    "addDisk": 1,                           // 添加的磁盘数量
+    "mugenDir": "/root/mugen",              // 在虚拟机中 mugen 所在的目录
+    "listFile": "lists/list_test",          // 需要测试的测试套列表文件
+    "generate": 1,                          // 是否将测试套保存到物理机上
+    "addNic": 1,                            // 是否添加网卡
+    "multiMachine": 1,                      // 是否使用多台机器进行测试
+    "tap num": 50,                          // 可以使用的 TAP 网卡数量
+    "bridge ip": "10.198.101.114"           // 用于测试的网桥的 IP
+}
+```
+
+需要注意的是，脚本无法处理 JSON 文件的行内注释。为了方便，这里提供一份不含注释的版本：
+
+```json
+{
+    "workingDir": ".", 
+    "bios": "fw_payload_oe_uboot_2304.bin", 
+    "drive": "mugen_ready.qcow2", 
+    "user": "root", 
+    "password": "openEuler12#$", 
+    "threads": 4, 
+    "cores": 4, 
+    "memory": 4, 
+    "mugenNative": 1, 
+    "detailed": 1, 
+    "addDisk": 1, 
+    "mugenDir": "/root/mugen", 
+    "listFile": "lists/list_test", 
+    "generate": 1, 
+    "addNic": 1, 
+    "multiMachine": 1, 
+    "tap num": 50, 
+    "bridge ip": "10.198.101.114" 
+}
+```
+
+#### 进行测试
+
+使用以下命令调用脚本，使用 `config.json` 作为配置文件进行测试：
+
+```shell-session
+$ python qemu_test.py -F config.json
+```
+
+在测试刚开始时，脚本会轮询判断虚拟机是否启动，可能会出现 SSH 连接相关的报错，这是正常的。
+
+测试完成后，可以在工作目录下的以下文件夹找到与测试有关的信息：
+
+- `suite2cases_out`：被测试的测试套。
+  
+- `exec_log`：测试套在运行时产生的日志。
+  
+- `logs`：测试用例在运行时产生的日志。
+
+也可以不使用配置文件，直接使用命令行参数提供配置，参见脚本 `--help` 参数的输出。
+
+#### 故障排查
+
+在进行测试的过程中，如果在运行脚本较长时间之后，脚本没有输出测试日志和测试结果，而只是持续输出线程信息（如 `Thread 0 is alive`），这个时候可以尝试使用 SSH 连接到配置文件中配置的 SSH 端口（如上文中的 `12055`）。也可以使用 `top` 等工具判断 QEMU 是否正在运行。若均不正常，则说明脚本运行失败。
+
+这个时候可以使用 <kbd>Ctrl</kbd>+<kbd>C</kbd> 关闭脚本，检查工作目录下的 `logs` 目录来判断有那些测试套已经测试完毕，再从列表文件中删除已经测试完毕的测试套，最后重新运行脚本开始测试。

@@ -288,6 +288,120 @@ import xxx
   - Possible cause: ssh will wait for stdout and will not exit unless there is a signal
   - Possible solution: Redirect stdout to /dev/null, like `cmd > /dev/nul 2>&1 &`
 
+### Using QEMU for Testing
+
+When testing software packages on non x86-64 processor architectures like RISC-V, you can use the `qemu_test.py` script to call QEMU for testing.
+
+#### Preparing the Virtual Machine
+
+Download the image of the system to be tested (`.qcow2.zst` file) and use the `unzstd` command to extract it into a `.qcow2` file. Also, download the bootloader (e.g., `fw_payload_oe_uboot_*.bin`) and the startup script (`start_vm.sh`). Save all these files in the same directory.
+
+Start the virtual machine using the startup script and clone the mugen repository into a directory inside the virtual machine (e.g., `/root/mugen`). Then, use the `dep_install.sh` script to install dependencies. If necessary, you can make extra modifications to the virtual machine, such as installing the `lshw` package for network-dependent testing.
+
+Once the virtual machine is prepared, shut it down using the `poweroff` command, and take note of the name of the `.qcow2` image file.
+
+#### Preparing the Physical Machine
+
+On the physical machine (not necessarily running openEuler), clone the mugen repository. You don't need to use `dep_install.sh` to install dependencies.
+
+`qemu_test.py` depends on the `paramiko` Python library, which can be installed using pip or the package manager of your operating system. For example, on Arch Linux, you can install the `python-paramiko` package using pacman.
+
+If you're conducting network-related tests, you need to configure the bridge and TAP network interfaces.
+
+First, install the `bridge-utils` package and use the following command to add the `br0` bridge:
+
+```shell-session
+# brctl addbr br0
+```
+
+Next, add the TAP network interface. You'll need to install the `uml-utilities` package and enable the `tun` kernel module. You can use the `tapsetup.sh` script to add multiple TAP interfaces:
+
+```shell-session
+$ sudo bash tapsetup.sh 10.198.101.1 50 br0 $(whoami)
+```
+
+Here, `10.198.101.1` is the IP address of the bridge (the script automatically adds `/24` to the IP), `50` is the number of TAP interfaces, `br0` is the name of the bridge network interface, and the last argument specifies the username allowed to use the TAP interface (here, we use `$(whoami)` to get the current username).
+
+#### Writing the Configuration File
+
+The `qemu_test.py` script uses a JSON-format configuration file. Below is an example:
+
+```json
+{
+    "workingDir": ".",                      // Working directory, where virtual machine files are stored.
+    "bios": "fw_payload_oe_uboot_2304.bin", // File name of the bootloader.
+    "drive": "mugen_ready.qcow2",           // File name of the prepared virtual machine image.
+    "user": "root",                         // Username of the virtual machine.
+    "password": "openEuler12#$",            // Password of the virtual machine.
+    "threads": 4,                           // Number of testing threads.
+    "cores": 4,                             // Number of cores allocated to the virtual machine.
+    "memory": 4,                            // Memory capacity allocated to the virtual machine in GB.
+    "mugenNative": 1,                       // Whether to use the test suite on the virtual machine.
+    "detailed": 1,                          // Whether to print detailed logs on the screen.
+    "addDisk": 1,                           // Number of additional disks to be added.
+    "mugenDir": "/root/mugen",              // Directory where mugen is located in the virtual machine.
+    "listFile": "lists/list_test",          // File containing the list of test suites to be tested.
+    "generate": 1,                          // Whether to save the test suite to the physical machine.
+    "addNic": 1,                            // Whether to add a network card.
+    "multiMachine": 1,                      // Whether to use multiple machines for testing.
+    "tap num": 50,                          // Number of TAP network cards available for use.
+    "bridge ip": "10.198.101.114"           // IP address of the bridge used for testing.
+}
+
+```
+
+Please note that the script cannot process inline comments in JSON files. For simplicity, here's a version without comments:
+
+```json
+{
+    "workingDir": ".", 
+    "bios": "fw_payload_oe_uboot_2304.bin", 
+    "drive": "mugen_ready.qcow2", 
+    "user": "root", 
+    "password": "openEuler12#$", 
+    "threads": 4, 
+    "cores": 4, 
+    "memory": 4, 
+    "mugenNative": 1, 
+    "detailed": 1, 
+    "addDisk": 1, 
+    "mugenDir": "/root/mugen", 
+    "listFile": "lists/list_test", 
+    "generate": 1, 
+    "addNic": 1, 
+    "multiMachine": 1, 
+    "tap num": 50, 
+    "bridge ip": "10.198.101.114" 
+}
+```
+
+#### Performing the Test
+
+Use the following command to call the script and perform the test using the `config.json` file as the configuration:
+
+```shell-session
+$ python qemu_test.py -F config.json
+```
+
+At the start of the test, the script will poll to check if the virtual machine is running. You may encounter SSH connection-related errors during this phase, which is normal.
+
+After the test is complete, you can find relevant information regarding the test in the following folders in the working directory:
+
+- `suite2cases_out`: Test suites being tested.
+  
+- `exec_log`: Logs generated during the execution of test suites.
+  
+- `logs`: Logs generated during the execution of individual test cases.
+  
+
+You can also skip using the configuration file and directly provide configuration via command-line arguments. Refer to the `--help` parameter output of the script for details.
+
+#### Troubleshooting
+
+If, during the test, the script doesn't output test logs and results but continuously outputs thread information (e.g., `Thread 0 is alive`) for an extended period, try connecting to the SSH port specified in the configuration file (e.g., `12055`). You can also use tools like `top` to check if QEMU is running. If everything seems abnormal, it indicates a failure.
+
+In such a case, you can use <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop the script, check the `logs` directory in the working directory to identify which test suites have completed, remove the already tested test suites from the list file, and then rerun the script to start testing again.
+
 ## Contribution
 
 1.  Fork the repository
