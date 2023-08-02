@@ -135,3 +135,18 @@
     ```shell
         python3 qemu_test.py -w /run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220926/ -B none -K fw_payload_oe_qemuvirt.elf -D openeuler-qemu.qcow2 -x 4 -c 4 -M 4 -m -g -l lists/list_git
     ```
+
+#### 宿主机联立网桥和虚拟网卡
+
+这里给出一个示例演示多个 qemu 虚拟机实例配合测试所需的网桥和虚拟网卡的建立，假设要添加的网桥名为 ``br0`` ，网桥 IP 为 10.0.0.1/24 ，要加入的虚拟网卡名为 ``tap0``
+
+```bash
+sudo brctl addbr br0
+sudo ip addr add 10.0.0.1/24 broadcast 10.0.0.255 dev br0
+sudo ip link set dev br0 up
+sudo tunctl -t tap0 -u $(whoami)
+sudo ip link set dev tap0 up
+sudo brctl addif br0 tap0
+```
+
+注意 qemu_test.py 脚本只使用名为 ``tap${num}`` 的网卡，而对网桥名没有特殊要求，所有虚拟网卡应当能够互相 ping 通
