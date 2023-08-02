@@ -98,7 +98,7 @@ class Dispatcher(Thread):
                                 self.attachVM.append(QemuVM(id= i*self.step+self.qemuVM.id, vcpu=self.qemuVM.vcpu , memory=self.qemuVM.memory,
                                                             user=self.qemuVM.user , password=self.qemuVM.password,
                                                             arch=self.qemuVM.arch, initrd=self.qemuVM.initrd,
-                                                            kernel=self.qemuVM.kernel , bios=self.qemuVM.bios,
+                                                            kernel=self.qemuVM.kernel, kparms=self.qemuVM.kparms, bios=self.qemuVM.bios,
                                                             workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path,
                                                             ))
                                 self.attachVM[i-1].start(disk=self.initTarget[1],machine=self.initTarget[2],tap_number=self.initTarget[3]+1,taplist=[self.tapQueue.get() for i in range(self.initTarget[3]+1)])
@@ -134,7 +134,7 @@ class Dispatcher(Thread):
                                 self.attachVM.append(QemuVM(id= i*self.step+self.qemuVM.id, vcpu=self.qemuVM.vcpu , memory=self.qemuVM.memory,
                                                             user=self.qemuVM.user , password=self.qemuVM.password,
                                                             arch=self.qemuVM.arch, initrd=self.qemuVM.initrd,
-                                                            kernel=self.qemuVM.kernel , bios=self.qemuVM.bios,
+                                                            kernel=self.qemuVM.kernel, kparms=self.qemuVM.kparms, bios=self.qemuVM.bios,
                                                             workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path,
                                                             ))
                                 self.attachVM[i-1].start(disk=self.initTarget[1],machine=self.initTarget[2],tap_number=1,taplist=[self.tapQueue.get()])
@@ -205,7 +205,7 @@ class Dispatcher(Thread):
                                     self.attachVM.append(QemuVM(id= i*self.step+self.qemuVM.id, vcpu=self.qemuVM.vcpu , memory=self.qemuVM.memory,
                                                                 user=self.qemuVM.user , password=self.qemuVM.password,
                                                                 arch=self.qemuVM.arch, initrd=self.qemuVM.initrd,
-                                                                kernel=self.qemuVM.kernel , bios=self.qemuVM.bios,
+                                                                kernel=self.qemuVM.kernel, kparms=self.qemuVM.kparms, bios=self.qemuVM.bios,
                                                                 workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path,
                                                                 ))
                                     self.attachVM[i-1].start(disk=target[1],machine=target[2],tap_number=target[3]+1,taplist=[self.tapQueue.get() for i in range(target[3]+1)])
@@ -238,7 +238,7 @@ class Dispatcher(Thread):
                                     self.attachVM.append(QemuVM(id= i*self.step+self.qemuVM.id, vcpu=self.qemuVM.vcpu , memory=self.qemuVM.memory,
                                                                 user=self.qemuVM.user , password=self.qemuVM.password,
                                                                 arch=self.qemuVM.arch, initrd=self.qemuVM.initrd,
-                                                                kernel=self.qemuVM.kernel , bios=self.qemuVM.bios,
+                                                                kernel=self.qemuVM.kernel, kparms=self.qemuVM.kparms, bios=self.qemuVM.bios,
                                                                 workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path,
                                                                 ))
                                     self.attachVM[i-1].start(disk=target[1],machine=target[2],tap_number=1,taplist=[self.tapQueue.get()])
@@ -289,14 +289,14 @@ class Dispatcher(Thread):
 
 
 class QemuVM(object):
-    def __init__(self, arch, vcpu, memory, workingDir, bkfile, kernel, initrd, bios, id=1, port=12055, user='root',password='openEuler12#$',
+    def __init__(self, arch, vcpu, memory, workingDir, bkfile, kernel, kparms, initrd, bios, id=1, port=12055, user='root',password='openEuler12#$',
                   path='/root/GitRepo/mugen-riscv' , restore=True, runArgs=''):
         self.arch = arch
         self.id = id
         self.port , self.ip , self.user , self.password  = port , '127.0.0.1' , user , password
         self.vcpu , self.memory= vcpu , memory
         self.workingDir , self.bkFile = workingDir , bkfile
-        self.kernel, self.initrd, self.bios = kernel, initrd, bios
+        self.kernel, self.kparms, self.initrd, self.bios = kernel, kparms, initrd, bios
         self.drive = 'img'+str(self.id)+'.qcow2'
         self.path = path
         self.restore = restore
@@ -333,7 +333,10 @@ class QemuVM(object):
             drive=self.workingDir+self.bkFile
         if self.kernel is not None:
             kernelArg=" -kernel "+self.workingDir+self.kernel
-            kernelArg += " -append 'root=/dev/vda2 rw console=ttyS0 swiotlb=1 loglevel=3 systemd.default_timeout_start_sec=600 selinux=0 highres=off mem=" + \
+            if self.kparms is not None:
+                kernelArg += " -append '" + kparms + "'"
+            else:
+                kernelArg += " -append 'root=/dev/vda2 rw console=ttyS0 swiotlb=1 loglevel=3 systemd.default_timeout_start_sec=600 selinux=0 highres=off mem=" + \
                          str(memory_append) + "M earlycon'"
         else:
             kernelArg=" "
@@ -481,6 +484,7 @@ if __name__ == "__main__":
                         help='Specify the qemu architecture', dest='qemuArch')
     parser.add_argument('-B',type=str,help='Specify bios')
     parser.add_argument('-K',type=str,help='Specify kernel')
+    parser.add_argument('-P',type=str,help='Specify kernel parameters')
     parser.add_argument('-I',type=str,help='Specify initrd')
     parser.add_argument('-D',type=str,help='Specify backing file name')
     parser.add_argument('-d',type=str,help='Specify mugen installed directory',dest='mugenDir')
@@ -505,7 +509,7 @@ if __name__ == "__main__":
     mugenNative , generateJson , preImg , genList = False , False , False , False
     list_file , workingDir , bkFile , orgDrive , mugenPath = None , None , None , None , None
     arch = 'riscv64'
-    kernel, initrd, bios = None, None, None
+    kernel, kparms, initrd, bios = None, None, None, None
     img_base = 'img_base.qcow2'
     detailed = False
     user , password = "root","openEuler12#$"
@@ -586,6 +590,8 @@ if __name__ == "__main__":
                 bios = configData['bios']
             if configData.__contains__('kernel') and type(configData['kernel']) == str:
                 kernel = configData['kernel']
+            if configData.__contains__('kernelParams') and type(configData['kernelParams']) == str and configData['kernelParams'].strip() != "":
+                kparms = configData['kernelParams']
             if configData.__contains__('initrd') and type(configData['initrd']) == str:
                 initrd = configData['initrd']
             if configData.__contains__('mugenDir'):
@@ -652,6 +658,8 @@ if __name__ == "__main__":
             orgDrive = args.D
             bios = args.B
             kernel = args.K
+            if args.P.strip() != "":
+                kparms = args.P
             initrd = args.I
             if args.mugenDir != None:
                 preImg = False
@@ -682,7 +690,7 @@ if __name__ == "__main__":
                 print('Failed to create img-base')
                 exit(-1)
 
-        preVM = QemuVM(id=1, port=findAvalPort(1)[0], user=user, password=password, arch=arch, kernel=kernel, initrd=initrd, bios=bios,
+        preVM = QemuVM(id=1, port=findAvalPort(1)[0], user=user, password=password, arch=arch, kernel=kernel, kparms=kparms, initrd=initrd, bios=bios,
                        vcpu=coreNum, memory=memSize, path=mugenPath, workingDir=workingDir, bkfile=bkFile,
                        restore=False)
         preVM.start()
@@ -743,7 +751,7 @@ if __name__ == "__main__":
         for i in range(threadNum):
             qemuVM.append(QemuVM(id=i , vcpu=coreNum , memory=memSize,
                                  user=user , password=password,
-                                 arch=arch, initrd=initrd, kernel=kernel, bios=bios,
+                                 arch=arch, initrd=initrd, kernel=kernel, kparms=kparms, bios=bios,
                                  workingDir=workingDir , bkfile=bkFile , path=mugenPath,
                                  runArgs=runningArg))   
         targetQueue = Queue()
