@@ -10,15 +10,19 @@
     - 依赖 ```python3```  
 - 使用  
     ```shell  
-    usage: mugen_riscv.py [-h] [-l list_file] [-m] [-a] [-g] [-f test_suite]
+    usage: mugen_riscv.py [-h] [-l list_file] [-m] [-a] [-g] [-f test_suite] [-x] [--addDisk] [--multiMachine] [--addNic]
 
     options:
-    -h, --help      show this help message and exit
-    -l list_file    Specify the test targets list
-    -m, --mugen     Run native mugen test suites
-    -a, --analyze   Analyze missing testcases
-    -g, --generate  Generate testsuite json after running test
-    -f test_suite   Specify testsuite
+      -h, --help      show this help message and exit
+      -l list_file    Specify the test targets list
+      -m, --mugen     Run native mugen test suites
+      -a, --analyze   Analyze missing testcases
+      -g, --generate  Generate testsuite json after running test
+      -f test_suite   Specify testsuite
+      -x              -x parameter
+      --addDisk
+      --multiMachine
+      --addNic
     ```  
     例如
     ```shell
@@ -29,6 +33,8 @@
     - 测试套列表文件格式可参考已有的列表文件  
     - 查找riscv测试套相比对应mugen原生测试套缺失的测试例可使用```-a```参数，```-s```用于指定测试套  
     - ```-g```用于在运行测试后保留测试套中通过的测试用例，并以测试套配置文件的格式输出  
+    - ``-x`` 、 ``--addDisk`` 、 ``--multiMachine`` 、 ``--addNic`` 将直接作为参数传递给 mugen.sh
+
 ### 使用步骤  
 #### 基本使用  
 - 安装mugen依赖和配置测试套环境变量（见mugen使用教程）  
