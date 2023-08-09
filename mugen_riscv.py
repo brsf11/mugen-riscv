@@ -199,7 +199,12 @@ class TestTarget():
                         if testcase not in os.listdir("logs_failed/"+test_target+"/"):
                             os.system("mkdir logs_failed/"+test_target+"/"+testcase+"/")
                         logs = os.listdir('logs/'+test_target+"/"+testcase+"/")
-                        os.system("cp logs/"+test_target+"/"+testcase+"/"+logs[len(logs)-1]+" logs_failed/"+test_target+"/"+testcase+"/")
+                        logs.sort()
+                        for i in range(len(logs)):
+                            if ord(logs[-1-i][0]) > ord('9') or os.path.getsize("logs/"+test_target+"/"+testcase+"/"+logs[-1-i]) == 0:
+                                continue
+                            os.system("cp logs/"+test_target+"/"+testcase+"/"+logs[-1-i]+" logs_failed/"+test_target+"/"+testcase+"/")
+                            break
                     if(os.system("ls results/"+test_target+"/succeed/"+testcase+" &> /dev/null") == 0):
                         temp_succeed.append(testcase)
                         success_num += 1
