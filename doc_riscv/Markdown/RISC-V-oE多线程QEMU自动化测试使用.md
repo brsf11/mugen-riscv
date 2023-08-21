@@ -10,9 +10,9 @@
     - 依赖 ``lsof`` 命令（ MacOS 环境）
     - 依赖 ``netstat`` 命令（ Linux 环境）
 - 使用
-    ```shell  
-        usage: qemu_test.py [-h] [-l list_file] [-x X] [-c C] [-M M] [-w W] [-m] [--user USER] [--password PASSWORD] [-A {riscv64,x86_64}] [-B B] [-K K] [-P P]
-                            [-I I] [-D D] [-d MUGENDIR] [-g] [--detailed] [--addDisk] [--multiMachine] [--addNic] [--bridge_ip BRIDGE_IP] [-t T] [-F F]
+    ```shell
+        usage: qemu_test.py [-h] [-l list_file] [-x X] [-c C] [-M M] [-w W] [-m] [--user USER] [--password PASSWORD] [-A {riscv64,x86_64}] [-B B] [-U U] [-K K]
+                            [-P P] [-I I] [-D D] [-d MUGENDIR] [-g] [--detailed] [--addDisk] [--multiMachine] [--addNic] [--bridge_ip BRIDGE_IP] [-t T] [-F F]
 
         options:
           -h, --help            show this help message and exit
@@ -26,6 +26,7 @@
           --password PASSWORD   Specify password
           -A {riscv64,x86_64}   Specify the qemu architecture
           -B B                  Specify bios
+          -U U                  Specify UEFI pflash
           -K K                  Specify kernel
           -P P                  Specify kernel parameters
           -I I                  Specify initrd
@@ -55,6 +56,7 @@
     - 可使用 ``-A`` 参数或 ``"qemuArch"`` 项指定测试使用的 qemu 架构，在没有指定该参数的情况下默认为 RISC-V 架构
     - 可使用 ``-c`` 、 ``-M`` 参数或 ``"cores"`` 、 ``"memory"`` 项指定 qemu 虚拟机 CPU 核数和分配的内存大小
     - 可使用 ``-B`` 参数或 ``"bios"`` 项指定 qemu 启动使用的固件
+    - 可使用 ``-U`` 参数或 ``"pflash"`` 项指定 qemu 启动使用的 UEFI 固件 pflash 原始镜像，这个参数只在 x86_64 架构下生效，且由于该镜像会存储启动信息，故每个使用 UEFI 启动的实例都将复制一个独立的 pflash 文件并在关闭时删除，原始的镜像文件并不会被更改
     - 可使用 ``-K`` 、 ``-I`` 、 ``-P`` 参数或 ``"kernel"`` 、 ``"initrd"`` 、 ``"kernelParams"`` 项在不使用固件的情况下直接从指定的内核启动，其中 ``-I`` 和 ``-P`` 是可选的，在没有指定内核参数的情况下将使用默认参数启动
     - 若需指定 qemu 启动参数中 ``-bios`` 为 ``none`` ，需在配置文件中写明 ``"bios"`` 项为 ``"none"`` 或用 ``-B none`` 参数，否则 qemu 启动参数中 ``-bios`` 会省略
     - 不指定 mugen 安装目录程序默认运行测试前准备 mugen 环境（包括安装 git 、 clone 仓库和 mugen 的依赖安装及结点配置），若待测镜像已准备好 mugen ，需用 ``"mugenDir"`` 配置项或 ``-d`` 指定 mugen 安装目录
@@ -125,6 +127,31 @@
         }
     ```
 
+- x86_64 使用 UEFI 启动示例配置文件
+    ```json
+        {
+            "workingDir":"/home/hachi/mugen/qemu-imgs/openEuler-23.09-x86_64/",
+            "qemuArch":"x86_64",
+            "pflash":"/usr/share/edk2-ovmf/x64/OVMF.fd",
+            "drive":"mugen_ready_x86.qcow2",
+            "user":"root",
+            "password":"openEuler12#$",
+            "threads":4,
+            "cores":4,
+            "memory":4,
+            "mugenNative":1,
+            "detailed":1,
+            "addDisk":1,
+            "multiMachine":1,
+            "addNic":1,
+            "bridge ip":"10.0.0.1",
+            "tap num":50,
+            "mugenDir":"/root/mugen/",
+            "listFile":"lists/x86fail0_retest",
+            "generate":1
+        }
+    ```
+
 - 运行测试  
     ```shell
         python3 qemu_test.py -F /path/to/configFile
@@ -135,6 +162,20 @@
     ```shell
         python3 qemu_test.py -w /run/media/brsf11/30f49ecd-b387-4b8f-a70c-914110526718/VirtualMachines/RISCVoE2203Testing20220926/ -B none -K fw_payload_oe_qemuvirt.elf -D openeuler-qemu.qcow2 -x 4 -c 4 -M 4 -m -g -l lists/list_git
     ```
+
+#### UEFI 启动所需的 OVMF.fd
+
+在 Archlinux 安装
+
+```bash
+sudo pacman -S edk2-ovmf
+```
+
+在 Debian 安装
+
+```bash
+sudo apt-get install ovmf
+```
 
 #### 宿主机联立网桥和虚拟网卡
 
