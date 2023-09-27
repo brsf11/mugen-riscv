@@ -720,6 +720,8 @@ if __name__ == "__main__":
     if screen and os.system("screen -v >/dev/null") != 0:
         print("screen command not found")
         exit(-1)
+    else:
+        os.system('for i in $(screen -ls | grep mugenss | sed "s/.*\(mugenss[0-9]*\).*/\\1/"); do screen -X -S $i quit; done')
 
     if preImg == True or genList == True:
         if preImg == True and (bkFile not in os.listdir(workingDir)):
@@ -802,7 +804,7 @@ if __name__ == "__main__":
         for i in range(threadNum):
             dispathcers.append(Dispatcher(qemuVM=qemuVM[i] , targetQueue=targetQueue , tapQueue=tap , br_ip=bridge_ip , step = threadNum))
             dispathcers[i].start()
-            time.sleep(0.5)
+            time.sleep(2)
 
         isAlive = True
         isEnd = False
