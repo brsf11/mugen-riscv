@@ -478,7 +478,7 @@ class QemuVM(object):
 
     def waitPoweroff(self):
         if self.screen:
-            if os.system("screen -ls | grep "+self.name+" >/dev/null") == 0:
+            while os.system("screen -ls | grep "+self.name+" >/dev/null") == 0:
                 time.sleep(1)
         else:
             self.process.wait()
