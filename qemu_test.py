@@ -442,7 +442,7 @@ class QemuVM(object):
         print("config the machine "+str(self.id)+" nic name "+nic)
         print(ssh_exec(self , "nmcli c a type Ethernet con-name "+nic+" ifname "+nic , timeout=300)[1])
         print(ssh_exec(self , "nmcli c m "+nic+" ipv4.address "+self.tapip+"/24" , timeout=300)[1])
-        print(ssh_exec(self , "nmcli c m "+nic+" ipv4.gateway "+br_ip , timeout=300)[1])
+        # print(ssh_exec(self , "nmcli c m "+nic+" ipv4.gateway "+br_ip , timeout=300)[1])
         print(ssh_exec(self , "nmcli c m "+nic+" ipv4.method manual",timeout=300)[1])
         print(ssh_exec(self , "nmcli c up "+nic , timeout=300)[1])
         print(ssh_exec(self , "rm -rf "+self.path+"/conf",timeout=300)[1])
