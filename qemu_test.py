@@ -482,8 +482,8 @@ class QemuVM(object):
                 time.sleep(1)
         else:
             self.process.wait()
-        while os.system('netstat -anp 2>&1 | grep '+str(self.port)+' > /dev/null') == 0:
-            time.sleep(1)
+            while os.system('netstat -anp 2>&1 | grep '+str(self.port)+' > /dev/null') == 0:
+                time.sleep(1)
 
     def destroy(self):
         ssh_exec(self,'poweroff')
