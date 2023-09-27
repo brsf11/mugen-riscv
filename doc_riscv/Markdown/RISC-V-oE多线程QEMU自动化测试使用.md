@@ -41,6 +41,7 @@
                                 Specify the network bridge ip
           -t T                  Specify the number of generated free tap
           -F F                  Specify test config file
+          --screen              Use screen command to manage qemu processes
     ```
 
     例如
@@ -70,6 +71,7 @@
     - 使用多台实例进行测试时，各台实例之间需要通过网桥实现相互 ping 通， ``--addNic`` 和 ``"addNic"`` 项指定是否在创建 qemu 虚拟机时根据测试的需求以及每台实例的 IP 地址重新配置 qemu 实例的 mugen ``env.json`` 配置，和是否在调用 mugen_riscv.py 时传入 ``--addNic`` 参数，该参数依赖 ``--bridge_ip`` 和 ``-t`` 参数
     - 可使用 ``--bridge_ip`` 、 ``-t`` 参数或 ``"bridge ip"`` 、 ``"tap num"`` 项配置网桥 IP 和该连接在该网桥上的虚拟网卡数量，假设共有 50 个虚拟网卡，则虚拟网卡名称必须为 ``tap0`` ～ ``tap49``
     - 对于有 riscv 版本的测试套，测试套列表中可用原不带 riscv 后缀的测试套名称，脚本会自动优先匹配有后缀的版本，若想测试原测试套，可在运行 qemu_test.py 时加上 ``-m`` 参数或在配置文件中将 ``"mugenNative"`` 配置为 ``1``
+    - 由于测试中偶现 python subprocess 性能问题，可使用 ``--screen`` 参数或将 ``"useScreen"`` 配置项配置为 ``1``，使用 screen 命令作为替代方案管理 qemu 进程
 
 ### 使用例
 - 使用qemu_test.py测试不需要在宿主机上安装mugen依赖  
@@ -96,6 +98,7 @@
             "tap num":50,
             "mugenDir":"/root/mugen-riscv/",
             "listFile":"lists/previewV2part1remain3",
+            "useScreen":1,
             "generate":1
         }
     ```

@@ -99,7 +99,7 @@ class Dispatcher(Thread):
                                                             user=self.qemuVM.user , password=self.qemuVM.password,
                                                             arch=self.qemuVM.arch, initrd=self.qemuVM.initrd,
                                                             kernel=self.qemuVM.kernel, kparms=self.qemuVM.kparms, bios=self.qemuVM.bios, pflash=self.qemuVM.pflash,
-                                                            workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path,
+                                                            workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path, screen=self.qemuVM.screen,
                                                             ))
                                 self.attachVM[i-1].start(disk=self.initTarget[1],machine=self.initTarget[2],tap_number=self.initTarget[3]+1,taplist=[self.tapQueue.get() for i in range(self.initTarget[3]+1)])
                                 self.attachVM[i-1].waitReady()
@@ -135,7 +135,7 @@ class Dispatcher(Thread):
                                                             user=self.qemuVM.user , password=self.qemuVM.password,
                                                             arch=self.qemuVM.arch, initrd=self.qemuVM.initrd,
                                                             kernel=self.qemuVM.kernel, kparms=self.qemuVM.kparms, bios=self.qemuVM.bios, pflash=self.qemuVM.pflash,
-                                                            workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path,
+                                                            workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path, screen=self.qemuVM.screen,
                                                             ))
                                 self.attachVM[i-1].start(disk=self.initTarget[1],machine=self.initTarget[2],tap_number=1,taplist=[self.tapQueue.get()])
                                 self.attachVM[i-1].waitReady()
@@ -206,7 +206,7 @@ class Dispatcher(Thread):
                                                                 user=self.qemuVM.user , password=self.qemuVM.password,
                                                                 arch=self.qemuVM.arch, initrd=self.qemuVM.initrd,
                                                                 kernel=self.qemuVM.kernel, kparms=self.qemuVM.kparms, bios=self.qemuVM.bios, pflash=self.qemuVM.pflash,
-                                                                workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path,
+                                                                workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path, screen=self.qemuVM.screen,
                                                                 ))
                                     self.attachVM[i-1].start(disk=target[1],machine=target[2],tap_number=target[3]+1,taplist=[self.tapQueue.get() for i in range(target[3]+1)])
                                     self.attachVM[i-1].waitReady()
@@ -239,7 +239,7 @@ class Dispatcher(Thread):
                                                                 user=self.qemuVM.user , password=self.qemuVM.password,
                                                                 arch=self.qemuVM.arch, initrd=self.qemuVM.initrd,
                                                                 kernel=self.qemuVM.kernel, kparms=self.qemuVM.kparms, bios=self.qemuVM.bios, pflash=self.qemuVM.pflash,
-                                                                workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path,
+                                                                workingDir=self.qemuVM.workingDir , bkfile=self.qemuVM.bkFile , path=self.qemuVM.path, screen=self.qemuVM.screen,
                                                                 ))
                                     self.attachVM[i-1].start(disk=target[1],machine=target[2],tap_number=1,taplist=[self.tapQueue.get()])
                                     self.attachVM[i-1].waitReady()
@@ -289,7 +289,7 @@ class Dispatcher(Thread):
 
 
 class QemuVM(object):
-    def __init__(self, arch, vcpu, memory, workingDir, bkfile, kernel, kparms, initrd, bios, pflash, id=1, port=12055, user='root',password='openEuler12#$',
+    def __init__(self, arch, vcpu, memory, workingDir, bkfile, kernel, kparms, initrd, bios, pflash, screen, id=1, port=12055, user='root',password='openEuler12#$',
                   path='/root/GitRepo/mugen-riscv' , restore=True, runArgs=''):
         self.arch = arch
         self.id = id
@@ -303,24 +303,26 @@ class QemuVM(object):
         self.runArgs = runArgs
         self.mac = id+1
         self.tapls = []
+        self.screen = screen
+        self.name = "mugenss"+str(self.id)
         if self.workingDir[-1] != '/':
             self.workingDir += '/'
 
     def start(self , disk=1 , machine=1 , tap_number=0 , taplist=[]):
         self.tapls = taplist
-        self.port = findAvalPort(1)[0]
         if self.drive in os.listdir(self.workingDir):
             os.system('rm -f '+self.workingDir+self.drive)
         if self.restore:
-            cmd = 'qemu-img create -f qcow2 -F qcow2 -b '+self.workingDir+self.bkFile+' '+self.workingDir+self.drive
+            cmd = 'qemu-img create -f qcow2 -F qcow2 -b '+self.workingDir+self.bkFile+' '+self.workingDir+self.drive+" >/dev/null"
             res = os.system(cmd)
             if res != 0:
                 print('Failed to create cow img: '+self.drive)
                 return -1
         os.system('rm -f '+self.workingDir+'disk'+str(self.id)+'-*')
         if disk > 1:
+            print('Append '+str(disk-1)+" disks")
             for i in range(1 , disk):
-                cmd = 'qemu-img create -f qcow2 '+self.workingDir+"disk"+str(self.id)+'-'+str(i)+'.qcow2 500M'
+                cmd = 'qemu-img create -f qcow2 '+self.workingDir+"disk"+str(self.id)+'-'+str(i)+'.qcow2 500M >/dev/null'
                 res = os.system(cmd)
                 if res != 0:
                     print('Failed to create img: disk'+str(id)+'-'+str(i))
@@ -356,7 +358,6 @@ class QemuVM(object):
             cmd = "cp "+self.pflash+" "+self.npflash
             os.system(cmd)
 
-        ssh_port=self.port
         if self.arch == 'riscv64':
             cmd = "qemu-system-riscv64 \
                   -nographic -machine virt \
@@ -401,15 +402,26 @@ class QemuVM(object):
                 cmd += "-netdev tap,id=net" + used_tap + ",ifname=" + used_tap + ",script=no,downscript=no -device virtio-net-pci,netdev=net" + used_tap + ",mac=52:54:00:11:45:{:0>2d}".format(self.mac) + " "
                 self.mac += 1
 
-        cmd += "-netdev user,id=usernet,hostfwd=tcp::" + str(ssh_port) + "-:22 -device virtio-net-pci,netdev=usernet,mac=52:54:00:11:45:{:0>2d}".format(self.mac)
-        self.process = subprocess.Popen(args=cmd,stderr=subprocess.PIPE,stdout=subprocess.PIPE,stdin=subprocess.PIPE,encoding='utf-8',shell=True)
-        time.sleep(1)
-        ret = self.process.poll()
-        if ret is not None:
-            print("Qemu process terminate unexpectedly " + str(ret))
-            print(self.process.communicate())
+        self.port = findAvalPort(1)[0]
+        cmd += "-netdev user,id=usernet,hostfwd=tcp::" + str(self.port) + "-:22 -device virtio-net-pci,netdev=usernet,mac=52:54:00:11:45:{:0>2d}".format(self.mac)
+        if self.screen:
+            if os.system("screen -ls | grep "+self.name+" >/dev/null") == 0:
+                os.system("screen -X -S "+self.name+" quit")
+            os.system("screen -S "+self.name+" -d -m "+cmd)
+            time.sleep(1)
+            if os.system("screen -ls | grep "+self.name+" >/dev/null") != 0:
+                print("Qemu process terminate unexpectedly " + cmd)
+            else:
+                print("Qemu process is running with cmdline " + cmd)
         else:
-            print("Qemu process is running with cmdline " + cmd)
+            self.process = subprocess.Popen(args=cmd,stderr=subprocess.PIPE,stdout=subprocess.PIPE,stdin=subprocess.PIPE,encoding='utf-8',shell=True)
+            time.sleep(1)
+            ret = self.process.poll()
+            if ret is not None:
+                print("Qemu process terminate unexpectedly " + str(ret))
+                print(self.process.communicate())
+            else:
+                print("Qemu process is running with cmdline " + cmd)
 
     def waitReady(self):
         conn = 519
@@ -430,7 +442,7 @@ class QemuVM(object):
         print("config the machine "+str(self.id)+" nic name "+nic)
         print(ssh_exec(self , "nmcli c a type Ethernet con-name "+nic+" ifname "+nic , timeout=300)[1])
         print(ssh_exec(self , "nmcli c m "+nic+" ipv4.address "+self.tapip+"/24" , timeout=300)[1])
-        print(ssh_exec(self , "nmcli c m "+nic+" ipv4.gateway "+br_ip , timeout=300)[1])
+        # print(ssh_exec(self , "nmcli c m "+nic+" ipv4.gateway "+br_ip , timeout=300)[1])
         print(ssh_exec(self , "nmcli c m "+nic+" ipv4.method manual",timeout=300)[1])
         print(ssh_exec(self , "nmcli c up "+nic , timeout=300)[1])
         print(ssh_exec(self , "rm -rf "+self.path+"/conf",timeout=300)[1])
@@ -465,9 +477,13 @@ class QemuVM(object):
         return False
 
     def waitPoweroff(self):
-        self.process.wait()
-        while os.system('netstat -anp 2>&1 | grep '+str(self.port)+' > /dev/null') == 0:
-            time.sleep(1)
+        if self.screen:
+            while os.system("screen -ls | grep "+self.name+" >/dev/null") == 0:
+                time.sleep(1)
+        else:
+            self.process.wait()
+            while os.system('netstat -anp 2>&1 | grep '+str(self.port)+' > /dev/null') == 0:
+                time.sleep(1)
 
     def destroy(self):
         ssh_exec(self,'poweroff')
@@ -505,6 +521,7 @@ if __name__ == "__main__":
     parser.add_argument('--bridge_ip', type=str, help='Specify the network bridge ip')
     parser.add_argument('-t', type=int, default=0, help='Specify the number of generated free tap')
     parser.add_argument('-F',type=str,help='Specify test config file')
+    parser.add_argument('--screen',action='store_true',default=False,help='Use screen command to manage qemu processes')
     args = parser.parse_args()
 
     test_env = TestEnv()
@@ -524,6 +541,7 @@ if __name__ == "__main__":
     user , password = "root","openEuler12#$"
     addDisk, multiMachine, addNic = False,False,False
     bridge_ip = None
+    screen = False
     tap = Queue()
     
 
@@ -579,6 +597,8 @@ if __name__ == "__main__":
         if configData.__contains__('tap num'):
             for i in range(configData['tap num']):
                 tap.put('tap'+str(i))
+        if configData.__contains__('useScreen') and configData['useScreen'] == 1:
+            screen = True
         if configData.__contains__('qemuArch') and type(configData['qemuArch']) == str:
             arch = configData['qemuArch']
             if arch not in ['riscv64', 'x86_64']:
@@ -663,6 +683,8 @@ if __name__ == "__main__":
         if args.t > 0:
             for i in range(args.t):
                 tap.put('tap'+str(i))
+        if args.screen:
+            screen = True
 
         if args.w != None and (args.B != None or args.K != None or args.U != None) and args.D != None:
             workingDir = args.w
@@ -695,6 +717,12 @@ if __name__ == "__main__":
             print('Please specify working directory and bios or kernel and drive file!')
             exit(-1)
 
+    if screen and os.system("screen -v >/dev/null") != 0:
+        print("screen command not found")
+        exit(-1)
+    else:
+        os.system('for i in $(screen -ls | grep mugenss | sed "s/.*\(mugenss[0-9]*\).*/\\1/"); do screen -X -S $i quit; done')
+
     if preImg == True or genList == True:
         if preImg == True and (bkFile not in os.listdir(workingDir)):
             res = os.system('qemu-img create -f qcow2 -F qcow2 -b '+workingDir+orgDrive+' '+workingDir+bkFile)
@@ -703,7 +731,7 @@ if __name__ == "__main__":
                 exit(-1)
 
         preVM = QemuVM(id=1, port=findAvalPort(1)[0], user=user, password=password, arch=arch, kernel=kernel, kparms=kparms, initrd=initrd, bios=bios, pflash=pflash,
-                       vcpu=coreNum, memory=memSize, path=mugenPath, workingDir=workingDir, bkfile=bkFile,
+                       vcpu=coreNum, memory=memSize, path=mugenPath, workingDir=workingDir, bkfile=bkFile, screen=screen,
                        restore=False)
         preVM.start()
         preVM.waitReady()
@@ -764,7 +792,7 @@ if __name__ == "__main__":
             qemuVM.append(QemuVM(id=i , vcpu=coreNum , memory=memSize,
                                  user=user , password=password,
                                  arch=arch, initrd=initrd, kernel=kernel, kparms=kparms, bios=bios, pflash=pflash,
-                                 workingDir=workingDir , bkfile=bkFile , path=mugenPath,
+                                 workingDir=workingDir , bkfile=bkFile , path=mugenPath, screen=screen,
                                  runArgs=runningArg))   
         targetQueue = Queue()
         for target in test_target.test_list:
@@ -776,7 +804,7 @@ if __name__ == "__main__":
         for i in range(threadNum):
             dispathcers.append(Dispatcher(qemuVM=qemuVM[i] , targetQueue=targetQueue , tapQueue=tap , br_ip=bridge_ip , step = threadNum))
             dispathcers[i].start()
-            time.sleep(0.5)
+            time.sleep(2)
 
         isAlive = True
         isEnd = False
